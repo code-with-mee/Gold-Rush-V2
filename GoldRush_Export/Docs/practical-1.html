@@ -234,7 +234,6 @@
 <li>Save.</li>
 </ol>
 
-<div class="note"><b>About the screenshots.</b> They were made with an older Level1. In the pictures the Hierarchy also has <code>Player</code>, <code>Main Camera</code> and <code>Sun</code>, the floor is one <code>Floor_40m</code>, the walls are already split into <code>WallSouth</code>, <code>WallNorth</code> … and the markers show extra components. Your Level1 has none of that: the game makes the Player, the camera and the sun at Play, the floor is <code>Static/Floor</code> and the outer wall is <code>Static/Walls/PerimeterWall</code>. Follow the text. Everything else in the pictures is the same.</div>
 <figure class="shot"><img src="images/practical-1/step-03-a.png" alt="" loading="lazy"><figcaption>After <b>Save As</b>: the Hierarchy shows the scene <b>Level5</b> at the top. You work in the copy.</figcaption></figure>
 <figure class="shot"><img src="images/practical-1/step-03-b.png" alt="" loading="lazy"><figcaption>The renamed root <code>Level 5 - Coin Garden</code> with <b>Arena Half</b> = 12.</figcaption></figure>
 
@@ -249,7 +248,7 @@
 <li><code>Gameplay/PowerUps/PowerUp Magnet</code>. This level has no power-ups.</li>
 </ol>
 <p>Keep the 6 CoinSpots, the walls (for now), the lamps, <code>PlayerSpawn</code>, <code>ExitGate</code>, <code>GameManager</code>, <code>GameUI</code> and <code>EventSystem</code>.</p>
-<figure class="shot"><img src="images/practical-1/step-04.png" alt="" loading="lazy"><figcaption>Cleared: <code>Obstacles</code> is empty, <code>Monsters</code> has only <code>Slime 1</code>, <code>PowerUps</code> is empty. Walls, lamps, gate and the 6 CoinSpots are still there. (This picture is from an older Level1: yours has no Player, Main Camera and Sun, and the walls are still one <code>PerimeterWall</code>.)</figcaption></figure>
+<figure class="shot"><img src="images/practical-1/step-04.png" alt="" loading="lazy"><figcaption>Cleared: <code>Obstacles</code>, <code>Structures</code> and <code>Decor</code> are empty, <code>Monsters</code> has only <code>Slime 1</code>, <code>PowerUps</code> is empty. <code>PerimeterWall</code>, the lamps, the gate and the 6 CoinSpots are still there.</figcaption></figure>
 
 <!-- ======================================================= 5 -->
 <h2 id="step-5"><span class="step">5</span>Build smaller walls</h2>
@@ -273,7 +272,7 @@
 <tr><td><code>ExitGate</code></td><td><code>0, 0, 12</code></td><td><code>0, 0, 0</code></td><td>In the middle of the gap. Not static. You move it in step 10.</td></tr>
 </table></div>
 <div class="tip">Select a wall child and press <b>V</b>, then drag a corner onto the next wall: they snap together without a gap.</div>
-<figure class="shot"><img src="images/practical-1/step-05-a.png" alt="" loading="lazy"><figcaption>The wall groups now have 3 + 2 + 3 + 3 <code>Wall_8m</code> and 4 pillars. <code>GateBlocker</code> is a child of <code>Walls</code>.</figcaption></figure>
+<figure class="shot"><img src="images/practical-1/step-05-a.png" alt="" loading="lazy"><figcaption><code>PerimeterWall</code> is gone. <code>WallSouth</code>, <code>WallEast</code> and <code>WallWest</code> have 3 <code>Wall_8m</code> each, <code>WallNorth</code> has 2, <code>Corners</code> has 4 <code>Pillar</code>s. <code>GateBlocker</code> is now a child of <code>Walls</code>.</figcaption></figure>
 <figure class="shot"><img src="images/practical-1/step-05-b.png" alt="" loading="lazy"><figcaption>Top view: a 24 × 24 m square with the 8 m gap in the north wall. The lamps, coins and the gate are still at the old places (you move them next).</figcaption></figure>
 
 <!-- ======================================================= 6 -->
@@ -330,7 +329,7 @@
 <tr><td><code>CoinSpot 8</code></td><td><code>10, 0, 8</code></td><td>Corner reward, right of the gate, close to the Slime</td></tr>
 </table></div>
 
-<figure class="shot"><img src="images/practical-1/step-08-a.png" alt="" loading="lazy"><figcaption>8 CoinSpots in <code>Gameplay/Coins</code>. (In the older Level1 of this picture each CoinSpot had a Coin inside. Yours are empty markers: that is right.)</figcaption></figure>
+<figure class="shot"><img src="images/practical-1/step-08-a.png" alt="" loading="lazy"><figcaption>8 CoinSpots in <code>Gameplay/Coins</code>. They are empty markers: the game makes the coins when you press Play.</figcaption></figure>
 <figure class="shot"><img src="images/practical-1/step-08-b.png" alt="" loading="lazy"><figcaption>Top view: one coin on each flower bed, coins 5 and 6 in the middle, 7 and 8 left and right of the gate.</figcaption></figure>
 
 <!-- ======================================================= 9 -->
@@ -341,7 +340,7 @@
 <tr><td><code>Slime 1</code></td><td><code>Monster_Slime</code></td><td><code>7, 0, 8</code></td><td>Keep <code>Slime 1</code>, move it (you deleted <code>Slime 2</code> in step 4). 18 m from the start, near coin 8.</td></tr>
 </table></div>
 
-<figure class="shot"><img src="images/practical-1/step-09.png" alt="" loading="lazy"><figcaption><code>Slime 1</code> at <code>7, 0, 8</code>: Monster Spawn, Type = Patroller. (Your Slime 1 is only a marker. The picture shows an older version that also had Nav Mesh Agent and Enemy AI: the game adds those at Play.)</figcaption></figure>
+<figure class="shot"><img src="images/practical-1/step-09.png" alt="" loading="lazy"><figcaption><code>Slime 1</code> at <code>7, 0, 8</code>: Monster Spawn, Type = Patroller. It is only a marker: the game makes the Slime there when you press Play.</figcaption></figure>
 
 <!-- ======================================================= 10 -->
 <h2 id="step-10"><span class="step">10</span>Start, gate and NavMesh</h2>
@@ -349,7 +348,7 @@
 <li>Select <code>Gameplay/PlayerSpawn</code>. Position <code>0, 0, -9</code>, Rotation <code>0, 0, 0</code> (looks north, to the gate).</li>
 <li>Select <code>Static/ExitGate</code>. Position <code>0, 0, 12</code>, Rotation <code>0, 0, 0</code>.</li>
 <li>Select <code>Static/Walls/GateBlocker</code>. Position <code>0, 2.5, 13.25</code>. Keep its Box Collider (Size <code>7.5, 5, 1</code>).</li>
-<li>Select <code>Static</code>. In <b>NavMesh Surface</b>, click <b>Bake</b>. Look at the blue area: it must reach every coin and the gate. (The blue strip outside the walls is the rest of <code>Floor_40m</code>. Nobody can get there, so it does not matter.)</li>
+<li>Select <code>Static</code>. In <b>NavMesh Surface</b>, click <b>Bake</b>. Look at the blue area: it must reach every coin and the gate. (The blue strip outside the walls is the rest of the floor: <code>Static/Floor/GroundCollider</code> is 34 × 34 m. Nobody can get there, so it does not matter.)</li>
 <li>Save.</li>
 </ol>
 <p>The start and the gate are the same as in Level1, only the gate and blocker move 4 m south.</p>

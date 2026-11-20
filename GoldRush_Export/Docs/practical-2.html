@@ -263,7 +263,6 @@
 <li>Save.</li>
 </ol>
 
-<div class="note"><b>About the screenshots.</b> They were made with an older Level1. In the pictures the Hierarchy also has <code>Player</code>, <code>Main Camera</code> and <code>Sun</code>, the floor is one <code>Floor_40m</code>, the walls are already split into <code>WallSouth</code>, <code>WallNorth</code> … and the markers show extra components. Your Level1 has none of that: the game makes the Player, the camera and the sun at Play, the floor is <code>Static/Floor</code> and the outer wall is <code>Static/Walls/PerimeterWall</code>. Follow the text. Everything else in the pictures is the same.</div>
 <figure class="shot"><img src="images/practical-2/step-03-a.png" alt="" loading="lazy"><figcaption>After <b>Save As</b>: the Hierarchy shows the scene <b>Level6</b>.</figcaption></figure>
 <figure class="shot"><img src="images/practical-2/step-03-b.png" alt="" loading="lazy"><figcaption>The root <code>Level 6 - The Maze</code>, <b>Arena Half</b> = 16 (the same as Level1).</figcaption></figure>
 
@@ -277,7 +276,7 @@
 </ol>
 <p>The outer walls (<code>Static/Walls/PerimeterWall</code>), the gate, the floor and <code>Decor</code> stay exactly as in Level1.</p>
 
-<figure class="shot"><img src="images/practical-2/step-04.png" alt="" loading="lazy"><figcaption>Cleared: <code>Obstacles</code> and <code>PowerUps</code> are empty. Both Slimes and the 6 CoinSpots stay. (Older Level1: yours has no Player, Main Camera and Sun, and the outer wall is still one <code>PerimeterWall</code>.)</figcaption></figure>
+<figure class="shot"><img src="images/practical-2/step-04.png" alt="" loading="lazy"><figcaption>Cleared: <code>Obstacles</code>, <code>Structures</code> and <code>PowerUps</code> are empty. Both Slimes and the 6 CoinSpots stay. <code>PerimeterWall</code>, the floor and <code>Decor</code> are the same as in Level1.</figcaption></figure>
 
 <!-- ======================================================= 5 -->
 <h2 id="step-5"><span class="step">5</span>Lamps</h2>
@@ -345,7 +344,7 @@
 <tr><td><code>CoinSpot 8</code></td><td><code>12, 0, 12</code></td><td>Last coin, top right: then run to the gate</td></tr>
 </table></div>
 
-<figure class="shot"><img src="images/practical-2/step-07-a.png" alt="" loading="lazy"><figcaption>8 CoinSpots in <code>Gameplay/Coins</code>. (In the older Level1 of this picture each CoinSpot had a Coin inside. Yours are empty markers: that is right.)</figcaption></figure>
+<figure class="shot"><img src="images/practical-2/step-07-a.png" alt="" loading="lazy"><figcaption>8 CoinSpots in <code>Gameplay/Coins</code>. They are empty markers: the game makes the coins when you press Play.</figcaption></figure>
 <figure class="shot"><img src="images/practical-2/step-07-b.png" alt="" loading="lazy"><figcaption>Top view: the coins follow the path, two of them in the dead ends.</figcaption></figure>
 
 <!-- ======================================================= 8 -->
@@ -359,7 +358,7 @@
 </table></div>
 
 <figure class="shot"><img src="images/practical-2/step-08-a.png" alt="" loading="lazy"><figcaption><code>Gameplay/Monsters</code>: <code>Slime 1</code>, <code>Slime 2</code> and <code>Ghost 1</code>.</figcaption></figure>
-<figure class="shot"><img src="images/practical-2/step-08-b.png" alt="" loading="lazy"><figcaption><code>Ghost 1</code> at <code>4, 0, 12</code>: Monster Spawn Type = Chaser.</figcaption></figure>
+<figure class="shot"><img src="images/practical-2/step-08-b.png" alt="" loading="lazy"><figcaption><code>Ghost 1</code> (from the <code>Monster_Ghost</code> marker) at <code>4, 0, 12</code>: Monster Spawn, Type = Chaser.</figcaption></figure>
 
 <!-- ======================================================= 9 -->
 <h2 id="step-9"><span class="step">9</span>Power-up</h2>
@@ -372,7 +371,7 @@
 <p>The SPEED orb sits right before the first long corridor. 6 seconds of speed is just enough to run past Slime 1 in the second corridor.</p>
 
 <figure class="shot"><img src="images/practical-2/step-09-a.png" alt="" loading="lazy"><figcaption>The marker <code>PowerUp Speed</code> at <code>-14, 0, -12</code> with Power Up Spot, Type = Speed.</figcaption></figure>
-<figure class="shot"><img src="images/practical-2/step-09-b.png" alt="" loading="lazy"><figcaption>The SPEED orb at the west end of the first corridor, just before the gap in row A.</figcaption></figure>
+<figure class="shot"><img src="images/practical-2/step-09-b.png" alt="" loading="lazy"><figcaption>The <code>PowerUp Speed</code> marker (the small wire ball) at the west end of the first corridor, just before the gap in row A. The SPEED orb appears there when you press Play.</figcaption></figure>
 
 <!-- ======================================================= 10 -->
 <h2 id="step-10"><span class="step">10</span>Start, gate and NavMesh</h2>
@@ -412,12 +411,12 @@
 </ol>
 <figure class="shot"><img src="images/practical-2/step-12-a.png" alt="" loading="lazy"><figcaption>The intro: LEVEL 6, THE MAZE, "Collect all 8 gold", 2 hearts.</figcaption></figure>
 <figure class="shot"><img src="images/practical-2/step-12-b.png" alt="" loading="lazy"><figcaption>The view from the start: down the first corridor to the SPEED orb and coin 1. No monster.</figcaption></figure>
-<figure class="shot"><img src="images/practical-2/step-12-c.png" alt="" loading="lazy"><figcaption>With SPEED (the blue bar), near the gate: the Ghost sees you (<b>!</b>).</figcaption></figure>
-<figure class="shot"><img src="images/practical-2/step-12-d.png" alt="" loading="lazy"><figcaption>All 8 coins (8 / 8): the gate is open. The green arrow at the edge of the screen points to it.</figcaption></figure>
+<figure class="shot"><img src="images/practical-2/step-12-c.png" alt="" loading="lazy"><figcaption>With SPEED (the blue bar) in the middle corridor: the Ghost has seen you and comes for you, a Slime right behind it.</figcaption></figure>
+<figure class="shot"><img src="images/practical-2/step-12-d.png" alt="" loading="lazy"><figcaption>All 8 coins (8 / 8): the gate is open and its floor glows green. Run through it to win.</figcaption></figure>
 <div class="check">
 <p><b>▶ Play test: check these</b></p>
 <ul>
-<li>From the start you see coin 1 and the SPEED orb, not a monster.</li><li>Every corridor and both splitter passages let you through without touching walls.</li><li>No monster comes into the first corridor while you collect coin 1 and the SPEED orb.</li><li>The Ghost chases you only after you come through row C.</li><li>Your best time is under the par time (60 s).</li>
+<li>From the start you see coin 1 and the SPEED orb, not a monster.</li><li>Every corridor and both splitter passages let you through without touching walls.</li><li>No monster comes into the first corridor while you collect coin 1 and the SPEED orb.</li><li>The Ghost starts behind row C, near the gate. It wanders, so it can come into the middle corridor too: look out for it.</li><li>Your best time is under the par time (60 s).</li>
 <li>The intro says <b>THE MAZE</b> and "Collect all 8 gold".</li>
 <li>The gate opens after the last coin, and you win when you run through it.</li>
 <li>No red errors in the Console.</li>
