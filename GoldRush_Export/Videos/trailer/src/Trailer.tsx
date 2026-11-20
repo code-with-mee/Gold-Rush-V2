@@ -7,24 +7,14 @@ import { slide } from "@remotion/transitions/slide";
 import { wipe } from "@remotion/transitions/wipe";
 import { LightLeak } from "@remotion/light-leaks";
 import { Grain } from "./fx";
-import { DayNight, Dodge, Escape, Finale, Grab, Intro, Levels, PowerUps, Style, Title } from "./scenes";
+import * as S from "./scenes";
 
-const T = 12;
+const T = 10;
+const TRANSITIONS = 4;
 
-export const SCENES = {
-  intro: 90,
-  title: 110,
-  grab: 85,
-  dodge: 85,
-  escape: 140,
-  daynight: 90,
-  levels: 75,
-  power: 80,
-  style: 100,
-  finale: 180,
-};
-// 3 transitions of T frames; overlays do not change length.
-export const TRAILER_FRAMES = Object.values(SCENES).reduce((a, b) => a + b, 0) - 3 * T;
+export const TRAILER_FRAMES =
+  S.INTRO + S.TITLE + S.COUNT + S.GRAB + S.DODGE + S.POWER + S.DAYNIGHT + S.ESCAPE + S.LEVELS + S.SHOP + S.FINALE -
+  TRANSITIONS * T;
 
 const Music: React.FC = () => {
   const { durationInFrames } = useVideoConfig();
@@ -33,7 +23,7 @@ const Music: React.FC = () => {
       src={staticFile("sfx/music.wav")}
       loop
       volume={(f) =>
-        interpolate(f, [0, 20, durationInFrames - 50, durationInFrames], [0, 0.55, 0.55, 0], {
+        interpolate(f, [0, 20, durationInFrames - 50, durationInFrames], [0, 0.5, 0.5, 0], {
           extrapolateLeft: "clamp",
           extrapolateRight: "clamp",
         })
@@ -42,59 +32,34 @@ const Music: React.FC = () => {
   );
 };
 
+const tr = (p: Parameters<typeof TransitionSeries.Transition>[0]["presentation"]) => (
+  <TransitionSeries.Transition presentation={p} timing={linearTiming({ durationInFrames: T })} />
+);
+
 export const Trailer: React.FC = () => (
   <AbsoluteFill style={{ background: "black" }}>
     <TransitionSeries>
-      <TransitionSeries.Sequence durationInFrames={SCENES.intro}>
-        <Intro />
-      </TransitionSeries.Sequence>
-      <TransitionSeries.Sequence durationInFrames={SCENES.title}>
-        <Title />
-      </TransitionSeries.Sequence>
-      <TransitionSeries.Overlay durationInFrames={24}>
-        <LightLeak seed={3} />
-      </TransitionSeries.Overlay>
-      <TransitionSeries.Sequence durationInFrames={SCENES.grab}>
-        <Grab />
-      </TransitionSeries.Sequence>
-      <TransitionSeries.Transition presentation={slide({ direction: "from-right" })} timing={linearTiming({ durationInFrames: T })} />
-      <TransitionSeries.Sequence durationInFrames={SCENES.dodge}>
-        <Dodge />
-      </TransitionSeries.Sequence>
-      <TransitionSeries.Transition presentation={wipe({ direction: "from-left" })} timing={linearTiming({ durationInFrames: T })} />
-      <TransitionSeries.Sequence durationInFrames={SCENES.escape}>
-        <Escape />
-      </TransitionSeries.Sequence>
-      <TransitionSeries.Overlay durationInFrames={24}>
-        <LightLeak seed={7} hueShift={180} />
-      </TransitionSeries.Overlay>
-      <TransitionSeries.Sequence durationInFrames={SCENES.daynight}>
-        <DayNight />
-      </TransitionSeries.Sequence>
-      <TransitionSeries.Transition presentation={fade()} timing={linearTiming({ durationInFrames: T })} />
-      <TransitionSeries.Sequence durationInFrames={SCENES.levels}>
-        <Levels />
-      </TransitionSeries.Sequence>
-      <TransitionSeries.Overlay durationInFrames={20}>
-        <LightLeak seed={11} hueShift={260} />
-      </TransitionSeries.Overlay>
-      <TransitionSeries.Sequence durationInFrames={SCENES.power}>
-        <PowerUps />
-      </TransitionSeries.Sequence>
-      <TransitionSeries.Overlay durationInFrames={20}>
-        <LightLeak seed={5} />
-      </TransitionSeries.Overlay>
-      <TransitionSeries.Sequence durationInFrames={SCENES.style}>
-        <Style />
-      </TransitionSeries.Sequence>
-      <TransitionSeries.Overlay durationInFrames={30}>
-        <LightLeak seed={9} />
-      </TransitionSeries.Overlay>
-      <TransitionSeries.Sequence durationInFrames={SCENES.finale}>
-        <Finale />
-      </TransitionSeries.Sequence>
+      <TransitionSeries.Sequence durationInFrames={S.INTRO}><S.Intro /></TransitionSeries.Sequence>
+      <TransitionSeries.Sequence durationInFrames={S.TITLE}><S.Title /></TransitionSeries.Sequence>
+      <TransitionSeries.Overlay durationInFrames={24}><LightLeak seed={3} /></TransitionSeries.Overlay>
+      <TransitionSeries.Sequence durationInFrames={S.COUNT}><S.Countdown /></TransitionSeries.Sequence>
+      <TransitionSeries.Sequence durationInFrames={S.GRAB}><S.Grab /></TransitionSeries.Sequence>
+      {tr(slide({ direction: "from-right" }))}
+      <TransitionSeries.Sequence durationInFrames={S.DODGE}><S.Dodge /></TransitionSeries.Sequence>
+      <TransitionSeries.Overlay durationInFrames={20}><LightLeak seed={11} hueShift={260} /></TransitionSeries.Overlay>
+      <TransitionSeries.Sequence durationInFrames={S.POWER}><S.PowerUps /></TransitionSeries.Sequence>
+      {tr(wipe({ direction: "from-left" }))}
+      <TransitionSeries.Sequence durationInFrames={S.DAYNIGHT}><S.DayNight /></TransitionSeries.Sequence>
+      {tr(fade())}
+      <TransitionSeries.Sequence durationInFrames={S.ESCAPE}><S.Escape /></TransitionSeries.Sequence>
+      <TransitionSeries.Overlay durationInFrames={24}><LightLeak seed={7} hueShift={180} /></TransitionSeries.Overlay>
+      <TransitionSeries.Sequence durationInFrames={S.LEVELS}><S.Levels /></TransitionSeries.Sequence>
+      {tr(slide({ direction: "from-bottom" }))}
+      <TransitionSeries.Sequence durationInFrames={S.SHOP}><S.Shop /></TransitionSeries.Sequence>
+      <TransitionSeries.Overlay durationInFrames={30}><LightLeak seed={9} /></TransitionSeries.Overlay>
+      <TransitionSeries.Sequence durationInFrames={S.FINALE}><S.Finale /></TransitionSeries.Sequence>
     </TransitionSeries>
-    <Grain />
+    <Grain opacity={0.05} />
     <Music />
   </AbsoluteFill>
 );

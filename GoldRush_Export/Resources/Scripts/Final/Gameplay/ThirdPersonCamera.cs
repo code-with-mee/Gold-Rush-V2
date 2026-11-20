@@ -14,6 +14,8 @@ namespace GoldRush
         [Tooltip("Mouse look speed on computers (cursor is locked while playing).")]
         public float mouseSensitivity = 2.4f;
         public float yaw, pitch = 20f;
+        /// <summary>Editor tooling (trailer recorder): ignore mouse / touch / key look input.</summary>
+        public static bool ScriptedLook;
 
         /// <summary>Smoothed yaw the camera is actually using (movement is relative to this).</summary>
         public float Yaw => curYaw;
@@ -83,7 +85,8 @@ namespace GoldRush
             float dt = Time.deltaTime;
 
             // ---- input changes the TARGET angles (yaw / pitch); the camera eases toward them
-            if (Time.timeScale > 0f)
+            if (ScriptedLook) TouchLookArea.Consume();
+            else if (Time.timeScale > 0f)
             {
                 Vector2 look = TouchLookArea.Consume() * (1920f / Mathf.Max(1, Screen.width));
                 yaw += look.x * touchSensitivity;

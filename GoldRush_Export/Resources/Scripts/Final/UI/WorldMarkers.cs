@@ -17,7 +17,7 @@ namespace GoldRush
         }
 
         readonly List<Marker> markers = new List<Marker>();
-        RectTransform root;
+        [SerializeField] RectTransform root;
         Camera cam;
 
         public static WorldMarkers Create(Transform canvas)

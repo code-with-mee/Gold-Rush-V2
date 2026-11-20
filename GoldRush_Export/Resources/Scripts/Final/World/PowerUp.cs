@@ -5,11 +5,22 @@ namespace GoldRush
     /// <summary>Hovering glowing power-up orb with a ground ring. Pickup is distance-based elsewhere (no colliders).</summary>
     public class PowerUp : MonoBehaviour
     {
-        public PowerType Type { get; private set; }
+        [Tooltip("SPEED, GHOST or MAGNET.")]
+        [SerializeField] PowerType type;
+        public PowerType Type { get => type; private set => type = value; }
         public bool Collected { get; private set; }
 
-        Transform visual, inner, ring;
+        [SerializeField] Transform visual, inner, ring;
         float phase;
+
+        void Start()
+        {
+            // a power-up placed by hand: find its parts by name and give it its own bob timing
+            if (!visual) visual = transform.Find("Visual");
+            if (!inner && visual) inner = visual.Find("Inner");
+            if (!ring) ring = transform.Find("Ring");
+            if (phase == 0f) phase = Random.Range(0.01f, Mathf.PI * 2f);
+        }
 
         public static Color ColorOf(PowerType t)
         {

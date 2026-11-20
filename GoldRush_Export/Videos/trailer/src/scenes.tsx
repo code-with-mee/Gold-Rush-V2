@@ -1,5 +1,5 @@
 import React from "react";
-import { Audio } from "@remotion/media";
+import { Audio, Video } from "@remotion/media";
 import {
   AbsoluteFill,
   Easing,
@@ -10,17 +10,16 @@ import {
   useCurrentFrame,
   useVideoConfig,
 } from "remotion";
+import { EVENTS } from "./events";
 import {
-  CoinBurst,
-  CoinRain,
   Coin,
+  CoinRain,
   CYAN,
   Flash,
   Glint,
   GOLD,
   GREEN,
   INK,
-  KenBurns,
   LILITA,
   Letterbox,
   Pill,
@@ -35,8 +34,11 @@ import {
 
 const clamp = { extrapolateLeft: "clamp", extrapolateRight: "clamp" } as const;
 
+/** Length on the timeline of a clip section. */
+export const len = (from: number, to: number, rate = 1) => Math.round((to - from) / rate);
+
 export const Sfx: React.FC<{ at: number; name: string; volume?: number }> = ({ at, name, volume = 0.9 }) => (
-  <Sequence from={at} layout="none">
+  <Sequence from={Math.max(0, at)} layout="none">
     <Audio src={staticFile(`sfx/${name}.wav`)} volume={volume} />
   </Sequence>
 );
@@ -47,404 +49,317 @@ const Center: React.FC<{ children: React.ReactNode; style?: React.CSSProperties 
   </AbsoluteFill>
 );
 
-/* ───────────── 1. Cold open: a single coin spins out of the dark ───────────── */
+const SFX_FOR: Record<string, [string, number]> = {
+  coin: ["coin", 0.55],
+  gate: ["gate", 0.9],
+  win: ["win", 0.9],
+  power: ["power", 0.8],
+  hit: ["hit", 0.9],
+  go: ["go", 0.8],
+};
+
+/**
+ * A piece of real gameplay recorded in Unity (public/clips/<name>.mp4, 30 fps).
+ * Plays source frames [from, to) at `rate`, with a slow camera push, a zoom "punch" on every
+ * coin pickup and the matching sound effect on every recorded game event.
+ */
+export const Clip: React.FC<{
+  name: string;
+  from: number;
+  to: number;
+  rate?: number;
+  zoom?: [number, number];
+  origin?: string;
+  filter?: string;
+  sfx?: boolean;
+  skip?: string[];
+}> = ({ name, from, to, rate = 1, zoom = [1.04, 1.12], origin = "50% 50%", filter, sfx = true, skip = [] }) => {
+  const frame = useCurrentFrame();
+  const d = len(from, to, rate);
+  const events = (EVENTS[name] ?? [])
+    .filter(([f, t]) => f >= from && f < to && !skip.includes(t))
+    .map(([f, t]) => [Math.round((f - from) / rate), t] as [number, string]);
+  let punch = 0;
+  for (const [at, t] of events) {
+    if (t !== "coin" && t !== "power") continue;
+    const k = frame - at;
+    if (k >= 0 && k < 8) punch = Math.max(punch, interpolate(k, [0, 2, 8], [0, 1, 0]) * (t === "power" ? 0.06 : 0.035));
+  }
+  const s = interpolate(frame, [0, d], zoom, clamp) + punch;
+  return (
+    <AbsoluteFill style={{ background: "black", overflow: "hidden" }}>
+      <AbsoluteFill style={{ transform: `scale(${s})`, transformOrigin: origin, filter }}>
+        <Video
+          src={staticFile(`clips/${name}.mp4`)}
+          trimBefore={from}
+          trimAfter={to}
+          playbackRate={rate}
+          muted
+          style={{ width: "100%", height: "100%", objectFit: "cover" }}
+        />
+      </AbsoluteFill>
+      {sfx &&
+        events.map(([at, t], i) =>
+          SFX_FOR[t] ? <Sfx key={i} at={at} name={SFX_FOR[t][0]} volume={SFX_FOR[t][1]} /> : null,
+        )}
+    </AbsoluteFill>
+  );
+};
+
+/** Section title at the bottom of the frame over a dark gradient. */
+const Caption: React.FC<{ word: string; sub: string; color: string; glitch?: boolean; delay?: number; out?: number }> = ({
+  word,
+  sub,
+  color,
+  glitch,
+  delay = 2,
+  out = 9999,
+}) => {
+  const frame = useCurrentFrame();
+  const o = interpolate(frame, [out, out + 8], [1, 0], clamp);
+  return (
+    <AbsoluteFill style={{ opacity: o }}>
+      <AbsoluteFill style={{ background: "linear-gradient(0deg, rgba(0,0,0,0.65) 0%, rgba(0,0,0,0) 38%)" }} />
+      <Center style={{ justifyContent: "flex-end", paddingBottom: 120 }}>
+        <SlamWord text={word} color={color} delay={delay} size={210} glitch={glitch} />
+        <div style={{ marginTop: 6 }}>
+          <Tagline text={sub} delay={delay + 8} size={40} />
+        </div>
+      </Center>
+    </AbsoluteFill>
+  );
+};
+
+/* ───────────── 1. Cold open ───────────── */
+export const INTRO = 80;
 export const Intro: React.FC = () => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
-  const s = spring({ frame: frame - 8, fps, config: { damping: 18, stiffness: 60 } });
-  const glow = interpolate(frame, [0, 60], [0, 1], clamp);
-  const zoom = interpolate(frame, [60, 90], [1, 9], { ...clamp, easing: Easing.in(Easing.cubic) });
+  const s = spring({ frame: frame - 6, fps, config: { damping: 18, stiffness: 60 } });
+  const glow = interpolate(frame, [0, 50], [0, 1], clamp);
+  const zoom = interpolate(frame, [52, 80], [1, 9], { ...clamp, easing: Easing.in(Easing.cubic) });
   return (
     <AbsoluteFill style={{ background: INK }}>
       <AbsoluteFill
-        style={{
-          background: `radial-gradient(circle at 50% 50%, rgba(255,194,26,${0.35 * glow}) 0%, rgba(11,15,30,0) 45%)`,
-        }}
+        style={{ background: `radial-gradient(circle at 50% 50%, rgba(255,194,26,${0.35 * glow}) 0%, rgba(11,15,30,0) 45%)` }}
       />
       <Sparkles count={70} seed="intro" rise={1.2} />
       <Center style={{ transform: `scale(${zoom})` }}>
         <Coin size={320 * s} spin={frame / 40} />
       </Center>
       <Center style={{ top: 360 }}>
-        <div style={{ opacity: interpolate(frame, [20, 32, 55, 64], [0, 1, 1, 0], clamp) }}>
-          <Tagline text="There's gold in the city..." delay={20} size={48} color="#FFE7A3" />
+        <div style={{ opacity: interpolate(frame, [16, 28, 46, 54], [0, 1, 1, 0], clamp) }}>
+          <Tagline text="There's gold in the city..." delay={16} size={48} color="#FFE7A3" />
         </div>
       </Center>
       <Letterbox />
-      <Sfx at={8} name="whoosh" volume={0.7} />
-      <Sfx at={22} name="coin" volume={0.6} />
-      <Sfx at={66} name="whoosh" />
+      <Sfx at={6} name="whoosh" volume={0.7} />
+      <Sfx at={18} name="coin" volume={0.6} />
+      <Sfx at={58} name="whoosh" />
     </AbsoluteFill>
   );
 };
 
-/* ───────────── 2. Title slam ───────────── */
+/* ───────────── 2. The real main menu ───────────── */
+export const TITLE = len(0, 150, 1.25);
 export const Title: React.FC = () => {
-  const frame = useCurrentFrame();
-  const { fps } = useVideoConfig();
-  const shake = useShake(6, 16, 26);
-  const gold = spring({ frame: frame - 4, fps, config: { damping: 10, stiffness: 200 } });
-  const rush = spring({ frame: frame - 10, fps, config: { damping: 10, stiffness: 200 } });
-  const word = (t: string, c: string, shadow: string, s: number, dx: number) => (
-    <span
-      style={{
-        display: "inline-block",
-        color: c,
-        transform: `translateX(${(1 - s) * dx}px) scale(${interpolate(s, [0, 1], [3, 1])})`,
-        opacity: Math.min(1, s * 2),
-        textShadow: `0 14px 0 ${shadow}, 0 22px 0 rgba(0,0,0,0.55), 0 0 80px ${c}88`,
-      }}
-    >
-      {t}
-    </span>
-  );
+  const shake = useShake(0, 14, 24);
   return (
-    <AbsoluteFill style={{ background: "black", transform: shake }}>
-      <KenBurns src="05b_level1_night.jpg" from={1.3} to={1.1} y={[0, 0]} style={{ filter: "blur(9px) brightness(0.55) saturate(1.3)" }} />
-      <Vignette strength={0.8} />
-      <Sparkles count={40} seed="title" />
-      <Center style={{ top: -120 }}>
-        <div style={{ fontFamily: LILITA, fontSize: 250, letterSpacing: 6, display: "flex", gap: 50 }}>
-          {word("GOLD", GOLD, "#B86A00", gold, -600)}
-          {word("RUSH", CYAN, "#11788C", rush, 600)}
-        </div>
-        <div style={{ marginTop: 40, display: "flex", gap: 40 }}>
-          {["GRAB", "DODGE", "ESCAPE"].map((w, i) => (
-            <Pill key={w} delay={30 + i * 8} accent={[GOLD, RED, GREEN][i]}>
-              {w}
-            </Pill>
-          ))}
-        </div>
-      </Center>
-      <Glint at={40} length={28} />
-      <Flash at={6} />
+    <AbsoluteFill style={{ transform: shake }}>
+      <Clip name="menu_title" from={0} to={150} rate={1.25} zoom={[1.18, 1.02]} origin="50% 30%" />
+      <Sparkles count={30} seed="title" />
+      <Vignette strength={0.5} />
+      <Glint at={30} length={26} />
+      <Flash at={0} />
       <Letterbox />
-      <Sfx at={4} name="hit" />
-      <Sfx at={10} name="go" />
-      <Sfx at={30} name="click" />
-      <Sfx at={38} name="click" />
-      <Sfx at={46} name="click" />
+      <Sfx at={0} name="hit" />
+      <Sfx at={4} name="go" volume={0.7} />
     </AbsoluteFill>
   );
 };
 
-/* ───────────── 3. GRAB ───────────── */
-export const Grab: React.FC = () => {
-  const frame = useCurrentFrame();
-  const count = Math.min(6, Math.max(0, Math.floor((frame - 18) / 9) + 1));
-  const bump = (() => {
-    const t = (frame - 18) % 9;
-    return frame >= 18 && count <= 6 ? interpolate(t, [0, 3, 9], [1.35, 1.05, 1], clamp) : 1;
-  })();
-  return (
-    <AbsoluteFill style={{ background: "black" }}>
-      <KenBurns src="05_level1_play.jpg" from={1.1} to={1.45} x={[0, -4]} y={[0, 6]} />
-      <AbsoluteFill style={{ background: "linear-gradient(0deg, rgba(255,170,0,0.25), transparent 60%)" }} />
-      <Vignette />
-      <CoinBurst at={18} x={1020} y={330} seed="g1" />
-      <CoinBurst at={45} x={720} y={420} seed="g2" count={10} />
-      <Center style={{ justifyContent: "flex-end", paddingBottom: 150 }}>
-        <SlamWord text="GRAB" color={GOLD} delay={2} size={280} />
-        <Tagline text="every coin in the arena" delay={12} />
-      </Center>
-      <div
-        style={{
-          position: "absolute",
-          left: 110,
-          top: 120,
-          display: "flex",
-          alignItems: "center",
-          gap: 20,
-          padding: "16px 34px 16px 20px",
-          borderRadius: 999,
-          background: "rgba(20,24,40,0.7)",
-          border: `3px solid ${GOLD}`,
-          transform: `scale(${bump * 1.25})`,
-          transformOrigin: "left center",
-          fontFamily: POPPINS,
-          fontWeight: 800,
-          fontSize: 60,
-          color: "white",
-        }}
-      >
-        <Coin size={70} spin={frame / 30} />
-        {count} / 6
-      </div>
-      <Letterbox />
-      {[0, 1, 2, 3, 4, 5].map((i) => (
-        <Sfx key={i} at={18 + i * 9} name="coin" volume={0.6} />
-      ))}
-      <Sfx at={2} name="whoosh" volume={0.6} />
-    </AbsoluteFill>
-  );
-};
+/* ───────────── 3. Level 1 intro swoop + countdown ───────────── */
+export const COUNT = len(18, 100);
+export const Countdown: React.FC = () => (
+  <AbsoluteFill>
+    <Clip name="l1_run" from={18} to={100} zoom={[1.0, 1.06]} />
+    <Sfx at={92 - 18 - 60} name="count" volume={0.7} />
+    <Sfx at={92 - 18 - 30} name="count" volume={0.7} />
+    <Flash at={92 - 18} peak={0.45} length={8} />
+    <Letterbox />
+  </AbsoluteFill>
+);
 
-/* ───────────── 4. DODGE ───────────── */
+/* ───────────── 4. GRAB ───────────── */
+export const GRAB = len(100, 310, 1.3);
+export const Grab: React.FC = () => (
+  <AbsoluteFill>
+    <Clip name="l1_run" from={100} to={310} rate={1.3} zoom={[1.02, 1.12]} />
+    <Caption word="GRAB" sub="every coin in the arena" color={GOLD} out={GRAB - 40} />
+    <Letterbox />
+    <Sfx at={2} name="whoosh" volume={0.5} />
+  </AbsoluteFill>
+);
+
+/* ───────────── 5. DODGE (slow-mo close call) → CAUGHT ───────────── */
+export const DODGE = len(470, 560, 0.75) + 72;
 export const Dodge: React.FC = () => {
   const frame = useCurrentFrame();
-  const shake = useShake(40, 14, 34);
-  const showCaught = frame >= 40;
-  const pulse = 0.25 + 0.2 * Math.abs(Math.sin(frame / 5));
-  const zoom = interpolate(frame, [40, 46], [1.15, 1.0], clamp);
+  const slow = len(470, 560, 0.75);
+  const shake = useShake(slow, 16, 36);
+  const pulse = 0.18 + 0.14 * Math.abs(Math.sin(frame / 5));
   return (
-    <AbsoluteFill style={{ background: "black", transform: shake }}>
-      {!showCaught ? (
-        <KenBurns src="sunset.jpg" from={1.05} to={1.25} x={[2, -3]} style={{ filter: "saturate(1.15)" }} />
-      ) : (
-        <AbsoluteFill style={{ transform: `scale(${zoom})` }}>
-          <KenBurns src="10_lose.jpg" from={1.0} to={1.08} style={{ filter: "saturate(0.8)" }} />
-        </AbsoluteFill>
-      )}
-      <Vignette strength={0.9} color="120,0,20" />
-      <AbsoluteFill style={{ background: `rgba(255,30,60,${showCaught ? 0.12 : pulse * 0.25})`, mixBlendMode: "multiply" }} />
-      {!showCaught && (
-        <Center style={{ justifyContent: "flex-end", paddingBottom: 140 }}>
-          <SlamWord text="DODGE" color={RED} delay={2} size={280} glitch />
-          <Tagline text="the monsters on patrol" delay={10} />
+    <AbsoluteFill style={{ transform: shake }}>
+      <Sequence durationInFrames={slow}>
+        <Clip name="l2_chase" from={470} to={560} rate={0.75} zoom={[1.1, 1.22]} filter="saturate(1.15) contrast(1.05)" />
+        <AbsoluteFill style={{ background: `rgba(255,30,60,${pulse})`, mixBlendMode: "multiply" }} />
+        <Vignette strength={0.85} color="110,0,20" />
+        <Caption word="DODGE" sub="the monsters on patrol" color={RED} glitch />
+        <Sfx at={2} name="alert" />
+        <Sfx at={40} name="alert" volume={0.6} />
+      </Sequence>
+      <Sequence from={slow}>
+        <Clip name="lose" from={0} to={72} zoom={[1.15, 1.0]} sfx={false} />
+        <Vignette strength={0.8} color="110,0,20" />
+        <Center style={{ justifyContent: "flex-start", paddingTop: 100 }}>
+          <Tagline text="...or get caught" delay={4} color="#FFB3BC" size={54} />
         </Center>
-      )}
-      {showCaught && (
-        <Center style={{ justifyContent: "flex-start", paddingTop: 110 }}>
-          <Tagline text="...or get caught" delay={44} color="#FFB3BC" size={52} />
-        </Center>
-      )}
-      <Flash at={40} color={RED} peak={0.7} />
+        <Sfx at={0} name="hit" />
+        <Sfx at={3} name="lose" volume={0.6} />
+      </Sequence>
+      <Flash at={slow} color={RED} peak={0.75} />
       <Letterbox />
-      <Sfx at={2} name="alert" />
-      <Sfx at={16} name="alert" volume={0.6} />
-      <Sfx at={40} name="hit" />
-      <Sfx at={44} name="lose" volume={0.6} />
     </AbsoluteFill>
   );
 };
 
-/* ───────────── 5. ESCAPE ───────────── */
-export const Escape: React.FC = () => {
-  const frame = useCurrentFrame();
-  const { fps } = useVideoConfig();
-  const cut = 58;
-  const push = interpolate(frame, [0, cut], [1.05, 2.4], { ...clamp, easing: Easing.in(Easing.quad) });
-  const blur = interpolate(frame, [cut - 16, cut], [0, 10], clamp);
+/* ───────────── 6. Power-ups (three real pickups) ───────────── */
+const PW = [
+  { from: 30, to: 125, label: "MAGNET", desc: "gold flies to you", c: "#FF5A7A" },
+  { from: 362, to: 445, label: "GHOST", desc: "monsters can't see you", c: "#B48CFF" },
+  { from: 538, to: 630, label: "SPEED", desc: "outrun everything", c: "#3FD6F0" },
+];
+const PW_RATE = 1.25;
+export const POWER = PW.reduce((a, p) => a + len(p.from, p.to, PW_RATE), 0);
+export const PowerUps: React.FC = () => {
+  let at = 0;
   return (
-    <AbsoluteFill style={{ background: "black" }}>
-      {frame < cut ? (
-        <>
-          <AbsoluteFill style={{ transform: `scale(${push})`, transformOrigin: "23% 18%", filter: `blur(${blur}px)` }}>
-            <KenBurns src="06_gate_open.jpg" from={1} to={1} />
-          </AbsoluteFill>
-          <AbsoluteFill
-            style={{
-              background: `radial-gradient(circle at 23% 18%, rgba(74,222,128,${interpolate(frame, [0, cut], [0.1, 0.7], clamp)}) 0%, transparent 40%)`,
-              mixBlendMode: "screen",
-            }}
-          />
-          <Vignette />
-          <Center style={{ justifyContent: "flex-end", paddingBottom: 140 }}>
-            <SlamWord text="ESCAPE" color={GREEN} delay={4} size={270} />
-            <Tagline text="the gate opens when the gold is yours" delay={14} />
-          </Center>
-        </>
-      ) : (
-        <WinCard start={cut} />
-      )}
-      <Flash at={cut} />
+    <AbsoluteFill>
+      {PW.map((p, i) => {
+        const d = len(p.from, p.to, PW_RATE);
+        const start = at;
+        at += d;
+        return (
+          <Sequence key={p.label} from={start} durationInFrames={d}>
+            <Clip name="l4_power" from={p.from} to={p.to} rate={PW_RATE} zoom={[1.06, 1.14]} />
+            <Vignette strength={0.6} />
+            <Center style={{ justifyContent: "flex-end", paddingBottom: 130, gap: 18 }}>
+              {i === 0 && <Tagline text="Power-ups" size={46} color={GOLD} />}
+              <Pill delay={3} accent={p.c}>
+                <span style={{ color: p.c, fontFamily: LILITA, fontSize: 64, fontWeight: 400 }}>{p.label}</span>
+                <span style={{ fontSize: 36, opacity: 0.9 }}>{p.desc}</span>
+              </Pill>
+            </Center>
+            <Flash at={0} peak={0.35} length={6} />
+            <Sfx at={0} name="whoosh" volume={0.5} />
+          </Sequence>
+        );
+      })}
       <Letterbox />
-      <Sfx at={4} name="gate" />
-      <Sfx at={cut - 14} name="whoosh" />
-      <Sfx at={cut} name="win" />
-      {[0, 1, 2].map((i) => (
-        <Sfx key={i} at={cut + 14 + i * 7} name="star" volume={0.7} />
-      ))}
     </AbsoluteFill>
   );
-
-  function WinCard({ start }: { start: number }) {
-    const f = frame - start;
-    return (
-      <AbsoluteFill>
-        <KenBurns src="07_win.jpg" from={1.18} to={1.08} dur={80} />
-        <Sparkles count={50} seed="win" rise={3} />
-        {[0, 1, 2].map((i) => {
-          const s = spring({ frame: f - 14 - i * 7, fps, config: { damping: 8, stiffness: 220 } });
-          const x = [740, 960, 1180][i];
-          const y = i === 1 ? 360 : 395;
-          return (
-            <div
-              key={i}
-              style={{
-                position: "absolute",
-                left: x - 110,
-                top: y - 110,
-                width: 220,
-                height: 220,
-                borderRadius: "50%",
-                background: "radial-gradient(circle, rgba(255,210,60,0.75), transparent 65%)",
-                transform: `scale(${s * 1.4})`,
-                opacity: interpolate(f - 14 - i * 7, [0, 4, 20], [0, 1, 0], clamp),
-              }}
-            />
-          );
-        })}
-        <CoinRain count={18} seed="winrain" speed={0.8} />
-      </AbsoluteFill>
-    );
-  }
 };
 
-/* ───────────── 6. Day & Night wipe ───────────── */
+/* ───────────── 7. Day & night (orbit around the hero) ───────────── */
+const DN_FROM = 70, DN_TO = 300, DN_RATE = 1.5;
+export const DAYNIGHT = len(DN_FROM, DN_TO, DN_RATE);
 export const DayNight: React.FC = () => {
   const frame = useCurrentFrame();
-  const p = interpolate(frame, [18, 62], [100, 0], { ...clamp, easing: Easing.inOut(Easing.cubic) });
+  const t1 = Math.round((100 - DN_FROM) / DN_RATE), t2 = Math.round((220 - DN_FROM) / DN_RATE);
+  const day = frame >= t1 + 20 && frame < t2 + 20;
   return (
-    <AbsoluteFill style={{ background: "black" }}>
-      <KenBurns src="05b_level1_night.jpg" from={1.08} to={1.2} />
-      <AbsoluteFill style={{ clipPath: `inset(0 ${100 - p}% 0 0)` }}>
-        <KenBurns src="05_level1_play.jpg" from={1.08} to={1.2} />
-      </AbsoluteFill>
-      <div
-        style={{
-          position: "absolute",
-          top: 0,
-          bottom: 0,
-          left: `${p}%`,
-          width: 6,
-          marginLeft: -3,
-          background: "white",
-          boxShadow: `0 0 40px 12px ${CYAN}`,
-          opacity: p > 0 && p < 100 ? 1 : 0,
-        }}
-      />
-      <Vignette strength={0.6} />
-      <Center style={{ justifyContent: "flex-start", paddingTop: 130 }}>
-        <Pill delay={4} accent={frame < 40 ? GOLD : CYAN}>
-          <span style={{ fontSize: 54 }}>{frame < 40 ? "☀" : "☾"}</span>
-          DAY &amp; NIGHT MODE
-        </Pill>
-      </Center>
-      <Center style={{ justifyContent: "flex-end", paddingBottom: 140 }}>
-        <Tagline text="night levels — watch for glowing monsters" delay={50} size={40} color="#BDF3FF" />
-      </Center>
-      <Letterbox />
-      <Sfx at={4} name="click" />
-      <Sfx at={20} name="whoosh" />
-    </AbsoluteFill>
-  );
-};
-
-/* ───────────── 7. Levels: cards fly in ───────────── */
-export const Levels: React.FC = () => {
-  const frame = useCurrentFrame();
-  const { fps } = useVideoConfig();
-  const tilt = interpolate(frame, [0, 80], [14, 0], { ...clamp, easing: Easing.out(Easing.cubic) });
-  const s = spring({ frame, fps, config: { damping: 16 } });
-  return (
-    <AbsoluteFill style={{ background: INK, perspective: 1600 }}>
-      <AbsoluteFill
-        style={{
-          transform: `rotateY(${-tilt}deg) rotateX(${tilt * 0.4}deg) scale(${0.8 + 0.2 * s})`,
-          borderRadius: 30,
-          overflow: "hidden",
-          boxShadow: `0 30px 120px rgba(63,214,240,0.35)`,
-        }}
-      >
-        <KenBurns src="02_levels.jpg" from={1.0} to={1.08} />
-      </AbsoluteFill>
+    <AbsoluteFill>
+      <Clip name="l3_orbit" from={DN_FROM} to={DN_TO} rate={DN_RATE} zoom={[1.05, 1.15]} />
+      <Vignette strength={0.55} />
       <Center style={{ justifyContent: "flex-end", paddingBottom: 130 }}>
-        <Pill delay={10} accent={GOLD}>
-          4 LEVELS&nbsp;+&nbsp;<span style={{ color: "#C4A6FF" }}>A NEW DAILY RUSH</span>
+        <Pill delay={4} accent={day ? GOLD : CYAN}>
+          <span style={{ fontSize: 54 }}>{day ? "☀" : "☾"}</span>
+          DAY &amp; NIGHT
         </Pill>
-      </Center>
-      <Glint at={22} />
-      <Letterbox />
-      <Sfx at={2} name="whoosh" />
-      <Sfx at={10} name="click" />
-    </AbsoluteFill>
-  );
-};
-
-/* ───────────── 8. Power-ups ───────────── */
-export const PowerUps: React.FC = () => {
-  const frame = useCurrentFrame();
-  const { fps } = useVideoConfig();
-  const items = [
-    { t: "SPEED", c: "#FFB020", icon: "⚡" },
-    { t: "GHOST", c: "#B48CFF", icon: "👻" },
-    { t: "MAGNET", c: "#FF5A7A", icon: "🧲" },
-  ];
-  return (
-    <AbsoluteFill style={{ background: "black" }}>
-      <KenBurns src="11_level4.jpg" from={1.15} to={1.35} y={[0, 4]} style={{ filter: "brightness(0.65)" }} />
-      <Vignette strength={0.85} />
-      <Sparkles count={40} color="#B48CFF" seed="pw" />
-      <Center style={{ gap: 50 }}>
-        <Tagline text="Power-ups" delay={0} size={56} color={GOLD} />
-        <div style={{ display: "flex", gap: 60 }}>
-          {items.map((it, i) => {
-            const d = 8 + i * 9;
-            const s = spring({ frame: frame - d, fps, config: { damping: 9, stiffness: 170 } });
-            const bob = Math.sin((frame - d) / 8) * 8;
-            return (
-              <div
-                key={it.t}
-                style={{
-                  width: 330,
-                  height: 330,
-                  borderRadius: 44,
-                  background: `linear-gradient(160deg, ${it.c}EE, ${it.c}66)`,
-                  border: "4px solid rgba(255,255,255,0.7)",
-                  boxShadow: `0 0 70px ${it.c}AA`,
-                  display: "flex",
-                  flexDirection: "column",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  gap: 10,
-                  transform: `translateY(${(1 - s) * 300 + bob}px) rotate(${(1 - s) * (i - 1) * 25}deg) scale(${s})`,
-                  opacity: Math.min(1, s * 1.5),
-                }}
-              >
-                <div style={{ fontSize: 150 }}>{it.icon}</div>
-                <div style={{ fontFamily: LILITA, fontSize: 70, color: "white", textShadow: "0 5px 0 rgba(0,0,0,0.35)" }}>
-                  {it.t}
-                </div>
-              </div>
-            );
-          })}
+        <div style={{ marginTop: 18 }}>
+          <Tagline text="switch any time — night monsters glow" delay={14} size={34} color="#BDF3FF" />
         </div>
       </Center>
+      <Flash at={t1 + 4} peak={0.25} length={14} />
+      <Flash at={t2 + 4} peak={0.25} length={14} color="#1b2a6b" />
+      <Letterbox />
+      <Sfx at={t1} name="click" />
+      <Sfx at={t1 + 2} name="whoosh" volume={0.6} />
+      <Sfx at={t2} name="click" />
+      <Sfx at={t2 + 2} name="whoosh" volume={0.6} />
+    </AbsoluteFill>
+  );
+};
+
+/* ───────────── 8. ESCAPE: gate opens, run out, 3 stars ───────────── */
+const ES_FROM = 455, ES_TO = 716, ES_RATE = 1.2;
+export const ESCAPE = len(ES_FROM, ES_TO, ES_RATE);
+export const Escape: React.FC = () => {
+  const gate = Math.round((495 - ES_FROM) / ES_RATE);
+  const win = Math.round((566 - ES_FROM) / ES_RATE);
+  const stars = Math.round((598 - ES_FROM) / ES_RATE);
+  return (
+    <AbsoluteFill>
+      <Clip name="l1_run" from={ES_FROM} to={ES_TO} rate={ES_RATE} zoom={[1.04, 1.12]} />
+      <Sequence from={gate - 4} durationInFrames={win - gate + 4} layout="none">
+        <Caption word="ESCAPE" sub="the gate opens when the gold is yours" color={GREEN} delay={0} />
+      </Sequence>
+      <Sequence from={win}>
+        <CoinRain count={22} seed="winrain" speed={0.8} />
+        <Sparkles count={40} seed="win" rise={3} />
+      </Sequence>
+      <Flash at={win} peak={0.6} />
       <Letterbox />
       {[0, 1, 2].map((i) => (
-        <Sfx key={i} at={8 + i * 9} name="power" volume={0.7} />
+        <Sfx key={i} at={stars + i * 6} name="star" volume={0.7} />
       ))}
     </AbsoluteFill>
   );
 };
 
-/* ───────────── 9. Style your hero ───────────── */
-export const Style: React.FC = () => {
-  const frame = useCurrentFrame();
-  const cut = 50;
-  return (
-    <AbsoluteFill style={{ background: "black" }}>
-      {frame < cut ? (
-        <KenBurns src="hats.jpg" from={1.25} to={1.25} x={[9, -9]} dur={cut} />
-      ) : (
-        <KenBurns src="03_shop.jpg" from={1.2} to={1.05} x={[-4, 0]} dur={50} />
-      )}
-      <Vignette strength={0.55} />
-      <Center style={{ justifyContent: "flex-end", paddingBottom: 130 }}>
-        <Pill delay={6} accent={GOLD}>
-          SPEND YOUR GOLD ON&nbsp;<span style={{ color: GOLD }}>COLOURS</span>&nbsp;&amp;&nbsp;<span style={{ color: CYAN }}>HATS</span>
-        </Pill>
-      </Center>
-      <Flash at={cut} peak={0.5} length={8} />
-      <Letterbox />
-      <Sfx at={6} name="click" />
-      <Sfx at={cut} name="buy" />
-    </AbsoluteFill>
-  );
-};
+/* ───────────── 9. Levels + shop (real menus) ───────────── */
+export const LEVELS = 80;
+export const Levels: React.FC = () => (
+  <AbsoluteFill>
+    <Clip name="menu_levels" from={5} to={85} zoom={[1.12, 1.0]} />
+    <Center style={{ justifyContent: "flex-end", paddingBottom: 120 }}>
+      <Pill delay={6} accent={GOLD}>
+        4 LEVELS&nbsp;+&nbsp;<span style={{ color: "#C4A6FF" }}>A NEW DAILY RUSH</span>
+      </Pill>
+    </Center>
+    <Glint at={16} />
+    <Letterbox />
+    <Sfx at={0} name="whoosh" volume={0.6} />
+    <Sfx at={6} name="click" />
+  </AbsoluteFill>
+);
+
+export const SHOP = 85;
+export const Shop: React.FC = () => (
+  <AbsoluteFill>
+    <Clip name="menu_shop" from={12} to={97} zoom={[1.0, 1.12]} origin="30% 55%" />
+    <Center style={{ justifyContent: "flex-end", paddingBottom: 120 }}>
+      <Pill delay={6} accent={GOLD}>
+        SPEND YOUR GOLD ON&nbsp;<span style={{ color: GOLD }}>COLOURS</span>&nbsp;&amp;&nbsp;<span style={{ color: CYAN }}>HATS</span>
+      </Pill>
+    </Center>
+    <Letterbox />
+    <Sfx at={6} name="buy" volume={0.7} />
+  </AbsoluteFill>
+);
 
 /* ───────────── 10. Finale ───────────── */
+export const FINALE = 180;
 export const Finale: React.FC = () => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
@@ -456,7 +371,7 @@ export const Finale: React.FC = () => {
   return (
     <AbsoluteFill style={{ background: "black" }}>
       <AbsoluteFill style={{ opacity: fadeOut, transform: shake }}>
-        <KenBurns src="night.jpg" from={1.2} to={1.05} style={{ filter: "blur(6px) brightness(0.45)" }} />
+        <Clip name="l4_power" from={430} to={520} rate={0.5} zoom={[1.2, 1.05]} filter="blur(7px) brightness(0.45)" sfx={false} />
         <AbsoluteFill style={{ background: "radial-gradient(circle at 50% 45%, rgba(255,194,26,0.35), transparent 55%)" }} />
         <CoinRain count={30} seed="fin" />
         <Sparkles count={70} seed="fin2" rise={2.5} />

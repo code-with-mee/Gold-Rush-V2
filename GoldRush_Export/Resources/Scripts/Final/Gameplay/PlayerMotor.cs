@@ -93,8 +93,13 @@ namespace GoldRush
             if (cc) cc.enabled = true;
         }
 
+        /// <summary>Editor tooling (trailer recorder): when set, replaces keyboard / joystick input.</summary>
+        public static Vector2? ScriptedInput;
+        public static bool ScriptedSprint;
+
         Vector2 ReadInput()
         {
+            if (ScriptedInput.HasValue) return Vector2.ClampMagnitude(ScriptedInput.Value, 1f);
             Vector2 v = joystick ? joystick.Value : Vector2.zero;
             float kx = (Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.RightArrow) ? 1 : 0) - (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.LeftArrow) ? 1 : 0);
             float ky = (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.UpArrow) ? 1 : 0) - (Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.DownArrow) ? 1 : 0);
@@ -114,7 +119,7 @@ namespace GoldRush
             Vector3 dir = Quaternion.Euler(0, yaw, 0) * new Vector3(input.x, 0, input.y);
             float mag = Mathf.Clamp01(dir.magnitude);
 
-            bool wantSprint = canMove && mag > 0.2f && ((joystick && joystick.Held && joystick.Value.magnitude > 0.9f) || Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift));
+            bool wantSprint = canMove && mag > 0.2f && (ScriptedSprint || (joystick && joystick.Held && joystick.Value.magnitude > 0.9f) || Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift));
             if (Exhausted && Stamina > 0.35f) Exhausted = false;
             Sprinting = wantSprint && !Exhausted && Stamina > 0f;
             if (Sprinting)

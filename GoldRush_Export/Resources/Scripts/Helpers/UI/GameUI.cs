@@ -5,35 +5,120 @@ using UnityEngine.UI;
 
 namespace GoldRush
 {
-    /// <summary>In-game HUD + modal screens (intro, pause, win, lose), all built in code.</summary>
+    /// <summary>
+    /// In-game HUD + modal screens (intro, pause, win, lose).
+    /// Everything is a normal GameObject saved in the level scene (menu: Gold Rush > Level Design > Rebuild Game UI):
+    /// move, resize or recolour it in the Inspector. This script fills in the numbers (coins, hearts, timer,
+    /// results) and plays the animations. Buttons use a <see cref="GameAction"/> component.
+    /// If a scene has no GameUI, GameManager builds one from code (Create).
+    /// </summary>
     public class GameUI : MonoBehaviour
     {
-        public VirtualJoystick Joystick { get; private set; }
-        public WorldMarkers Markers { get; private set; }
+        public VirtualJoystick Joystick => joystick;
+        public WorldMarkers Markers => markers;
 
         GameManager gm;
-        RectTransform canvasRt, hud, modal;
+        [Header("Layers")]
+        [SerializeField] RectTransform canvasRt;
+        [SerializeField] RectTransform hud, modal;
+        [SerializeField] VirtualJoystick joystick;
+        [SerializeField] WorldMarkers markers;
 
-        Text coinText; RectTransform coinPill, coinIcon;
-        readonly List<Image> hearts = new List<Image>();
-        Text timerText, parText; Image parStar;
-        Image staminaFill; Text sprintText; RectTransform staminaRoot; CanvasGroup staminaGroup;
-        class PowerRow { public RectTransform root; public Image fill; public PowerType type; }
-        readonly List<PowerRow> powerRows = new List<PowerRow>();
-        RectTransform arrowRoot, arrowTri; Image arrowIconBg;
-        CanvasGroup toastGroup; RectTransform toastRt; Text toastTitle, toastSub; Image toastBg, toastLip, toastShadow; Coroutine toastCo;
-        RectTransform heartsRoot, timerRoot, pauseRoot2, dayNightRoot;
-        Image flash;
-        CanvasGroup hintGroup;
+        [Header("HUD")]
+        [SerializeField] Text coinText;
+        [SerializeField] RectTransform coinPill, coinIcon;
+        [SerializeField] List<Image> hearts = new List<Image>();
+        [SerializeField] Text timerText, parText;
+        [SerializeField] Image parStar;
+        [SerializeField] Image staminaFill;
+        [SerializeField] Text sprintText;
+        [SerializeField] RectTransform staminaRoot;
+        [SerializeField] CanvasGroup staminaGroup;
+        [System.Serializable] public class PowerRow { public RectTransform root; public Image fill; public Text name; [System.NonSerialized] public PowerType type; }
+        [SerializeField] List<PowerRow> powerRows = new List<PowerRow>();
+        [SerializeField] RectTransform arrowRoot, arrowTri;
+        [SerializeField] Image arrowIconBg;
+        [SerializeField] GameObject arrowCoin;
+        [SerializeField] CanvasGroup toastGroup;
+        [SerializeField] RectTransform toastRt;
+        [SerializeField] Text toastTitle, toastSub;
+        Coroutine toastCo;
+        [SerializeField] RectTransform heartsRoot, timerRoot, pauseButton, dayNightRoot;
+        [SerializeField] Image flash;
+        [SerializeField] CanvasGroup hintGroup;
+        [SerializeField] Text hintText;
+
+        /// <summary>One dialog saved in the scene: the parts the code fills in.</summary>
+        [System.Serializable]
+        public class DialogUI
+        {
+            public RectTransform root, panel, badge;
+            public Text title, subtitle;
+            public Text[] values, captions;
+            public Image[] stars, critStars;
+            public Text[] critTexts;
+            public Button[] buttons;
+            public float[] weights;
+            public Text tip;
+            public Button music, sound;
+            public float width, height;
+        }
+        [Header("Dialogs (hidden until needed)")]
+        [SerializeField] DialogUI pauseDialog = new DialogUI();
+        [SerializeField] DialogUI winDialog = new DialogUI();
+        [SerializeField] DialogUI loseDialog = new DialogUI();
+        [SerializeField] RectTransform introRoot, introBand;
+        [SerializeField] Text introLevel, introTitle, introGoal, countText;
 
         public static GameUI Create(GameManager gm)
         {
             var canvas = UIKit.Canvas("GameUI", 10);
             var ui = canvas.gameObject.AddComponent<GameUI>();
-            ui.gm = gm;
-            ui.canvasRt = (RectTransform)canvas.transform;
-            ui.Build();
+            ui.BuildAll();
+            ui.Bind(gm);
             return ui;
+        }
+
+#if UNITY_EDITOR
+        /// <summary>Editor only: builds the whole game UI as scene objects (see LevelBaker).</summary>
+        public static GameUI BuildForEditor()
+        {
+            var canvas = UIKit.Canvas("GameUI", 10);
+            var ui = canvas.gameObject.AddComponent<GameUI>();
+            ui.BuildAll();
+            return ui;
+        }
+#endif
+
+        void BuildAll()
+        {
+            canvasRt = (RectTransform)transform;
+            Build();
+            BuildIntro();
+            BuildHint();
+            BuildPause();
+            BuildWin();
+            BuildLose();
+        }
+
+        /// <summary>Connects the saved UI to this level's GameManager (buttons, toggles) and plays the HUD intro.</summary>
+        public void Bind(GameManager gameManager)
+        {
+            gm = gameManager;
+            if (!hud) BuildAll(); // an empty GameUI object: build everything now
+            var pb = pauseButton ? pauseButton.GetComponent<Button>() : null;
+            if (pb) pb.onClick.AddListener(() => { AudioFX.Play("click"); gm.Pause(); });
+            BindToggle(pauseDialog.music, "MUSIC", () => Save.Data.music, v => { Save.Data.music = v; Save.Persist(); AudioFX.RefreshMute(); });
+            BindToggle(pauseDialog.sound, "SOUND", () => Save.Data.sfx, v => { Save.Data.sfx = v; Save.Persist(); AudioFX.RefreshMute(); });
+            foreach (var d in new[] { pauseDialog, winDialog, loseDialog }) if (d.root) d.root.gameObject.SetActive(false);
+            if (introRoot) introRoot.gameObject.SetActive(false);
+            if (countText) countText.gameObject.SetActive(false);
+            if (hintGroup) hintGroup.gameObject.SetActive(false);
+            if (arrowRoot) arrowRoot.gameObject.SetActive(false);
+            if (toastGroup) toastGroup.alpha = 0f;
+            if (flash) flash.color = new Color(1, 0, 0, 0);
+            foreach (var r in powerRows) if (r.root) r.root.gameObject.SetActive(false);
+            PlayHudIntro();
         }
 
         // ================================================================ HUD
@@ -42,8 +127,8 @@ namespace GoldRush
         {
             // input layers first (lowest), then markers, then HUD widgets, then modal
             TouchLookArea.Create(canvasRt);
-            Joystick = VirtualJoystick.Create(canvasRt);
-            Markers = WorldMarkers.Create(canvasRt);
+            joystick = VirtualJoystick.Create(canvasRt);
+            markers = WorldMarkers.Create(canvasRt);
             hud = UIKit.Rect("HUD", canvasRt); hud.Fill();
 
             // ---- compact frosted-glass HUD: small chips in the corners so the map stays visible
@@ -73,8 +158,7 @@ namespace GoldRush
             var pf = UIKit.Glass(pause, Sprites.Circle, 1f, 0.5f);
             UIKit.IconGraphic(pause, UIKit.Icon.Pause, 40, UIKit.Cream).At(new Vector2(0.5f, 0.5f), Vector2.zero, new Vector2(40, 40), new Vector2(0.5f, 0.5f));
             var pb = pause.gameObject.AddComponent<Button>();
-            pb.targetGraphic = pf;
-            pb.onClick.AddListener(() => { AudioFX.Play("click"); gm.Pause(); });
+            pb.targetGraphic = pf; // the click is connected in Bind()
 
             // day / night toggle (left of pause)
             dayNightRoot = (RectTransform)DayNightButton.Create(hud, new Vector2(1, 1), new Vector2(-116, -28), 70f, true).transform;
@@ -91,6 +175,7 @@ namespace GoldRush
                 row.fill.rectTransform.pivot = new Vector2(0, 0.5f);
                 row.fill.rectTransform.offsetMin = new Vector2(5, 5); row.fill.rectTransform.offsetMax = new Vector2(-5, -5);
                 var lbl = UIKit.Label(row.root, "", 22, UIKit.Cream); lbl.rectTransform.Fill(); lbl.name = "Name";
+                row.name = lbl;
                 row.root.gameObject.SetActive(false);
                 powerRows.Add(row);
             }
@@ -115,14 +200,14 @@ namespace GoldRush
             arrowIconBg = UIKit.Img(arrowRoot, Sprites.Circle, UIKit.WithAlpha(UIKit.HudBg, 0.6f), "Bg"); arrowIconBg.rectTransform.Fill(8, 8, 8, 8);
             var ai = UIKit.CoinIcon(arrowRoot, 40); ai.At(new Vector2(0.5f, 0.5f), Vector2.zero, new Vector2(40, 40), new Vector2(0.5f, 0.5f));
             ai.name = "CoinIcon";
+            arrowCoin = ai.gameObject;
             arrowRoot.gameObject.SetActive(false);
 
             // toast (message pop-up): compact glass pill tinted with the message colour
             toastRt = UIKit.Rect("Toast", hud).At(new Vector2(0.5f, 0.78f), Vector2.zero, new Vector2(640, 96), new Vector2(0.5f, 0.5f));
             toastGroup = toastRt.gameObject.AddComponent<CanvasGroup>(); toastGroup.alpha = 0; toastGroup.blocksRaycasts = false;
-            toastShadow = UIKit.Img(toastRt, Sprites.Pill, new Color(0, 0, 0, 0.18f), "Shadow"); toastShadow.rectTransform.Fill(2, -6, 2, 4); toastShadow.pixelsPerUnitMultiplier = 128f / 96f;
-            toastBg = UIKit.Glass(toastRt, Sprites.Pill, 128f / 96f, 0.55f); // same glass as the HUD chips
-            toastLip = toastBg;
+            var toastShadow = UIKit.Img(toastRt, Sprites.Pill, new Color(0, 0, 0, 0.18f), "Shadow"); toastShadow.rectTransform.Fill(2, -6, 2, 4); toastShadow.pixelsPerUnitMultiplier = 128f / 96f;
+            UIKit.Glass(toastRt, Sprites.Pill, 128f / 96f, 0.55f); // same glass as the HUD chips
             toastTitle = UIKit.Label(toastRt, "", 38, UIKit.Cream); toastTitle.rectTransform.Fill(0, 34, 0, 0);
             toastSub = UIKit.Label(toastRt, "", 22, UIKit.Cream); toastSub.rectTransform.Fill(0, 8, 0, 60);
 
@@ -134,9 +219,8 @@ namespace GoldRush
                 hearts.Add(h);
             }
 
-            heartsRoot = heartsRt; timerRoot = timer; pauseRoot2 = pause;
+            heartsRoot = heartsRt; timerRoot = timer; pauseButton = pause;
             coinIcon.gameObject.AddComponent<CoinFlip>();
-            PlayHudIntro();
 
             flash = UIKit.Img(canvasRt, null, new Color(1, 0, 0, 0), "Flash");
             flash.rectTransform.Fill();
@@ -146,7 +230,7 @@ namespace GoldRush
         /// <summary>HUD pieces drop in from above the screen, one after another.</summary>
         void PlayHudIntro()
         {
-            var items = new[] { coinPill, heartsRoot, timerRoot, dayNightRoot, pauseRoot2 };
+            var items = new[] { coinPill, heartsRoot, timerRoot, dayNightRoot, pauseButton };
             for (int i = 0; i < items.Length; i++)
             {
                 var rt = items[i];
@@ -287,18 +371,27 @@ namespace GoldRush
             toastGroup.alpha = 0;
         }
 
-        public void ShowControlsHint()
+        const string HintDesktop = "<color=#FFC233>WASD</color> move  •  <color=#FFC233>Mouse</color> look  •  <color=#FFC233>Shift</color> sprint  •  <color=#FFC233>Esc</color> pause / free mouse";
+        const string HintTouch = "<color=#FFC233>Left side</color>: move (push to the edge to run)  •  <color=#FFC233>Right side</color>: look around";
+
+        void BuildHint()
         {
             var root = UIKit.Rect("Hint", hud).At(new Vector2(0.5f, 0), new Vector2(0, 28), new Vector2(1000, 56), new Vector2(0.5f, 0));
             hintGroup = root.gameObject.AddComponent<CanvasGroup>();
             hintGroup.blocksRaycasts = false;
             UIKit.Glass(root, Sprites.Pill, 128f / 56f);
-            bool touch = Application.isMobilePlatform;
-            string msg = touch
-                ? "<color=#FFC233>Left side</color>: move (push to the edge to run)  •  <color=#FFC233>Right side</color>: look around"
-                : "<color=#FFC233>WASD</color> move  •  <color=#FFC233>Mouse</color> look  •  <color=#FFC233>Shift</color> sprint  •  <color=#FFC233>Esc</color> pause / free mouse";
-            var t = UIKit.Label(root, msg, 24, UIKit.Cream); t.rectTransform.Fill();
-            Tween.Fade(hintGroup, 0f, 0.6f, 7f, () => { if (root) Destroy(root.gameObject); });
+            hintText = UIKit.Label(root, HintDesktop, 24, UIKit.Cream); hintText.rectTransform.Fill();
+            root.gameObject.SetActive(false);
+        }
+
+        public void ShowControlsHint()
+        {
+            if (!hintGroup) return;
+            hintText.text = Application.isMobilePlatform ? HintTouch : HintDesktop;
+            hintGroup.gameObject.SetActive(true);
+            hintGroup.alpha = 1f;
+            var go = hintGroup.gameObject;
+            Tween.Fade(hintGroup, 0f, 0.6f, 7f, () => { if (go) go.SetActive(false); });
         }
 
         void Update()
@@ -344,7 +437,7 @@ namespace GoldRush
                     r.type = t;
                     r.root.gameObject.SetActive(true);
                     r.fill.color = UIKit.WithAlpha(PowerUp.ColorOf(t), 0.85f);
-                    r.root.Find("Name").GetComponent<Text>().text = PowerUp.NameOf(t);
+                    if (r.name) r.name.text = PowerUp.NameOf(t);
                     Tween.PopIn(r.root, 0.3f);
                 }
                 r.fill.rectTransform.anchorMax = new Vector2(Mathf.Clamp01(left / dur), 1);
@@ -386,33 +479,57 @@ namespace GoldRush
             arrowTri.localRotation = Quaternion.Euler(0, 0, ang);
             bool gate = gm.Gate && gm.Gate.IsOpen;
             arrowIconBg.color = gate ? UIKit.Green : UIKit.WithAlpha(UIKit.HudBg, 0.8f);
-            arrowRoot.Find("CoinIcon").gameObject.SetActive(!gate);
+            if (arrowCoin) arrowCoin.SetActive(!gate);
             float pulse = 1f + 0.08f * Mathf.Sin(Time.unscaledTime * 6f);
             arrowRoot.localScale = Vector3.one * pulse;
         }
 
         // ================================================================ INTRO
 
+        void BuildIntro()
+        {
+            introRoot = UIKit.Rect("Intro", modal); introRoot.Fill();
+            var g = introRoot.gameObject.AddComponent<CanvasGroup>(); g.blocksRaycasts = false;
+            var band = UIKit.Img(introRoot, null, UIKit.WithAlpha(UIKit.Navy, 0.55f), "Band");
+            band.rectTransform.At(new Vector2(0.5f, 0.62f), Vector2.zero, new Vector2(4000, 300), new Vector2(0.5f, 0.5f));
+            introBand = band.rectTransform;
+            introLevel = UIKit.Label(band.transform, "LEVEL 1", 44, UIKit.Gold);
+            introLevel.name = "Level";
+            introLevel.rectTransform.At(new Vector2(0.5f, 0.5f), new Vector2(0, 95), new Vector2(1200, 60), new Vector2(0.5f, 0.5f));
+            introTitle = UIKit.Label(band.transform, "TRAINING YARD", 120, UIKit.Cream);
+            introTitle.name = "Title";
+            introTitle.rectTransform.At(new Vector2(0.5f, 0.5f), new Vector2(0, 10), new Vector2(1600, 140), new Vector2(0.5f, 0.5f));
+            introGoal = UIKit.Label(band.transform, "Collect all gold, then escape through the EXIT!", 38, UIKit.Cream);
+            introGoal.name = "Goal";
+            introGoal.rectTransform.At(new Vector2(0.5f, 0.5f), new Vector2(0, -95), new Vector2(1600, 50), new Vector2(0.5f, 0.5f));
+            introRoot.gameObject.SetActive(false);
+
+            countText = UIKit.Label(modal, "3", 220, UIKit.Gold);
+            countText.name = "Countdown";
+            countText.rectTransform.At(new Vector2(0.5f, 0.5f), Vector2.zero, new Vector2(800, 260), new Vector2(0.5f, 0.5f));
+            countText.gameObject.SetActive(false);
+        }
+
         public IEnumerator Intro(LevelDef def, int number)
         {
-            var root = UIKit.Rect("Intro", modal); root.Fill();
-            var g = root.gameObject.AddComponent<CanvasGroup>(); g.blocksRaycasts = false;
-            var band = UIKit.Img(root, null, UIKit.WithAlpha(UIKit.Navy, 0.55f), "Band");
-            band.rectTransform.At(new Vector2(0.5f, 0.62f), Vector2.zero, new Vector2(4000, 300), new Vector2(0.5f, 0.5f));
-            var lv = UIKit.Label(band.transform, number > 0 ? "LEVEL " + number : "DAILY CHALLENGE", 44, UIKit.Gold);
-            lv.rectTransform.At(new Vector2(0.5f, 0.5f), new Vector2(0, 95), new Vector2(1200, 60), new Vector2(0.5f, 0.5f));
-            var title = UIKit.Label(band.transform, def.title.ToUpper(), 120, UIKit.Cream);
-            title.rectTransform.At(new Vector2(0.5f, 0.5f), new Vector2(0, 10), new Vector2(1600, 140), new Vector2(0.5f, 0.5f));
-            var goal = UIKit.Label(band.transform, $"Collect all <color=#FFC233>{def.coins} gold</color>, then escape through the <color=#6BE08F>EXIT</color>!", 38, UIKit.Cream);
-            goal.rectTransform.At(new Vector2(0.5f, 0.5f), new Vector2(0, -95), new Vector2(1600, 50), new Vector2(0.5f, 0.5f));
-            Tween.Scale(band.rectTransform, new Vector3(1, 0, 1), Vector3.one, 0.35f, Tween.OutBack);
-            Tween.PopIn(title.rectTransform, 0.5f, 0.15f);
+            var root = introRoot;
+            var g = root.GetComponent<CanvasGroup>();
+            g.alpha = 1f;
+            root.gameObject.SetActive(true);
+            introLevel.text = number > 0 ? "LEVEL " + number : "DAILY CHALLENGE";
+            introTitle.text = def.title.ToUpper();
+            introGoal.text = $"Collect all <color=#FFC233>{def.coins} gold</color>, then escape through the <color=#6BE08F>EXIT</color>!";
+            Tween.Scale(introBand, new Vector3(1, 0, 1), Vector3.one, 0.35f, Tween.OutBack);
+            Tween.PopIn(introTitle.rectTransform, 0.5f, 0.15f);
 
             yield return new WaitForSeconds(1.4f);
-            Tween.Fade(g, 0f, 0.3f);
+            Tween.Fade(g, 0f, 0.3f, 0f, () => { if (root) root.gameObject.SetActive(false); });
 
-            var count = UIKit.Label(modal, "", 220, UIKit.Gold);
-            count.rectTransform.At(new Vector2(0.5f, 0.5f), Vector2.zero, new Vector2(800, 260), new Vector2(0.5f, 0.5f));
+            var count = countText;
+            count.gameObject.SetActive(true);
+            var cg = count.GetComponent<CanvasGroup>();
+            if (!cg) cg = count.gameObject.AddComponent<CanvasGroup>();
+            cg.alpha = 1f;
             string[] steps = { "3", "2", "1", "GO!" };
             for (int i = 0; i < steps.Length; i++)
             {
@@ -423,10 +540,8 @@ namespace GoldRush
                 Tween.Scale(count.rectTransform, Vector3.one * 1.8f, Vector3.one, 0.3f, Tween.OutBack);
                 yield return new WaitForSeconds(go ? 0.25f : 0.45f);
             }
-            var cg = count.gameObject.AddComponent<CanvasGroup>();
-            Tween.Fade(cg, 0f, 0.4f, 0.1f, () => { if (count) Destroy(count.gameObject); });
+            Tween.Fade(cg, 0f, 0.4f, 0.1f, () => { if (count) { count.gameObject.SetActive(false); count.rectTransform.localScale = Vector3.one; } });
             Tween.Scale(count.rectTransform, Vector3.one, Vector3.one * 1.6f, 0.5f, Tween.OutCubic);
-            Destroy(root.gameObject, 0.5f);
         }
 
         // ================================================================ MODALS
@@ -434,7 +549,7 @@ namespace GoldRush
         // ---------------------------------------------------------------- dialog building blocks
         // Every dialog = glass panel with HEADER (icon badge + title + subtitle), BODY and FOOTER (buttons).
 
-        class Dialog { public RectTransform root, panel; public Transform body; public float width, height; }
+        class Dialog { public RectTransform root, panel, badge; public Transform body; public float width, height; public Text title, subtitle; }
 
         const float HeaderH = 124f, FooterH = 132f, Pad = 40f;
 
@@ -443,9 +558,7 @@ namespace GoldRush
             var d = new Dialog { width = size.x, height = size.y };
             d.root = UIKit.Rect(name, modal); d.root.Fill();
             UIKit.Dim(d.root, 0.65f);
-            var cg = d.root.gameObject.AddComponent<CanvasGroup>();
-            cg.alpha = 0;
-            Tween.Fade(cg, 1f, 0.25f);
+            d.root.gameObject.AddComponent<CanvasGroup>();
 
             d.panel = UIKit.Rect("Panel", d.root);
             d.panel.sizeDelta = size;
@@ -458,26 +571,62 @@ namespace GoldRush
             badge.rectTransform.At(new Vector2(0, 1), new Vector2(Pad, -24), new Vector2(84, 84), new Vector2(0, 1));
             UIKit.Img(badge.transform, Sprites.ThinRing, new Color(1, 1, 1, 0.6f), "Ring").rectTransform.Fill();
             UIKit.IconGraphic(badge.transform, icon, 40, UIKit.Cream, accent).At(new Vector2(0.5f, 0.5f), Vector2.zero, new Vector2(40, 40), new Vector2(0.5f, 0.5f));
-            Tween.Run(badge, 0.6f, k => badge.rectTransform.localScale = Vector3.one * k, Tween.OutElastic, 0.2f);
-            var t = UIKit.SoftLabel(face.transform, title, 50, UIKit.Cream, TextAnchor.LowerLeft, "Title");
+            d.badge = badge.rectTransform;
+            var t = d.title = UIKit.SoftLabel(face.transform, title, 50, UIKit.Cream, TextAnchor.LowerLeft, "Title");
             t.rectTransform.At(new Vector2(0, 1), new Vector2(Pad + 108, -18), new Vector2(size.x - Pad * 2 - 108, 60), new Vector2(0, 1));
             if (!string.IsNullOrEmpty(subtitle))
             {
-                var st = UIKit.Label(face.transform, subtitle, 24, UIKit.WithAlpha(UIKit.Cream, 0.65f), TextAnchor.UpperLeft, false, "Subtitle");
+                var st = d.subtitle = UIKit.Label(face.transform, subtitle, 24, UIKit.WithAlpha(UIKit.Cream, 0.65f), TextAnchor.UpperLeft, false, "Subtitle");
                 st.rectTransform.At(new Vector2(0, 1), new Vector2(Pad + 110, -80), new Vector2(size.x - Pad * 2 - 110, 32), new Vector2(0, 1));
             }
             Divider(face.transform, -HeaderH);
             Divider(face.transform, -(size.y - FooterH));
+            return d;
+        }
 
-            // entrance: flip down + pop
+        static DialogUI SaveDialog(Dialog d) => new DialogUI { root = d.root, panel = d.panel, badge = d.badge, title = d.title, subtitle = d.subtitle, width = d.width, height = d.height };
+
+        /// <summary>Shows a saved dialog with its entrance animation (fade, flip down, badge pop, buttons pop).</summary>
+        void ShowDialog(DialogUI d)
+        {
+            d.root.gameObject.SetActive(true);
+            d.root.SetAsLastSibling();
+            var cg = d.root.GetComponent<CanvasGroup>();
+            cg.alpha = 0; cg.blocksRaycasts = true;
+            Tween.Fade(cg, 1f, 0.25f);
             var prt = d.panel;
             Tween.Run(prt, 0.5f, k =>
             {
                 prt.localRotation = Quaternion.Euler(Mathf.LerpUnclamped(55f, 0f, k), 0, 0);
                 prt.localScale = Vector3.one * Mathf.LerpUnclamped(0.8f, 1f, k);
             }, Tween.OutBack);
+            if (d.badge) { var b = d.badge; b.localScale = Vector3.zero; Tween.Run(b, 0.6f, k => b.localScale = Vector3.one * k, Tween.OutElastic, 0.2f); }
             AudioFX.Play("whoosh", 0.6f);
-            return d;
+            int n = 0;
+            if (d.buttons != null)
+                foreach (var btn in d.buttons)
+                    if (btn && btn.gameObject.activeSelf) Tween.PopIn((RectTransform)btn.transform, 0.35f, 0.35f + n++ * 0.07f);
+        }
+
+        /// <summary>Lays out the visible footer buttons again (e.g. without NEXT on the last level).</summary>
+        static void LayoutFooter(DialogUI d)
+        {
+            if (d.buttons == null) return;
+            float gap = 16f, total = 0f; int count = 0;
+            for (int i = 0; i < d.buttons.Length; i++) if (d.buttons[i] && d.buttons[i].gameObject.activeSelf) { total += d.weights[i]; count++; }
+            if (count == 0) return;
+            float avail = d.width - Pad * 2 - gap * (count - 1);
+            float x = Pad;
+            for (int i = 0; i < d.buttons.Length; i++)
+            {
+                var b = d.buttons[i];
+                if (!b || !b.gameObject.activeSelf) continue;
+                var rt = (RectTransform)b.transform;
+                float w = avail * d.weights[i] / total;
+                rt.anchoredPosition = new Vector2(x, rt.anchoredPosition.y);
+                rt.sizeDelta = new Vector2(w, rt.sizeDelta.y);
+                x += w + gap;
+            }
         }
 
         static void Divider(Transform parent, float y)
@@ -514,11 +663,14 @@ namespace GoldRush
         }
         static Vector2 cardSize;
 
-        struct FooterButton { public string label; public UIKit.Icon icon; public Color color; public System.Action onClick; public float weight; }
+        struct FooterButton { public string label; public UIKit.Icon icon; public Color color; public string action; public float weight; }
 
-        /// <summary>Evenly spaced glass buttons in the footer; weight makes the main action wider.</summary>
-        void Footer(Dialog d, params FooterButton[] buttons)
+        /// <summary>Evenly spaced glass buttons in the footer; weight makes the main action wider.
+        /// Each button gets a GameAction (its action name), so the click survives being saved in the scene.</summary>
+        static void Footer(Dialog d, DialogUI ui, params FooterButton[] buttons)
         {
+            ui.buttons = new Button[buttons.Length];
+            ui.weights = new float[buttons.Length];
             float gap = 16f, total = 0f;
             foreach (var b in buttons) total += b.weight;
             float avail = d.width - Pad * 2 - gap * (buttons.Length - 1);
@@ -527,49 +679,58 @@ namespace GoldRush
             {
                 var spec = buttons[i];
                 float w = avail * spec.weight / total;
-                var btn = UIKit.ChipButton(d.body, spec.icon, spec.label, spec.color, new Vector2(w, h), spec.onClick, 30, spec.weight > 1f);
+                var btn = UIKit.ChipButton(d.body, spec.icon, spec.label, spec.color, new Vector2(w, h), null, 30, spec.weight > 1f);
+                btn.name = spec.label;
+                btn.gameObject.AddComponent<GameAction>().action = spec.action;
                 var rt = (RectTransform)btn.transform;
                 rt.At(new Vector2(0, 1), new Vector2(x, y), new Vector2(w, h), new Vector2(0, 1));
-                Tween.PopIn(rt, 0.35f, 0.35f + i * 0.07f);
+                ui.buttons[i] = btn; ui.weights[i] = spec.weight;
                 x += w + gap;
             }
         }
 
-        static FooterButton FB(string label, UIKit.Icon icon, Color c, System.Action a, float weight = 1f)
-            => new FooterButton { label = label, icon = icon, color = c, onClick = a, weight = weight };
+        static FooterButton FB(string label, UIKit.Icon icon, Color c, string action, float weight = 1f)
+            => new FooterButton { label = label, icon = icon, color = c, action = action, weight = weight };
 
         // ---------------------------------------------------------------- pause
 
-        RectTransform pauseRoot;
-
-        public void ShowPause()
+        void BuildPause()
         {
-            if (pauseRoot) return;
-            var d = OpenDialog("Pause", new Vector2(780, 520), "PAUSED", gm.Def.title.ToUpper(), UIKit.Cyan, UIKit.Icon.Pause);
-            pauseRoot = d.root;
-            SetHudVisible(false);
-
+            var d = OpenDialog("Pause", new Vector2(780, 520), "PAUSED", "LEVEL NAME", UIKit.Cyan, UIKit.Icon.Pause);
+            var ui = pauseDialog = SaveDialog(d);
             var slots = CardSlots(d, 3, -HeaderH - 24);
-            StatCard(d.body, slots[0], cardSize, null, true, "GOLD", $"{gm.Collected} / {gm.TotalCoins}", UIKit.Gold);
-            StatCard(d.body, slots[1], cardSize, UIKit.Icon.Clock, false, "TIME", UIKit.FormatTime(gm.Elapsed), UIKit.Cream);
-            StatCard(d.body, slots[2], cardSize, UIKit.Icon.Heart, false, "LIVES", $"{gm.Lives} / {gm.MaxLives}", UIKit.Cream);
-
+            ui.values = new[]
+            {
+                StatCard(d.body, slots[0], cardSize, null, true, "GOLD", "0 / 0", UIKit.Gold),
+                StatCard(d.body, slots[1], cardSize, UIKit.Icon.Clock, false, "TIME", "0:00.0", UIKit.Cream),
+                StatCard(d.body, slots[2], cardSize, UIKit.Icon.Heart, false, "LIVES", "2 / 2", UIKit.Cream),
+            };
             float toggleY = -HeaderH - 24 - 116 - 22;
-            AddToggle(d.body, new Vector2(-150, 0), "MUSIC", () => Save.Data.music, v => { Save.Data.music = v; Save.Persist(); AudioFX.RefreshMute(); });
-            AddToggle(d.body, new Vector2(150, 0), "SOUND", () => Save.Data.sfx, v => { Save.Data.sfx = v; Save.Persist(); AudioFX.RefreshMute(); });
-            // AddToggle anchors to the bottom; move both toggles into the body row
-            foreach (var b in d.body.GetComponentsInChildren<Button>())
+            ui.music = ToggleButton(d.body, new Vector2(-150, 0), "MUSIC");
+            ui.sound = ToggleButton(d.body, new Vector2(150, 0), "SOUND");
+            foreach (var b in new[] { ui.music, ui.sound }) // into the body row, under the cards
             {
                 var rt = (RectTransform)b.transform;
-                if (rt.parent != d.body) continue;
                 rt.anchorMin = rt.anchorMax = new Vector2(0.5f, 1); rt.pivot = new Vector2(0.5f, 1);
                 rt.anchoredPosition = new Vector2(rt.anchoredPosition.x, toggleY);
             }
+            Footer(d, ui,
+                FB("MENU", UIKit.Icon.Home, UIKit.Gray, "menu"),
+                FB("RETRY", UIKit.Icon.Retry, UIKit.Blue, "retry"),
+                FB("RESUME", UIKit.Icon.Play, UIKit.Green, "resume", 1.3f));
+            d.root.gameObject.SetActive(false);
+        }
 
-            Footer(d,
-                FB("MENU", UIKit.Icon.Home, UIKit.Gray, () => gm.BackToMenu()),
-                FB("RETRY", UIKit.Icon.Retry, UIKit.Blue, () => gm.Restart()),
-                FB("RESUME", UIKit.Icon.Play, UIKit.Green, () => gm.Resume(), 1.3f));
+        public void ShowPause()
+        {
+            var ui = pauseDialog;
+            if (ui.root.gameObject.activeSelf) return;
+            if (ui.subtitle) ui.subtitle.text = gm.Def.title.ToUpper();
+            ui.values[0].text = $"{gm.Collected} / {gm.TotalCoins}";
+            ui.values[1].text = UIKit.FormatTime(gm.Elapsed);
+            ui.values[2].text = $"{gm.Lives} / {gm.MaxLives}";
+            SetHudVisible(false);
+            ShowDialog(ui);
         }
 
         public static void AddToggle(Transform parent, Vector2 pos, string label, System.Func<bool> get, System.Action<bool> set)
@@ -604,25 +765,27 @@ namespace GoldRush
 
         public void HidePause()
         {
-            if (!pauseRoot) return;
-            var r = pauseRoot;
-            pauseRoot = null;
+            var r = pauseDialog.root;
+            if (!r || !r.gameObject.activeSelf) return;
             var cg = r.GetComponent<CanvasGroup>();
-            Tween.Fade(cg, 0f, 0.18f, 0f, () => { if (r) Destroy(r.gameObject); });
+            cg.blocksRaycasts = false;
+            Tween.Fade(cg, 0f, 0.18f, 0f, () => { if (r) r.gameObject.SetActive(false); });
             SetHudVisible(true);
         }
 
         // ---------------------------------------------------------------- win
 
-        public void ShowWin(RunResult r)
+        static readonly string[] CritNames = { "Collect all gold & escape", "Beat par time", "Don't get caught" };
+
+        void BuildWin()
         {
-            HideHud();
-            var d = OpenDialog("Win", new Vector2(860, 740), GameSession.IsDaily ? "DAILY CLEARED!" : "LEVEL COMPLETE!",
-                gm.Def.title.ToUpper(), UIKit.Green, UIKit.Icon.Star);
+            var d = OpenDialog("Win", new Vector2(860, 740), "LEVEL COMPLETE!", "LEVEL NAME", UIKit.Green, UIKit.Icon.Star);
+            var ui = winDialog = SaveDialog(d);
             var pt = d.body;
 
-            // stars
+            // stars: a faint back star + the gold star for each of the 3 stars
             var starRow = UIKit.Rect("Stars", pt).At(new Vector2(0.5f, 1), new Vector2(0, -HeaderH - 100), new Vector2(560, 170), new Vector2(0.5f, 0.5f));
+            ui.stars = new Image[3];
             for (int i = 0; i < 3; i++)
             {
                 float size = i == 1 ? 150 : 118;
@@ -631,74 +794,114 @@ namespace GoldRush
                 back.color = new Color(1, 1, 1, 0.1f);
                 back.rectTransform.At(new Vector2(0.5f, 0.5f), pos, new Vector2(size, size), new Vector2(0.5f, 0.5f));
                 back.rectTransform.localRotation = Quaternion.Euler(0, 0, (1 - i) * 12);
-                if (i >= r.stars) continue;
                 var star = UIKit.StarIcon(starRow, size, true, "Star" + i);
-                var srt = star.rectTransform;
-                srt.At(new Vector2(0.5f, 0.5f), pos, new Vector2(size, size), new Vector2(0.5f, 0.5f));
-                srt.localRotation = back.rectTransform.localRotation;
+                star.rectTransform.At(new Vector2(0.5f, 0.5f), pos, new Vector2(size, size), new Vector2(0.5f, 0.5f));
+                star.rectTransform.localRotation = back.rectTransform.localRotation;
+                ui.stars[i] = star;
+            }
+
+            // criteria (three compact rows)
+            float cy = -HeaderH - 196;
+            ui.critStars = new Image[3]; ui.critTexts = new Text[3];
+            for (int i = 0; i < 3; i++)
+            {
+                var row = UIKit.Rect("Crit" + i, pt).At(new Vector2(0.5f, 1), new Vector2(-200, cy - i * 40), new Vector2(460, 36), new Vector2(0, 1));
+                var s = UIKit.StarIcon(row, 28, true); s.rectTransform.At(new Vector2(0, 0.5f), Vector2.zero, new Vector2(28, 28), new Vector2(0, 0.5f));
+                var t = UIKit.Label(row, CritNames[i], 26, UIKit.Cream, TextAnchor.MiddleLeft, false);
+                t.rectTransform.Fill(42, 0, 0, 0);
+                ui.critStars[i] = s; ui.critTexts[i] = t;
+            }
+
+            // stat cards: time · best · gold earned
+            var slots = CardSlots(d, 3, cy - 3 * 40 - 18);
+            ui.values = new[]
+            {
+                StatCard(pt, slots[0], cardSize, UIKit.Icon.Clock, false, "TIME", "0:00.0", UIKit.Cream),
+                StatCard(pt, slots[1], cardSize, UIKit.Icon.Star, false, "BEST", "0:00.0", UIKit.Cream),
+                StatCard(pt, slots[2], cardSize, null, true, "GOLD EARNED", "+0", UIKit.Gold),
+            };
+            ui.captions = new[] { Caption(ui.values[0]), Caption(ui.values[1]), Caption(ui.values[2]) };
+
+            Footer(d, ui,
+                FB("MENU", UIKit.Icon.Home, UIKit.Gray, "menu"),
+                FB("RETRY", UIKit.Icon.Retry, UIKit.Blue, "retry"),
+                FB("NEXT", UIKit.Icon.Play, UIKit.Green, "next", 1.3f));
+            d.root.gameObject.SetActive(false);
+        }
+
+        static Text Caption(Text value) => value.transform.parent.Find("Caption")?.GetComponent<Text>();
+
+        public void ShowWin(RunResult r)
+        {
+            HideHud();
+            var ui = winDialog;
+            ui.title.text = GameSession.IsDaily ? "DAILY CLEARED!" : "LEVEL COMPLETE!";
+            if (ui.subtitle) ui.subtitle.text = gm.Def.title.ToUpper();
+
+            for (int i = 0; i < 3; i++)
+            {
+                var srt = ui.stars[i].rectTransform;
+                bool got = i < r.stars;
+                ui.stars[i].gameObject.SetActive(got);
+                if (!got) continue;
+                Quaternion endRot = Quaternion.Euler(0, 0, (1 - i) * 12);
+                srt.localRotation = endRot;
                 srt.localScale = Vector3.zero;
                 int idx = i;
-                Quaternion endRot = srt.localRotation;
                 Tween.Run(srt, 0.55f, k =>
                 {
                     srt.localScale = Vector3.one * k;
                     srt.localRotation = endRot * Quaternion.Euler(0, (1 - k) * 180f, (1 - k) * -90f);
                 }, Tween.OutBack, 0.45f + idx * 0.35f);
-                Tween.Delay(star, 0.45f + idx * 0.35f, () => AudioFX.Play("star", 1f, 1f + idx * 0.12f));
+                Tween.Delay(srt, 0.45f + idx * 0.35f, () => AudioFX.Play("star", 1f, 1f + idx * 0.12f));
             }
 
-            // criteria (three compact rows)
-            string[] crit = { "Collect all gold & escape", "Beat par time " + UIKit.FormatTime(r.par).Replace(".0", ""), "Don't get caught" };
             bool[] ok = { true, r.parBeaten, r.noHits };
-            float cy = -HeaderH - 196;
+            ui.critTexts[1].text = "Beat par time " + UIKit.FormatTime(r.par).Replace(".0", "");
             for (int i = 0; i < 3; i++)
             {
-                var row = UIKit.Rect("Crit" + i, pt).At(new Vector2(0.5f, 1), new Vector2(-200, cy - i * 40), new Vector2(460, 36), new Vector2(0, 1));
-                var s = UIKit.StarIcon(row, 28, ok[i]); s.rectTransform.At(new Vector2(0, 0.5f), Vector2.zero, new Vector2(28, 28), new Vector2(0, 0.5f));
-                if (!ok[i]) s.color = new Color(1, 1, 1, 0.18f);
-                UIKit.Label(row, crit[i], 26, ok[i] ? UIKit.Cream : UIKit.WithAlpha(UIKit.Cream, 0.4f), TextAnchor.MiddleLeft, false).rectTransform.Fill(42, 0, 0, 0);
+                ui.critStars[i].color = ok[i] ? UIKit.Gold : new Color(1, 1, 1, 0.18f);
+                ui.critTexts[i].color = ok[i] ? UIKit.Cream : UIKit.WithAlpha(UIKit.Cream, 0.4f);
             }
 
-            // stat cards: time · best · gold earned
-            var slots = CardSlots(d, 3, cy - 3 * 40 - 18);
-            StatCard(pt, slots[0], cardSize, UIKit.Icon.Clock, false, "TIME", UIKit.FormatTime(r.time), UIKit.Cream);
-            StatCard(pt, slots[1], cardSize, UIKit.Icon.Star, false, r.newBest ? "NEW BEST!" : "BEST", UIKit.FormatTime(r.best), r.newBest ? UIKit.Gold : UIKit.Cream);
+            ui.values[0].text = UIKit.FormatTime(r.time);
+            if (ui.captions[1]) ui.captions[1].text = r.newBest ? "NEW BEST!" : "BEST";
+            ui.values[1].text = UIKit.FormatTime(r.best);
+            ui.values[1].color = r.newBest ? UIKit.Gold : UIKit.Cream;
             int total = r.goldEarned + r.bonus;
-            var gt = StatCard(pt, slots[2], cardSize, null, true, r.bonus > 0 ? $"GOLD (+{r.bonus} daily)" : "GOLD EARNED", "+0", UIKit.Gold);
+            if (ui.captions[2]) ui.captions[2].text = r.bonus > 0 ? $"GOLD (+{r.bonus} daily)" : "GOLD EARNED";
+            var gt = ui.values[2];
+            gt.text = "+0";
             Tween.Run(gt, 0.9f, k => gt.text = "+" + Mathf.RoundToInt(total * k), Tween.OutCubic, 1.3f);
 
-            if (r.hasNext)
-                Footer(d,
-                    FB("MENU", UIKit.Icon.Home, UIKit.Gray, () => gm.BackToMenu()),
-                    FB("RETRY", UIKit.Icon.Retry, UIKit.Blue, () => gm.Restart()),
-                    FB("NEXT", UIKit.Icon.Play, UIKit.Green, () => gm.NextLevel(), 1.3f));
-            else
-                Footer(d,
-                    FB("MENU", UIKit.Icon.Home, UIKit.Gray, () => gm.BackToMenu(), 1.2f),
-                    FB("RETRY", UIKit.Icon.Retry, UIKit.Blue, () => gm.Restart()));
+            ui.buttons[2].gameObject.SetActive(r.hasNext); // no NEXT after the last level
+            LayoutFooter(ui);
+            ShowDialog(ui);
         }
 
         // ---------------------------------------------------------------- lose
 
-        public void ShowLose(RunResult r)
+        static readonly string[] Tips =
         {
-            HideHud();
+            "Push the stick to the edge to sprint past slow slimes.",
+            "Hide behind walls to break a ghost's line of sight.",
+            "GHOST power-up makes monsters forget you instantly.",
+            "The Mushroom King never strays far from its gold.",
+            "Slimes only see what's in front of them — sneak behind!",
+            "Grab MAGNET near a cluster of coins.",
+        };
+
+        void BuildLose()
+        {
             var d = OpenDialog("Lose", new Vector2(780, 520), "CAUGHT!", "The monsters got you...", UIKit.Red, UIKit.Icon.Close);
+            var ui = loseDialog = SaveDialog(d);
             var pt = d.body;
-
             var slots = CardSlots(d, 3, -HeaderH - 24);
-            StatCard(pt, slots[0], cardSize, null, true, "COLLECTED", $"{r.collected} / {r.total}", UIKit.Gold);
-            StatCard(pt, slots[1], cardSize, null, true, "BANKED", $"+{r.goldEarned}", UIKit.Gold);
-            StatCard(pt, slots[2], cardSize, UIKit.Icon.Clock, false, "TIME", UIKit.FormatTime(r.time), UIKit.Cream);
-
-            string[] tips =
+            ui.values = new[]
             {
-                "Push the stick to the edge to sprint past slow slimes.",
-                "Hide behind walls to break a ghost's line of sight.",
-                "GHOST power-up makes monsters forget you instantly.",
-                "The Mushroom King never strays far from its gold.",
-                "Slimes only see what's in front of them — sneak behind!",
-                "Grab MAGNET near a cluster of coins.",
+                StatCard(pt, slots[0], cardSize, null, true, "COLLECTED", "0 / 0", UIKit.Gold),
+                StatCard(pt, slots[1], cardSize, null, true, "BANKED", "+0", UIKit.Gold),
+                StatCard(pt, slots[2], cardSize, UIKit.Icon.Clock, false, "TIME", "0:00.0", UIKit.Cream),
             };
             var tip = UIKit.Rect("Tip", pt).At(new Vector2(0, 1), new Vector2(Pad, -HeaderH - 24 - 116 - 20), new Vector2(d.width - Pad * 2, 80), new Vector2(0, 1));
             var tb = UIKit.Img(tip, Sprites.RoundRect, UIKit.WithAlpha(UIKit.Cyan, 0.1f), "Bg"); tb.rectTransform.Fill(); tb.pixelsPerUnitMultiplier = 1.8f;
@@ -706,18 +909,31 @@ namespace GoldRush
             var ib = UIKit.Img(tip, Sprites.Circle, UIKit.WithAlpha(UIKit.Cyan, 0.8f), "Icon");
             ib.rectTransform.At(new Vector2(0, 0.5f), new Vector2(18, 0), new Vector2(44, 44), new Vector2(0, 0.5f));
             UIKit.IconGraphic(ib.transform, UIKit.Icon.Info, 24, UIKit.Cream).At(new Vector2(0.5f, 0.5f), Vector2.zero, new Vector2(24, 24), new Vector2(0.5f, 0.5f));
-            var tt = UIKit.Label(tip, "<b>TIP</b>  " + tips[Random.Range(0, tips.Length)], 24, UIKit.WithAlpha(UIKit.Cream, 0.9f), TextAnchor.MiddleLeft, false);
+            var tt = UIKit.Label(tip, "<b>TIP</b>  " + Tips[0], 24, UIKit.WithAlpha(UIKit.Cream, 0.9f), TextAnchor.MiddleLeft, false, "TipText");
             tt.horizontalOverflow = HorizontalWrapMode.Wrap;
             tt.rectTransform.Fill(80, 6, 20, 6);
+            ui.tip = tt;
+            Footer(d, ui,
+                FB("MENU", UIKit.Icon.Home, UIKit.Gray, "menu"),
+                FB("RETRY", UIKit.Icon.Retry, UIKit.Green, "retry", 1.3f));
+            d.root.gameObject.SetActive(false);
+        }
 
-            Footer(d,
-                FB("MENU", UIKit.Icon.Home, UIKit.Gray, () => gm.BackToMenu()),
-                FB("RETRY", UIKit.Icon.Retry, UIKit.Green, () => gm.Restart(), 1.3f));
+        public void ShowLose(RunResult r)
+        {
+            HideHud();
+            var ui = loseDialog;
+            ui.values[0].text = $"{r.collected} / {r.total}";
+            ui.values[1].text = $"+{r.goldEarned}";
+            ui.values[2].text = UIKit.FormatTime(r.time);
+            if (ui.tip) ui.tip.text = "<b>TIP</b>  " + Tips[Random.Range(0, Tips.Length)];
+            ShowDialog(ui);
         }
 
         /// <summary>Fades the HUD out while a modal panel (pause) is open, so nothing overlaps it.</summary>
         void SetHudVisible(bool visible)
         {
+            if (!hud) return;
             var g = hud.GetComponent<CanvasGroup>();
             if (g == null) g = hud.gameObject.AddComponent<CanvasGroup>();
             g.blocksRaycasts = visible;

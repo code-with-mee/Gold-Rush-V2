@@ -55,6 +55,36 @@ namespace GoldRush.EditorTools
             Debug.Log("[GoldRush] Menu scene saved: " + GoldRushSetup.MenuScene);
         }
 
+        [MenuItem("Gold Rush/Level Design/Rebuild Game UI in Level Scenes", priority = 64)]
+        static void BakeGameUIItem()
+        {
+            if (!EditorSceneManager.SaveCurrentModifiedScenesIfUserWantsTo()) return;
+            BakeGameUI();
+        }
+
+        /// <summary>
+        /// Puts the in-game UI (HUD, intro, pause / win / lose dialogs, touch areas) as GameObjects into every
+        /// level scene. Any GameUI already in a scene is replaced.
+        /// </summary>
+        public static void BakeGameUI()
+        {
+            ExportUISprites();
+            var scenes = new[] { "Level1", "Level2", "Level3", "Level4", "Game" };
+            foreach (var sn in scenes)
+            {
+                string path = "Assets/GoldRush/Scenes/" + sn + ".unity";
+                if (!File.Exists(path)) continue;
+                var scene = EditorSceneManager.OpenScene(path, OpenSceneMode.Single);
+                foreach (var old in scene.GetRootGameObjects().Where(g => g.GetComponent<GameUI>())) Object.DestroyImmediate(old);
+                GameUI.BuildForEditor();
+                if (!scene.GetRootGameObjects().Any(g => g.GetComponentInChildren<EventSystem>()))
+                    new GameObject("EventSystem", typeof(EventSystem), typeof(StandaloneInputModule));
+                EditorSceneManager.SaveScene(scene);
+                Debug.Log("[GoldRush] Game UI saved in " + path);
+            }
+            EditorSceneManager.OpenScene(GoldRushSetup.MenuScene, OpenSceneMode.Single);
+        }
+
         /// <summary>
         /// Saves every procedural UI shape (Sprites.RoundRect, Pill, Circle, ...) as a PNG sprite in
         /// Resources/UISprites, so UI Images in scenes reference real files. Existing PNGs are kept.

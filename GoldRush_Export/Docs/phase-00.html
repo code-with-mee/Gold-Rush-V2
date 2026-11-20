@@ -23,15 +23,15 @@
 </ul>
 <h2>Course</h2><ul>
 <li><a href="phase-00.html" aria-current="page"><span class="num">0</span><span class="label">Create the project</span></a></li>
-<li><a href="phase-01.html"><span class="num">1</span><span class="label">The prefab kit</span></a></li>
-<li><a href="phase-02.html"><span class="num">2</span><span class="label">Level design</span></a></li>
-<li><a href="phase-03.html"><span class="num">3</span><span class="label">The player</span></a></li>
-<li><a href="phase-04.html"><span class="num">4</span><span class="label">The camera</span></a></li>
-<li><a href="phase-05.html"><span class="num">5</span><span class="label">Coins and the HUD</span></a></li>
+<li><a href="phase-01.html"><span class="num">1</span><span class="label">The main menu</span></a></li>
+<li><a href="phase-02.html"><span class="num">2</span><span class="label">Level select, shop and settings</span></a></li>
+<li><a href="phase-03.html"><span class="num">3</span><span class="label">Level design</span></a></li>
+<li><a href="phase-04.html"><span class="num">4</span><span class="label">Player and camera</span></a></li>
+<li><a href="phase-05.html"><span class="num">5</span><span class="label">Coins</span></a></li>
 <li><a href="phase-06.html"><span class="num">6</span><span class="label">Exit gate, win and lose</span></a></li>
 <li><a href="phase-07.html"><span class="num">7</span><span class="label">Monsters</span></a></li>
 <li><a href="phase-08.html"><span class="num">8</span><span class="label">Power-ups and effects</span></a></li>
-<li><a href="phase-09.html"><span class="num">9</span><span class="label">Menu, levels, shop, save</span></a></li>
+<li><a href="phase-09.html"><span class="num">9</span><span class="label">Gameplay UI</span></a></li>
 <li><a href="phase-10.html"><span class="num">10</span><span class="label">Polish and build</span></a></li>
 </ul>
 <h2>Help</h2><ul>
@@ -44,7 +44,7 @@
 <div class="content">
 <p class="eyebrow">GOLD RUSH · Phase 0</p>
 <h1>Create the project</h1>
-<p class="lead">You make a new, empty Unity project called <b>GoldRush</b>. You check the packages the game needs and set the input mode. Then you import the <b>starter package</b>: it gives you the art (characters, sounds, icons, fonts), all materials and the ready-made level prefabs. At the end the hero model stands in a test scene.</p>
+<p class="lead">You make a new, empty Unity project called <b>GoldRush</b>. You add the packages the game needs and set the input mode. Then you import the <b>starter package</b>: the art (characters, sounds, icons, fonts, UI shapes), all materials and the ready-made level prefabs. At the end the hero model and a few kit pieces stand in a test scene.</p>
 <div class="meta"><span><b>Starter / checkpoint package</b><code>GoldRush_Phase00_Project.unitypackage</code></span><span><b>Scene</b><code>Assets/GoldRush/Scenes/Sandbox.unity</code></span><a class="btn secondary" href="phase-00.pdf">Download PDF</a></div>
 
 <nav class="toc" aria-label="Steps on this page"><strong>Steps on this page</strong><ol>
@@ -56,9 +56,10 @@
   <li><a href="#step-6">Set Active Input Handling to Both</a></li>
   <li><a href="#step-7">Import the starter package</a></li>
   <li><a href="#step-8">Add the other folders</a></li>
-  <li><a href="#step-9">Make a test scene with the hero</a></li>
-  <li><a href="#step-10">▶ Press Play</a></li>
-  <li><a href="#step-11">Common problems</a></li>
+  <li><a href="#step-9">Make a test scene</a></li>
+  <li><a href="#step-10">Add the hero and some kit pieces</a></li>
+  <li><a href="#step-11">▶ Press Play</a></li>
+  <li><a href="#step-12">Common problems</a></li>
 </ol></nav>
 
 <!-- ======================================================= 1 -->
@@ -67,6 +68,7 @@
   <li><b>Unity Hub</b> and <b>Unity 6000.6.10f1</b> or newer (Unity 6.6). The course was made with 6000.6.10f1.</li>
   <li>The starter package <code>GoldRush_Phase00_Project.unitypackage</code>.</li>
 </ul>
+<p>The course order: first you build the <b>main menu</b> (phases 1–2), then the <b>level</b>, the <b>player</b> and the <b>gameplay</b> (phases 3–8), then the <b>game UI</b> and the final polish (phases 9–10).</p>
 <div class="tip">Each phase ends with a <b>checkpoint package</b>. If you get lost, import the package of the previous phase into a new empty project and continue from there.</div>
 
 <!-- ======================================================= 2 -->
@@ -82,7 +84,7 @@
   <li>Click <b>Create project</b>. Wait. The first start takes a few minutes.</li>
 </ol>
 <p><b>Universal 3D</b> means the project uses <b>URP</b> (Universal Render Pipeline). URP is the modern Unity renderer. It works on PC and on phones, and it gives us glow (bloom) and soft shadows.</p>
-<figure class="shot todo"><div class="ph">Screenshot: Unity Hub, New project, Universal 3D template selected, name GoldRush</div><figcaption>Pick Universal 3D and name the project GoldRush.</figcaption></figure>
+<figure class="shot todo" data-shot="phase-00/step-02" data-window="project" data-select="Unity Hub/New project" data-manual="true"><div class="ph">Unity Hub, New project: Universal 3D template selected, name GoldRush</div><figcaption>Check: template Universal 3D, name GoldRush.</figcaption></figure>
 
 <!-- ======================================================= 3 -->
 <h2 id="step-3"><span class="step">3</span>Clean up the template</h2>
@@ -117,7 +119,7 @@
   <li>Click <b>Install</b>. Wait until it is done.</li>
   <li>Close the Package Manager.</li>
 </ol>
-<figure class="shot todo"><div class="ph">Screenshot: Package Manager, Unity Registry, AI Navigation selected, Install button</div><figcaption>AI Navigation in the Unity Registry.</figcaption></figure>
+<figure class="shot todo" data-shot="phase-00/step-05" data-window="project" data-select="Packages/com.unity.ai.navigation" data-manual="true"><div class="ph">Package Manager, Unity Registry, AI Navigation selected, Install button</div><figcaption>Check: AI Navigation shows a tick (installed).</figcaption></figure>
 
 <!-- ======================================================= 6 -->
 <h2 id="step-6"><span class="step">6</span>Set Active Input Handling to Both</h2>
@@ -129,7 +131,7 @@
   <li>Set <b>Active Input Handling</b> to <b>Both</b>.</li>
   <li>Unity asks to restart. Click <b>Apply</b> (or <b>Yes</b>). Unity closes and opens again.</li>
 </ol>
-<figure class="shot todo"><div class="ph">Screenshot: Project Settings → Player → Other Settings, Active Input Handling = Both</div><figcaption>Active Input Handling = Both.</figcaption></figure>
+<figure class="shot todo" data-shot="phase-00/step-06" data-window="inspector" data-select="ProjectSettings/Player" data-manual="true"><div class="ph">Project Settings → Player → Other Settings → Configuration, Active Input Handling = Both</div><figcaption>Check: Active Input Handling = Both.</figcaption></figure>
 <div class="note">If you forget this step, you get a red error later: <i>"You are trying to read Input using the UnityEngine.Input class, but you have switched active Input handling to Input System package"</i>. Come back here and choose <b>Both</b>.</div>
 
 <!-- ======================================================= 7 -->
@@ -143,85 +145,106 @@
 <div class="table-wrap"><table>
   <tr><th>Folder</th><th>What is inside</th></tr>
   <tr><td><code>Art/Characters</code></td><td>The hero and the three monsters (<code>Hero.fbx</code>, <code>Slime.fbx</code>, <code>Ghost.fbx</code>, <code>MushroomKing.fbx</code>, by Quaternius, CC0), with their animations, and the licences.</td></tr>
-  <tr><td><code>Art/Audio</code></td><td>Sound effects and music (<code>.wav</code>): coin, step, hit, win, lose, …</td></tr>
-  <tr><td><code>Art/UI</code>, <code>Art/Textures</code></td><td>Panel and button shapes, the floor grid texture, the ITSTEP badge.</td></tr>
-  <tr><td><code>Resources/Icons</code>, <code>Resources/Fonts</code></td><td>The UI icons (already set up as sprites) and the Poppins font. <b>Resources</b> is a special folder: scripts load files from it by name while the game runs.</td></tr>
+  <tr><td><code>Art/Audio</code></td><td>Sound effects and music (<code>.wav</code>): click, coin, whoosh, win, music, …</td></tr>
+  <tr><td><code>Art/Textures</code></td><td>The floor grid texture and the ITSTEP badge.</td></tr>
+  <tr><td><code>Resources/UISprites</code></td><td>The UI shapes: <code>pill</code>, <code>rr</code> (rounded rectangle), <code>circle</code>, their thin outlines (<code>pillo</code>, <code>rro2</code>, <code>ring2</code>), soft glow and fades. You build the menu with them in phase 1.</td></tr>
+  <tr><td><code>Resources/Icons</code>, <code>Resources/Fonts</code></td><td>The UI icons (Material Icons, already set up as sprites) and the <b>Poppins</b> font. <b>Resources</b> is a special folder: scripts load files from it by name while the game runs.</td></tr>
   <tr><td><code>Materials</code></td><td>All materials, ready to use: <code>M_Floor</code>, <code>M_Block</code>, <code>M_Red</code>, <code>M_GlowCyan</code>, <code>M_Gold</code>, … and the base materials <code>GR_Lit</code>, <code>GR_SunsetSky</code>, …</td></tr>
-  <tr><td><code>Prefabs/Level</code></td><td>The level kit: floor, blocks, walls, pillar, lamp post, barrier, … You meet them in phase 1.</td></tr>
+  <tr><td><code>Prefabs/Level</code></td><td>The level kit: floor, blocks, walls, pillar, lamp post, barrier, terminal, … You use it for the menu stage (phase 1) and the levels (phase 3).</td></tr>
   <tr><td><code>Prefabs/Gameplay</code></td><td>The 3D models of the coin, the exit gate and the power-ups. They get their scripts in phases 5, 6 and 8.</td></tr>
 </table></div>
-<div class="note">Do not move or rename files in <code>Resources</code>. Do not change the import settings of the models yet: you set them up in phase 3 (hero) and phase 7 (monsters).</div>
+<div class="note">Do not move or rename files in <code>Resources</code>. The scripts find them by name.</div>
 
 <!-- ======================================================= 8 -->
 <h2 id="step-8"><span class="step">8</span>Add the other folders</h2>
-<p>Make the folders for the files you create yourself. Right-click <code>Assets/GoldRush</code> → <b>Create → Folder</b>. When you are done, the tree looks like this:</p>
+<p>Make the folders for the files you create yourself. Right-click a folder → <b>Create → Folder</b>. When you are done, the tree looks like this:</p>
 <pre><code>Assets/GoldRush/
+  Animations/    ← new: Animator Controllers (phase 1, 4 and 7)
   Art/           (from the package)
-  Animations/    ← new: Animator Controllers (phase 3 and 7)
   Materials/     (from the package)
-  Prefabs/       (from the package)
+  Prefabs/
+    Gameplay/    (from the package)
+    Level/       (from the package)
+    UI/          ← new: your glass UI pieces (phase 1 and 2)
   Resources/     (from the package)
   Scenes/        ← new: the menu and the levels
   Scripts/       ← new
-    Core/
     Audio/
-    World/
-    Level/
+    Core/
     Gameplay/
-    UI/</code></pre>
+    Level/
+    UI/
+    World/</code></pre>
 <div class="tip">If a folder already exists, skip it. Spelling matters: use the exact names, with capital letters.</div>
-<figure class="shot todo"><div class="ph">Screenshot: Project window with the full Assets/GoldRush folder tree open</div><figcaption>The folder layout.</figcaption></figure>
+<figure class="shot todo" data-shot="phase-00/step-08" data-window="project" data-select="Assets/GoldRush"><div class="ph">Project window with the full Assets/GoldRush folder tree open</div><figcaption>Check: Animations, Prefabs/UI, Scenes and the six Scripts folders exist.</figcaption></figure>
 
 <!-- ======================================================= 9 -->
-<h2 id="step-9"><span class="step">9</span>Make a test scene with the hero</h2>
-<p>A <b>scene</b> is one level or screen of the game. We use a small test scene, <code>Sandbox</code>, in phase 0 and 1.</p>
+<h2 id="step-9"><span class="step">9</span>Make a test scene</h2>
+<p>A <b>scene</b> is one level or screen of the game. We use a small test scene, <code>Sandbox</code>, to look at the starter package.</p>
 <ol>
-  <li>Open <b>File → New Scene</b>. Pick <b>Basic (URP)</b> (or <b>Standard (URP)</b>). Click <b>Create</b>.</li>
+  <li>Open <b>File → New Scene</b>. Pick <b>Basic (URP)</b>. Click <b>Create</b>.</li>
   <li><b>File → Save As…</b> → folder <code>Assets/GoldRush/Scenes</code> → name <code>Sandbox</code> → <b>Save</b>.</li>
-  <li>Drag <code>Prefabs/Level/Floor_40m</code> into the Hierarchy. Set its <b>Position</b> to <code>0, 0, 0</code>.</li>
-  <li>Drag <code>Art/Characters/Hero/Hero.fbx</code> into the Hierarchy. Set its <b>Position</b> to <code>0, 0, 0</code> and its <b>Scale</b> to <code>0.36, 0.36, 0.36</code>. (The model file is almost 4 m tall. At 0.36 it has the game size.)</li>
-  <li>Move the mouse over the Scene view and press <b>F</b>. The view zooms to the hero.</li>
+  <li>Drag <code>Prefabs/Level/Floor_40m</code> from the Project window into the Hierarchy.</li>
+  <li>In the Inspector, set its <b>Position</b> to <code>0, 0, 0</code>.</li>
+</ol>
+<figure class="shot todo" data-shot="phase-00/step-09" data-window="hierarchy" data-select="Floor_40m"><div class="ph">Hierarchy of Sandbox: Main Camera, Directional Light, Floor_40m (blue = prefab)</div><figcaption>Check: Floor_40m is blue. Blue means "prefab instance".</figcaption></figure>
+<div class="tip">The template also has <code>Assets/Scenes/SampleScene</code>. You do not need it. You can delete the <code>Assets/Scenes</code> folder.</div>
+
+<!-- ======================================================= 10 -->
+<h2 id="step-10"><span class="step">10</span>Add the hero and some kit pieces</h2>
+<ol>
+  <li>Drag <code>Art/Characters/Hero/Hero.fbx</code> into the Hierarchy.</li>
+  <li>Set its <b>Position</b> to <code>0, 0, 0</code> and its <b>Scale</b> to <code>0.337, 0.337, 0.337</code>. (The model file is about 4 m tall. At 0.337 the hero is 1.35 m, the game size.)</li>
+  <li>Drag in three kit pieces from <code>Prefabs/Level</code> and set their <b>Position</b>:
+    <div class="table-wrap"><table>
+      <tr><th>Prefab</th><th>Position</th></tr>
+      <tr><td><code>Block_2x2x2</code></td><td><code>-3, 0, 3</code></td></tr>
+      <tr><td><code>Pillar</code></td><td><code>3, 0, 3</code></td></tr>
+      <tr><td><code>LampPost</code></td><td><code>0, 0, 5</code></td></tr>
+    </table></div></li>
   <li>Select <b>Main Camera</b>. Set <b>Position</b> <code>0, 1.5, -4</code> and <b>Rotation</b> <code>10, 0, 0</code>.</li>
   <li>Save the scene (<b>Ctrl+S</b> / <b>Cmd+S</b>).</li>
 </ol>
-<p>The hero is about 1.35 m tall in the game (that is the scale 0.36). He looks north (+Z), so the camera sees his back. In phase 3 you turn this model into the player.</p>
-<div class="tip">The template also has <code>Assets/Scenes/SampleScene</code>. You do not need it. You can delete the <code>Assets/Scenes</code> folder.</div>
-<figure class="shot todo"><div class="ph">Screenshot: Scene view with the hero model standing on the grid floor</div><figcaption>The hero in the Sandbox scene.</figcaption></figure>
+<p>Every kit piece has its <b>pivot at the bottom</b>: at <code>Y = 0</code> it stands exactly on the floor. The hero looks north (+Z), so the camera sees his back.</p>
+<figure class="shot todo" data-shot="phase-00/step-10-a" data-window="inspector" data-select="Hero"><div class="ph">Inspector of Hero: Transform Position 0, 0, 0 and Scale 0.337</div><figcaption>Check: Scale is 0.337 on X, Y and Z.</figcaption></figure>
+<figure class="shot todo" data-shot="phase-00/step-10-b" data-window="scene" data-select="Hero"><div class="ph">Scene view: the hero on the grid floor, a grey block, a pillar with a cyan band and a lamp post behind him</div><figcaption>Check: all pieces stand on the floor (none float or sink).</figcaption></figure>
 
-<!-- ======================================================= 10 -->
-<h2 id="step-10"><span class="step">10</span>▶ Press Play</h2>
+<!-- ======================================================= 11 -->
+<h2 id="step-11"><span class="step">11</span>▶ Press Play</h2>
 <ol>
   <li>Click the <b>▶ Play</b> button at the top.</li>
   <li>Look at the <b>Game</b> view.</li>
   <li>Click <b>▶</b> again to stop.</li>
 </ol>
+<figure class="shot todo" data-shot="phase-00/step-11" data-window="game" data-select="Main Camera"><div class="ph">Game view: the hero from behind on the grid floor, with the block, pillar and lamp post</div><figcaption>Check: you see the hero and the kit pieces, no pink materials.</figcaption></figure>
 <div class="check">
 <p><b>You should see:</b></p>
 <ul>
-  <li>The hero model in the Game view, standing on the grid floor (in a T-pose or rest pose: that is fine for now).</li>
+  <li>The hero model and three kit pieces in the Game view, on the grid floor. The hero stands in a T-pose or rest pose: that is fine for now.</li>
   <li>The Project window has the full <code>Assets/GoldRush</code> folder tree.</li>
   <li>No red errors in the <b>Console</b> (<b>Window → General → Console</b>).</li>
 </ul>
 </div>
 
-<!-- ======================================================= 11 -->
-<h2 id="step-11"><span class="step">11</span>Common problems</h2>
+<!-- ======================================================= 12 -->
+<h2 id="step-12"><span class="step">12</span>Common problems</h2>
 <div class="table-wrap"><table>
   <tr><th>Problem</th><th>Fix</th></tr>
   <tr><td>Everything is pink.</td><td>The URP settings are missing. Do not delete the <code>Settings</code> folder. Check <b>Edit → Project Settings → Graphics</b>: <b>Default Render Pipeline</b> must be a URP asset (for example <code>PC_RPAsset</code>). If you made a <b>3D (Built-In)</b> project by mistake, make a new project with <b>Universal 3D</b>.</td></tr>
   <tr><td>The template <b>Universal 3D</b> is not in the list.</td><td>Scroll down in Unity Hub, or click the download icon next to it. Check that you picked Unity 6000.6.10f1 or newer.</td></tr>
   <tr><td>I cannot find <b>Package Management</b> in the Window menu.</td><td>In some Unity 6 versions it is <b>Window → Package Manager</b> directly.</td></tr>
   <tr><td>Active Input Handling: I chose Both, but nothing happened.</td><td>Unity must restart. Close Unity yourself and open the project again from Unity Hub.</td></tr>
-  <tr><td>Red errors right after the import.</td><td>Check that <b>AI Navigation</b> is installed (step 5), then reimport the package.</td></tr>
-  <tr><td>The hero is very far away or tiny in the Game view.</td><td>Check the Main Camera position and rotation from step 9.</td></tr>
+  <tr><td>Red errors right after the import.</td><td>Check that <b>AI Navigation</b> is installed (step 5), then import the package again.</td></tr>
+  <tr><td>The hero is huge or tiny.</td><td>Scale must be <code>0.337</code> on all three axes (step 10).</td></tr>
+  <tr><td>A kit piece floats or sinks into the floor.</td><td>Set its <b>Position Y</b> to <code>0</code>. The pivot is at the bottom.</td></tr>
 </table></div>
 <p>More fixes are on the <a href="troubleshooting.html">Troubleshooting</a> page. New words are in the <a href="glossary.html">Glossary</a>.</p>
 <p><b>Checkpoint package:</b> <code>GoldRush_Phase00_Project.unitypackage</code> (the starter package plus your Sandbox scene)</p>
-<p><b>Next:</b> in <a href="phase-01.html">Phase 1</a> you take a tour of the prefab kit.</p>
+<p><b>Next:</b> in <a href="phase-01.html">Phase 1</a> you build the main menu: a 3D stage with the hero and the title screen.</p>
 
 <nav class="pager" aria-label="Previous and next page">
 <a class="prev" href="index.html"><small>← Previous</small>Overview</a>
-<a class="next" href="phase-01.html"><small>Next →</small>Phase 1: The prefab kit</a>
+<a class="next" href="phase-01.html"><small>Next →</small>Phase 1: The main menu</a>
 </nav>
 <footer class="site-footer">GOLD RUSH – a Unity 6 tutorial project. Characters: Quaternius (CC0). Font: Poppins (SIL Open Font License). Icons: Material Icons by Google (Apache 2.0).</footer>
 </div>

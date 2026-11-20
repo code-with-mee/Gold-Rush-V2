@@ -16,8 +16,8 @@ namespace GoldRush
         /// <summary>True while a finger is on the stick.</summary>
         public bool Held => pointer != int.MinValue;
 
-        CanvasGroup group;
-        Image edge;
+        [SerializeField] CanvasGroup group;
+        [SerializeField] Image edge;
         int pointer = int.MinValue;
         float shown;
 

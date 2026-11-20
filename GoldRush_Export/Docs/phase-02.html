@@ -3,12 +3,9 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>GOLD RUSH – Phase 2: Level design</title>
-<meta name="description" content="GOLD RUSH Unity tutorial, Phase 2: Level design.">
+<title>GOLD RUSH – Phase 2: Level select, shop and settings</title>
+<meta name="description" content="GOLD RUSH Unity tutorial, Phase 2: Level select, shop and settings.">
 <link rel="stylesheet" href="assets/style.css">
-<style>
-  .sw { display: inline-block; width: 14px; height: 14px; border-radius: 3px; border: 1px solid var(--line); vertical-align: -2px; margin-right: 4px; }
-</style>
 </head>
 <body>
 <header class="site-header">
@@ -26,15 +23,15 @@
 </ul>
 <h2>Course</h2><ul>
 <li><a href="phase-00.html"><span class="num">0</span><span class="label">Create the project</span></a></li>
-<li><a href="phase-01.html"><span class="num">1</span><span class="label">The prefab kit</span></a></li>
-<li><a href="phase-02.html" aria-current="page"><span class="num">2</span><span class="label">Level design</span></a></li>
-<li><a href="phase-03.html"><span class="num">3</span><span class="label">The player</span></a></li>
-<li><a href="phase-04.html"><span class="num">4</span><span class="label">The camera</span></a></li>
-<li><a href="phase-05.html"><span class="num">5</span><span class="label">Coins and the HUD</span></a></li>
+<li><a href="phase-01.html"><span class="num">1</span><span class="label">The main menu</span></a></li>
+<li><a href="phase-02.html" aria-current="page"><span class="num">2</span><span class="label">Level select, shop and settings</span></a></li>
+<li><a href="phase-03.html"><span class="num">3</span><span class="label">Level design</span></a></li>
+<li><a href="phase-04.html"><span class="num">4</span><span class="label">Player and camera</span></a></li>
+<li><a href="phase-05.html"><span class="num">5</span><span class="label">Coins</span></a></li>
 <li><a href="phase-06.html"><span class="num">6</span><span class="label">Exit gate, win and lose</span></a></li>
 <li><a href="phase-07.html"><span class="num">7</span><span class="label">Monsters</span></a></li>
 <li><a href="phase-08.html"><span class="num">8</span><span class="label">Power-ups and effects</span></a></li>
-<li><a href="phase-09.html"><span class="num">9</span><span class="label">Menu, levels, shop, save</span></a></li>
+<li><a href="phase-09.html"><span class="num">9</span><span class="label">Gameplay UI</span></a></li>
 <li><a href="phase-10.html"><span class="num">10</span><span class="label">Polish and build</span></a></li>
 </ul>
 <h2>Help</h2><ul>
@@ -46,329 +43,688 @@
 <main>
 <div class="content">
 <p class="eyebrow">GOLD RUSH · Phase 2</p>
-<h1>Level design</h1>
-<p class="lead">You build the first level, <b>Training Yard</b>, by hand: a 32 × 32 m yard with a grid floor, walls all around, an opening for the exit gate, lamp posts and blocks to hide behind. You add a sunset sun, sky and fog. Last, you place empty <b>markers</b> that show where the hero starts and where the coins, monsters and gate go.</p>
-<div class="meta"><span><b>Checkpoint package</b><code>GoldRush_Phase02_Level.unitypackage</code></span><span><b>Scene</b><code>Assets/GoldRush/Scenes/Level1.unity</code></span><a class="btn secondary" href="phase-02.pdf">Download PDF</a></div>
+<h1>Level select, shop and settings</h1>
+<p class="lead">You add the other menu screens: <b>SELECT LEVEL</b> with five level cards, the <b>SHOP</b> with colours and hats, and the <b>SETTINGS</b> dialog with MUSIC and SOUND switches. You build the fixed parts by hand in the same glass style; the menu script fills in the cards and shop items from data. The gold and stars now come from the save, and buying in the shop is saved too.</p>
+<div class="meta"><span><b>Checkpoint package</b><code>GoldRush_Phase02_MenuScreens.unitypackage</code></span><span><b>Scene</b><code>Assets/GoldRush/Scenes/MainMenu.unity</code></span><a class="btn secondary" href="phase-02.pdf">Download PDF</a></div>
 
 <nav class="toc" aria-label="Steps on this page"><strong>Steps on this page</strong><ol>
   <li><a href="#step-1">What you need</a></li>
-  <li><a href="#step-2">The plan</a></li>
-  <li><a href="#step-3">Create the Level1 scene</a></li>
-  <li><a href="#step-4">Make the groups</a></li>
-  <li><a href="#step-5">Grid snapping</a></li>
-  <li><a href="#step-6">The floor</a></li>
-  <li><a href="#step-7">The south wall</a></li>
-  <li><a href="#step-8">The north wall with the gate opening</a></li>
-  <li><a href="#step-9">East and west walls, corners</a></li>
-  <li><a href="#step-10">Lamp posts</a></li>
-  <li><a href="#step-11">Obstacles</a></li>
-  <li><a href="#step-12">The markers</a></li>
-  <li><a href="#step-13">The sun</a></li>
-  <li><a href="#step-14">Sky, ambient light and fog</a></li>
-  <li><a href="#step-15">Mark the level static</a></li>
-  <li><a href="#step-16">An overview camera</a></li>
-  <li><a href="#step-17">Fly around the Scene view</a></li>
-  <li><a href="#step-18">▶ Press Play</a></li>
-  <li><a href="#step-19">Common problems</a></li>
+  <li><a href="#step-2">What you add</a></li>
+  <li><a href="#step-3">Script: Data (full version)</a></li>
+  <li><a href="#step-4">Import GoldRushMenu (phase 2)</a></li>
+  <li><a href="#step-5">Make the three new screens</a></li>
+  <li><a href="#step-6">The top-right bar</a></li>
+  <li><a href="#step-7">Glass recipe 4: the chip button</a></li>
+  <li><a href="#step-8">The Levels screen</a></li>
+  <li><a href="#step-9">The Shop screen</a></li>
+  <li><a href="#step-10">Settings: the panel and the title</a></li>
+  <li><a href="#step-11">Settings: MUSIC, SOUND and CLOSE</a></li>
+  <li><a href="#step-12">Connect the new fields</a></li>
+  <li><a href="#step-13">Test the save with some gold</a></li>
+  <li><a href="#step-14">▶ Press Play</a></li>
+  <li><a href="#step-15">Common problems</a></li>
 </ol></nav>
 
 <!-- ======================================================= 1 -->
 <h2 id="step-1"><span class="step">1</span>What you need</h2>
 <ul>
-  <li>The project from <a href="phase-01.html">Phase 1</a> (or import <code>GoldRush_Phase01_Prefabs.unitypackage</code>). You need the kit in <code>Prefabs/Level</code> and the sky material <code>GR_SunsetSky</code> (both from the starter package).</li>
-  <li>No new packages. No scripts in this phase.</li>
+  <li>Your project from <a href="phase-01.html">Phase 1</a>: the title screen works and the hero waves.</li>
+  <li>Or import <code>GoldRush_Phase01_MainMenu.unitypackage</code> into a new project made in <a href="phase-00.html">Phase 0</a>.</li>
+  <li>Your UI prefabs from phase 1 in <code>Prefabs/UI</code>: <code>GlassCircle</code>, <code>GlassPill</code>, <code>GlassButton</code>.</li>
+  <li>No new packages.</li>
 </ul>
+<p>The goal for this phase:</p>
+<div class="shots">
+  <figure><img src="images/02_levels.jpg" alt="Select level screen with five glass cards" loading="lazy">SELECT LEVEL</figure>
+  <figure><img src="images/03_shop.jpg" alt="Shop screen with colour cards" loading="lazy">SHOP</figure>
+</div>
+<p>(Your cards show only Level 1 and the Daily Rush as open, and your gold is 0. The hero gets the shop colours in phase 10.)</p>
 
 <!-- ======================================================= 2 -->
-<h2 id="step-2"><span class="step">2</span>The plan</h2>
-<p>Look at the level from above. <b>+Z</b> is "north" (up in the picture). The hero starts in the south and runs north to the exit gate.</p>
+<h2 id="step-2"><span class="step">2</span>What you add</h2>
 <ul>
-  <li>The playing area is <b>32 × 32 m</b>: from <code>-16</code> to <code>+16</code> on X and on Z. Its centre is <code>0, 0, 0</code>.</li>
-  <li>The walls stand just outside it, at <code>±16.5</code> (they are 1 m thick, so the inside face is at <code>±16</code>).</li>
-  <li>The north wall has an 8 m opening in the middle. The exit gate goes there in phase 6.</li>
-  <li>The floor is bigger (40 × 40 m), so you never see its edge from inside.</li>
+  <li><b>Three screens</b> under <code>MenuUI</code>: <code>Levels</code>, <code>Shop</code> and <code>Settings</code>. The menu shows one screen at a time. Settings is a dialog on top.</li>
+  <li><b>A top-right bar</b> (gear, day/night, gold) for the Levels and Shop screens. On the Title screen the menu hides it, because the title has its own chips at the top left.</li>
+  <li><b>Empty boxes</b> that the script fills when a screen opens: <code>Cards</code> (5 level cards), <code>Tabs</code> (COLORS / HATS) and <code>Grid</code> (the shop items). You only make the box; the cards are built from the data in <code>Data.cs</code>.</li>
 </ul>
-<figure class="shot todo"><div class="ph">Screenshot: top view of the finished Level1 (Scene view, Top, iso), with labels N / S, spawn, gate</div><figcaption>The finished Training Yard from above.</figcaption></figure>
+<div class="table-wrap"><table>
+  <tr><th>Button word (MenuAction)</th><th>What it does now</th></tr>
+  <tr><td><code>play</code></td><td>Starts the newest unlocked level. Until phase 3 there is no level scene yet: the Console says so.</td></tr>
+  <tr><td><code>levels</code> / <code>shop</code></td><td>Opens the Levels / Shop screen. The camera moves back (levels) or to the side (shop).</td></tr>
+  <tr><td><code>back</code></td><td>Back to the Title screen. (<b>Esc</b> does the same.)</td></tr>
+  <tr><td><code>settings</code> / <code>closeSettings</code></td><td>Opens / closes the Settings dialog.</td></tr>
+</table></div>
 
 <!-- ======================================================= 3 -->
-<h2 id="step-3"><span class="step">3</span>Create the Level1 scene</h2>
-<ol>
-  <li>Save the Sandbox scene (<b>Ctrl+S</b> / <b>Cmd+S</b>).</li>
-  <li>Open <b>File → New Scene</b>. Pick <b>Basic (URP)</b> (or <b>Standard (URP)</b>). Click <b>Create</b>.</li>
-  <li><b>File → Save As…</b> → folder <code>Assets/GoldRush/Scenes</code> → name <code>Level1</code> → <b>Save</b>.</li>
-  <li>If the Hierarchy has a <b>Global Volume</b>, delete it. The game adds its own post-processing later.</li>
-</ol>
-<p>You now have a <b>Main Camera</b> and a <b>Directional Light</b>.</p>
+<h2 id="step-3"><span class="step">3</span>Script: Data (full version)</h2>
+<p>Open <code>Assets/GoldRush/Scripts/Core/Data.cs</code>. <b>Replace the whole file</b> with this full version. It adds the levels, the Daily Rush, the shop catalogue and a better <code>Fix()</code>.</p>
+<pre class="long"><code>using System;
+using System.Collections.Generic;
+using UnityEngine;
+
+namespace GoldRush
+{
+    public enum EnemyType { Patroller, Chaser, Guard }
+    public enum PowerType { Speed, Ghost, Magnet }
+
+    public static class Scenes
+    {
+        public const string Menu = &quot;MainMenu&quot;;
+        public const string Game = &quot;Game&quot;;
+    }
+
+    // ------------------------------------------------------------------ Levels
+
+    public class LevelDef
+    {
+        public string title, subtitle;
+        public int seed;
+        public float size;          // playable square side length (metres)
+        public int coins;
+        public int patrollers, chasers, guards;
+        public int powerUps;
+        public int props;           // small props (rocks, crates, barrels, cacti, carts)
+        public int bigRocks;        // large rock formations used as cover
+        public float enemySpeed = 1f;
+        public float parTime;       // seconds, for the &quot;beat par&quot; star
+        public int lives = 2;       // survive the first hit
+        public bool night;          // default look for a brand-new save (the player&#x27;s day/night choice is saved in SaveData.night)
+        public string scene;        // hand-made level scene (null = generate from seed)
+        public bool daily;
+    }
+
+    public static class Levels
+    {
+        public static readonly LevelDef[] All =
+        {
+            new LevelDef { title = &quot;Training Yard&quot;, subtitle = &quot;Learn the ropes&quot;,          seed = 101, scene = &quot;Level1&quot;, size = 32, coins = 6,  patrollers = 2,                         powerUps = 1, props = 14, bigRocks = 1, enemySpeed = 0.9f,  parTime = 40 },
+            new LevelDef { title = &quot;Ghost Alley&quot;,   subtitle = &quot;Watch out for chasers&quot;,    seed = 202, scene = &quot;Level2&quot;, size = 40, coins = 8,  patrollers = 2, chasers = 1,             powerUps = 2, props = 22, bigRocks = 2, enemySpeed = 1f,    parTime = 60 },
+            new LevelDef { title = &quot;King&#x27;s Vault&quot;,  subtitle = &quot;Guards protect the gold&quot;,  seed = 303, scene = &quot;Level3&quot;, size = 48, coins = 10, patrollers = 2, chasers = 2, guards = 2, powerUps = 3, props = 30, bigRocks = 3, enemySpeed = 1.05f, parTime = 85, night = true },
+            new LevelDef { title = &quot;Gold Fever&quot;,    subtitle = &quot;The final rush&quot;,           seed = 404, scene = &quot;Level4&quot;, size = 56, coins = 13, patrollers = 3, chasers = 3, guards = 2, powerUps = 4, props = 38, bigRocks = 4, enemySpeed = 1.12f, parTime = 115, night = true },
+        };
+
+        public static string TodayKey =&gt; DateTime.Now.ToString(&quot;yyyy-MM-dd&quot;);
+
+        public static LevelDef Daily()
+        {
+            var now = DateTime.Now;
+            int seed = now.Year * 10000 + now.Month * 100 + now.Day;
+            var r = new Rng(seed);
+            float size = 38 + r.Int(0, 4) * 5;
+            int coins = r.Int(7, 13);
+            return new LevelDef
+            {
+                title = &quot;Daily Rush&quot;,
+                subtitle = now.ToString(&quot;dddd, MMM d&quot;),
+                seed = seed,
+                size = size,
+                coins = coins,
+                patrollers = r.Int(1, 4),
+                chasers = r.Int(1, 4),
+                guards = r.Int(0, 3),
+                powerUps = r.Int(2, 4),
+                props = Mathf.RoundToInt(size * 0.65f),
+                bigRocks = r.Int(2, 4),
+                enemySpeed = r.Range(1f, 1.12f),
+                parTime = Mathf.Round(coins * 7f + size * 0.6f),
+                daily = true,
+                night = true,
+            };
+        }
+    }
+
+    public static class GameSession
+    {
+        /// &lt;summary&gt;0..3 = campaign level, -1 = daily challenge.&lt;/summary&gt;
+        public static int LevelIndex = 0;
+        public static bool IsDaily =&gt; LevelIndex &lt; 0;
+        public static bool HasNext =&gt; !IsDaily &amp;&amp; LevelIndex &lt; Levels.All.Length - 1;
+        /// &lt;summary&gt;Scene to load for the current level (hand-made scene, or the generated &quot;Game&quot; scene).&lt;/summary&gt;
+        public static string SceneName =&gt; string.IsNullOrEmpty(Current.scene) ? Scenes.Game : Current.scene;
+        public static LevelDef Current =&gt; IsDaily ? Levels.Daily() : Levels.All[Mathf.Clamp(LevelIndex, 0, Levels.All.Length - 1)];
+    }
+
+    // ------------------------------------------------------------------ Random
+
+    /// &lt;summary&gt;Deterministic random helper (seeded layouts).&lt;/summary&gt;
+    public class Rng
+    {
+        readonly System.Random r;
+        public Rng(int seed) { r = new System.Random(seed); }
+        public float Value =&gt; (float)r.NextDouble();
+        public float Range(float a, float b) =&gt; a + (b - a) * Value;
+        public int Int(int minInclusive, int maxExclusive) =&gt; r.Next(minInclusive, maxExclusive);
+        public bool Chance(float p) =&gt; Value &lt; p;
+        public T Pick&lt;T&gt;(IList&lt;T&gt; list) =&gt; list[r.Next(list.Count)];
+        public Vector2 InsideCircle(float radius)
+        {
+            float a = Range(0, Mathf.PI * 2), d = Mathf.Sqrt(Value) * radius;
+            return new Vector2(Mathf.Cos(a) * d, Mathf.Sin(a) * d);
+        }
+    }
+
+    // ------------------------------------------------------------------ Save
+
+    [Serializable]
+    public class LevelProgress
+    {
+        public int stars;
+        public float bestTime = -1f;
+    }
+
+    [Serializable]
+    public class SaveData
+    {
+        public int version = 1;
+        public int gold;
+        public int unlocked = 1;
+        public List&lt;LevelProgress&gt; levels = new List&lt;LevelProgress&gt;();
+        public List&lt;string&gt; owned = new List&lt;string&gt;();
+        public string color = &quot;color_blue&quot;;
+        public string hat = &quot;hat_none&quot;;
+        public bool music = true;
+        public bool sfx = true;
+        public bool night = true;   // day/night look: ONE setting for the menu and every level
+        public bool seenTutorial;
+        public string dailyDate = &quot;&quot;;
+        public float dailyBest = -1f;
+        public bool dailyCleared;
+    }
+
+    public static class Save
+    {
+        const string Key = &quot;goldrush_save_v1&quot;;
+        static SaveData data;
+
+        public static SaveData Data
+        {
+            get { if (data == null) Load(); return data; }
+        }
+
+        public static void Load()
+        {
+            string json = PlayerPrefs.GetString(Key, &quot;&quot;);
+            data = null;
+            if (!string.IsNullOrEmpty(json))
+            {
+                try { data = JsonUtility.FromJson&lt;SaveData&gt;(json); }
+                catch (Exception e) { Debug.LogWarning(&quot;[GoldRush] Save corrupted, resetting: &quot; + e.Message); }
+            }
+            if (data == null) data = new SaveData();
+            Fix();
+        }
+
+        static void Fix()
+        {
+            if (data.levels == null) data.levels = new List&lt;LevelProgress&gt;();
+            while (data.levels.Count &lt; Levels.All.Length) data.levels.Add(new LevelProgress());
+            if (data.owned == null) data.owned = new List&lt;string&gt;();
+            if (!data.owned.Contains(&quot;color_blue&quot;)) data.owned.Add(&quot;color_blue&quot;);
+            if (!data.owned.Contains(&quot;hat_none&quot;)) data.owned.Add(&quot;hat_none&quot;);
+            if (!data.owned.Contains(data.color)) data.color = &quot;color_blue&quot;;
+            if (!data.owned.Contains(data.hat)) data.hat = &quot;hat_none&quot;;
+            data.unlocked = Mathf.Clamp(data.unlocked, 1, Levels.All.Length);
+            if (data.dailyDate != Levels.TodayKey)
+            {
+                data.dailyDate = Levels.TodayKey;
+                data.dailyBest = -1f;
+                data.dailyCleared = false;
+            }
+        }
+
+        public static void Persist()
+        {
+            if (data == null) return;
+            PlayerPrefs.SetString(Key, JsonUtility.ToJson(data));
+            PlayerPrefs.Save();
+        }
+
+        [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
+        static void ResetStatics() { data = null; }
+    }
+
+    // ------------------------------------------------------------------ Shop
+
+    public class ShopItem
+    {
+        public readonly string id, name;
+        public readonly int price;
+        public readonly Color color;
+        public readonly bool isHat;
+        public ShopItem(string id, string name, int price, Color color, bool isHat = false)
+        {
+            this.id = id; this.name = name; this.price = price; this.color = color; this.isHat = isHat;
+        }
+    }
+
+    public static class Catalog
+    {
+        public static readonly ShopItem[] Colors =
+        {
+            new ShopItem(&quot;color_blue&quot;,   &quot;Classic&quot;, 0,   new Color(0.25f, 0.55f, 0.95f)),
+            new ShopItem(&quot;color_orange&quot;, &quot;Sunset&quot;,  30,  new Color(1f, 0.55f, 0.2f)),
+            new ShopItem(&quot;color_mint&quot;,   &quot;Mint&quot;,    30,  new Color(0.3f, 0.85f, 0.65f)),
+            new ShopItem(&quot;color_purple&quot;, &quot;Royal&quot;,   50,  new Color(0.6f, 0.35f, 0.9f)),
+            new ShopItem(&quot;color_red&quot;,    &quot;Ruby&quot;,    50,  new Color(0.9f, 0.2f, 0.25f)),
+            new ShopItem(&quot;color_black&quot;,  &quot;Shadow&quot;,  80,  new Color(0.15f, 0.15f, 0.18f)),
+            new ShopItem(&quot;color_gold&quot;,   &quot;Golden&quot;,  200, new Color(1f, 0.78f, 0.2f)),
+        };
+
+        public static readonly ShopItem[] Hats =
+        {
+            new ShopItem(&quot;hat_none&quot;,   &quot;No Hat&quot;,  0,   new Color(0.5f, 0.5f, 0.5f), true),
+            new ShopItem(&quot;hat_cowboy&quot;, &quot;Cowboy&quot;,  60,  new Color(0.55f, 0.33f, 0.18f), true),
+            new ShopItem(&quot;hat_miner&quot;,  &quot;Miner&quot;,   80,  new Color(1f, 0.8f, 0.1f), true),
+            new ShopItem(&quot;hat_top&quot;,    &quot;Top Hat&quot;, 100, new Color(0.12f, 0.12f, 0.14f), true),
+            new ShopItem(&quot;hat_crown&quot;,  &quot;Crown&quot;,   250, new Color(1f, 0.82f, 0.25f), true),
+        };
+
+        public static ShopItem Find(string id)
+        {
+            foreach (var i in Colors) if (i.id == id) return i;
+            foreach (var i in Hats) if (i.id == id) return i;
+            return null;
+        }
+    }
+}</code></pre>
+<ul>
+  <li><code>Levels.All</code> is the list of the 4 levels. Each <code>LevelDef</code> has a title, its scene name (<code>Level1</code> …), the number of coins and monsters and the <b>par time</b> (finish faster for a star). Change a number here and the level changes.</li>
+  <li><code>Levels.Daily()</code> makes the <b>Daily Rush</b>. Its <b>seed</b> (the start number for the random numbers) is today's date, so every player gets the same level today and a new one tomorrow.</li>
+  <li><code>GameSession.LevelIndex</code> remembers which level to play (<code>-1</code> = daily). It is <code>static</code>, so it survives a scene change.</li>
+  <li><code>Save.Fix()</code> repairs an old or broken save: one <code>LevelProgress</code> per level, the free items are always owned, <code>unlocked</code> stays between 1 and 4, and the daily result is reset on a new day.</li>
+  <li><code>Catalog</code> is the shop: 7 colours and 5 hats with their prices.</li>
+</ul>
+<div class="table-wrap"><table>
+  <tr><th>Colours</th><th>Hats</th></tr>
+  <tr><td>Classic 0 · Sunset 30 · Mint 30 · Royal 50 · Ruby 50 · Shadow 80 · Golden 200</td><td>No Hat 0 · Cowboy 60 · Miner 80 · Top Hat 100 · Crown 250</td></tr>
+</table></div>
 
 <!-- ======================================================= 4 -->
-<h2 id="step-4"><span class="step">4</span>Make the groups</h2>
-<p>Empty GameObjects can hold other objects like folders. This keeps the Hierarchy tidy. The real game uses the same names.</p>
+<h2 id="step-4"><span class="step">4</span>Import GoldRushMenu (phase 2)</h2>
+<p>The phase 2 menu script is about 400 lines, so you import it.</p>
 <ol>
-  <li><b>GameObject → Create Empty</b>. Name it <code>Level 1 - Training Yard</code>. Transform <b>⋮ → Reset</b>.</li>
-  <li>Make more empty objects and drag them into place so you get this tree. Reset the Transform of each one (all at <code>0, 0, 0</code>).</li>
+  <li>Drag <code>GoldRush_Export/Resources/Scripts/Phases/Phase02/UI/GoldRushMenu.cs</code> into <code>Assets/GoldRush/Scripts/UI/</code>.</li>
+  <li>Unity asks to replace your phase 1 file. Click <b>Replace</b>.</li>
+  <li>Wait for the compile. The Console must show <b>no red errors</b>.</li>
 </ol>
-<pre><code>Level 1 - Training Yard
-  Static
-    Floor
-    Walls
-    Lamps
-    Obstacles
-  Scenery
-  Gameplay
-    Coins
-    Monsters
-    PowerUps</code></pre>
-<div class="table-wrap"><table>
-  <tr><th>Group</th><th>What goes in it</th></tr>
-  <tr><td><code>Static</code></td><td>Everything solid that never moves. In phase 7 the monsters' NavMesh is built from this group.</td></tr>
-  <tr><td><code>Scenery</code></td><td>Decoration outside the yard (the big outer ground).</td></tr>
-  <tr><td><code>Gameplay</code></td><td>The markers: where things start or appear.</td></tr>
-</table></div>
-<div class="tip">To make a child: right-click the parent in the Hierarchy → <b>Create Empty</b>. Then the new object is already inside the parent.</div>
+<p>The fields are the same as in phase 1, so your connections are kept. What is new:</p>
+<ul>
+  <li><code>RefreshTitle()</code> now counts your stars (<code>Save.Data.levels</code>), fills the star bar and writes the next level under PLAY.</li>
+  <li><code>BuildLevels()</code> makes the 5 cards in <code>Cards</code> each time the Levels screen opens: Level 1–4 and the Daily Rush. A card shows the title, your stars and best time. A locked card shows a lock and shakes when you click it.</li>
+  <li><code>RefreshShop()</code> makes the two tabs in <code>Tabs</code> and one card per item in <code>Grid</code> (3 per row).</li>
+  <li><code>BindSettings()</code> connects MUSIC and SOUND: a click flips the setting, saves it and writes <code>ON</code> or <code>OFF</code>.</li>
+</ul>
+<p>The part that switches the screens and runs the button words:</p>
+<pre class="long"><code>void Show(Screen s, bool instant = false)
+{
+    current = s;
+    if (topRight != null) foreach (var item in topRight) if (item) item.SetActive(s != Screen.Title);
+    titleScreen.gameObject.SetActive(s == Screen.Title);
+    levelScreen.gameObject.SetActive(s == Screen.Levels);
+    shopScreen.gameObject.SetActive(s == Screen.Shop);
+    if (s == Screen.Levels) BuildLevels();
+    if (s == Screen.Shop) RefreshShop();
+    var active = s == Screen.Title ? titleScreen : s == Screen.Levels ? levelScreen : shopScreen;
+    var g = active.GetComponent&lt;CanvasGroup&gt;();
+    if (!instant) { g.alpha = 0; Tween.Fade(g, 1f, 0.25f); AudioFX.Play(&quot;whoosh&quot;, 0.5f); }
+    else g.alpha = 1;
+
+    switch (s)
+    {
+        case Screen.Title: lookSideTarget = 0f; camDistTarget = 6.2f; break; // hero centre stage
+        case Screen.Levels: lookSideTarget = 0f; camDistTarget = 8f; break;
+        case Screen.Shop: lookSideTarget = 1f; camDistTarget = 3.8f; break;
+    }
+}
+
+/// &lt;summary&gt;Called by MenuAction buttons placed in the scene (&quot;play&quot;, &quot;levels&quot;, &quot;shop&quot;, &quot;back&quot;, &quot;settings&quot;).&lt;/summary&gt;
+public void Run(string action)
+{
+    switch (action)
+    {
+        case &quot;play&quot;: StartLevel(Mathf.Clamp(Save.Data.unlocked - 1, 0, Levels.All.Length - 1)); break;
+        case &quot;levels&quot;: Show(Screen.Levels); break;
+        case &quot;shop&quot;: Show(Screen.Shop); break;
+        case &quot;back&quot;: Show(Screen.Title); break;
+        case &quot;settings&quot;: ShowSettings(); break;
+        case &quot;closeSettings&quot;: HideSettings(); break;
+        default: Debug.LogWarning(&quot;[GoldRush] Unknown menu action: &quot; + action); break;
+    }
+}
+
+public void StartLevel(int index)
+{
+    GameSession.LevelIndex = index;
+    // course: a level can only start when its scene is in File &gt; Build Profiles &gt; Scene List (phase 3)
+    if (!Application.CanStreamedLevelBeLoaded(GameSession.SceneName))
+    {
+        Debug.Log($&quot;[GoldRush] Scene &#x27;{GameSession.SceneName}&#x27; is not in the build yet. You make Level1 in phase 3.&quot;);
+        return;
+    }
+    Fader.Load(GameSession.SceneName);
+}</code></pre>
+<ul>
+  <li><code>Show()</code> turns on one screen and turns off the others. The top-right bar (<code>topRight</code>) is hidden on the Title screen. The camera gets a new target: further back for the levels, to the side for the shop.</li>
+  <li><code>StartLevel()</code> remembers the level in <code>GameSession</code> and loads its scene with a fade. <code>Application.CanStreamedLevelBeLoaded</code> checks first that the scene is in the build list. In phase 3 you make <code>Level1</code> and add it: then PLAY works without changing this file.</li>
+</ul>
+<p>What happens when you click a shop item:</p>
+<pre class="long"><code>void OnShopItem(ShopItem item, RectTransform card)
+{
+    var d = Save.Data;
+    bool owned = d.owned.Contains(item.id);
+    if (!owned)
+    {
+        if (d.gold &lt; item.price)
+        {
+            AudioFX.Play(&quot;error&quot;);
+            Shake(card);
+            if (goldPill) Shake(goldPill);
+            return;
+        }
+        d.gold -= item.price;
+        d.owned.Add(item.id);
+        AudioFX.Play(&quot;buy&quot;);
+        // phase 10: FX.Confetti(...) throws confetti
+    }
+    else AudioFX.Play(&quot;click&quot;);
+    if (item.isHat) d.hat = item.id; else d.color = item.id;
+    Save.Persist();
+    // phase 10: Cosmetics.Apply(...) shows the new colour / hat on the hero, FX.Burst(...) adds sparkles
+    if (playerAnim) playerAnim.SetTrigger(AnimParams.Win);
+    if (playerRoot) Tween.Punch(playerRoot, 0.12f, 0.35f);
+    RefreshShop();
+}</code></pre>
+<ul>
+  <li>Not owned and too expensive: an error sound, and the card and the gold counter shake.</li>
+  <li>Not owned and enough gold: pay, add it to <code>owned</code>, play the <code>buy</code> sound.</li>
+  <li>Then wear it (<code>d.color</code> or <code>d.hat</code>), save, make the hero wave and redraw the shop. The new look on the hero comes in phase 10.</li>
+</ul>
 
 <!-- ======================================================= 5 -->
-<h2 id="step-5"><span class="step">5</span>Grid snapping</h2>
-<p>Snapping moves objects in fixed steps, so blocks line up. All positions in this phase are on a <b>0.5 m</b> grid.</p>
+<h2 id="step-5"><span class="step">5</span>Make the three new screens</h2>
+<p>The tables work like in phase 1 (see "How to read the UI tables" in <a href="phase-01.html#step-12">phase 1, step 12</a>).</p>
 <ol>
-  <li>Open <b>Edit → Grid and Snap Settings…</b></li>
-  <li>Set <b>Grid Size</b> to <code>0.5</code> (X, Y and Z). Set <b>Move</b> increment to <code>0.5</code> and <b>Rotate</b> to <code>90</code>.</li>
-  <li>In the Scene view toolbar, turn on <b>Grid Snapping</b> (the grid icon with a magnet).</li>
+  <li>Right-click <code>MenuUI</code> → <b>Create Empty</b>. Name it <code>Levels</code>.</li>
+  <li>Anchor: hold <b>Alt</b>, click <b>stretch / stretch</b>. Left, Top, Right, Bottom = <code>0</code>.</li>
+  <li><b>Add Component → Canvas Group</b>.</li>
+  <li>Do the same two more times: <code>Shop</code> and <code>Settings</code>.</li>
+  <li>Untick <code>Title</code> while you build the other screens, so it is not in the way. Tick it again at the end. (The menu turns the right screen on when the game starts.)</li>
 </ol>
-<div class="table-wrap"><table>
-  <tr><th>Way to place</th><th>How</th></tr>
-  <tr><td>Type the numbers</td><td>The most exact way. Type Position and Rotation in the Inspector. Use this for the tables below.</td></tr>
-  <tr><td>Drag with grid snapping on</td><td>Move tool (<b>W</b>), drag an arrow. The object jumps in 0.5 m steps.</td></tr>
-  <tr><td>Hold <b>Ctrl</b> (<b>Cmd</b>) while dragging</td><td>Moves in increments, even with Grid Snapping off.</td></tr>
-  <tr><td>Hold <b>V</b> while dragging</td><td><b>Vertex snapping</b>: grab a corner and drop it on a corner of another object. Good for stacking.</td></tr>
-</table></div>
-<figure class="shot todo"><div class="ph">Screenshot: Grid and Snap Settings window (Grid Size 0.5) and the Grid Snapping button in the Scene toolbar</div><figcaption>Grid and Snap settings.</figcaption></figure>
+<p>At the end of this phase the children of <code>MenuUI</code> are in this order. <code>Settings</code> must be <b>last</b>, so the dialog is drawn on top of everything:</p>
+<pre><code>MenuUI
+  Title
+  Levels
+  Shop
+  GoldPill      ← step 6
+  DayNight      ← step 6
+  Btn_Gear      ← step 6
+  Settings</code></pre>
+<figure class="shot todo" data-shot="phase-02/step-05" data-window="inspector" data-select="GoldRushMenu/MenuUI/Levels"><div class="ph">Inspector of Levels: Rect Transform stretch/stretch, all offsets 0, Canvas Group</div><figcaption>Check: Left, Top, Right, Bottom are 0 and there is a Canvas Group.</figcaption></figure>
 
 <!-- ======================================================= 6 -->
-<h2 id="step-6"><span class="step">6</span>The floor</h2>
+<h2 id="step-6"><span class="step">6</span>The top-right bar</h2>
+<p>The Levels and Shop screens show the gear, the day/night button and a big gold counter at the <b>top right</b>. They are children of <code>MenuUI</code> (not of a screen), so they stay when you switch between Levels and Shop.</p>
+<h3>Gear and day/night</h3>
 <ol>
-  <li>Drag <code>Prefabs/Level/Floor_40m</code> onto <code>Static/Floor</code> in the Hierarchy. Set <b>Position</b> <code>0, 0, 0</code>.</li>
-  <li>Drag <code>Prefabs/Level/OuterGround</code> onto <code>Scenery</code>. Set <b>Position</b> <code>0, 0, 0</code> (the prefab already sits 0.6 m lower inside).</li>
+  <li>Select <code>Title/Btn_Gear</code>. Press <b>Ctrl+D</b> (Mac: <b>Cmd+D</b>). Drag the copy onto <code>MenuUI</code>. Rename it <code>Btn_Gear</code> (remove " (1)").</li>
+  <li>Anchor <b>top right</b> (with Shift: pivot <code>1, 1</code>). Pos <code>-484, -34</code>. Size <code>100 × 100</code>. Its <code>Glass/Icon_Gear</code>: size <code>46 × 46</code>.</li>
+  <li>Do the same with <code>Title/DayNight</code>: copy onto <code>MenuUI</code>, name <code>DayNight</code>, anchor <b>top right</b>, Pos <code>-362, -34</code>, Size <code>100 × 100</code>. <code>Icon_Sun</code> and <code>Icon_Moon</code>: size <code>56 × 56</code>.</li>
 </ol>
-<p>The floor is 40 × 40 m with 2 m tiles. Its top is at <code>Y = 0</code> and it is solid, so the hero can walk on it. </p>
-<p>The floor stands 0.6 m above the darker outer ground, like a stage. The fog (step 14) hides the far edge of the outer ground.</p>
+<h3>The gold pill</h3>
+<ol>
+  <li>Drag the <code>GlassPill</code> prefab onto <code>MenuUI</code>. Rename it <code>GoldPill</code>.</li>
+  <li>Anchor <b>top right</b> (pivot <code>1, 1</code>). Pos <code>-40, -34</code>. Size <code>300 × 100</code>.</li>
+  <li>It is 100 high: set <b>PPU</b> <code>1.28</code> (128 ÷ 100) on <code>Shadow</code>, <code>Tint</code>, <code>Glass</code> and <code>Glass/Edge</code>. <code>Glass/Edge</code> colour <code>FFC233 · 140</code>.</li>
+  <li>Copy <code>Title/Gold/Coin</code> (Ctrl+D) and drag the copy onto <code>GoldPill</code>. Rename it <code>Coin</code>. Change it to the bigger size:</li>
+</ol>
+<div class="table-wrap"><table>
+  <tr><th>Object (parent)</th><th>Anchor / Pivot</th><th>Pos / Size or L B R T</th><th>Other</th></tr>
+  <tr><td><code>Coin</code> (GoldPill)</td><td>middle left, pivot <code>0.5, 0.5</code></td><td><code>52, 3</code> / <code>76 × 76</code></td><td>has Coin Flip</td></tr>
+  <tr><td><code>Body</code> (Coin)</td><td>stretch</td><td>L 6.08, B 7.6, R 6.08, T 4.56</td><td></td></tr>
+  <tr><td><code>Inner</code> (Coin)</td><td>stretch</td><td>L 16.72, B 16.72, R 16.72, T 15.2</td><td></td></tr>
+  <tr><td><code>Shine</code> (Coin)</td><td>anchors <code>0.32, 0.7</code></td><td><code>0, 0</code> / <code>13.68 × 13.68</code></td><td></td></tr>
+  <tr><td><code>Label</code> (GoldPill)</td><td>stretch</td><td>L 106, B 0, R 16, T 0</td><td>Text <code>0</code>, Poppins-Bold <code>50</code>, Middle Left, <code>FFC233</code>, Outline (1.14, -1.14)</td></tr>
+</table></div>
+<p>Put the three in the order of step 5 (GoldPill, DayNight, Btn_Gear, after Shop).</p>
+<figure class="shot todo" data-shot="phase-02/step-06-a" data-window="hierarchy" data-select="GoldRushMenu/MenuUI/GoldPill"><div class="ph">Hierarchy: MenuUI → Title, Levels, Shop, GoldPill (Shadow, Tint, Glass/Edge, Coin, Label), DayNight, Btn_Gear, Settings</div><figcaption>Check: GoldPill, DayNight and Btn_Gear are children of MenuUI.</figcaption></figure>
+<figure class="shot todo" data-shot="phase-02/step-06-b" data-window="inspector" data-select="GoldRushMenu/MenuUI/GoldPill"><div class="ph">Inspector of GoldPill: top right, pivot 1/1, Pos -40, -34, size 300 x 100</div><figcaption>Check: anchor and pivot are top right.</figcaption></figure>
 
 <!-- ======================================================= 7 -->
-<h2 id="step-7"><span class="step">7</span>The south wall</h2>
-<p>Build one wall side from four <code>Wall_8m</code> pieces. Then copy the whole side for the others.</p>
+<h2 id="step-7"><span class="step">7</span>Glass recipe 4: the chip button</h2>
+<p>A <b>chip button</b> is a neutral glass button with a coloured round icon: BACK, MUSIC and SOUND use it. Build it as the BACK button of the Levels screen (200 × 80). <b>PPU</b> <code>1.32</code> = 96 ÷ 80 × 1.1.</p>
 <ol>
-  <li>Right-click <code>Static/Walls</code> → <b>Create Empty</b>. Name it <code>WallSouth</code>. Set <b>Position</b> <code>0, 0, -16.5</code>.</li>
-  <li>Drag <code>Prefabs/Level/Wall_8m</code> onto <code>WallSouth</code> in the Hierarchy (so it becomes a child).</li>
-  <li>Set its <b>Position</b> to <code>-12, 0, 0</code>. (Child positions are <b>local</b>: relative to the parent.)</li>
-  <li>Add three more <code>Wall_8m</code> children at <code>-4, 0, 0</code>, <code>4, 0, 0</code> and <code>12, 0, 0</code>.</li>
+  <li>Right-click <code>Levels</code> → <b>Create Empty</b>. Name it <code>ChipButton</code>. Anchor <b>top left</b> (pivot <code>0, 1</code>). Pos <code>32, -34</code>. Size <code>200 × 80</code>.</li>
+  <li>Add the children:</li>
 </ol>
-<p>The wall now runs from X = -16 to X = +16 without gaps.</p>
-<div class="tip">Fast copy: select a child and press <b>Ctrl+D</b> (<b>Cmd+D</b>). Then only change the X value.</div>
+<div class="table-wrap"><table>
+  <tr><th>Object (parent)</th><th>Create</th><th>Sprite</th><th>Colour</th><th>Rect</th><th>Other</th></tr>
+  <tr><td><code>Halo</code> (ChipButton)</td><td>Image</td><td><code>soft</code></td><td><code>616B85 · 0</code></td><td>stretch L -60, B -45, R -60, T -45</td><td></td></tr>
+  <tr><td><code>Shadow</code> (ChipButton)</td><td>Image</td><td><code>rr</code></td><td><code>000000 · 36</code></td><td>stretch L 0, B -4, R 0, T 2</td><td>Sliced, PPU 1.32</td></tr>
+  <tr><td><code>Tint</code> (ChipButton)</td><td>Image</td><td><code>rr</code></td><td><code>080D1F · 97</code></td><td>stretch 0</td><td>Sliced, PPU 1.32</td></tr>
+  <tr><td><code>Glass</code> (ChipButton)</td><td>Image</td><td><code>rr</code></td><td><code>FFFFFF · 20</code></td><td>stretch 0</td><td>Sliced, PPU 1.32, <i>raycast</i></td></tr>
+  <tr><td><code>Edge</code> (Glass)</td><td>Image</td><td><code>rro2</code></td><td><code>FFFFFF · 179</code></td><td>stretch 0</td><td>Sliced, PPU 1.32</td></tr>
+  <tr><td><code>IconDisc</code> (Glass)</td><td>Image</td><td><code>circle</code></td><td><code>616B85 · 217</code></td><td>middle left, pivot <code>0, 0.5</code>, Pos <code>15.2, 0</code>, Size <code>49.6 × 49.6</code></td><td></td></tr>
+  <tr><td><code>Icon_Back</code> (IconDisc)</td><td>Empty</td><td>–</td><td>–</td><td>middle centre, Size <code>29.76 × 29.76</code></td><td></td></tr>
+  <tr><td><code>Glyph</code> (Icon_Back)</td><td>Image</td><td><code>ic_arrow_back</code></td><td><code>F2F7FF</code></td><td>stretch 0</td><td>Preserve Aspect</td></tr>
+  <tr><td><code>Content</code> (Glass)</td><td>Empty</td><td>–</td><td>–</td><td>stretch L 80, B 6, R 15.2, T 6</td><td></td></tr>
+  <tr><td><code>Label</code> (Content)</td><td>Text</td><td>–</td><td><code>F2F7FF</code></td><td>stretch 0</td><td><code>BACK</code>, Poppins-Bold <code>30</code>, Middle Left, <i>Best Fit</i> 16–30. <b>Shadow</b> (0, -1.5)</td></tr>
+</table></div>
+<ol start="3">
+  <li>Select <code>ChipButton</code>. <b>Add Component → Button</b>: Transition <b>None</b>, Navigation <b>None</b>, Target Graphic = <code>ChipButton/Glass</code>.</li>
+  <li><b>Add Component → Button FX</b>: tick <b>Flat</b>, Base Color <code>616B85</code>.</li>
+  <li><b>Add Component → Canvas Group</b>.</li>
+  <li>Drag <code>ChipButton</code> into <code>Prefabs/UI</code> (<b>Original Prefab</b>). Rename the object in the Hierarchy to <code>BACKBtn</code>.</li>
+  <li>On <code>BACKBtn</code> only: <b>Add Component → Menu Action</b>, Action <code>back</code>. (The prefab has no Menu Action, because MUSIC and SOUND do not use one.)</li>
+</ol>
+<figure class="shot todo" data-shot="phase-02/step-07-a" data-window="hierarchy" data-select="GoldRushMenu/MenuUI/Levels/BACKBtn"><div class="ph">Hierarchy: BACKBtn (blue) → Halo, Shadow, Tint, Glass → Edge, IconDisc (Icon_Back/Glyph), Content (Label)</div><figcaption>Check: IconDisc and Content are children of Glass. (MUSIC/SOUND look for <code>Glass/IconDisc</code>.)</figcaption></figure>
+<figure class="shot todo" data-shot="phase-02/step-07-b" data-window="inspector" data-select="GoldRushMenu/MenuUI/Levels/BACKBtn"><div class="ph">Inspector of BACKBtn: top left, 32, -34, 200 x 80, Button (Transition None, Target Graphic Glass), Button FX (Flat, slate), Canvas Group, Menu Action (back)</div><figcaption>Check: Menu Action = back.</figcaption></figure>
 
 <!-- ======================================================= 8 -->
-<h2 id="step-8"><span class="step">8</span>The north wall with the gate opening</h2>
-<ol>
-  <li>Select <code>WallSouth</code>. Press <b>Ctrl+D</b>. Rename the copy <code>WallNorth</code>.</li>
-  <li>Set <code>WallNorth</code> <b>Position</b> to <code>0, 0, 16.5</code>.</li>
-  <li>Delete the two middle children (the ones at X <code>-4</code> and <code>4</code>).</li>
-  <li>Drag <code>Wall_4m</code> onto <code>WallNorth</code> twice. Set the positions to <code>-6, 0, 0</code> and <code>6, 0, 0</code>.</li>
-</ol>
-<p>Now there is an 8 m opening from X = -4 to X = +4. Close it with an invisible wall until the gate exists:</p>
-<ol start="5">
-  <li>Right-click <code>Static/Walls</code> → <b>Create Empty</b>. Name it <code>GateBlocker</code>.</li>
-  <li>Set <b>Position</b> <code>0, 2.5, 17.25</code>.</li>
-  <li><b>Add Component → Box Collider</b>. Set <b>Size</b> to <code>8, 5, 1</code>.</li>
-</ol>
-<p>The blocker sits just behind the opening. The player can walk into the opening (to reach the gate) but not out of the level.</p>
+<h2 id="step-8"><span class="step">8</span>The Levels screen</h2>
+<p>Add the rest of the Levels screen. Then put <code>BACKBtn</code> after <code>SubHeader</code> (order: Dim, Header, SubHeader, BACKBtn, Cards).</p>
+<div class="table-wrap"><table>
+  <tr><th>Object (parent)</th><th>Create</th><th>Anchor / Pivot</th><th>Pos / Size</th><th>Image / Text</th></tr>
+  <tr><td><code>Dim</code> (Levels)</td><td>Image</td><td>stretch 0</td><td>–</td><td>No sprite, <code>080D1F · 140</code>. Raycast Target off.</td></tr>
+  <tr><td><code>Header</code> (Levels)</td><td>Text</td><td>top centre, pivot <code>0.5, 1</code></td><td><code>0, -40</code> / <code>900 × 80</code></td><td><code>SELECT LEVEL</code>, Poppins-Bold <code>60</code>, Middle Center, <code>F2F7FF</code>. <b>Shadow</b> (0, -2.5)</td></tr>
+  <tr><td><code>SubHeader</code> (Levels)</td><td>Text</td><td>top centre, pivot <code>0.5, 1</code></td><td><code>0, -118</code> / <code>900 × 34</code></td><td><code>Collect all the gold, then run to the exit!</code>, Poppins-SemiBold <code>24</code>, Middle Center, <code>F2F7FF · 166</code></td></tr>
+  <tr><td><code>Cards</code> (Levels)</td><td>Empty</td><td>middle centre</td><td><code>0, -50</code> / <code>1612 × 440</code></td><td>Leave it empty. The menu puts the 5 cards (300 × 440 each) in here.</td></tr>
+</table></div>
+<figure class="shot todo" data-shot="phase-02/step-08-a" data-window="hierarchy" data-select="GoldRushMenu/MenuUI/Levels"><div class="ph">Hierarchy: Levels → Dim, Header, SubHeader, BACKBtn, Cards</div><figcaption>Check: Cards is empty and last.</figcaption></figure>
+<figure class="shot todo" data-shot="phase-02/step-08-b" data-window="inspector" data-select="GoldRushMenu/MenuUI/Levels/Cards"><div class="ph">Inspector of Cards: middle centre, Pos 0, -50, Size 1612 x 440, no components</div><figcaption>Check: size 1612 × 440 (5 cards of 300 + 4 gaps of 28).</figcaption></figure>
 
 <!-- ======================================================= 9 -->
-<h2 id="step-9"><span class="step">9</span>East and west walls, corners</h2>
+<h2 id="step-9"><span class="step">9</span>The Shop screen</h2>
 <ol>
-  <li>Duplicate <code>WallSouth</code>. Rename it <code>WallEast</code>. Set <b>Position</b> <code>16.5, 0, 0</code> and <b>Rotation</b> <code>0, 90, 0</code>.</li>
-  <li>Duplicate <code>WallSouth</code> again. Rename it <code>WallWest</code>. Set <b>Position</b> <code>-16.5, 0, 0</code> and <b>Rotation</b> <code>0, 90, 0</code>.</li>
-  <li>Right-click <code>Static/Walls</code> → <b>Create Empty</b>. Name it <code>Corners</code>.</li>
-  <li>Drag 4 × <code>Pillar</code> into <code>Corners</code>. Positions: <code>-16.5, 0, -16.5</code> · <code>16.5, 0, -16.5</code> · <code>-16.5, 0, 16.5</code> · <code>16.5, 0, 16.5</code>.</li>
+  <li>Untick <code>Levels</code>, tick <code>Shop</code>.</li>
+  <li>Drag the <code>ChipButton</code> prefab onto <code>Shop</code>. Rename it <code>BACKBtn</code>. Pos <code>32, -34</code>. <b>Add Component → Menu Action</b>, Action <code>back</code>.</li>
+  <li>Right-click <code>Shop</code> → <b>Create Empty</b>. Name it <code>ShopPanel</code>. Anchor <b>middle right</b> (pivot <code>1, 0.5</code>). Pos <code>-150, -40</code>. Size <code>900 × 880</code>.</li>
+  <li>Give it the four glass layers. It is a big rounded rectangle: sprite <code>rr</code>, <b>PPU</b> <code>0.8</code>, and a darker Tint:</li>
 </ol>
-<p>The pillars fill the four corner gaps and are a bit higher than the walls.</p>
-<figure class="shot todo"><div class="ph">Screenshot: Scene view, the floor with all four walls, corner pillars and the north opening</div><figcaption>Floor, walls and the gate opening.</figcaption></figure>
+<div class="table-wrap"><table>
+  <tr><th>Object (parent)</th><th>Create</th><th>Sprite</th><th>Colour</th><th>Rect</th><th>Other</th></tr>
+  <tr><td><code>Shadow</code> (ShopPanel)</td><td>Image</td><td><code>rr</code></td><td><code>000000 · 36</code></td><td>stretch L 0, B -4, R 0, T 2</td><td>Sliced, PPU 0.8</td></tr>
+  <tr><td><code>Tint</code> (ShopPanel)</td><td>Image</td><td><code>rr</code></td><td><code>080D1F · 230</code></td><td>stretch 0</td><td>Sliced, PPU 0.8</td></tr>
+  <tr><td><code>Glass</code> (ShopPanel)</td><td>Image</td><td><code>rr</code></td><td><code>FFFFFF · 20</code></td><td>stretch 0</td><td>Sliced, PPU 0.8, <i>raycast</i></td></tr>
+  <tr><td><code>Edge</code> (Glass)</td><td>Image</td><td><code>rro2</code></td><td><code>FFFFFF · 179</code></td><td>stretch 0</td><td>Sliced, PPU 0.8</td></tr>
+</table></div>
+<p>Now the header and the two empty boxes. All of them are children of <code>ShopPanel/Glass</code>:</p>
+<div class="table-wrap"><table>
+  <tr><th>Object (parent)</th><th>Create</th><th>Anchor / Pivot</th><th>Pos / Size or Rect</th><th>Image / Text</th></tr>
+  <tr><td><code>Badge</code> (Glass)</td><td>Image</td><td>top left, pivot <code>0, 1</code></td><td><code>40, -26</code> / <code>84 × 84</code></td><td><code>circle</code>, <code>FF8F33 · 230</code></td></tr>
+  <tr><td><code>Ring</code> (Badge)</td><td>Image</td><td>stretch 0</td><td>–</td><td><code>ring2</code>, <code>FFFFFF · 153</code></td></tr>
+  <tr><td><code>Icon_Bag</code> (Badge)</td><td>Empty</td><td>middle centre</td><td><code>0, 0</code> / <code>44 × 44</code></td><td>–</td></tr>
+  <tr><td><code>Glyph</code> (Icon_Bag)</td><td>Image</td><td>stretch 0</td><td>–</td><td><code>ic_shopping_bag</code>, <code>F2F7FF</code>, Preserve Aspect</td></tr>
+  <tr><td><code>Title</code> (Glass)</td><td>Text</td><td>top left, pivot <code>0, 1</code></td><td><code>148, -20</code> / <code>500 × 60</code></td><td><code>SHOP</code>, Poppins-Bold <code>50</code>, Lower Left, <code>F2F7FF</code>. <b>Shadow</b> (0, -2.08)</td></tr>
+  <tr><td><code>Subtitle</code> (Glass)</td><td>Text</td><td>top left, pivot <code>0, 1</code></td><td><code>150, -82</code> / <code>500 × 32</code></td><td><code>Colours &amp; hats for your hero</code>, Poppins-SemiBold <code>24</code>, Upper Left, <code>F2F7FF · 166</code></td></tr>
+  <tr><td><code>Divider</code> (Glass)</td><td>Image</td><td>top stretch, pivot <code>0.5, 0.5</code></td><td>Left 40, Right 40, Pos Y <code>-126</code>, Height <code>2</code></td><td>No sprite, <code>FFFFFF · 26</code></td></tr>
+  <tr><td><code>Tabs</code> (Glass)</td><td>Empty</td><td>top centre, pivot <code>0.5, 1</code></td><td><code>0, -150</code> / <code>560 × 76</code></td><td>Leave empty: the COLORS and HATS tabs go here.</td></tr>
+  <tr><td><code>Grid</code> (Glass)</td><td>Empty</td><td>top centre, pivot <code>0.5, 1</code></td><td><code>0, -250</code> / <code>820 × 610</code></td><td>Leave empty: the item cards go here (3 per row).</td></tr>
+</table></div>
+<figure class="shot todo" data-shot="phase-02/step-09-a" data-window="hierarchy" data-select="GoldRushMenu/MenuUI/Shop/ShopPanel"><div class="ph">Hierarchy: Shop → BACKBtn, ShopPanel → Shadow, Tint, Glass → Edge, Badge (Ring, Icon_Bag/Glyph), Title, Subtitle, Divider, Tabs, Grid</div><figcaption>Check: Tabs and Grid are children of <code>ShopPanel/Glass</code>.</figcaption></figure>
+<figure class="shot todo" data-shot="phase-02/step-09-b" data-window="scene" data-select="GoldRushMenu/MenuUI/Shop/ShopPanel"><div class="ph">Scene view (2D): the shop panel on the right with the orange bag badge, SHOP, subtitle and a thin divider line; empty below</div><figcaption>Check: the panel sits on the right half; the left half stays free for the hero.</figcaption></figure>
 
 <!-- ======================================================= 10 -->
-<h2 id="step-10"><span class="step">10</span>Lamp posts</h2>
-<p>Drag 8 × <code>LampPost</code> into <code>Static/Lamps</code>. Rotation is <code>0, 0, 0</code> for all.</p>
+<h2 id="step-10"><span class="step">10</span>Settings: the panel and the title</h2>
+<p>Settings is a dialog: a dark layer over the whole screen and a glass panel in the middle. Untick <code>Shop</code>, tick <code>Settings</code>.</p>
 <div class="table-wrap"><table>
-  <tr><th>#</th><th>Position</th><th>Where</th></tr>
-  <tr><td>1</td><td><code>-14.5, 0, -14.5</code></td><td>South-west corner</td></tr>
-  <tr><td>2</td><td><code>14.5, 0, -14.5</code></td><td>South-east corner</td></tr>
-  <tr><td>3</td><td><code>-14.5, 0, 14.5</code></td><td>North-west corner</td></tr>
-  <tr><td>4</td><td><code>14.5, 0, 14.5</code></td><td>North-east corner</td></tr>
-  <tr><td>5</td><td><code>-14.5, 0, 0</code></td><td>West, middle</td></tr>
-  <tr><td>6</td><td><code>14.5, 0, 0</code></td><td>East, middle</td></tr>
-  <tr><td>7</td><td><code>-4.5, 0, -14.5</code></td><td>South, left of the start</td></tr>
-  <tr><td>8</td><td><code>4.5, 0, -14.5</code></td><td>South, right of the start</td></tr>
+  <tr><th>Object (parent)</th><th>Create</th><th>Sprite</th><th>Colour</th><th>Rect</th><th>Other</th></tr>
+  <tr><td><code>Dim</code> (Settings)</td><td>Image</td><td>none</td><td><code>080D1F · 140</code></td><td>stretch 0</td><td><i>raycast</i>: it blocks clicks behind the dialog</td></tr>
+  <tr><td><code>Panel</code> (Settings)</td><td>Empty</td><td>–</td><td>–</td><td>middle centre, Pos <code>0, 0</code>, Size <code>600 × 440</code></td><td>the menu pops this in</td></tr>
+  <tr><td><code>Shadow</code> (Panel)</td><td>Image</td><td><code>rr</code></td><td><code>000000 · 51</code></td><td>stretch L -2, B -10, R -2, T 2</td><td>Sliced, PPU 1</td></tr>
+  <tr><td><code>Face</code> (Panel)</td><td>Image</td><td><code>rr</code></td><td><code>0F142B · 209</code></td><td>stretch 0</td><td>Sliced, PPU 1, <i>raycast</i></td></tr>
+  <tr><td><code>Frost</code> (Face)</td><td>Image</td><td><code>rr</code></td><td><code>FFFFFF · 10</code></td><td>stretch 0</td><td>Sliced, PPU 1</td></tr>
+  <tr><td><code>Shine</code> (Face)</td><td>Image</td><td><code>fadeD</code></td><td><code>FFFFFF · 15</code></td><td>Anchors Min <code>0, 0.6</code>, Max <code>1, 1</code>; L 24, B 0, R 24, T 12</td><td></td></tr>
+  <tr><td><code>Edge</code> (Face)</td><td>Image</td><td><code>rro2</code></td><td><code>FFFFFF · 82</code></td><td>stretch 0</td><td>Sliced, PPU 1</td></tr>
+  <tr><td><code>Accent</code> (Face)</td><td>Image</td><td><code>pill</code></td><td><code>33C7E6 · 217</code></td><td>top centre, pivot <code>0.5, 1</code>, Pos <code>0, -8</code>, Size <code>180 × 4</code></td><td>Sliced, PPU 32 (a thin cyan line)</td></tr>
 </table></div>
-<div class="note">Keep it at <b>8 lamps</b> or fewer. Each lamp has a real light, and too many lights make the game slow on phones.</div>
+<p>The <b>SETTINGS</b> title is a cyan glass ribbon that sticks out at the top of the panel:</p>
+<div class="table-wrap"><table>
+  <tr><th>Object (parent)</th><th>Create</th><th>Sprite</th><th>Colour</th><th>Rect</th><th>Other</th></tr>
+  <tr><td><code>Ribbon</code> (Face)</td><td>Empty</td><td>–</td><td>–</td><td>top centre, pivot <code>0.5, 0.5</code>, Pos <code>0, 36</code>, Size <code>380 × 96</code></td><td></td></tr>
+  <tr><td><code>Shadow</code> (Ribbon)</td><td>Image</td><td><code>pill</code></td><td><code>000000 · 46</code></td><td>stretch L 0, B -5, R 0, T 2</td><td>Sliced, PPU 1.333</td></tr>
+  <tr><td><code>Tint</code> (Ribbon)</td><td>Image</td><td><code>pill</code></td><td><code>080D1F · 77</code></td><td>stretch 0</td><td>Sliced, PPU 1.333</td></tr>
+  <tr><td><code>Face</code> (Ribbon)</td><td>Image</td><td><code>pill</code></td><td><code>33C7E6 · 179</code></td><td>stretch 0</td><td>Sliced, PPU 1.333</td></tr>
+  <tr><td><code>Edge</code> (Ribbon/Face)</td><td>Image</td><td><code>pillo</code></td><td><code>FFFFFF · 115</code></td><td>stretch 0</td><td>Sliced, PPU 1.333</td></tr>
+  <tr><td><code>Label</code> (Ribbon/Face)</td><td>Text</td><td>–</td><td><code>F2F7FF</code></td><td>stretch 0</td><td><code>SETTINGS</code>, Poppins-Bold <code>44</code>, Middle Center, Outline (1, -1)</td></tr>
+</table></div>
+<figure class="shot todo" data-shot="phase-02/step-10-a" data-window="hierarchy" data-select="GoldRushMenu/MenuUI/Settings/Panel"><div class="ph">Hierarchy: Settings → Dim, Panel → Shadow, Face → Frost, Shine, Edge, Accent, Ribbon (Shadow, Tint, Face → Edge, Label)</div><figcaption>Check: Ribbon is a child of <code>Panel/Face</code>.</figcaption></figure>
+<figure class="shot todo" data-shot="phase-02/step-10-b" data-window="inspector" data-select="GoldRushMenu/MenuUI/Settings/Dim"><div class="ph">Inspector of Settings/Dim: stretch 0, Image without sprite, navy alpha 140, Raycast Target ON</div><figcaption>Check: Raycast Target is on (only for this Dim).</figcaption></figure>
 
 <!-- ======================================================= 11 -->
-<h2 id="step-11"><span class="step">11</span>Obstacles</h2>
-<p>Obstacles give the hero places to hide from monsters. Drag each prefab into <code>Static/Obstacles</code> and type the values. Rotation is around Y only (the other two stay 0). Scale stays <code>1, 1, 1</code>.</p>
+<h2 id="step-11"><span class="step">11</span>Settings: MUSIC, SOUND and CLOSE</h2>
+<h3>MUSIC and SOUND</h3>
+<p>Two chip buttons, green, 260 × 76. They have <b>no</b> Menu Action: the menu script connects them (<code>BindToggle</code>).</p>
+<ol>
+  <li>Drag the <code>ChipButton</code> prefab onto <code>Settings/Panel/Face</code>. Rename it <code>MUSIC&nbsp;&nbsp;ONBtn</code> (two spaces, like the label).</li>
+  <li>Change these values:</li>
+</ol>
 <div class="table-wrap"><table>
-  <tr><th>#</th><th>Prefab</th><th>Position</th><th>Rotation Y</th><th>Note</th></tr>
-  <tr><td>1</td><td><code>AccentBlock_Teal</code></td><td><code>4, 0, 4.5</code></td><td>0</td><td rowspan="4">An L-shaped cover in the middle</td></tr>
-  <tr><td>2</td><td><code>Block_4x1x2</code></td><td><code>7, 0, 4.5</code></td><td>0</td></tr>
-  <tr><td>3</td><td><code>Block_4x1x2</code></td><td><code>11, 0, 4.5</code></td><td>0</td></tr>
-  <tr><td>4</td><td><code>Block_4x1x2</code></td><td><code>4, 0, 7.5</code></td><td>90</td></tr>
-  <tr><td>5</td><td><code>Pillar</code></td><td><code>-12.5, 0, 4.5</code></td><td>0</td><td></td></tr>
-  <tr><td>6</td><td><code>Pillar</code></td><td><code>-11.5, 0, -5</code></td><td>0</td><td></td></tr>
-  <tr><td>7</td><td><code>Pillar</code></td><td><code>-5, 0, 12.5</code></td><td>0</td><td></td></tr>
-  <tr><td>8</td><td><code>Block_2x2x2</code></td><td><code>-11, 0, 10.5</code></td><td>0</td><td></td></tr>
-  <tr><td>9</td><td><code>Block_2x2x2</code></td><td><code>-6.5, 0, 1.5</code></td><td>0</td><td rowspan="2">A stack: #10 stands on #9</td></tr>
-  <tr><td>10</td><td><code>Block_1x1x1</code></td><td><code>-6.5, 2, 1.5</code></td><td>0</td></tr>
-  <tr><td>11</td><td><code>Block_4x1x2</code></td><td><code>6, 0, -6</code></td><td>90</td><td></td></tr>
-  <tr><td>12</td><td><code>Block_1x1x1</code></td><td><code>-6.5, 0, -9.5</code></td><td>0</td><td></td></tr>
-  <tr><td>13</td><td><code>Barrier_Orange</code></td><td><code>-2.5, 0, -5</code></td><td>0</td><td>In front of the start</td></tr>
-  <tr><td>14</td><td><code>AccentBlock_Red</code></td><td><code>10.5, 0, -10</code></td><td>0</td><td></td></tr>
-  <tr><td>15</td><td><code>AccentBlock_Teal</code></td><td><code>12, 0, -3.5</code></td><td>0</td><td></td></tr>
-  <tr><td>16</td><td><code>Terminal</code></td><td><code>10.5, 0, 12</code></td><td>90</td><td>Screen faces the middle</td></tr>
-  <tr><td>17</td><td><code>AccentBlock_Red</code></td><td><code>-7.5, 0, 7</code></td><td>0</td><td></td></tr>
+  <tr><th>Object</th><th>Change</th></tr>
+  <tr><td><code>MUSIC&nbsp;&nbsp;ONBtn</code></td><td>Anchor <b>bottom centre</b>, pivot <code>0.5, 0.5</code>, Pos <code>0, 285</code>, Size <code>260 × 76</code>. Button FX → Base Color <code>42CC80</code>.</td></tr>
+  <tr><td><code>Halo</code></td><td>Colour <code>42CC80 · 0</code></td></tr>
+  <tr><td><code>Shadow</code>, <code>Tint</code>, <code>Glass</code>, <code>Glass/Edge</code></td><td>PPU <code>1.389</code> (96 ÷ 76 × 1.1)</td></tr>
+  <tr><td><code>Glass/IconDisc</code></td><td>Colour <code>42CC80 · 217</code>, Pos <code>14.44, 0</code>, Size <code>47.12 × 47.12</code></td></tr>
+  <tr><td><code>Glass/IconDisc/Icon_Back</code></td><td>Rename to <code>Icon_Music</code>, Size <code>28.27 × 28.27</code>. Its <code>Glyph</code>: <code>ic_music_note</code>.</td></tr>
+  <tr><td><code>Glass/Content</code></td><td>Left <code>76</code>, Right <code>14.44</code> (Bottom and Top stay 6)</td></tr>
+  <tr><td><code>Glass/Content/Label</code></td><td>Text <code>MUSIC&nbsp;&nbsp;ON</code>, Font <b>Poppins-SemiBold</b>, Size <code>28</code>, Best Fit Max <code>28</code></td></tr>
 </table></div>
-<div class="tip">This layout is close to the real Level 1. You can change it later, but keep a free path from the start (south) to the gate (north), and keep obstacles at least 1 m away from the walls so monsters can walk around them.</div>
-<figure class="shot todo"><div class="ph">Screenshot: Scene view of the yard with lamps and all 17 obstacles</div><figcaption>Lamps and obstacles in place.</figcaption></figure>
+<ol start="3">
+  <li>Select <code>MUSIC&nbsp;&nbsp;ONBtn</code>, press <b>Ctrl+D</b>. Rename the copy <code>SOUND&nbsp;&nbsp;ONBtn</code>. Pos <code>0, 180</code>.</li>
+  <li>In the copy: rename <code>Icon_Music</code> to <code>Icon_Sound</code>, Glyph <code>ic_volume_up</code>. Label text <code>SOUND&nbsp;&nbsp;ON</code>.</li>
+</ol>
+<p>When the game runs, a click flips the setting and the menu writes <code>ON</code> or <code>OFF</code> into the Label. The icon disc turns grey when the setting is off.</p>
+<figure class="shot todo" data-shot="phase-02/step-11-a" data-window="inspector" data-select="GoldRushMenu/MenuUI/Settings/Panel/Face/MUSIC  ONBtn"><div class="ph">Inspector of MUSIC  ONBtn: bottom centre, Pos 0, 285, 260 x 76, Button, Button FX (Flat, green), Canvas Group, no Menu Action</div><figcaption>Check: there is <b>no</b> Menu Action on MUSIC and SOUND.</figcaption></figure>
+<h3>CLOSE</h3>
+<p>CLOSE is a big glass button with only a text (no icon, no arrow). Start from the <code>GlassButton</code> prefab:</p>
+<ol>
+  <li>Drag the <code>GlassButton</code> prefab onto <code>Settings/Panel/Face</code>. Rename it <code>CLOSEBtn</code>.</li>
+  <li>Right-click it → <b>Prefab → Unpack Completely</b>. (Now you may delete parts.)</li>
+  <li>Delete <code>CLOSEBtn/Face/IconDisc</code> and <code>CLOSEBtn/Face/Chevron</code>.</li>
+  <li>Change these values (slate, 240 × 86, PPU <code>1.228</code> = 96 ÷ 86 × 1.1):</li>
+</ol>
+<div class="table-wrap"><table>
+  <tr><th>Object</th><th>Change</th></tr>
+  <tr><td><code>CLOSEBtn</code></td><td>Anchor <b>bottom centre</b>, pivot <code>0.5, 0.5</code>, Pos <code>0, 66</code>, Size <code>240 × 86</code>. Button FX → Base Color <code>616B85</code>. Menu Action → <code>closeSettings</code>.</td></tr>
+  <tr><td><code>Halo</code></td><td>Colour <code>616B85 · 0</code></td></tr>
+  <tr><td><code>Shadow</code>, <code>Tint</code></td><td>PPU <code>1.228</code></td></tr>
+  <tr><td><code>EdgeGlow</code></td><td>Colour <code>989FAF · 128</code>, PPU <code>1.105</code></td></tr>
+  <tr><td><code>Face</code></td><td>Colour <code>616B85 · 128</code>, PPU <code>1.228</code></td></tr>
+  <tr><td><code>Face/Edge</code></td><td>PPU <code>1.228</code></td></tr>
+  <tr><td><code>Face/Sweep</code></td><td>Size <code>110 × 206.4</code></td></tr>
+  <tr><td><code>Face/Content</code></td><td>Left <code>8</code>, Right <code>8</code></td></tr>
+  <tr><td><code>Face/Content/Label</code></td><td>Text <code>CLOSE</code>, Size <code>34</code>, Best Fit 16–34, Alignment <b>Middle Center</b>, Bottom <code>6</code>, Top <code>6</code>. Shadow (0, -1.5).</td></tr>
+</table></div>
+<ol start="5">
+  <li>At the end, untick <code>Settings</code> (the gear opens it) and tick <code>Title</code> again. <code>Levels</code> and <code>Shop</code> may stay on or off: the menu switches them.</li>
+</ol>
+<figure class="shot todo" data-shot="phase-02/step-11-b" data-window="game" data-select="GoldRushMenu/MenuUI/Settings"><div class="ph">Game view (Settings ticked, before Play): dark screen, glass panel with cyan SETTINGS ribbon, green MUSIC ON and SOUND ON chips, slate CLOSE button</div><figcaption>Check: the ribbon sticks out above the panel.</figcaption></figure>
+<figure class="shot todo" data-shot="phase-02/step-11-c" data-window="hierarchy" data-select="GoldRushMenu/MenuUI/Settings/Panel/Face/CLOSEBtn"><div class="ph">Hierarchy: Panel/Face → Frost, Shine, Edge, Accent, Ribbon, MUSIC  ONBtn, SOUND  ONBtn, CLOSEBtn (Halo, Shadow, EdgeGlow, Tint, Face → Gradient, Depth, TopLine, Sweep, Edge, Content/Label)</div><figcaption>Check: CLOSEBtn has no IconDisc and no Chevron.</figcaption></figure>
 
 <!-- ======================================================= 12 -->
-<h2 id="step-12"><span class="step">12</span>The markers</h2>
-<p>A <b>marker</b> is an empty GameObject that only marks a place. Later phases read these places: the hero appears at <code>PlayerSpawn</code>, a coin appears at each <code>CoinSpot</code>, and so on. For now they are just named empties. In later phases you add a small script to each one (it also draws a coloured shape in the Scene view).</p>
-<ol>
-  <li>Right-click the group from the table → <b>Create Empty</b>. Type the name and the position.</li>
-  <li>Give it an icon so you can see it: in the Inspector, click the cube icon left of the name → pick a coloured label (colour in the table).</li>
-</ol>
+<h2 id="step-12"><span class="step">12</span>Connect the new fields</h2>
+<p>Select <code>GoldRushMenu</code> and fill the fields that are still empty:</p>
 <div class="table-wrap"><table>
-  <tr><th>Name</th><th>Parent</th><th>Position</th><th>Icon</th><th>Used in</th></tr>
-  <tr><td><code>PlayerSpawn</code></td><td><code>Gameplay</code></td><td><code>0, 0, -9</code> (Rotation <code>0, 0, 0</code>: faces north)</td><td>blue</td><td>Phase 3</td></tr>
-  <tr><td><code>CoinSpot 1</code></td><td><code>Gameplay/Coins</code></td><td><code>5, 0, 11.5</code></td><td>yellow</td><td rowspan="6">Phase 5</td></tr>
-  <tr><td><code>CoinSpot 2</code></td><td><code>Gameplay/Coins</code></td><td><code>-6.5, 0, -12.5</code></td><td>yellow</td></tr>
-  <tr><td><code>CoinSpot 3</code></td><td><code>Gameplay/Coins</code></td><td><code>14.5, 0, -7.5</code></td><td>yellow</td></tr>
-  <tr><td><code>CoinSpot 4</code></td><td><code>Gameplay/Coins</code></td><td><code>-7.5, 0, 0</code></td><td>yellow</td></tr>
-  <tr><td><code>CoinSpot 5</code></td><td><code>Gameplay/Coins</code></td><td><code>-14.5, 0, 12.5</code></td><td>yellow</td></tr>
-  <tr><td><code>CoinSpot 6</code></td><td><code>Gameplay/Coins</code></td><td><code>5, 0, -2</code></td><td>yellow</td></tr>
-  <tr><td><code>ExitGateSpot</code></td><td><code>Gameplay</code></td><td><code>0, 0, 16</code></td><td>green</td><td>Phase 6</td></tr>
-  <tr><td><code>Slime 1</code></td><td><code>Gameplay/Monsters</code></td><td><code>5.5, 0, 10.5</code></td><td>red</td><td rowspan="2">Phase 7</td></tr>
-  <tr><td><code>Slime 2</code></td><td><code>Gameplay/Monsters</code></td><td><code>14, 0, -9.5</code></td><td>red</td></tr>
-  <tr><td><code>PowerUp Magnet</code></td><td><code>Gameplay/PowerUps</code></td><td><code>-14.5, 0, -8.5</code></td><td>purple</td><td>Phase 8</td></tr>
+  <tr><th>Header</th><th>Field</th><th>Drag in</th></tr>
+  <tr><td rowspan="5">Screens</td><td>Level Screen</td><td><code>MenuUI/Levels</code></td></tr>
+  <tr><td>Shop Screen</td><td><code>MenuUI/Shop</code></td></tr>
+  <tr><td>Settings Root</td><td><code>MenuUI/Settings</code></td></tr>
+  <tr><td>Settings Panel</td><td><code>Settings/Panel</code> (it pops in)</td></tr>
+  <tr><td>Top Right (size 3)</td><td><code>MenuUI/GoldPill</code>, <code>MenuUI/DayNight</code>, <code>MenuUI/Btn_Gear</code></td></tr>
+  <tr><td rowspan="7">Filled in at runtime</td><td>Gold Pill</td><td><code>MenuUI/GoldPill</code></td></tr>
+  <tr><td>Gold Text</td><td><code>GoldPill/Label</code></td></tr>
+  <tr><td>Level Cards</td><td><code>Levels/Cards</code></td></tr>
+  <tr><td>Shop Tabs</td><td><code>Shop/ShopPanel/Glass/Tabs</code></td></tr>
+  <tr><td>Shop Grid</td><td><code>Shop/ShopPanel/Glass/Grid</code></td></tr>
+  <tr><td>Music Toggle</td><td><code>Settings/Panel/Face/MUSIC&nbsp;&nbsp;ONBtn</code></td></tr>
+  <tr><td>Sound Toggle</td><td><code>Settings/Panel/Face/SOUND&nbsp;&nbsp;ONBtn</code></td></tr>
 </table></div>
-<p>The real level has <b>6 coins</b>, <b>2 slimes</b> and <b>1 power-up</b>. The level is won when all coins are collected and the hero walks through the gate.</p>
-<div class="note">Put markers on the floor (<code>Y = 0</code>) and not inside a block. A coin floats 1 m above its marker. A monster placed inside a block cannot move.</div>
-<figure class="shot todo"><div class="ph">Screenshot: Hierarchy with Gameplay open (PlayerSpawn, Coins, Monsters, PowerUps, ExitGateSpot) and the coloured icons in the Scene view</div><figcaption>The markers and their icons.</figcaption></figure>
+<p>Now <b>every</b> field must be filled. Only <b>Menu Glows</b> may stay empty. Save the scene.</p>
+<figure class="shot todo" data-shot="phase-02/step-12" data-window="inspector" data-select="GoldRushMenu"><div class="ph">Inspector of GoldRushMenu: all fields filled (Top Right 3 elements, Entrance 3 elements), Menu Glows empty or 3</div><figcaption>Check: no field says "None" except Menu Glows.</figcaption></figure>
 
 <!-- ======================================================= 13 -->
-<h2 id="step-13"><span class="step">13</span>The sun</h2>
-<p>The game has a low, warm sunset sun. The game scripts look for the directional light in the scene and use it as the sun.</p>
+<h2 id="step-13"><span class="step">13</span>Test the save with some gold</h2>
+<p>A new save has 0 gold, so you cannot buy anything yet (you win gold in the levels from phase 6). For a test, give yourself some gold:</p>
 <ol>
-  <li>Select <b>Directional Light</b>. Rename it <code>Sun</code>.</li>
-  <li>Set <b>Rotation</b> <code>30, 35, 0</code> (Position does not matter for a directional light).</li>
-  <li>In the <b>Light</b> component: <b>Color</b> <span class="sw" style="background:#FFDEAD"></span><code>FFDEAD</code>, <b>Intensity</b> <code>1.5</code>.</li>
-  <li><b>Shadow Type</b>: <b>Soft Shadows</b>. <b>Strength</b>: <code>0.75</code>.</li>
-  <li>Under <b>Bias</b>, choose <b>Custom</b>: <b>Depth</b> <code>0.05</code>, <b>Normal</b> <code>0.4</code>. (This stops dark stripes on the blocks.)</li>
+  <li>Stop Play mode. Open <b>Edit → Clear All PlayerPrefs</b>. This deletes the save.</li>
+  <li>In <code>Data.cs</code>, in <code>SaveData</code>, change <code>public int gold;</code> to <code>public int gold = 500;</code> and save the file.</li>
+  <li>Press Play, open the <b>SHOP</b> and buy something. Stop and press Play again: the item is still yours and the gold is lower.</li>
+  <li>When you are done, change it back to <code>public int gold;</code> and clear the PlayerPrefs again.</li>
 </ol>
+<div class="note">The default value only counts for a <b>new</b> save. That is why you clear the PlayerPrefs first.</div>
+<figure class="shot todo" data-shot="phase-02/step-13" data-window="game" data-select="GoldRushMenu/MenuUI/Shop"><div class="ph">Game view, Shop screen in Play mode: COLORS tab active, 7 colour cards, Sunset bought and EQUIPPED, gold 470</div><figcaption>Check: the bought card says EQUIPPED and has a gold edge.</figcaption></figure>
 
 <!-- ======================================================= 14 -->
-<h2 id="step-14"><span class="step">14</span>Sky, ambient light and fog</h2>
+<h2 id="step-14"><span class="step">14</span>▶ Press Play</h2>
 <ol>
-  <li>Open <b>Window → Rendering → Lighting</b>. Click the <b>Environment</b> tab.</li>
-  <li><b>Skybox Material</b>: drag <code>GR_SunsetSky</code> into it.</li>
-  <li><b>Sun Source</b>: drag <code>Sun</code> into it.</li>
-  <li><b>Environment Lighting → Source</b>: <b>Gradient</b>. Set the three colours from the table.</li>
-  <li>Open <b>Other Settings</b>. Tick <b>Fog</b>. Set the colour, mode and distances from the table.</li>
+  <li>Open <code>MainMenu.unity</code> and press <b>▶ Play</b>.</li>
+  <li>Click <b>LEVELS</b>. Click the Level 2 card (locked). Click the Level 1 card. Click <b>BACK</b>.</li>
+  <li>Click <b>SHOP</b>. Switch between <b>COLORS</b> and <b>HATS</b>. Click an item. Press <b>Esc</b>.</li>
+  <li>Click the gear. Click <b>MUSIC</b> and <b>SOUND</b>. Click <b>CLOSE</b>.</li>
+  <li>Click <b>PLAY</b>. Look at the Console.</li>
+  <li>Stop Play mode and press Play again.</li>
 </ol>
-<div class="table-wrap"><table>
-  <tr><th>Setting</th><th>Value</th></tr>
-  <tr><td>Sky Color</td><td><span class="sw" style="background:#CCB29E"></span><code>CCB29E</code></td></tr>
-  <tr><td>Equator Color</td><td><span class="sw" style="background:#BD8F6B"></span><code>BD8F6B</code></td></tr>
-  <tr><td>Ground Color</td><td><span class="sw" style="background:#75543D"></span><code>75543D</code></td></tr>
-  <tr><td>Fog Color</td><td><span class="sw" style="background:#F5C999"></span><code>F5C999</code></td></tr>
-  <tr><td>Fog Mode</td><td><b>Linear</b></td></tr>
-  <tr><td>Start / End</td><td><code>35</code> / <code>120</code></td></tr>
-</table></div>
-<p><b>Ambient light</b> is the soft light that comes from everywhere, so shadows are not black. <b>Fog</b> fades far objects into a warm haze, so the world seems to go on forever.</p>
-<div class="tip">If you do not see the fog in the Scene view, open the Scene view's <b>effects</b> menu (the picture icon in the toolbar) and tick <b>Fog</b> and <b>Skybox</b>.</div>
-<figure class="shot todo"><div class="ph">Screenshot: Lighting window, Environment tab: GR_SunsetSky, Sun, Gradient colours, Fog Linear 35–120</div><figcaption>Lighting → Environment.</figcaption></figure>
-
-<!-- ======================================================= 15 -->
-<h2 id="step-15"><span class="step">15</span>Mark the level static</h2>
-<p><b>Static</b> objects never move. Unity can then draw many of them together (batching), which is faster.</p>
-<ol>
-  <li>Select the <code>Static</code> group.</li>
-  <li>At the top right of the Inspector, open the <b>Static</b> dropdown (the small arrow).</li>
-  <li>Tick <b>Batching Static</b>.</li>
-  <li>Unity asks about the children. Click <b>Yes, change children</b>.</li>
-</ol>
-<div class="note">Do not mark <code>Gameplay</code> as static. The gate door and the monsters move.</div>
-
-<!-- ======================================================= 16 -->
-<h2 id="step-16"><span class="step">16</span>An overview camera</h2>
-<p>Until the player camera exists (phase 4), use the Main Camera to look at the whole yard.</p>
-<ol>
-  <li>Select <b>Main Camera</b>.</li>
-  <li>Set <b>Position</b> <code>0, 22, -30</code> and <b>Rotation</b> <code>35, 0, 0</code>.</li>
-  <li>Save the scene.</li>
-</ol>
-
-<!-- ======================================================= 17 -->
-<h2 id="step-17"><span class="step">17</span>Fly around the Scene view</h2>
-<p>Check your level from every side, like a player would.</p>
-<div class="table-wrap"><table>
-  <tr><th>Do this</th><th>To</th></tr>
-  <tr><td>Hold the <b>right mouse button</b> + <b>W A S D</b></td><td>Fly forward, left, back, right.</td></tr>
-  <tr><td>Hold the right mouse button + <b>Q</b> / <b>E</b></td><td>Fly down / up.</td></tr>
-  <tr><td>Hold <b>Shift</b> while flying</td><td>Fly faster.</td></tr>
-  <tr><td><b>Alt</b> + left mouse drag (<b>Option</b> on Mac)</td><td>Orbit around the selected object.</td></tr>
-  <tr><td>Mouse wheel</td><td>Zoom.</td></tr>
-  <tr><td>Select an object, press <b>F</b></td><td>Jump to it.</td></tr>
-  <tr><td>Click the axis cube (top right) → <b>Y</b></td><td>Top view, like a map.</td></tr>
-</table></div>
-<p>Fly down to hero height (about 1.5 m) at <code>PlayerSpawn</code> and look north. You should see the gate opening between the walls.</p>
-<figure class="shot todo"><div class="ph">Screenshot: Scene view at hero height from PlayerSpawn looking north to the gate opening, sunset sky and fog</div><figcaption>The view from the start.</figcaption></figure>
-
-<!-- ======================================================= 18 -->
-<h2 id="step-18"><span class="step">18</span>▶ Press Play</h2>
-<ol>
-  <li>Save the scene.</li>
-  <li>Click <b>▶ Play</b>. The Game view shows the yard from the overview camera.</li>
-  <li>While it plays, click the <b>Scene</b> tab and fly around (step 17).</li>
-  <li>Click <b>▶</b> again to stop.</li>
-</ol>
+<figure class="shot todo" data-shot="phase-02/step-14-a" data-window="game" data-select="GoldRushMenu/MenuUI/Levels"><div class="ph">Game view, Levels screen in Play mode: SELECT LEVEL, BACK top left, gear / moon / gold top right, five glass cards (1 open, 2–4 locked, Daily Rush)</div><figcaption>Compare with the SELECT LEVEL picture in step 1.</figcaption></figure>
+<figure class="shot todo" data-shot="phase-02/step-14-b" data-window="game" data-select="GoldRushMenu/MenuUI/Settings"><div class="ph">Game view, Settings dialog open in Play mode: MUSIC OFF (grey icon) and SOUND ON</div><figcaption>Check: the label and the icon colour change when you click.</figcaption></figure>
 <div class="check">
 <p><b>You should see:</b></p>
 <ul>
-  <li>A light grid floor with walls on all four sides and an opening in the north wall.</li>
-  <li>8 lamp posts, pillars with cyan bands, grey blocks, red and teal accent blocks, an orange barrier and a terminal.</li>
-  <li>A warm sunset sky, soft shadows and fog in the distance.</li>
-  <li>The marker icons (blue, yellow, green, red, purple) in the Scene view.</li>
+  <li><b>Title</b>: the stars chip shows <code>0 / 12</code>, the PLAY button says <code>LEVEL 1  •  TRAINING YARD</code>.</li>
+  <li><b>LEVELS</b>: the screen fades in, the camera moves back, 5 cards pop in. Level 1 and the Daily Rush are open; Levels 2–4 show a lock and shake when you click them. The top-right bar (gear, moon, gold) is visible.</li>
+  <li><b>SHOP</b>: the camera moves to the hero, who turns left and right. COLORS / HATS switch the cards. Without gold: an error sound and the card and the gold pill shake. With gold (step 13): you buy, the gold counts down, the hero waves, the card says EQUIPPED.</li>
+  <li><b>Settings</b>: the dialog pops in over a dark layer. MUSIC OFF stops the music; SOUND OFF stops the clicks. CLOSE fades it out.</li>
+  <li><b>PLAY</b> or a level card: the Console says <code>Scene 'Level1' is not in the build yet. You make Level1 in phase 3.</code></li>
+  <li>After a restart, your settings, gold and items are still there.</li>
   <li>No red errors in the Console.</li>
 </ul>
 </div>
+<div class="tip">To start again from zero, use <b>Edit → Clear All PlayerPrefs</b> (while not in Play mode).</div>
 
-<!-- ======================================================= 19 -->
-<h2 id="step-19"><span class="step">19</span>Common problems</h2>
+<!-- ======================================================= 15 -->
+<h2 id="step-15"><span class="step">15</span>Common problems</h2>
 <div class="table-wrap"><table>
   <tr><th>Problem</th><th>Fix</th></tr>
-  <tr><td>A wall piece is in the wrong place, far away.</td><td>It is not a child of its wall group, so its position is in world space. Drag it onto <code>WallSouth</code> (or the right group) and type the local position again.</td></tr>
-  <tr><td>The east/west walls run the wrong way.</td><td>Set the <b>group</b> rotation (<code>WallEast</code>, <code>WallWest</code>) to <code>0, 90, 0</code>, not the children.</td></tr>
-  <tr><td>Gaps at the corners.</td><td>Add the 4 corner pillars at <code>±16.5, 0, ±16.5</code>.</td></tr>
-  <tr><td>Blocks float or sink into the floor.</td><td>Y must be <code>0</code> (only the stacked block #10 has Y <code>2</code>). <code>Floor_40m</code> must be at <code>0, 0, 0</code>.</td></tr>
-  <tr><td>The floor has no grid, or giant tiles.</td><td>Use the <code>Floor_40m</code> prefab, not a plain cube. If <code>M_Floor</code> was changed, import the starter package again and tick only <code>Materials</code>.</td></tr>
-  <tr><td>The sky is grey/blue, not sunset.</td><td>Lighting → Environment → Skybox Material must be <code>GR_SunsetSky</code>.</td></tr>
-  <tr><td>No fog.</td><td>Lighting → Environment → Other Settings → Fog ticked, Mode Linear, Start 35, End 120. In the Scene view, turn on Fog in the effects menu.</td></tr>
-  <tr><td>Everything is very dark.</td><td>Check the Sun Intensity (<code>1.5</code>) and the gradient ambient colours.</td></tr>
-  <tr><td>I cannot see the markers.</td><td>Give them an icon (step 12). Check that <b>Gizmos</b> is on in the Scene view toolbar.</td></tr>
-  <tr><td>Game view: "No cameras rendering".</td><td>You deleted the Main Camera. Make a new scene camera with <b>GameObject → Camera</b>, tag it <b>MainCamera</b>, and set it as in step 16.</td></tr>
-  <tr><td>Grid snapping does nothing.</td><td>It only works with the Move tool in <b>Global</b> handle mode. Or type the numbers in the Inspector.</td></tr>
+  <tr><td>Console: <code>NullReferenceException</code> in <code>GoldRushMenu.Start</code> or <code>RefreshTitle</code>.</td><td>A field of step 12 (or of phase 1, step 18) is empty. Often Gold Text, Stars Text, Stars Bar or Settings Root. Fill it.</td></tr>
+  <tr><td>The level cards, the tabs or the shop items do not appear.</td><td><b>Level Cards</b>, <b>Shop Tabs</b> or <b>Shop Grid</b> is empty, or points to the wrong object. Use <code>Levels/Cards</code> and <code>Shop/ShopPanel/Glass/Tabs</code> / <code>Grid</code>.</td></tr>
+  <tr><td>Two screens show at the same time.</td><td>Each Screen field needs its own screen. Check Title Screen, Level Screen and Shop Screen.</td></tr>
+  <tr><td>The top-right bar shows on the Title screen, or never shows.</td><td><b>Top Right</b> must have the three objects under <code>MenuUI</code> (not the ones under <code>Title</code>).</td></tr>
+  <tr><td>Settings never opens, or opens behind the other screens.</td><td>Gear: Menu Action <code>settings</code>. <code>Settings</code> must be the <b>last</b> child of <code>MenuUI</code> (the menu also moves it to the end when it opens).</td></tr>
+  <tr><td>Settings never closes.</td><td>CLOSE needs Menu Action <code>closeSettings</code> (capital S).</td></tr>
+  <tr><td>MUSIC / SOUND do nothing, or the label does not change.</td><td>They need <b>no</b> Menu Action, but they must be in <b>Music Toggle</b> / <b>Sound Toggle</b>. The label must be the first Text inside the button.</td></tr>
+  <tr><td>The MUSIC icon does not turn grey.</td><td>The icon disc must be at <code>Glass/IconDisc</code> inside the button (the script looks for this path).</td></tr>
+  <tr><td>I click a card or a button behind the Settings dialog.</td><td><code>Settings/Dim</code> needs <b>Raycast Target</b> on.</td></tr>
+  <tr><td>I cannot click anything on the Levels screen.</td><td><code>Levels/Dim</code> must have <b>Raycast Target</b> off.</td></tr>
+  <tr><td>Buying always fails.</td><td>You have 0 gold. See step 13.</td></tr>
+  <tr><td>I bought a colour, but the hero did not change.</td><td>Normal for now. The hero shows the shop colour and hat from phase 10.</td></tr>
+  <tr><td>The CLOSE button still has an icon or an arrow.</td><td>Delete <code>Face/IconDisc</code> and <code>Face/Chevron</code> (unpack the prefab first).</td></tr>
+  <tr><td>Round ends look wrong on GoldPill, MUSIC or CLOSE.</td><td>Use the PPU of the table on <b>every</b> sliced layer of that piece.</td></tr>
 </table></div>
 <p>More fixes are on the <a href="troubleshooting.html">Troubleshooting</a> page. New words are in the <a href="glossary.html">Glossary</a>.</p>
-<p><b>Checkpoint package:</b> <code>GoldRush_Phase02_Level.unitypackage</code></p>
-<p><b>Next:</b> in <a href="phase-03.html">Phase 3</a> the hero comes alive: animations, movement and sprint.</p>
+<p><b>Checkpoint package:</b> <code>GoldRush_Phase02_MenuScreens.unitypackage</code></p>
+<p><b>Next:</b> in <a href="phase-03.html">Phase 3</a> you take a tour of the prefab kit and build Level 1. Then PLAY opens it.</p>
 
 <nav class="pager" aria-label="Previous and next page">
-<a class="prev" href="phase-01.html"><small>← Previous</small>Phase 1: The prefab kit</a>
-<a class="next" href="phase-03.html"><small>Next →</small>Phase 3: The player</a>
+<a class="prev" href="phase-01.html"><small>← Previous</small>Phase 1: The main menu</a>
+<a class="next" href="phase-03.html"><small>Next →</small>Phase 3: Level design</a>
 </nav>
 <footer class="site-footer">GOLD RUSH – a Unity 6 tutorial project. Characters: Quaternius (CC0). Font: Poppins (SIL Open Font License). Icons: Material Icons by Google (Apache 2.0).</footer>
 </div>

@@ -120,7 +120,10 @@ namespace GoldRush
             EnvironmentSetup.Apply(Cam.GetComponent<Camera>(), false, Def.night);
             Player.AddLantern(); // only visible at night (DayNight fades it)
 
-            UI = GameUI.Create(this);
+            // the game UI saved in the scene is used; otherwise it is built in code
+            UI = FindAnyObjectByType<GameUI>();
+            if (UI) UI.Bind(this);
+            else UI = GameUI.Create(this);
             Player.joystick = UI.Joystick;
             Player.cam = Cam;
 
@@ -128,10 +131,9 @@ namespace GoldRush
             for (int i = 0; i < layout.powerUpPoints.Count; i++)
             {
                 var type = i < powerTypes.Count ? powerTypes[i] : (PowerType)((i + Mathf.Abs(Def.seed)) % 3);
-                var pu = PowerUp.Create(layout.dynamicRoot, layout.powerUpPoints[i], type);
-                powerUps.Add(pu);
-                UI.AddPowerUpLabel(pu);
+                powerUps.Add(PowerUp.Create(layout.dynamicRoot, layout.powerUpPoints[i], type));
             }
+            foreach (var pu in powerUps) UI.AddPowerUpLabel(pu); // made in code + placed by hand
             int guardIndex = 0;
             for (int i = 0; i < layout.enemyPoints.Count; i++)
             {
@@ -192,6 +194,8 @@ namespace GoldRush
             }
             foreach (var pu in scene.GetComponentsInChildren<PowerUpSpot>())
             {
+                var placed = pu.GetComponentInChildren<PowerUp>();
+                if (placed) { powerUps.Add(placed); continue; } // a PowerUp prefab placed by hand
                 l.powerUpPoints.Add(pu.transform.position);
                 powerTypes.Add(pu.type);
             }
@@ -311,8 +315,12 @@ namespace GoldRush
 
         // ---------------------------------------------------------------- hits
 
+        /// <summary>Editor tooling (trailer recorder): monsters can't hurt the player.</summary>
+        public static bool NoDamage;
+
         public void OnPlayerCaught(EnemyAI enemy)
         {
+            if (NoDamage) return;
             if (State != GameState.Playing || !Player || Player.Invulnerable) return;
             Hits++;
             Lives--;
@@ -427,6 +435,20 @@ namespace GoldRush
 
         public void Restart() { Time.timeScale = 1f; Fader.Load(UnityEngine.SceneManagement.SceneManager.GetActiveScene().name); }
         public void BackToMenu() { Time.timeScale = 1f; Fader.Load(Scenes.Menu); }
+
+        /// <summary>Called by GameAction buttons in the game UI ("pause", "resume", "retry", "menu", "next").</summary>
+        public void Run(string action)
+        {
+            switch (action)
+            {
+                case "pause": Pause(); break;
+                case "resume": Resume(); break;
+                case "retry": Restart(); break;
+                case "menu": BackToMenu(); break;
+                case "next": NextLevel(); break;
+                default: Debug.LogWarning("[GoldRush] Unknown game action: " + action); break;
+            }
+        }
 
         public void NextLevel()
         {

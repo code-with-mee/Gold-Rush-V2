@@ -23,15 +23,15 @@
 </ul>
 <h2>Course</h2><ul>
 <li><a href="phase-00.html"><span class="num">0</span><span class="label">Create the project</span></a></li>
-<li><a href="phase-01.html"><span class="num">1</span><span class="label">The prefab kit</span></a></li>
-<li><a href="phase-02.html"><span class="num">2</span><span class="label">Level design</span></a></li>
-<li><a href="phase-03.html"><span class="num">3</span><span class="label">The player</span></a></li>
-<li><a href="phase-04.html"><span class="num">4</span><span class="label">The camera</span></a></li>
-<li><a href="phase-05.html"><span class="num">5</span><span class="label">Coins and the HUD</span></a></li>
+<li><a href="phase-01.html"><span class="num">1</span><span class="label">The main menu</span></a></li>
+<li><a href="phase-02.html"><span class="num">2</span><span class="label">Level select, shop and settings</span></a></li>
+<li><a href="phase-03.html"><span class="num">3</span><span class="label">Level design</span></a></li>
+<li><a href="phase-04.html"><span class="num">4</span><span class="label">Player and camera</span></a></li>
+<li><a href="phase-05.html"><span class="num">5</span><span class="label">Coins</span></a></li>
 <li><a href="phase-06.html"><span class="num">6</span><span class="label">Exit gate, win and lose</span></a></li>
 <li><a href="phase-07.html" aria-current="page"><span class="num">7</span><span class="label">Monsters</span></a></li>
 <li><a href="phase-08.html"><span class="num">8</span><span class="label">Power-ups and effects</span></a></li>
-<li><a href="phase-09.html"><span class="num">9</span><span class="label">Menu, levels, shop, save</span></a></li>
+<li><a href="phase-09.html"><span class="num">9</span><span class="label">Gameplay UI</span></a></li>
 <li><a href="phase-10.html"><span class="num">10</span><span class="label">Polish and build</span></a></li>
 </ul>
 <h2>Help</h2><ul>
@@ -44,111 +44,120 @@
 <div class="content">
 <p class="eyebrow">GOLD RUSH · Phase 7</p>
 <h1>Monsters</h1>
-<p class="lead">You give the level a "walk map" (a NavMesh) and build three monsters: a slow <b>Slime</b>, a fast <b>Ghost</b> and a big <b>Mushroom King</b>. Each one has its own Animator Controller and an <b>ITSTEP</b> badge on its chest. The monsters patrol, see you, shout "!", chase you and search for you when you hide. If one catches you, you lose a heart.</p>
+<p class="lead">You give the level a walk map (a NavMesh) and build three monsters: a slow Slime, a fast Ghost and a big Mushroom King. Each one gets its own Animator Controller and an ITSTEP badge on its chest. The monsters patrol, see you, chase you and search for you when you hide. If one catches you, you lose a heart. With no hearts left, you lose the level.</p>
 <div class="meta"><span><b>Checkpoint package</b><code>GoldRush_Phase07_Monsters.unitypackage</code></span><span><b>Scene</b><code>Assets/GoldRush/Scenes/Level1.unity</code></span><a class="btn secondary" href="phase-07.pdf">Download PDF</a></div>
 
 <nav class="toc" aria-label="Steps on this page"><strong>Steps on this page</strong><ol>
   <li><a href="#step-1">What you need</a></li>
   <li><a href="#step-2">How a monster thinks</a></li>
   <li><a href="#step-3">Bake the NavMesh</a></li>
-  <li><a href="#step-4">Import the monster models</a></li>
+  <li><a href="#step-4">Check the monster models</a></li>
   <li><a href="#step-5">Three Animator Controllers</a></li>
-  <li><a href="#step-6">Script: MonsterSpawn</a></li>
-  <li><a href="#step-7">Script: Badge (the ITSTEP patch)</a></li>
-  <li><a href="#step-8">Import the EnemyAI script</a></li>
-  <li><a href="#step-9">Update PlayerMotor (hits)</a></li>
-  <li><a href="#step-10">Update GameManager (hearts and hits)</a></li>
+  <li><a href="#step-6">Fill GoldRushAssets: the monsters</a></li>
+  <li><a href="#step-7">Import the helper scripts</a></li>
+  <li><a href="#step-8">Script: MonsterSpawn</a></li>
+  <li><a href="#step-9">Script: Badge (the ITSTEP patch)</a></li>
+  <li><a href="#step-10">Update the GameManager</a></li>
   <li><a href="#step-11">Build the Slime prefab</a></li>
   <li><a href="#step-12">Build the Ghost and Mushroom King prefabs</a></li>
   <li><a href="#step-13">Place the monsters in Level1</a></li>
-  <li><a href="#step-14">Put the Player on the Ignore Raycast layer</a></li>
-  <li><a href="#step-15">▶ Press Play</a></li>
-  <li><a href="#step-16">Common problems</a></li>
+  <li><a href="#step-14">▶ Press Play</a></li>
+  <li><a href="#step-15">Common problems</a></li>
 </ol></nav>
 
 <!-- ======================================================= 1 -->
-
 <h2 id="step-1"><span class="step">1</span>What you need</h2>
 <ul>
-  <li>Your project from <a href="phase-06.html">Phase 6</a>: the Player prefab, the camera, coins, the HUD, the exit gate and the win/lose dialogs all work.</li>
-  <li>The package <b>AI Navigation</b> (<code>com.unity.ai.navigation</code>, version 2.0). You checked it in Phase 0. Open <b>Window → Package Manager</b> and look under <b>In Project</b> if you are not sure.</li>
-  <li>The monster models in <code>Assets/GoldRush/Art/Characters/Monsters/</code>: <code>Slime.fbx</code>, <code>Ghost.fbx</code>, <code>MushroomKing.fbx</code>.</li>
-  <li>The helper scripts in <code>Resources/Scripts/Helpers/</code> (<code>EnemyAI.cs</code> and the level builder helpers, step 8) and <code>Coin.cs</code>, <code>ExitGate.cs</code> from <code>Resources/Scripts/Final/World/</code>.</li>
+  <li>Phase 6 is finished: the gate opens after the last coin and you can win.
+    If you start here, import <code>GoldRush_Phase06_Gate.unitypackage</code>.</li>
+  <li>The package <b>AI Navigation</b> (<code>com.unity.ai.navigation</code>). You added it in phase 0. Not sure? Open <b>Window → Package Manager → In Project</b>.</li>
+  <li>The monster models from the starter package: <code>Assets/GoldRush/Art/Characters/Monsters/</code> <code>Slime.fbx</code>, <code>Ghost.fbx</code>, <code>MushroomKing.fbx</code>.</li>
+  <li>The Resources pack folder <code>Scripts/Helpers/</code>.</li>
+  <li>Open the scene <code>Assets/GoldRush/Scenes/Level1.unity</code>.</li>
 </ul>
-<p>Open the scene <code>Assets/GoldRush/Scenes/Level1.unity</code>.</p>
+<p>New or changed files in this phase:</p>
+<div class="table-wrap"><table>
+  <tr><th>File</th><th>Type or import?</th><th>What it does</th></tr>
+  <tr><td><code>Gameplay/EnemyAI.cs</code></td><td>Import</td><td>The monster brain (about 370 lines).</td></tr>
+  <tr><td><code>Gameplay/CharacterFactory.cs</code>, <code>Gameplay/OriginalMaterials.cs</code></td><td>Import</td><td>Make the monster body at the right size, the night glow, the shop colours.</td></tr>
+  <tr><td><code>Core/Mats.cs</code></td><td>Import</td><td>Makes materials in code (the badge and the glow use it).</td></tr>
+  <tr><td><code>UI/WorldMarkers.cs</code></td><td>Import</td><td>The &quot;!&quot; bubbles above the monsters. EnemyAI needs it. You see the bubbles in phase 9.</td></tr>
+  <tr><td><code>Level/MonsterSpawn.cs</code></td><td>Type</td><td>Says which monster this is (Slime, Ghost or King).</td></tr>
+  <tr><td><code>Gameplay/Badge.cs</code></td><td>Type</td><td>The ITSTEP name patch on each monster.</td></tr>
+  <tr><td><code>Gameplay/GameManager.cs</code></td><td>Type (replace)</td><td>Hearts, hits, monsters, tension music.</td></tr>
+</table></div>
 
 <!-- ======================================================= 2 -->
 <h2 id="step-2"><span class="step">2</span>How a monster thinks</h2>
 <p>A monster needs two things:</p>
 <ul>
-  <li><b>A NavMesh</b> – a map of where you can walk. Unity makes it from your floor and walls. It looks like a blue carpet in the Scene view.</li>
-  <li><b>A NavMeshAgent</b> – a component that walks a GameObject over the NavMesh. You say "go there" (<code>SetDestination</code>) and it finds a path around the walls.</li>
+  <li>A <b>NavMesh</b>: a map of where you can walk. Unity makes it from your floor and walls. It looks like a blue carpet in the Scene view.</li>
+  <li>A <b>NavMeshAgent</b>: a component that walks a GameObject over the NavMesh. You say "go there" (<code>SetDestination</code>) and it finds a path around the walls.</li>
 </ul>
-<p>The <code>EnemyAI</code> script is the brain. It is a <b>state machine</b>: the monster is always in exactly one <b>state</b>, and it changes state when something happens.</p>
+<p>The <code>EnemyAI</code> script is the brain. It is a <b>state machine</b>: the monster is always in exactly one state, and it changes state when something happens.</p>
 <div class="table-wrap"><table>
-  <tr><th>State</th><th>What the monster does</th><th>Bubble</th><th>Goes to…</th></tr>
-  <tr><td><b>Patrol</b></td><td>Walks to random points near it. Waits 0.8–2.4 s at each point.</td><td>–</td><td><b>Alert</b> when it sees you</td></tr>
-  <tr><td><b>Alert</b></td><td>Stops and turns to you for 0.45 s. Plays the "alert" sound.</td><td>red <b>!</b></td><td><b>Chase</b></td></tr>
-  <tr><td><b>Chase</b></td><td>Runs to you. Updates the path every 0.12 s.</td><td>red <b>!</b> (1.2 s)</td><td><b>Search</b> when it has not seen you for 2.2 s</td></tr>
-  <tr><td><b>Search</b></td><td>Goes to the place where it saw you last, then spins for 2.2 s.</td><td>gold <b>?</b></td><td><b>Patrol</b> (or <b>Alert</b> if it sees you again)</td></tr>
-  <tr><td><b>Return</b></td><td>Only the Mushroom King: walks back home.</td><td>–</td><td><b>Patrol</b></td></tr>
-  <tr><td><b>Stunned</b></td><td>After it catches you: spins on the spot for 2.6 s.</td><td>blue <b>z</b></td><td><b>Search</b></td></tr>
+  <tr><th>State</th><th>What the monster does</th><th>Goes to…</th></tr>
+  <tr><td>Patrol</td><td>Walks to random points near it. Waits 0.8–2.4 s at each point.</td><td>Alert when it sees you</td></tr>
+  <tr><td>Alert</td><td>Stops and turns to you for 0.45 s. Plays the <code>&quot;alert&quot;</code> sound.</td><td>Chase</td></tr>
+  <tr><td>Chase</td><td>Runs to you. Updates the path every 0.12 s.</td><td>Search when it has not seen you for 2.2 s</td></tr>
+  <tr><td>Search</td><td>Goes to the place where it saw you last, then spins for 2.2 s.</td><td>Patrol (or Alert if it sees you again)</td></tr>
+  <tr><td>Return</td><td>Only the Mushroom King: walks back home.</td><td>Patrol</td></tr>
+  <tr><td>Stunned</td><td>After it catches you: spins on the spot for 2.6 s.</td><td>Search</td></tr>
 </table></div>
 <p>The three monsters use the same brain with different numbers:</p>
 <div class="table-wrap"><table>
   <tr><th>Monster</th><th>Type</th><th>Patrol speed</th><th>Chase speed</th><th>Sees you from</th><th>Field of view</th><th>Special</th></tr>
-  <tr><td>Slime</td><td><code>Patroller</code></td><td>1.5 m/s</td><td>3.6 m/s</td><td>8.5 m</td><td>130° in front</td><td>wanders 9 m around</td></tr>
-  <tr><td>Ghost</td><td><code>Chaser</code></td><td>2.1 m/s</td><td>4.6 m/s</td><td>12 m</td><td>360° (all around)</td><td>wanders 14 m around</td></tr>
-  <tr><td>Mushroom King</td><td><code>Guard</code></td><td>1.2 m/s</td><td>4.2 m/s</td><td>9.5 m</td><td>200° in front</td><td>stays 4.5 m from home, goes back after 13 m</td></tr>
+  <tr><td>Slime</td><td>Patroller</td><td>1.5 m/s</td><td>3.6 m/s</td><td>8.5 m</td><td>130° in front</td><td>wanders 9 m around</td></tr>
+  <tr><td>Ghost</td><td>Chaser</td><td>2.1 m/s</td><td>4.6 m/s</td><td>12 m</td><td>360° (all around)</td><td>wanders 14 m around</td></tr>
+  <tr><td>Mushroom King</td><td>Guard</td><td>1.2 m/s</td><td>4.2 m/s</td><td>9.5 m</td><td>200° in front</td><td>stays 4.5 m from home, goes back after 13 m</td></tr>
 </table></div>
-<div class="note">The level makes all monsters a bit slower or faster. Level 1 uses <b>0.9</b>, so a Slime patrols at 1.5 × 0.9 = 1.35 m/s. Walls block the view. If you are closer than 3.2 m, every monster sees you, even from behind.</div>
+<p>Each level makes all monsters a bit slower or faster. Level 1 uses 0.9, so a Slime patrols at 1.5 × 0.9 = 1.35 m/s. Walls block the view. If you are closer than 3.2 m, every monster sees you, even from behind. If a monster gets closer than 1.05 m (the King: 1.6 m), it catches you and you lose a heart. Level 1 gives you 2 hearts.</p>
 
 <!-- ======================================================= 3 -->
 <h2 id="step-3"><span class="step">3</span>Bake the NavMesh</h2>
 <p>"Bake" means: Unity calculates the walk map once and saves it.</p>
 <ol>
-  <li>In the <b>Hierarchy</b>, open your level root (<code>Level 1 - Training Yard</code>) and select <code>Static</code> – the object that holds the floor, walls, blocks and lamps.</li>
-  <li>In the Inspector, click <b>Add Component</b> and type <b>NavMesh Surface</b>. Click it.</li>
+  <li>In the Hierarchy, select <code>Level 1 - Training Yard › Static</code> (it holds the floor, walls, blocks, lamps and the gate).</li>
+  <li>Click <b>Add Component</b> and choose <b>NavMesh Surface</b>.</li>
   <li>Set <b>Agent Type</b> = <code>Humanoid</code>.</li>
-  <li>Set <b>Collect Objects</b> = <code>Current Object Hierarchy</code> (only <code>Static</code> and its children).</li>
+  <li>Set <b>Collect Objects</b> = <code>Current Object Hierarchy</code> (only Static and its children).</li>
   <li>Set <b>Use Geometry</b> = <code>Physics Colliders</code> (only objects with a collider count).</li>
   <li>Click <b>Bake</b>.</li>
 </ol>
-<figure class="shot todo"><div class="ph">Screenshot: Scene view of Level1 with the blue NavMesh, Inspector shows NavMeshSurface on Static</div><figcaption>The blue area is where monsters can walk. There are holes around walls and blocks.</figcaption></figure>
-<div class="tip">You can't see the blue? In the Scene view, open the <b>AI Navigation</b> overlay (top right) and tick <b>Show NavMesh</b>. Also make sure <b>Gizmos</b> is on.</div>
-<div class="warn">The Player, coins and monsters must <b>not</b> be children of <code>Static</code>.</div>
-<div class="note">When the level starts, the GameManager bakes the NavMesh once more with the same settings. So the monsters always know your newest walls. Still, click <b>Bake</b> again after you move a wall: then the Scene view shows the truth while you place monsters.</div>
+<figure class="shot todo" data-shot="phase-07/step-03-a" data-window="inspector" data-select="Level 1 - Training Yard/Static"><div class="ph">Inspector of Static: NavMesh Surface (Agent Type Humanoid, Collect Objects Current Object Hierarchy, Use Geometry Physics Colliders)</div><figcaption>The NavMesh Surface settings.</figcaption></figure>
+<figure class="shot todo" data-shot="phase-07/step-03-b" data-window="scene" data-select="Level 1 - Training Yard/Static"><div class="ph">Scene view of Level1 from above with the blue NavMesh and holes around walls and blocks</div><figcaption>Blue = where monsters can walk.</figcaption></figure>
+<div class="tip">No blue? In the Scene view, open the <b>AI Navigation</b> overlay and tick <b>Show NavMesh</b>. Also turn on <b>Gizmos</b>. When the level starts, the GameManager bakes once more, so the monsters always know your newest walls.</div>
+<div class="note">The Player, the coins and the monsters must <b>not</b> be children of <code>Static</code>.</div>
 
 <!-- ======================================================= 4 -->
-<h2 id="step-4"><span class="step">4</span>Import the monster models</h2>
-<p>Do the same as you did for the hero in Phase 3, once for each monster.</p>
+<h2 id="step-4"><span class="step">4</span>Check the monster models</h2>
+<p>The starter package has the right import settings already. Just check them, like you did for the hero in phase 4.</p>
 <ol>
-  <li>In the <b>Project</b> window, open <code>Assets/GoldRush/Art/Characters/Monsters/</code> and click <code>Slime.fbx</code>.</li>
-  <li>In the Inspector, open the <b>Rig</b> tab. Set <b>Animation Type</b> = <code>Generic</code> and <b>Avatar Definition</b> = <code>Create From This Model</code>. Click <b>Apply</b>.</li>
-  <li>Open the <b>Animation</b> tab. Click a clip from the table below, tick <b>Loop Time</b> and <b>Loop Pose</b>. Do this for every clip in the row.</li>
-  <li>Click <b>Apply</b>.</li>
-  <li>Repeat for <code>Ghost.fbx</code> and <code>MushroomKing.fbx</code>.</li>
+  <li>In the Project window, click <code>Assets/GoldRush/Art/Characters/Monsters/Slime.fbx</code>.</li>
+  <li><b>Rig</b> tab: <b>Animation Type</b> = <code>Generic</code>, <b>Avatar Definition</b> = <code>Create From This Model</code>.</li>
+  <li><b>Animation</b> tab: the clips in the table have <b>Loop Time</b> and <b>Loop Pose</b> ticked. If you change something, click <b>Apply</b>.</li>
+  <li>Do the same for <code>Ghost.fbx</code> and <code>MushroomKing.fbx</code>.</li>
 </ol>
 <div class="table-wrap"><table>
-  <tr><th>Model</th><th>Clips that loop (tick Loop Time)</th></tr>
+  <tr><th>Model</th><th>Clips that loop</th></tr>
   <tr><td><code>Slime.fbx</code></td><td>Idle, Walk, Dance, Yes</td></tr>
   <tr><td><code>Ghost.fbx</code></td><td>Flying_Idle, Fast_Flying, Yes</td></tr>
   <tr><td><code>MushroomKing.fbx</code></td><td>Idle, Walk, Run, Wave, Yes, Jump_Idle</td></tr>
 </table></div>
-<div class="note">The starter package already has these settings, so you mostly just check them. The clip names can start with <code>CharacterArmature|</code>, for example <code>CharacterArmature|Idle</code>. That is fine. All other clips (Death, Bite_Front, Punch…) play only once.</div>
+<p>All other clips (Death, Bite_Front, Punch …) play only once. A clip name can start with <code>CharacterArmature|</code>. That is fine.</p>
+<figure class="shot todo" data-shot="phase-07/step-04" data-window="inspector" data-select="Assets/GoldRush/Art/Characters/Monsters/Slime.fbx"><div class="ph">Slime.fbx Import Settings, Animation tab: the Walk clip with Loop Time and Loop Pose ticked</div><figcaption>Slime.fbx: Walk loops.</figcaption></figure>
 
 <!-- ======================================================= 5 -->
 <h2 id="step-5"><span class="step">5</span>Three Animator Controllers</h2>
 <p>Every monster uses the same Animator layout as the hero: the same parameters (<code>Speed</code>, <code>Attack</code>, <code>Hit</code>, <code>Win</code>, <code>Die</code>) and the same states. Only the clips are different. So you copy the hero's controller and change the clips.</p>
 <ol>
-  <li>In the Project window, open <code>Assets/GoldRush/Animations/</code> and click <code>Hero.controller</code>.</li>
+  <li>In the Project window, open <code>Assets/GoldRush/Animations/</code> and click <code>Hero.controller</code> (phase 4).</li>
   <li>Press <b>Ctrl+D</b> (Mac: <b>Cmd+D</b>) to duplicate it. Rename the copy to <code>Slime</code>.</li>
-  <li>Double-click <code>Slime.controller</code>. The <b>Animator</b> window opens.</li>
-  <li>Double-click the <b>Locomotion</b> state (the blend tree). Set its three <b>Motion</b> fields to the Slime clips from the table. Keep the thresholds 0, 0.5 and 1.</li>
+  <li>Double-click <code>Slime.controller</code>. The Animator window opens.</li>
+  <li>Double-click the <b>Locomotion</b> state (the blend tree). Set its three <b>Motion</b> fields to the Slime clips from the table. Keep the thresholds <code>0</code>, <code>0.5</code> and <code>1</code>.</li>
   <li>Click <b>Base Layer</b> at the top to go back.</li>
-  <li>Click the <b>Attack</b> state. In the Inspector, set <b>Motion</b> to the Slime clip from the table.</li>
-  <li>Do the same for <b>Hit</b>, <b>Win</b> and <b>Die</b>.</li>
-  <li>Repeat steps 1–7 for <code>Ghost.controller</code> and <code>MushroomKing.controller</code>.</li>
+  <li>Click the <b>Attack</b> state. In the Inspector, set <b>Motion</b> to the Slime clip from the table. Do the same for <b>Hit</b>, <b>Win</b> and <b>Die</b>.</li>
+  <li>Repeat steps 1–6 for <code>Ghost</code> and <code>MushroomKing</code>.</li>
 </ol>
 <div class="table-wrap"><table>
   <tr><th>State</th><th>Slime</th><th>Ghost</th><th>MushroomKing</th></tr>
@@ -160,26 +169,82 @@
   <tr><td>Win</td><td>Dance</td><td>Yes</td><td>Wave</td></tr>
   <tr><td>Die</td><td>Death</td><td>Death</td><td>Death</td></tr>
 </table></div>
-<div class="tip">The Slime and the Ghost have no run clip, so "Run" uses the walk clip again. The code plays it faster when they chase you.</div>
-<p>Check the transitions (they came with the copy):</p>
-<div class="table-wrap"><table>
-  <tr><th>Transition</th><th>Settings</th></tr>
-  <tr><td>Any State → Attack / Hit / Win / Die</td><td>Condition = the trigger with the same name. <b>Has Exit Time</b> off. Duration 0.1. <b>Can Transition To Self</b> off.</td></tr>
-  <tr><td>Attack → Locomotion, Hit → Locomotion</td><td><b>Has Exit Time</b> on, Exit Time 0.85, Duration 0.2.</td></tr>
-  <tr><td>Win → Locomotion</td><td><b>Has Exit Time</b> on, Exit Time 3 (dance a few times), Duration 0.2.</td></tr>
-  <tr><td>Die</td><td>No way back. The monster never dies, but the state is there so all controllers match.</td></tr>
-</table></div>
-<figure class="shot todo"><div class="ph">Screenshot: Animator window of Slime.controller (Locomotion, Attack, Hit, Win, Die, Any State)</div><figcaption>Slime.controller: the same layout as Hero.controller.</figcaption></figure>
+<p>The Slime and the Ghost have no run clip, so "Run" uses the walk clip again. The code plays it faster when they chase you. The transitions came with the copy: Any State → Attack / Hit / Win / Die (Has Exit Time off, Duration 0.1); Attack and Hit → Locomotion (Exit Time 0.85); Win → Locomotion (Exit Time 3); Die has no way back.</p>
+<figure class="shot todo" data-shot="phase-07/step-05-a" data-window="project" data-select="Assets/GoldRush/Animations/Slime.controller"><div class="ph">Project window: Animations with Hero, Slime, Ghost, MushroomKing controllers</div><figcaption>Four controllers.</figcaption></figure>
+<figure class="shot todo" data-shot="phase-07/step-05-b" data-window="inspector" data-select="Assets/GoldRush/Animations/Slime.controller"><div class="ph">Inspector of the Slime Locomotion blend tree: Idle 0, Walk 0.5, Walk 1</div><figcaption>Slime Locomotion: Idle, Walk, Walk.</figcaption></figure>
 
 <!-- ======================================================= 6 -->
-<h2 id="step-6"><span class="step">6</span>Script: MonsterSpawn</h2>
-<p>This small script says which kind of monster this is. It also draws a coloured box in the Scene view, so you can see the monster's size even before you press Play.</p>
+<h2 id="step-6"><span class="step">6</span>Fill GoldRushAssets: the monsters</h2>
+<p>The game builds each monster's body from <b>GoldRushAssets</b> when the level starts: the model, the controller and the height.</p>
 <ol>
-  <li>In the Project window, open <code>Assets/GoldRush/Scripts/Level/</code>.</li>
-  <li>Right-click → <b>Create → MonoBehaviour Script</b>. Name it <code>MonsterSpawn</code>.</li>
-  <li>Double-click it and replace everything with this code. Save.</li>
+  <li>Select <code>Assets/GoldRush/Resources/GoldRushAssets</code>.</li>
+  <li>Open <b>Slime</b>, <b>Ghost</b> and <b>Mushroom King</b> and fill them from the table.</li>
 </ol>
-<div class="note">From now until step 10 the Console shows red errors (for example "EnemyAI could not be found"). That is normal: the scripts in steps 6–10 need each other. Just keep going.</div>
+<div class="table-wrap"><table>
+  <tr><th>Field</th><th>Slime</th><th>Ghost</th><th>Mushroom King</th></tr>
+  <tr><td>Model</td><td><code>Slime</code> (fbx)</td><td><code>Ghost</code> (fbx)</td><td><code>MushroomKing</code> (fbx)</td></tr>
+  <tr><td>Controller</td><td><code>Slime</code></td><td><code>Ghost</code></td><td><code>MushroomKing</code></td></tr>
+  <tr><td>Height</td><td><code>0.95</code></td><td><code>1.3</code></td><td><code>2.6</code></td></tr>
+  <tr><td>Hat Scale / Hat Height</td><td><code>1</code> / <code>1</code></td><td><code>1</code> / <code>1</code></td><td><code>1</code> / <code>1</code></td></tr>
+  <tr><td>Walk Speed / Run Speed</td><td><code>0</code> / <code>0</code></td><td><code>0</code> / <code>0</code></td><td><code>1.48</code> / <code>2.11</code></td></tr>
+</table></div>
+<p>Walk Speed 0 means "guess from the height". The Slime and the Ghost have no feet, so the guess is fine for them.</p>
+<p>Also check the materials at the bottom: <b>Lit</b>, <b>Lit Emissive</b>, <b>Lit Transparent</b> and <b>Particle</b> must be filled (<code>GR_Lit</code>, <code>GR_LitEmissive</code>, <code>GR_LitTransparent</code>, <code>GR_Particle</code>). The badge and the night glow are made from them.</p>
+<figure class="shot todo" data-shot="phase-07/step-06" data-window="inspector" data-select="Assets/GoldRush/Resources/GoldRushAssets.asset"><div class="ph">Inspector of GoldRushAssets: Slime, Ghost and Mushroom King open with Model, Controller and Height filled</div><figcaption>The three monsters in GoldRushAssets.</figcaption></figure>
+
+<!-- ======================================================= 7 -->
+<h2 id="step-7"><span class="step">7</span>Import the helper scripts</h2>
+<p><code>EnemyAI.cs</code> is about 370 lines, so you import it with its helpers instead of typing.</p>
+<ol>
+  <li>In Finder or Explorer, open the Resources pack folder <code>Scripts/Helpers/</code>.</li>
+  <li>Drag each file from the table into the same folder in <code>Assets/GoldRush/Scripts/</code>. If Unity asks to replace a file, click <b>Replace</b>.</li>
+</ol>
+<div class="table-wrap"><table>
+  <tr><th>From Helpers/…</th><th>Into Scripts/…</th><th>What it does</th></tr>
+  <tr><td><code>Gameplay/EnemyAI.cs</code></td><td><code>Gameplay</code></td><td>The monster brain.</td></tr>
+  <tr><td><code>Gameplay/CharacterFactory.cs</code></td><td><code>Gameplay</code></td><td><code>BuildModel()</code> makes the body at the right height. <code>AddGlow()</code> makes the night glow. It also holds the shop colours and hats.</td></tr>
+  <tr><td><code>Gameplay/OriginalMaterials.cs</code></td><td><code>Gameplay</code></td><td>A tiny helper for the shop colours.</td></tr>
+  <tr><td><code>Core/Mats.cs</code></td><td><code>Core</code></td><td>Makes materials in code from the GR_ base materials.</td></tr>
+  <tr><td><code>UI/WorldMarkers.cs</code></td><td><code>UI</code></td><td>UI that follows 3D objects. EnemyAI uses it for the &quot;!&quot; bubble (phase 9).</td></tr>
+</table></div>
+<div class="note">Now the Console shows red errors, for example <code>'GameManager' does not contain a definition for 'OnPlayerCaught'</code>. That is normal: the scripts in steps 7–10 need each other. Keep going. The errors go away after step 10.</div>
+<p>Three parts of EnemyAI are worth a look. First, the numbers for each type (in <code>Configure()</code>):</p>
+<pre><code>case EnemyType.Patroller:
+    patrolSpeed = 1.5f; chaseSpeed = 3.6f; detectRange = 8.5f; loseRange = 14f; fovCos = Mathf.Cos(65f * Mathf.Deg2Rad); patrolRadius = 9f; leash = 999f; break;
+case EnemyType.Chaser:
+    patrolSpeed = 2.1f; chaseSpeed = 4.6f; detectRange = 12f; loseRange = 20f; fovCos = -1f; patrolRadius = 14f; leash = 999f; break;
+default: // Guard
+    patrolSpeed = 1.2f; chaseSpeed = 4.2f; detectRange = 9.5f; loseRange = 14f; fovCos = Mathf.Cos(100f * Mathf.Deg2Rad); patrolRadius = 4.5f; leash = 13f; break;</code></pre>
+<ul>
+  <li><code>fovCos</code> is the field of view. <code>Mathf.Cos(65°)</code> means 65° to the left and 65° to the right = 130°. <code>-1</code> means all around.</li>
+  <li><code>leash</code>: how far the Guard may run from home. <code>999</code> = no limit.</li>
+</ul>
+<p>Second, the state machine in <code>Update()</code> (a short part):</p>
+<pre><code>switch (state)
+{
+    case S.Patrol:
+        Wander();
+        if (canSee) Go(S.Alert);
+        break;
+
+    case S.Alert:
+        FaceTowards(lastSeen, dt);
+        if (stateTime &gt; 0.45f) Go(S.Chase);
+        break;
+    ...
+}</code></pre>
+<ul>
+  <li><code>switch (state)</code> runs only the block for the current state. <code>Go(S.Alert)</code> changes the state, sets the speed and plays the sound.</li>
+  <li><code>canSee</code> comes from <code>Vision()</code>, about 7 times per second: are you in range, in the field of view, and is there no wall between? A <b>raycast</b> is an invisible line; if it hits a wall first, the monster can not see you.</li>
+  <li>After the switch, the code checks the distance to you. Too close = caught: it calls <code>GameManager.I.OnPlayerCaught(this)</code>. Monsters have no colliders.</li>
+</ul>
+<p>Third, <code>SetupPlaced()</code>. The GameManager calls it for every monster prefab in the scene when the level starts. It reads the type from <code>MonsterSpawn</code>, sets up the NavMeshAgent, puts the monster on the NavMesh (<code>agent.Warp</code>) and builds the body from GoldRushAssets (<code>CharacterFactory.BuildModel</code>). Then <code>Decorate()</code> adds the ITSTEP badge and a coloured glow that shines only at night.</p>
+<figure class="shot todo" data-shot="phase-07/step-07" data-window="project" data-select="Assets/GoldRush/Scripts/Gameplay/EnemyAI.cs"><div class="ph">Project window: Scripts/Gameplay with CharacterFactory.cs, EnemyAI.cs, GameManager.cs, OriginalMaterials.cs, PlayerMotor.cs, ThirdPersonCamera.cs</div><figcaption>The imported helpers.</figcaption></figure>
+
+<!-- ======================================================= 8 -->
+<h2 id="step-8"><span class="step">8</span>Script: MonsterSpawn</h2>
+<p>This small script says which kind of monster this is. It also draws a coloured box in the Scene view with the monster's real height.</p>
+<ol><li>In <code>Assets/GoldRush/Scripts/Level/</code>, create the script <code>MonsterSpawn</code> and type this code:</li></ol>
 <p><code>Assets/GoldRush/Scripts/Level/MonsterSpawn.cs</code></p>
 <pre class="long"><code>using UnityEngine;
 
@@ -226,19 +291,17 @@ namespace GoldRush
     }
 }</code></pre>
 <ul>
-  <li><b><code>type</code></b>: <code>Patroller</code> = Slime, <code>Chaser</code> = Ghost, <code>Guard</code> = Mushroom King. <code>EnemyType</code> is an <code>enum</code> (a list of names) that you already have in <code>Data.cs</code>.</li>
-  <li><b><code>home</code></b>: only for the Mushroom King. It guards this point. Leave it empty and it guards the place where it starts.</li>
-  <li><b><code>HomePosition</code></b> gives back <code>home.position</code> if there is a home, else the monster's own position. <code>a ? b : c</code> means "if a, then b, else c".</li>
-  <li><b><code>OnDrawGizmos()</code></b> runs only in the editor. It draws a wire box in the monster's colour (green, pink or gold) and, for the King, a circle with a 4.5 m radius: its patrol area.</li>
+  <li><code>type</code>: Patroller = Slime, Chaser = Ghost, Guard = Mushroom King. <code>EnemyType</code> is an enum (a list of names) in <code>Data.cs</code>.</li>
+  <li><code>home</code>: only for the Mushroom King. It guards this point. Leave it empty and it guards the place where it starts.</li>
+  <li><code>a ? b : c</code> means "if a, then b, else c".</li>
+  <li><code>OnDrawGizmos()</code> draws a wire box in the monster's colour (green, pink or gold), and for the King a circle with a 4.5 m radius: its patrol area.</li>
 </ul>
+<figure class="shot todo" data-shot="phase-07/step-08" data-window="project" data-select="Assets/GoldRush/Scripts/Level/MonsterSpawn.cs"><div class="ph">Project window: Scripts/Level with CoinSpot, LevelScene, MonsterSpawn, PlayerSpawn</div><figcaption>MonsterSpawn.cs is in the Level folder.</figcaption></figure>
 
-<!-- ======================================================= 7 -->
-<h2 id="step-7"><span class="step">7</span>Script: Badge (the ITSTEP patch)</h2>
+<!-- ======================================================= 9 -->
+<h2 id="step-9"><span class="step">9</span>Script: Badge (the ITSTEP patch)</h2>
 <p>Every monster wears a small name patch with the word <b>ITSTEP</b> on its chest, like a logo on a T-shirt. This script draws the letters into a texture, makes a little plate and sticks it to the monster's chest bone, so it moves with the animation.</p>
-<ol>
-  <li>In <code>Assets/GoldRush/Scripts/Gameplay/</code>, create a new script <code>Badge</code>.</li>
-  <li>Replace everything with this code. Save.</li>
-</ol>
+<ol><li>In <code>Assets/GoldRush/Scripts/Gameplay/</code>, create the script <code>Badge</code> and type (or paste) this code:</li></ol>
 <p><code>Assets/GoldRush/Scripts/Gameplay/Badge.cs</code></p>
 <pre class="long"><code>using System.Collections.Generic;
 using UnityEngine;
@@ -374,394 +437,17 @@ namespace GoldRush
     }
 }</code></pre>
 <ul>
-  <li>You don't need to understand every line. You never attach this script: it is a <code>static class</code>. <code>EnemyAI</code> calls <code>Badge.Attach(...)</code> for you.</li>
-  <li><b><code>Glyphs</code></b>: each letter is 7 rows of 5 characters. <code>#</code> = white pixel, <code>.</code> = background. Want a different word? Add its letters here and change <code>DefaultText</code>.</li>
-  <li><b><code>TextTexture()</code></b> paints the letters into a <code>Texture2D</code>, 8 × 8 texture pixels for each letter pixel. <code>FilterMode.Point</code> keeps the pixels sharp.</li>
-  <li><b><code>Attach()</code></b> makes a coloured plate (a thin cube) and the text (a quad) in front of the body, at <code>heightFraction</code> of the monster's height.</li>
-  <li><b><code>FindBodyBone()</code></b> looks for a bone called "chest", "spine", "torso" or "body", and makes the badge its child. Now the badge moves when the monster bounces.</li>
+  <li>You never put this script on an object: it is a <code>static class</code>. EnemyAI calls <code>Badge.Attach(...)</code>.</li>
+  <li><code>Glyphs</code>: each letter is 7 rows of 5 characters. <code>#</code> = white pixel, <code>.</code> = background. Want another word? Add its letters and change <code>DefaultText</code>.</li>
+  <li><code>TextTexture()</code> paints the letters into a <code>Texture2D</code>. <code>FilterMode.Point</code> keeps the pixels sharp.</li>
+  <li><code>FindBodyBone()</code> looks for a bone called "chest", "spine", "torso" or "body" and makes the badge its child.</li>
 </ul>
-<div class="tip">The Resources pack also has a ready badge picture in <code>Art/Textures/</code>. You can use it on your own objects (for example a sign on a wall). The monsters use the code version, because it fits itself to every body shape.</div>
-
-<!-- ======================================================= 8 -->
-<h2 id="step-8"><span class="step">8</span>Import the EnemyAI script</h2>
-<p><code>EnemyAI.cs</code> is about 370 lines, so you import it instead of typing it.</p>
-<ol>
-  <li>In Finder or Explorer, open the Resources pack folder <code>Scripts/Helpers/</code>.</li>
-  <li>Drag <code>EnemyAI.cs</code> into <code>Assets/GoldRush/Scripts/Gameplay/</code> in Unity.</li>
-  <li>Drag these helpers from <code>Scripts/Helpers/</code> too, into the same folder names in <code>Assets/GoldRush/Scripts/</code>. If Unity asks to replace a file, click <b>Replace</b>.</li>
-</ol>
-<div class="table-wrap"><table>
-  <tr><th>Into Scripts/…</th><th>Files</th><th>What they do</th></tr>
-  <tr><td><code>Gameplay</code></td><td><code>CharacterFactory.cs</code>, <code>OriginalMaterials.cs</code></td><td>Size the monster models, the shop colours and hats, the night glow lights.</td></tr>
-  <tr><td><code>Core</code></td><td><code>Mats.cs</code></td><td>Makes materials in code (the Badge and the glows use it).</td></tr>
-  <tr><td><code>World</code></td><td><code>LevelBuilder.cs</code>, <code>Props.cs</code>, <code>DayNightTint.cs</code>, <code>DayNightPalette.cs</code></td><td>Build a whole level in code. The new GameManager uses this when a scene has no <code>LevelScene</code> (the Daily Rush in phase 9). Phase 10 explains the two DayNight files.</td></tr>
-</table></div>
-<p>The level builder makes coins and a gate in code, so <code>Coin</code> and <code>ExitGate</code> need their full versions with a <code>Create()</code> function. Your coin and gate prefabs keep working exactly as before.</p>
-<ol>
-  <li>Open the Resources pack folder <code>Scripts/Final/World/</code>.</li>
-  <li>Drag <code>Coin.cs</code> and <code>ExitGate.cs</code> into <code>Assets/GoldRush/Scripts/World/</code>. Click <b>Replace</b>.</li>
-  <li>Wait for Unity to compile. The Console shows red errors until you finish step 10 (EnemyAI needs the new GameManager and PlayerMotor). That's normal.</li>
-</ol>
-<p>Now read the three most important parts. First, the numbers for each monster type:</p>
-<pre class="long"><code>        void Configure()
-        {
-            switch (Type)
-            {
-                case EnemyType.Patroller:
-                    patrolSpeed = 1.5f; chaseSpeed = 3.6f; detectRange = 8.5f; loseRange = 14f; fovCos = Mathf.Cos(65f * Mathf.Deg2Rad); patrolRadius = 9f; leash = 999f; break;
-                case EnemyType.Chaser:
-                    patrolSpeed = 2.1f; chaseSpeed = 4.6f; detectRange = 12f; loseRange = 20f; fovCos = -1f; patrolRadius = 14f; leash = 999f; break;
-                default: // Guard
-                    patrolSpeed = 1.2f; chaseSpeed = 4.2f; detectRange = 9.5f; loseRange = 14f; fovCos = Mathf.Cos(100f * Mathf.Deg2Rad); patrolRadius = 4.5f; leash = 13f; break;
-            }
-            patrolSpeed *= speedMul;
-            chaseSpeed *= speedMul;
-            animMax = chaseSpeed;
-            agent.speed = patrolSpeed;
-            state = S.Patrol;
-        }</code></pre>
-<ul>
-  <li><b><code>fovCos</code></b> is the field of view. <code>Mathf.Cos(65°)</code> means "65° to the left and 65° to the right" = 130°. <code>-1</code> means all around.</li>
-  <li><b><code>leash</code></b>: how far the Guard may run from home. 999 = no limit.</li>
-  <li><b><code>speedMul</code></b> comes from the level (0.9 in Level 1).</li>
-</ul>
-<p>Second, the state machine. It runs every frame in <code>Update()</code>:</p>
-<pre class="long"><code>            switch (state)
-            {
-                case S.Patrol:
-                    Wander();
-                    if (canSee) Go(S.Alert);
-                    break;
-
-                case S.Alert:
-                    FaceTowards(lastSeen, dt);
-                    if (stateTime &gt; 0.45f) Go(S.Chase);
-                    break;
-
-                case S.Chase:
-                    if (Time.time &gt;= nextRepath &amp;&amp; playing)
-                    {
-                        nextRepath = Time.time + 0.12f;
-                        agent.SetDestination(canSee ? player.transform.position : lastSeen);
-                    }
-                    if (stateTime &gt; 1.2f &amp;&amp; bubbleMode == "alert") SetBubble("");
-                    if (gm.GhostActive || (!canSee &amp;&amp; Time.time - lastSeenTime &gt; 2.2f)) Go(S.Search);
-                    else if (Type == EnemyType.Guard &amp;&amp; (transform.position - home).sqrMagnitude &gt; leash * leash) Go(S.Return);
-                    break;
-
-                case S.Search:
-                    if (canSee) { Go(S.Alert); break; }
-                    if (!agent.pathPending &amp;&amp; agent.remainingDistance &lt;= 0.6f)
-                    {
-                        transform.Rotate(0, 140f * dt, 0);
-                        if (searchEnd &lt; 0) searchEnd = Time.time + 2.2f;
-                        else if (Time.time &gt; searchEnd) Go(Type == EnemyType.Guard ? S.Return : S.Patrol);
-                    }
-                    if (stateTime &gt; 9f) Go(S.Patrol);
-                    break;
-
-                case S.Return:
-                    if (canSee &amp;&amp; (player.transform.position - home).sqrMagnitude &lt; leash * leash) { Go(S.Alert); break; }
-                    if (!agent.pathPending &amp;&amp; agent.remainingDistance &lt;= 1f) Go(S.Patrol);
-                    break;
-
-                case S.Stunned:
-                    transform.Rotate(0, 200f * dt, 0);
-                    if (Time.time &gt; waitUntil) Go(S.Search);
-                    break;
-            }</code></pre>
-<ul>
-  <li><b><code>switch (state)</code></b> runs only the block for the current state.</li>
-  <li><b><code>Go(S.Alert)</code></b> changes the state. <code>Go()</code> also sets the speed, shows the bubble and plays the sound.</li>
-  <li><b><code>canSee</code></b> is checked 6–7 times per second in <code>Vision()</code>: is the player in range, inside the field of view, and is no wall in between? (A <b>raycast</b> is an invisible line; if it hits a wall, the monster can't see you.)</li>
-  <li><b><code>agent.SetDestination(...)</code></b> tells the NavMeshAgent where to go. <code>agent.remainingDistance</code> says how far it still has to walk.</li>
-  <li>After the switch, the code checks the distance to you. Closer than 1.05 m (King: 1.6 m) = caught. It then calls <code>GameManager.I.OnPlayerCaught(this)</code>. Monsters have no colliders: the catch is just a distance check.</li>
-</ul>
-<p>Third, the setup for a monster you placed in the scene. <code>GameManager</code> calls it when the level starts:</p>
-<pre class="long"><code>        /// &lt;summary&gt;A Monster prefab you placed in the scene by hand. GameManager calls this when the level starts.&lt;/summary&gt;
-        public void SetupPlaced(float speedMul, float arenaHalf, WorldMarkers markers)
-        {
-            if (agent) return;                        // already set up by Create()
-            agent = GetComponent&lt;NavMeshAgent&gt;();
-            var spawn = GetComponent&lt;MonsterSpawn&gt;();
-            Type = spawn ? spawn.type : EnemyType.Patroller;
-            home = spawn ? spawn.HomePosition : transform.position;
-            this.speedMul = speedMul;
-            half = arenaHalf;
-            var def = GameAssets.I.Enemy(Type);
-            height = def.height;
-            catchRadius = Type == EnemyType.Guard ? 1.6f : 1.05f;
-            agent.updateRotation = false;             // we turn the monster ourselves
-            agent.avoidancePriority = Random.Range(30, 70);
-            if (NavMesh.SamplePosition(transform.position, out var hit, 3f, NavMesh.AllAreas)) agent.Warp(hit.position);
-
-            anim = GetComponentInChildren&lt;Animator&gt;();
-            if (anim)
-            {
-                anim.applyRootMotion = false;
-                anim.cullingMode = AnimatorCullingMode.AlwaysAnimate;
-                FitHeight(anim.gameObject, height);  // Slime 0.95 m, Ghost 1.3 m, King 2.6 m
-            }
-            Configure();
-            Decorate();
-            if (markers) BuildBubble(markers);
-        }</code></pre>
-<ul>
-  <li>It reads the type and home from <code>MonsterSpawn</code> on the same GameObject.</li>
-  <li><b><code>agent.Warp()</code></b> puts the monster exactly on the NavMesh (up to 3 m away).</li>
-  <li><b><code>FitHeight()</code></b> scales the model to the right size: Slime 0.95 m, Ghost 1.3 m, Mushroom King 2.6 m.</li>
-  <li><b><code>Decorate()</code></b> adds the badge and a coloured glow light (it only shines at night). <b><code>BuildBubble()</code></b> makes the "!" / "?" / "z" bubble above the head.</li>
-</ul>
-
-<!-- ======================================================= 9 -->
-<h2 id="step-9"><span class="step">9</span>Update PlayerMotor (hits)</h2>
-<p>The player must react to a hit: get pushed away, blink and be safe for a short time. Open <code>Assets/GoldRush/Scripts/Gameplay/PlayerMotor.cs</code> and <b>replace the whole file with this updated version</b>:</p>
-<pre class="long"><code>using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
-namespace GoldRush
-{
-    /// &lt;summary&gt;Third-person player: CharacterController movement (collides with props), sprint/stamina,
-    /// power-up effects, hit knockback + invulnerability blink, dust, footsteps, win/lose poses.&lt;/summary&gt;
-    [RequireComponent(typeof(CharacterController))]
-    public class PlayerMotor : MonoBehaviour
-    {
-        public float walkSpeed = 5f;
-        public float sprintSpeed = 8.2f;
-        public float acceleration = 20f;
-        public float turnSpeed = 560f;
-
-        [Header("Animation")]
-        [Tooltip("Ground speed (m/s) the Walk clip was animated for (measured from the feet).")]
-        public float clipWalkSpeed = 0.59f;
-        [Tooltip("Ground speed (m/s) the Run clip was animated for (measured from the feet).")]
-        public float clipRunSpeed = 0.84f;
-
-        public VirtualJoystick joystick;
-        public ThirdPersonCamera cam;
-
-        public float Stamina { get; private set; } = 1f;
-        public bool Exhausted { get; private set; }
-        public bool Sprinting { get; private set; }
-        public bool Frozen { get; set; }
-        public bool Invulnerable =&gt; Time.time &lt; invulnUntil;
-        public Vector3 Velocity =&gt; velocity;
-        public Animator Anim =&gt; anim;
-
-        CharacterController cc;
-        float animSpeed = 1f;
-        Animator anim;
-        Transform model;
-        Vector3 velocity, knock;
-        float vy, invulnUntil, stepTimer, blinkTimer;
-        Renderer[] renderers;
-        readonly Dictionary&lt;Renderer, Material[]&gt; originalMats = new Dictionary&lt;Renderer, Material[]&gt;();
-        bool ghostVisual;
-
-        void Awake()
-        {
-            cc = GetComponent&lt;CharacterController&gt;();
-            anim = GetComponentInChildren&lt;Animator&gt;(); // the Animator on the "Model" child
-            model = anim ? anim.transform : null;
-            renderers = GetComponentsInChildren&lt;Renderer&gt;(); // for the blink and the ghost look
-        }
-
-        Vector2 ReadInput()
-        {
-            Vector2 v = joystick ? joystick.Value : Vector2.zero;
-            float kx = (Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.RightArrow) ? 1 : 0) - (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.LeftArrow) ? 1 : 0);
-            float ky = (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.UpArrow) ? 1 : 0) - (Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.DownArrow) ? 1 : 0);
-            if (kx != 0 || ky != 0) v = new Vector2(kx, ky).normalized;
-            return Vector2.ClampMagnitude(v, 1f);
-        }
-
-        void Update()
-        {
-            float dt = Time.deltaTime;
-            if (dt &lt;= 0f) return;
-            var gm = GameManager.I;
-            bool canMove = !Frozen &amp;&amp; gm != null &amp;&amp; gm.State == GameState.Playing;
-
-            Vector2 input = canMove ? ReadInput() : Vector2.zero;
-            float yaw = cam ? cam.Yaw : 0f;
-            Vector3 dir = Quaternion.Euler(0, yaw, 0) * new Vector3(input.x, 0, input.y);
-            float mag = Mathf.Clamp01(dir.magnitude);
-
-            bool wantSprint = canMove &amp;&amp; mag &gt; 0.2f &amp;&amp; ((joystick &amp;&amp; joystick.Held &amp;&amp; joystick.Value.magnitude &gt; 0.9f) || Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift));
-            if (Exhausted &amp;&amp; Stamina &gt; 0.35f) Exhausted = false;
-            Sprinting = wantSprint &amp;&amp; !Exhausted &amp;&amp; Stamina &gt; 0f;
-            if (Sprinting)
-            {
-                Stamina = Mathf.Max(0f, Stamina - dt * 0.3f);
-                if (Stamina &lt;= 0f) Exhausted = true;
-            }
-            else Stamina = Mathf.Min(1f, Stamina + dt * (mag &gt; 0.1f ? 0.18f : 0.32f));
-
-            float mul = gm ? gm.SpeedMultiplier : 1f;
-            float speed = (Sprinting ? sprintSpeed : walkSpeed) * mul;
-            Vector3 targetVel = mag &gt; 0.01f ? dir.normalized * (mag * speed) : Vector3.zero;
-            velocity = Vector3.MoveTowards(velocity, targetVel, acceleration * dt);
-
-            if (velocity.sqrMagnitude &gt; 0.05f &amp;&amp; !Frozen)
-            {
-                var targetRot = Quaternion.LookRotation(new Vector3(velocity.x, 0, velocity.z));
-                transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRot, turnSpeed * dt);
-            }
-
-            if (cc.isGrounded &amp;&amp; vy &lt; 0) vy = -2f; else vy -= 25f * dt;
-            knock = Vector3.Lerp(knock, Vector3.zero, 1f - Mathf.Exp(-5f * dt));
-            if (cc.enabled) cc.Move((velocity + knock + Vector3.up * vy) * dt);
-
-            // animation (0 idle, 0.5 walk, 1 run)
-            float horiz = new Vector3(velocity.x, 0, velocity.z).magnitude;
-            float blend = horiz &lt; 0.1f ? 0f : Mathf.Lerp(0.45f, 1f, Mathf.InverseLerp(2.5f, sprintSpeed, horiz));
-            if (anim &amp;&amp; anim.runtimeAnimatorController) anim.SetFloat(AnimParams.Speed, blend, 0.15f, dt);
-            // play the walk/run cycle exactly as fast as the hero moves, so the feet don't slide
-            if (anim &amp;&amp; !Frozen)
-            {
-                float target = PlaybackSpeed(blend, horiz);
-                animSpeed = Mathf.Lerp(animSpeed, target, 1f - Mathf.Exp(-5f * dt)); // ease, never jump
-                anim.speed = animSpeed;
-            }
-
-            // footsteps
-            if (horiz &gt; 1f &amp;&amp; cc.isGrounded)
-            {
-                stepTimer -= dt * horiz / 5f;
-                if (stepTimer &lt;= 0f)
-                {
-                    stepTimer = 0.36f;
-                    AudioFX.Play("step", Sprinting ? 0.55f : 0.35f, Random.Range(0.9f, 1.1f));
-                }
-            }
-
-            // invulnerability blink
-            if (Invulnerable)
-            {
-                blinkTimer -= dt;
-                if (blinkTimer &lt;= 0f) { blinkTimer = 0.09f; SetVisible(!renderers[0].enabled); }
-            }
-            else if (renderers != null &amp;&amp; renderers.Length &gt; 0 &amp;&amp; !renderers[0].enabled) SetVisible(true);
-
-            bool ghost = gm &amp;&amp; gm.GhostActive;
-            if (ghost != ghostVisual) SetGhost(ghost);
-        }
-
-        /// &lt;summary&gt;How fast to play the walk/run clip so the feet match the ground (no sliding).&lt;/summary&gt;
-        float PlaybackSpeed(float blend, float groundSpeed)
-        {
-            if (groundSpeed &lt; 0.15f) return 1f;
-            float natural = Mathf.Lerp(clipWalkSpeed, clipRunSpeed, Mathf.InverseLerp(0.5f, 1f, blend));
-            float ratio = groundSpeed / Mathf.Max(0.1f, natural);
-            // match most of the stride but keep it gentle: fluid motion matters more than perfect feet
-            return Mathf.Clamp(Mathf.Lerp(1f, ratio, 0.7f), 0.8f, 2.2f);
-        }
-
-        void SetVisible(bool v)
-        {
-            if (renderers == null) return;
-            foreach (var r in renderers) if (r &amp;&amp; !(r is ParticleSystemRenderer)) r.enabled = v;
-        }
-
-        void SetGhost(bool on)
-        {
-            ghostVisual = on;
-            var ghostMat = Mats.Transparent(new Color(0.65f, 0.6f, 1f, 0.32f), 0.9f);
-            foreach (var r in GetComponentsInChildren&lt;Renderer&gt;(true))
-            {
-                if (r is ParticleSystemRenderer) continue;
-                if (on)
-                {
-                    if (!originalMats.ContainsKey(r)) originalMats[r] = r.sharedMaterials;
-                    var arr = new Material[r.sharedMaterials.Length];
-                    for (int i = 0; i &lt; arr.Length; i++) arr[i] = ghostMat;
-                    r.sharedMaterials = arr;
-                }
-                else if (originalMats.TryGetValue(r, out var orig)) r.sharedMaterials = orig;
-            }
-            if (!on) originalMats.Clear();
-        }
-
-        public void Hit(Vector3 from, float invulnSeconds)
-        {
-            Vector3 d = transform.position - from; d.y = 0;
-            if (d.sqrMagnitude &lt; 0.01f) d = -transform.forward;
-            knock = d.normalized * 13f;
-            invulnUntil = Time.time + invulnSeconds;
-            if (anim) anim.SetTrigger(AnimParams.Hit);
-        }
-
-        public void PlayVictory()
-        {
-            Frozen = true;
-            velocity = Vector3.zero;
-            StartCoroutine(VictoryCo());
-        }
-
-        IEnumerator VictoryCo()
-        {
-            if (anim) anim.SetFloat(AnimParams.Speed, 0f);
-            // turn to face the camera, then wave (the "Win" clip)
-            Quaternion start = transform.rotation;
-            Vector3 toCam = cam ? cam.transform.position - transform.position : -transform.forward;
-            toCam.y = 0;
-            Quaternion face = toCam.sqrMagnitude &gt; 0.01f ? Quaternion.LookRotation(toCam) : start;
-            for (float t = 0; t &lt; 1f; t += Time.deltaTime / 0.35f)
-            {
-                transform.rotation = Quaternion.Slerp(start, face, t);
-                yield return null;
-            }
-            if (anim) { anim.speed = 1f; anim.SetTrigger(AnimParams.Win); }
-        }
-
-        public void PlayCaught()
-        {
-            Frozen = true;
-            velocity = Vector3.zero;
-            StartCoroutine(CaughtCo());
-        }
-
-        IEnumerator CaughtCo()
-        {
-            SetVisible(true);
-            if (anim) { anim.speed = 1f; anim.SetFloat(AnimParams.Speed, 0f); anim.SetTrigger(AnimParams.Die); }
-            yield return null;
-        }
-
-        /// &lt;summary&gt;A warm lantern spotlight follows the hero (and a soft fill light). Both fade in at night.&lt;/summary&gt;
-        public void AddLantern()
-        {
-            var spot = new GameObject("Lantern").AddComponent&lt;Light&gt;();
-            spot.transform.SetParent(transform, false);
-            spot.transform.localPosition = new Vector3(0f, 5.5f, -1.5f);
-            spot.transform.LookAt(transform.position + transform.forward * 1.8f);
-            spot.type = LightType.Spot;
-            spot.color = new Color(1f, 0.8f, 0.5f);
-            spot.intensity = 22f;
-            spot.range = 14f;
-            spot.spotAngle = 62f;
-            spot.innerSpotAngle = 30f;
-            spot.shadows = LightShadows.Soft;
-            DayNight.RegisterNightLight(spot);
-            var fill = CharacterFactory.AddGlow(transform, new Color(1f, 0.85f, 0.6f), 1.35f, 0.5f);
-            fill.transform.localPosition = new Vector3(0f, 2.4f, -1.2f); // above &amp; behind: soft rim light, not a face flash
-            fill.range = 4f;
-            DayNight.RegisterNightLight(fill);
-        }
-    }
-}</code></pre>
-<ul>
-  <li><b><code>Hit(from, invulnSeconds)</code></b> pushes you away from the monster (<code>knock</code>, 13 m/s), plays the <code>Hit</code> animation and makes you <b>invulnerable</b> (can't be hit) for a few seconds.</li>
-  <li><b><code>Invulnerable</code></b> is <code>true</code> while <code>Time.time</code> is smaller than <code>invulnUntil</code>. While it is true, the model blinks every 0.09 s (<code>SetVisible</code>).</li>
-  <li><b><code>knock</code></b> fades out smoothly every frame with <code>Vector3.Lerp</code>, so the push feels soft.</li>
-  <li><b><code>PlayCaught()</code></b> freezes you and plays the <code>Die</code> animation when your last heart is gone.</li>
-  <li><b><code>Awake()</code></b> finds the model and all its renderers (for the blink). <code>SpeedMultiplier</code> and <code>GhostActive</code> are already read here, but they only do something in Phase 8.</li>
-</ul>
+<figure class="shot todo" data-shot="phase-07/step-09" data-window="project" data-select="Assets/GoldRush/Scripts/Gameplay/Badge.cs"><div class="ph">Project window: Scripts/Gameplay with Badge.cs</div><figcaption>Badge.cs is in the Gameplay folder.</figcaption></figure>
 
 <!-- ======================================================= 10 -->
-<h2 id="step-10"><span class="step">10</span>Update GameManager (hearts and hits)</h2>
-<p>Open <code>Assets/GoldRush/Scripts/Gameplay/GameManager.cs</code> and <b>replace the whole file with this updated version</b>:</p>
+<h2 id="step-10"><span class="step">10</span>Update the GameManager</h2>
+<ol><li>Open <code>Assets/GoldRush/Scripts/Gameplay/GameManager.cs</code> and <b>replace the whole file</b> with this phase 7 version:</li></ol>
+<p><code>Assets/GoldRush/Scripts/Gameplay/GameManager.cs</code></p>
 <pre class="long"><code>using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -782,12 +468,11 @@ namespace GoldRush
         public bool hasNext;
     }
 
-    /// &lt;summary&gt;Gameplay scene root: builds the level, owns game state, rules, scoring and saving.&lt;/summary&gt;
+    /// &lt;summary&gt;Gameplay scene root: finds the level, owns game state, rules, scoring and saving.
+    /// Phase 7 version: no HUD yet (phase 9), so it reports to the Console. Power-ups come in phase 8.&lt;/summary&gt;
     public class GameManager : MonoBehaviour
     {
         public static GameManager I { get; private set; }
-
-        public const float SpeedDuration = 6f, GhostDuration = 6f, MagnetDuration = 8f;
 
         public LevelDef Def { get; private set; }
         public GameState State { get; private set; } = GameState.Intro;
@@ -800,20 +485,14 @@ namespace GoldRush
 
         public PlayerMotor Player { get; private set; }
         public ThirdPersonCamera Cam { get; private set; }
-        public GameUI UI { get; private set; }
         public ExitGate Gate { get; private set; }
 
-        public float SpeedLeft { get; private set; }
-        public float GhostLeft { get; private set; }
-        public float MagnetLeft { get; private set; }
-        public bool SpeedActive =&gt; SpeedLeft &gt; 0f;
-        public bool GhostActive =&gt; GhostLeft &gt; 0f;
-        public bool MagnetActive =&gt; MagnetLeft &gt; 0f;
-        public float SpeedMultiplier =&gt; SpeedActive ? 1.55f : 1f;
+        public bool GhostActive =&gt; false;   // phase 8: the GHOST power-up (EnemyAI reads this)
 
         readonly List&lt;Coin&gt; coins = new List&lt;Coin&gt;();
         readonly List&lt;EnemyAI&gt; enemies = new List&lt;EnemyAI&gt;();
-        LevelLayout layout;
+        Vector3 spawn;
+        float spawnYaw, arenaHalf;
         bool chasedLastFrame;
 
         void Awake()
@@ -856,106 +535,70 @@ namespace GoldRush
         void Start()
         {
             Build();
-            StartCoroutine(IntroCo());
+            if (Player &amp;&amp; Cam) StartCoroutine(IntroCo());
         }
 
         void Build()
         {
-            UIKit.EnsureEventSystem();
             AudioFX.StartMusic();
 
-            // hand-made level in this scene? otherwise generate one from the level's seed
+            // the hand-made level: the object with the LevelScene component
             var handMade = FindAnyObjectByType&lt;LevelScene&gt;();
-            layout = handMade ? LevelFromScene(handMade) : LevelBuilder.Build(Def);
-            // use the Player already in the scene: move it to the PlayerSpawn
+            if (!handMade) { Debug.LogError("[GoldRush] No LevelScene in this scene. Add it to the level root."); return; }
+            LevelFromScene(handMade);
+            // the Player and the camera are placed in the scene
             Player = FindAnyObjectByType&lt;PlayerMotor&gt;();
-            var cc = Player.GetComponent&lt;CharacterController&gt;();
-            cc.enabled = false;                           // a CharacterController ignores teleports while enabled
-            Player.transform.SetPositionAndRotation(layout.spawn, Quaternion.Euler(0, layout.spawnYaw, 0));
-            cc.enabled = true;
-            // use the Main Camera already in the scene
+            if (!Player) { Debug.LogError("[GoldRush] No Player (PlayerMotor) in this scene."); return; }
+            Player.Teleport(spawn, spawnYaw);
+            Player.SetupPlaced();
             Cam = FindAnyObjectByType&lt;ThirdPersonCamera&gt;();
-            Cam.Init(Player.transform, layout.spawnYaw);
+            if (!Cam) { Debug.LogError("[GoldRush] No camera with ThirdPersonCamera in this scene."); return; }
+            Cam.Init(Player.transform, spawnYaw);
             EnvironmentSetup.Apply(Cam.GetComponent&lt;Camera&gt;(), false, Def.night);
-            Player.AddLantern(); // only visible at night (DayNight fades it)
-
-            UI = GameUI.Create(this);
-            Player.joystick = UI.Joystick;
             Player.cam = Cam;
 
-            foreach (var p in layout.coinPoints) coins.Add(Coin.Create(layout.dynamicRoot, p));
-            int guardIndex = 0;
-            for (int i = 0; i &lt; layout.enemyPoints.Count; i++)
-            {
-                var type = i &lt; layout.enemyTypes.Count ? layout.enemyTypes[i] : EnemyType.Patroller;
-                Vector3 home = layout.enemyPoints[i];
-                if (type == EnemyType.Guard &amp;&amp; guardIndex &lt; layout.guardHomes.Count) home = layout.guardHomes[guardIndex++];
-                enemies.Add(EnemyAI.Create(layout.dynamicRoot, layout.enemyPoints[i], type, home, Def.enemySpeed, layout.half, UI.Markers));
-            }
             // monster prefabs placed in the scene by hand
             foreach (var e in FindObjectsByType&lt;EnemyAI&gt;())
             {
                 if (enemies.Contains(e)) continue;
-                e.SetupPlaced(Def.enemySpeed, layout.half, UI.Markers);
+                e.SetupPlaced(Def.enemySpeed, arenaHalf, null); // phase 9: the "!" bubbles
                 enemies.Add(e);
             }
-            Gate = layout.gate;
-            if (Gate) UI.AddGateLabel(Gate);
 
             TotalCoins = coins.Count;
             MaxLives = Lives = Mathf.Max(1, Def.lives);
-            UI.SetCoins(0, TotalCoins, false);
-            UI.SetLives(Lives, MaxLives);
+            Debug.Log($"[GoldRush] {Def.title}: collect {TotalCoins} coins. Lives: {Lives}. Par time: {Def.parTime:0} s. (The HUD comes in phase 9.)");
             Fader.FadeIn();
         }
 
         /// &lt;summary&gt;Reads a hand-made level: marker objects placed in the Hierarchy (see Scripts/Level/).&lt;/summary&gt;
-        LevelLayout LevelFromScene(LevelScene scene)
+        void LevelFromScene(LevelScene scene)
         {
             // rebuild the NavMesh so students can move walls around freely
             foreach (var surface in scene.GetComponentsInChildren&lt;Unity.AI.Navigation.NavMeshSurface&gt;()) surface.BuildNavMesh();
 
-            var l = new LevelLayout
-            {
-                root = scene.transform,
-                dynamicRoot = new GameObject("Dynamic (runtime)").transform,
-                half = scene.arenaHalf,
-                gate = scene.GetComponentInChildren&lt;ExitGate&gt;(),
-                coinPoints = new List&lt;Vector3&gt;(), enemyPoints = new List&lt;Vector3&gt;(), enemyTypes = new List&lt;EnemyType&gt;(),
-                guardHomes = new List&lt;Vector3&gt;(), powerUpPoints = new List&lt;Vector3&gt;(),
-            };
-            var spawn = scene.GetComponentInChildren&lt;PlayerSpawn&gt;();
-            l.spawn = spawn ? spawn.transform.position : Vector3.zero;
-            l.spawnYaw = spawn ? spawn.transform.eulerAngles.y : 0f;
+            arenaHalf = scene.arenaHalf;
+            Gate = scene.GetComponentInChildren&lt;ExitGate&gt;();
+            var start = scene.GetComponentInChildren&lt;PlayerSpawn&gt;();
+            spawn = start ? start.transform.position : Vector3.zero;
+            spawnYaw = start ? start.transform.eulerAngles.y : 0f;
             foreach (var c in scene.GetComponentsInChildren&lt;CoinSpot&gt;())
             {
                 var placed = c.GetComponentInChildren&lt;Coin&gt;();
                 if (placed) coins.Add(placed);               // a Coin prefab placed by hand
-                else l.coinPoints.Add(c.transform.position); // an empty marker: Build() makes a coin here
+                else Debug.LogWarning("[GoldRush] " + c.name + " has no Coin inside.");
             }
-            foreach (var m in scene.GetComponentsInChildren&lt;MonsterSpawn&gt;())
-            {
-                if (m.GetComponent&lt;EnemyAI&gt;()) continue;     // a monster prefab placed by hand: set up in Build()
-                Vector3 p = m.transform.position;
-                if (UnityEngine.AI.NavMesh.SamplePosition(p, out var hit, 3f, UnityEngine.AI.NavMesh.AllAreas)) p = hit.position;
-                l.enemyPoints.Add(p);
-                l.enemyTypes.Add(m.type);
-                if (m.type == EnemyType.Guard) l.guardHomes.Add(m.HomePosition);
-            }
-            if (l.coinPoints.Count == 0 &amp;&amp; coins.Count == 0) Debug.LogWarning("[GoldRush] This level has no CoinSpot objects — add some from Prefabs/Level.");
-            return l;
+            if (coins.Count == 0) Debug.LogWarning("[GoldRush] This level has no coins. Put a Coin inside each CoinSpot.");
         }
 
         IEnumerator IntroCo()
         {
             State = GameState.Intro;
-            Cam.PlayIntro(2.8f);
-            yield return UI.Intro(Def, GameSession.IsDaily ? 0 : GameSession.LevelIndex + 1);
+            Cam.PlayIntro(2.8f);                     // the camera swoops down behind the hero
+            yield return new WaitForSeconds(2.8f);   // phase 9: the 3-2-1-GO countdown
+            Debug.Log("[GoldRush] GO!");
             State = GameState.Playing;
             LockCursor(true);
-            bool firstTime = !Save.Data.seenTutorial;
-            if (firstTime || (!GameSession.IsDaily &amp;&amp; GameSession.LevelIndex == 0)) UI.ShowControlsHint();
-            if (firstTime) { Save.Data.seenTutorial = true; Save.Persist(); }
         }
 
         void Update()
@@ -971,9 +614,6 @@ namespace GoldRush
 
             float dt = Time.deltaTime;
             Elapsed += dt;
-            SpeedLeft = Mathf.Max(0, SpeedLeft - dt);
-            GhostLeft = Mathf.Max(0, GhostLeft - dt);
-            MagnetLeft = Mathf.Max(0, MagnetLeft - dt);
 
             Vector3 pp = Player.transform.position + Vector3.up * 1f;
 
@@ -981,7 +621,8 @@ namespace GoldRush
             {
                 var c = coins[i];
                 if (c == null || c.Collected) { coins.RemoveAt(i); continue; }
-                float sq = (c.transform.position - pp).sqrMagnitude;
+                Vector3 d = c.transform.position - pp;
+                float sq = d.sqrMagnitude;
                 if (sq &lt; 1.45f * 1.45f) { coins.RemoveAt(i); CollectCoin(c); }
             }
 
@@ -1001,16 +642,14 @@ namespace GoldRush
             if (paused &amp;&amp; State == GameState.Playing) Pause();
         }
 
-        // ---------------------------------------------------------------- pickups (power-ups: phase 8)
+        // ---------------------------------------------------------------- pickups
 
         void CollectCoin(Coin c)
         {
-            Vector3 pos = c.transform.position;
             c.Collect();
             Collected++;
             AudioFX.Play("coin", 1f, 1f + 0.05f * (Collected % 5));
-            UI.Markers.FloatText(pos + Vector3.up * 0.6f, "+1", UIKit.Gold, 64);
-            UI.FlyCoin(pos, Collected, TotalCoins);
+            Debug.Log($"[GoldRush] Coin {Collected} / {TotalCoins}");
             if (Collected &gt;= TotalCoins) AllCollected();
         }
 
@@ -1019,7 +658,7 @@ namespace GoldRush
             if (Gate) Gate.Open();
             AudioFX.Play("gate");
             Cam.Shake(0.12f, 0.8f);
-            UI.Toast("ALL GOLD COLLECTED!", "The gate is open — run to the EXIT!", UIKit.Green);
+            Debug.Log("[GoldRush] ALL GOLD COLLECTED! The gate is open - run to the EXIT!");
             foreach (var e in enemies) if (e) e.Enrage(1.1f);
         }
 
@@ -1032,12 +671,10 @@ namespace GoldRush
             Lives--;
             AudioFX.Play("hit");
             Cam.Shake(0.45f, 0.45f);
-            UI.Flash(new Color(0.9f, 0.1f, 0.1f, 0.45f));
-            UI.SetLives(Lives, MaxLives);
             if (Lives &lt;= 0) { Lose(); return; }
             Player.Hit(enemy.transform.position, 2.2f);
             enemy.Stun(2.6f);
-            UI.Toast("OUCH!", Lives == 1 ? "Last life — be careful!" : "Lives left: " + Lives, UIKit.Red);
+            Debug.Log("[GoldRush] OUCH! " + (Lives == 1 ? "Last life - be careful!" : "Lives left: " + Lives));
         }
 
         // ---------------------------------------------------------------- end states
@@ -1066,7 +703,9 @@ namespace GoldRush
             Time.timeScale = 1f;
             AudioFX.Duck(0.7f, 2f);
             AudioFX.Play("lose");
-            UI.ShowLose(r);
+            Debug.Log($"[GoldRush] CAUGHT! Gold: {r.collected} / {r.total}, +{r.goldEarned} gold. Trying again...");
+            yield return new WaitForSeconds(2f);     // phase 9: the lose dialog with RETRY and MENU
+            Restart();
         }
 
         void Win()
@@ -1115,7 +754,9 @@ namespace GoldRush
         IEnumerator WinCo(RunResult r)
         {
             yield return new WaitForSeconds(1.5f);
-            UI.ShowWin(r);
+            Debug.Log($"[GoldRush] LEVEL COMPLETE! Stars: {r.stars}, time {r.time:0.0} s (par {r.par:0} s), best {r.best:0.0} s, +{r.goldEarned + r.bonus} gold.");
+            yield return new WaitForSeconds(2.5f);   // phase 9: the win dialog with NEXT, RETRY and MENU
+            BackToMenu();
         }
 
         // ---------------------------------------------------------------- navigation
@@ -1126,7 +767,7 @@ namespace GoldRush
             State = GameState.Paused;
             LockCursor(false);
             Time.timeScale = 0f;
-            UI.ShowPause();
+            Debug.Log("[GoldRush] Paused. Press Esc or P to play on.");   // phase 9: the pause dialog
         }
 
         public void Resume()
@@ -1134,169 +775,116 @@ namespace GoldRush
             if (State != GameState.Paused) return;
             State = GameState.Playing;
             Time.timeScale = 1f;
-            UI.HidePause();
             LockCursor(true);
         }
 
         public void Restart() { Time.timeScale = 1f; Fader.Load(UnityEngine.SceneManagement.SceneManager.GetActiveScene().name); }
         public void BackToMenu() { Time.timeScale = 1f; Fader.Load(Scenes.Menu); }
-
-        public void NextLevel()
-        {
-            if (!GameSession.HasNext) { BackToMenu(); return; }
-            GameSession.LevelIndex++;
-            Fader.Load(GameSession.SceneName);
-        }
-
-        // ---------------------------------------------------------------- helpers
-
-        /// &lt;summary&gt;Where the off-screen arrow should point: nearest coin, or the gate once it is open.&lt;/summary&gt;
-        public Transform ArrowTarget
-        {
-            get
-            {
-                if (!Player) return null;
-                if (Gate &amp;&amp; Gate.IsOpen) return Gate.transform;
-                Transform best = null;
-                float bestSq = float.MaxValue;
-                Vector3 p = Player.transform.position;
-                foreach (var c in coins)
-                {
-                    if (!c || c.Collected) continue;
-                    float sq = (c.transform.position - p).sqrMagnitude;
-                    if (sq &lt; bestSq) { bestSq = sq; best = c.transform; }
-                }
-                return best;
-            }
-        }
-
-        // ---------------------------------------------------------------- smoke-test hooks
-
-        public void DebugCollectAll()
-        {
-            foreach (var c in coins.ToArray()) if (c &amp;&amp; !c.Collected) { coins.Remove(c); CollectCoin(c); }
-        }
-
-        public void DebugWin()
-        {
-            if (State == GameState.Playing) { if (Gate &amp;&amp; !Gate.IsOpen) DebugCollectAll(); Win(); }
-        }
-
-        public void DebugLose()
-        {
-            if (State != GameState.Playing) return;
-            Lives = 1;
-            if (enemies.Count &gt; 0 &amp;&amp; enemies[0]) OnPlayerCaught(enemies[0]);
-        }
     }
 }</code></pre>
+<p>What is new:</p>
 <ul>
-  <li><b>Hearts:</b> <code>MaxLives = Lives = Mathf.Max(1, Def.lives)</code>. Level 1 has 2 lives, so you see 2 hearts. <code>UI.SetLives()</code> draws them in the HUD.</li>
-  <li><b>Placed monsters:</b> in <code>Build()</code>, <code>FindObjectsByType&lt;EnemyAI&gt;</code> finds your Slimes and calls <code>SetupPlaced()</code> on each one. The list <code>enemies</code> remembers them.</li>
-  <li><b>NavMesh:</b> <code>LevelFromScene()</code> calls <code>surface.BuildNavMesh()</code> on your <code>NavMeshSurface</code>: a fresh bake when the level starts. It also skips <code>MonsterSpawn</code> objects that already are a monster.</li>
-  <li><b>Coins and level builder:</b> <code>LevelFromScene()</code> keeps the Coins you placed in the CoinSpots; an empty CoinSpot gets a coin from <code>Coin.Create()</code>. A scene with no <code>LevelScene</code> is built in code by <code>LevelBuilder.Build(Def)</code> (the Daily Rush, phase 9).</li>
-  <li><b><code>OnPlayerCaught()</code></b>: one hit = <code>Hits++</code> and <code>Lives--</code>, a sound, a camera shake and a red flash. At 0 lives you lose. Otherwise you are pushed away and safe for 2.2 s, and the monster is stunned for 2.6 s.</li>
-  <li><b><code>AllCollected()</code></b> calls <code>e.Enrage(1.1f)</code>: when the gate opens, all monsters get 10% faster!</li>
-  <li><b>Tension music:</b> at the end of <code>Update()</code>, if any monster is chasing you, <code>AudioFX.SetTension(true)</code> makes the music exciting.</li>
+  <li><b>Hearts</b>: <code>MaxLives = Lives = Mathf.Max(1, Def.lives)</code>. Level 1 has 2 lives.</li>
+  <li><b>Monsters</b>: in <code>Build()</code>, <code>FindObjectsByType&lt;EnemyAI&gt;()</code> finds your monster prefabs and calls <code>SetupPlaced()</code> on each one. The list <code>enemies</code> remembers them.</li>
+  <li><b>NavMesh</b>: <code>LevelFromScene()</code> calls <code>surface.BuildNavMesh()</code>: a fresh bake when the level starts.</li>
+  <li><code>OnPlayerCaught()</code>: one hit = <code>Hits++</code> and <code>Lives--</code>, a sound and a camera shake. At 0 lives you lose. Otherwise you are pushed away and safe for 2.2 s (<code>Player.Hit</code>), and the monster is stunned for 2.6 s.</li>
+  <li><code>AllCollected()</code> calls <code>e.Enrage(1.1f)</code>: when the gate opens, all monsters get 10 % faster!</li>
+  <li><b>Tension music</b>: if any monster chases you, <code>AudioFX.SetTension(true)</code> makes the music faster and louder.</li>
+  <li><code>GhostActive</code> is always <code>false</code> for now. EnemyAI asks it. Phase 8 adds the GHOST power-up.</li>
+  <li>The test key <b>L</b> is gone. Now the monsters make you lose.</li>
 </ul>
+<div class="check">Save. Wait for Unity to compile. The Console must have <b>no red errors</b> now.</div>
+<figure class="shot todo" data-shot="phase-07/step-10" data-window="project" data-select="Assets/GoldRush/Scripts/Gameplay/GameManager.cs"><div class="ph">Project window: Scripts/Gameplay with GameManager.cs (phase 7 version)</div><figcaption>GameManager.cs is replaced.</figcaption></figure>
 
 <!-- ======================================================= 11 -->
 <h2 id="step-11"><span class="step">11</span>Build the Slime prefab</h2>
-<p>A monster prefab is an empty "root" with the brain, plus the model as a child.</p>
+<p>A monster prefab is one object with three components. It has no model inside: the GameManager builds the body from GoldRushAssets when you press Play, at exactly the right height.</p>
 <ol>
-  <li><b>GameObject → Create Empty</b>. Name it <code>Monster_Slime</code>. Set its <b>Position</b> to 0, 0, 0.</li>
-  <li><b>Add Component → Monster Spawn</b>. Set <b>Type</b> = <code>Patroller</code>.</li>
-  <li><b>Add Component → Nav Mesh Agent</b>. Type the values from the table below.</li>
-  <li><b>Add Component → Enemy AI</b>.</li>
-  <li>From the Project window, drag <code>Slime.fbx</code> onto <code>Monster_Slime</code> in the Hierarchy. It becomes a child.</li>
-  <li>Rename the child to <code>Model</code>. Set its <b>Position</b> and <b>Rotation</b> to 0, 0, 0.</li>
-  <li>On <code>Model</code>, find the <b>Animator</b> component. Set <b>Controller</b> = <code>Slime.controller</code>. Untick <b>Apply Root Motion</b>.</li>
+  <li><b>GameObject → Create Empty</b>. Name it <code>Monster_Slime</code>. Transform <b>⋮ → Reset</b>.</li>
+  <li>Click <b>Add Component</b> and choose <b>Monster Spawn</b>. Set <b>Type</b> = <code>Patroller</code>. A green box appears in the Scene view.</li>
+  <li>Click <b>Add Component</b> and choose <b>Enemy AI</b>. Unity adds a <b>Nav Mesh Agent</b> too (EnemyAI needs one).</li>
+  <li>In the Nav Mesh Agent, set the values from the table.</li>
   <li>Drag <code>Monster_Slime</code> from the Hierarchy into <code>Assets/GoldRush/Prefabs/Gameplay/</code>. It turns blue: it is a prefab now.</li>
   <li>Delete <code>Monster_Slime</code> from the Hierarchy. You place it in step 13.</li>
 </ol>
 <div class="table-wrap"><table>
   <tr><th>Nav Mesh Agent field</th><th>Value</th><th>Why</th></tr>
-  <tr><td>Agent Type</td><td>Humanoid</td><td>The same as the NavMesh you baked.</td></tr>
-  <tr><td>Speed</td><td>(any)</td><td>The code sets it for each state.</td></tr>
-  <tr><td>Angular Speed</td><td>720</td><td>Turns fast around corners.</td></tr>
-  <tr><td>Acceleration</td><td>22</td><td>Starts and stops quickly.</td></tr>
-  <tr><td>Stopping Distance</td><td>0.2</td><td>Stops 20 cm before the target.</td></tr>
-  <tr><td>Auto Braking</td><td>on</td><td>Slows down before the target.</td></tr>
-  <tr><td>Radius</td><td>0.45</td><td>Body width, to walk around other monsters.</td></tr>
-  <tr><td>Height</td><td>0.95</td><td>The Slime's height in metres.</td></tr>
-  <tr><td>Obstacle Avoidance → Quality</td><td>Low Quality</td><td>Cheap and good enough.</td></tr>
+  <tr><td>Agent Type</td><td><code>Humanoid</code></td><td>The same as the NavMesh you baked.</td></tr>
+  <tr><td>Radius</td><td><code>0.45</code></td><td>Body width, to walk around other monsters.</td></tr>
+  <tr><td>Height</td><td><code>0.95</code></td><td>The Slime's height in metres.</td></tr>
+  <tr><td>Angular Speed / Acceleration</td><td><code>720</code> / <code>22</code></td><td>Turns and starts fast.</td></tr>
+  <tr><td>Stopping Distance</td><td><code>0.2</code></td><td>Stops 20 cm before the target.</td></tr>
+  <tr><td>Obstacle Avoidance → Quality</td><td><code>Low Quality</code></td><td>Cheap and good enough.</td></tr>
 </table></div>
-<figure class="shot todo"><div class="ph">Screenshot: Inspector of Monster_Slime (Monster Spawn, Nav Mesh Agent, Enemy AI) and the Hierarchy with the Model child</div><figcaption>The Slime prefab: three components on the root, the model as a child.</figcaption></figure>
-<div class="note">Do <b>not</b> add a collider to a monster. Colliders would block the monsters' view rays and the camera. The model may look bigger or smaller than the box from <code>MonsterSpawn</code>. That's OK: <code>FitHeight()</code> fixes the size when you press Play. The badge and the bubble are also added at Play.</div>
+<div class="tip"><code>SetupPlaced()</code> sets these same numbers again when the level starts, so a small mistake does not matter. The speed is set by the code for each state.</div>
+<div class="note">Do not add a collider and do not put a model inside. The body, the badge and the glow are added when you press Play.</div>
+<figure class="shot todo" data-shot="phase-07/step-11" data-window="inspector" data-select="Assets/GoldRush/Prefabs/Gameplay/Monster_Slime.prefab"><div class="ph">Inspector of Monster_Slime: Monster Spawn (Type Patroller), Nav Mesh Agent (Radius 0.45, Height 0.95), Enemy AI</div><figcaption>Three components on one object.</figcaption></figure>
 
 <!-- ======================================================= 12 -->
 <h2 id="step-12"><span class="step">12</span>Build the Ghost and Mushroom King prefabs</h2>
-<p>Repeat step 11 two more times with these values:</p>
+<ol>
+  <li>In the Project window, select <code>Monster_Slime</code> and press <b>Ctrl+D</b> twice.</li>
+  <li>Rename the copies <code>Monster_Ghost</code> and <code>Monster_MushroomKing</code>.</li>
+  <li>Select each one and change the values from the table.</li>
+</ol>
 <div class="table-wrap"><table>
-  <tr><th>Prefab name</th><th>Monster Spawn → Type</th><th>Model</th><th>Controller</th><th>Agent Radius</th><th>Agent Height</th></tr>
-  <tr><td><code>Monster_Slime</code></td><td>Patroller</td><td>Slime.fbx</td><td>Slime</td><td>0.45</td><td>0.95</td></tr>
-  <tr><td><code>Monster_Ghost</code></td><td>Chaser</td><td>Ghost.fbx</td><td>Ghost</td><td>0.45</td><td>1.3</td></tr>
-  <tr><td><code>Monster_MushroomKing</code></td><td>Guard</td><td>MushroomKing.fbx</td><td>MushroomKing</td><td>0.75</td><td>2.6</td></tr>
+  <tr><th>Prefab</th><th>Monster Spawn → Type</th><th>Agent Radius</th><th>Agent Height</th></tr>
+  <tr><td><code>Monster_Slime</code></td><td>Patroller</td><td>0.45</td><td>0.95</td></tr>
+  <tr><td><code>Monster_Ghost</code></td><td>Chaser</td><td>0.45</td><td>1.3</td></tr>
+  <tr><td><code>Monster_MushroomKing</code></td><td>Guard</td><td>0.75</td><td>2.6</td></tr>
 </table></div>
-<div class="tip">Faster: select <code>Monster_Slime</code> in the Project window and press <b>Ctrl+D</b>. Rename the copy and double-click it to open it. Delete its <code>Model</code>, drag in the new model, and change the values.</div>
-<p>The Mushroom King has a <b>Home</b> field. Leave it empty: the King guards the place where you put it. (In Levels 3 and 4 you will use it.)</p>
+<p>The Mushroom King has a <b>Home</b> field. Leave it empty: the King guards the place where you put it. (The bigger levels in phase 10 use it.)</p>
+<figure class="shot todo" data-shot="phase-07/step-12" data-window="inspector" data-select="Assets/GoldRush/Prefabs/Gameplay/Monster_MushroomKing.prefab"><div class="ph">Inspector of Monster_MushroomKing: Monster Spawn (Type Guard, Home empty), Nav Mesh Agent (Radius 0.75, Height 2.6), Enemy AI</div><figcaption>The Mushroom King prefab.</figcaption></figure>
 
 <!-- ======================================================= 13 -->
 <h2 id="step-13"><span class="step">13</span>Place the monsters in Level1</h2>
-<p>Level 1 ("Training Yard") has two Slimes. In Phase 2 you made two empty markers for them in <code>Gameplay/Monsters</code>. Now the real monsters take their place. (The Ghost and the King are for the bigger levels in Phase 9.)</p>
+<p>Level 1 has two Slimes. In phase 3 you made two empty markers for them in <code>Gameplay/Monsters</code>. Now the real monsters take their place.</p>
 <ol>
-  <li>Drag <code>Monster_Slime</code> from the Project window onto <code>Gameplay/Monsters</code> in the Hierarchy.</li>
-  <li>Set its <b>Position</b> to the position of the marker <code>Slime 1</code>: <code>5.5, 0, 10.5</code>.</li>
+  <li>Drag <code>Monster_Slime</code> from the Project window onto <code>Level 1 - Training Yard › Gameplay › Monsters</code> in the Hierarchy.</li>
+  <li>Set its <b>Position</b> to <code>5.5, 0, 10.5</code> (where the marker <code>Slime 1</code> is).</li>
   <li>Delete the old empty marker <code>Slime 1</code>. Rename the new monster to <code>Slime 1</code>.</li>
   <li>Drag in a second <code>Monster_Slime</code>. Set its <b>Position</b> to <code>14, 0, -9.5</code>.</li>
   <li>Delete the old marker <code>Slime 2</code>. Rename the new monster to <code>Slime 2</code>.</li>
   <li>Save the scene (<b>Ctrl+S</b>).</li>
 </ol>
-<div class="warn">Each monster must stand on the blue NavMesh (or less than 3 m away). A monster on top of a block or outside the walls can't move.</div>
-<div class="tip">Want to test the Ghost now? Drag one <code>Monster_Ghost</code> into <code>Gameplay/Monsters</code> too. It is fast and sees all around – a good test of your hiding skills. Delete it afterwards so Level 1 stays easy.</div>
+<div class="note">Each monster must stand on the blue NavMesh (or less than 3 m away). A monster on top of a block or outside the walls can not move.</div>
+<div class="tip">Want to test the Ghost? Drag one <code>Monster_Ghost</code> into <code>Gameplay/Monsters</code> too. It is fast and sees all around. Delete it afterwards, so Level 1 stays easy.</div>
+<figure class="shot todo" data-shot="phase-07/step-13-a" data-window="hierarchy" data-select="Level 1 - Training Yard/Gameplay/Monsters/Slime 1"><div class="ph">Hierarchy: Gameplay › Monsters › Slime 1, Slime 2 (blue prefab icons)</div><figcaption>Two Slime prefabs.</figcaption></figure>
+<figure class="shot todo" data-shot="phase-07/step-13-b" data-window="scene" data-select="Level 1 - Training Yard/Gameplay/Monsters"><div class="ph">Scene view: the two green MonsterSpawn boxes on the blue NavMesh</div><figcaption>The Slimes stand on the NavMesh.</figcaption></figure>
 
 <!-- ======================================================= 14 -->
-<h2 id="step-14"><span class="step">14</span>Put the Player on the Ignore Raycast layer</h2>
-<p>A monster "sees" with a raycast from its eyes to your chest. If the ray hits a wall first, it can't see you. But the ray would also hit <b>your own</b> CharacterController, and then the monster could never see you. So the Player must be on the layer that rays ignore.</p>
-<ol>
-  <li>Select your <code>Player</code> in the Hierarchy.</li>
-  <li>At the top of the Inspector, set <b>Layer</b> = <code>Ignore Raycast</code>.</li>
-  <li>Unity asks about the children. Click <b>Yes, change children</b>.</li>
-  <li>If the Player is a prefab instance: in the Inspector click <b>Overrides → Apply All</b>.</li>
-</ol>
-<div class="note">You did this in Phase 3 (the camera needs it too). Just check it.</div>
+<h2 id="step-14"><span class="step">14</span>▶ Press Play</h2>
+<p>Check that the Console has no red errors. Press Play.</p>
+<ul>
+  <li>The Console says <code>Lives: 2</code>. Two Slimes wander around. They walk around walls, not through them.</li>
+  <li>Each Slime has a small ITSTEP patch on its body.</li>
+  <li>Walk in front of a Slime. You hear the alert sound and it chases you. The music gets faster.</li>
+  <li>Run behind a wall. After a moment it gives up and searches the last place it saw you.</li>
+  <li>Let it catch you. You fly back and blink, the camera shakes, and the Console says <code>OUCH! Last life - be careful!</code>. The Slime spins.</li>
+  <li>Get caught again: slow motion, you fall down, the Slimes dance, and the level starts again.</li>
+  <li>Collect all gold: the monsters get faster. Run to the gate!</li>
+</ul>
+<figure class="shot todo" data-shot="phase-07/step-14" data-window="game" data-select=""><div class="ph">Game view: a Slime with its ITSTEP badge chases the hero</div><figcaption>A Slime has seen you.</figcaption></figure>
+<div class="tip">The "!" and "?" bubbles over the monsters and the hearts on the screen come with the HUD in phase 9.</div>
 
 <!-- ======================================================= 15 -->
-<h2 id="step-15"><span class="step">15</span>▶ Press Play</h2>
-<p>Check that the Console has no red errors. Press <b>Play</b>.</p>
-<div class="check"><p><b>You should see:</b></p><ul>
-  <li>Two Slimes wander around. They walk around walls, not through them.</li>
-  <li>Walk in front of a Slime. A red <b>!</b> pops up, you hear the alert sound, and it chases you. The music gets tense.</li>
-  <li>Run behind a wall. After a moment a gold <b>?</b> shows: it searches the last place it saw you.</li>
-  <li>Let it catch you. The screen flashes red, you fly back, blink, and one heart turns grey. The Slime spins with a blue <b>z</b>.</li>
-  <li>Get caught again with 1 heart left: you fall down, the Slimes dance, and the lose dialog opens.</li>
-  <li>Each Slime has a small <b>ITSTEP</b> patch on its body.</li>
-</ul></div>
-<figure class="shot todo"><div class="ph">Screenshot: Game view, a Slime with the red "!" bubble chasing the hero, 2 hearts in the HUD</div><figcaption>A Slime has seen you.</figcaption></figure>
-
-<!-- ======================================================= 16 -->
-<h2 id="step-16"><span class="step">16</span>Common problems</h2>
+<h2 id="step-15"><span class="step">15</span>Common problems</h2>
 <div class="table-wrap"><table>
   <tr><th>Problem</th><th>Fix</th></tr>
-  <tr><td>Error: <code>The type or namespace name 'EnemyAI' could not be found</code></td><td>Import <code>EnemyAI.cs</code> (step 8) into <code>Scripts/Gameplay/</code>.</td></tr>
-  <tr><td>Error: <code>The type or namespace name 'Mats' could not be found</code> (or <code>Props</code>, <code>LevelLayout</code>, <code>LevelBuilder</code>), or <code>'Coin' does not contain a definition for 'Create'</code></td><td>Import the helpers and the full <code>Coin.cs</code> / <code>ExitGate.cs</code> from step 8.</td></tr>
-  <tr><td>Error: <code>'GameManager' does not contain a definition for 'GhostActive'</code></td><td>You still have the old GameManager. Replace the whole file (step 10).</td></tr>
+  <tr><td>Error: <code>The type or namespace name 'EnemyAI' could not be found</code></td><td>Import <code>EnemyAI.cs</code> (step 7).</td></tr>
+  <tr><td>Error: <code>The name 'Mats' does not exist</code> (or <code>CharacterFactory</code>, <code>WorldMarkers</code>)</td><td>Import all helpers from step 7.</td></tr>
+  <tr><td>Error: <code>'GameManager' does not contain a definition for 'GhostActive'</code></td><td>You still have the phase 6 GameManager. Replace the whole file (step 10).</td></tr>
+  <tr><td>I can not add Monster Spawn or Enemy AI.</td><td>Unity can not add components while there are red errors. Fix them first.</td></tr>
   <tr><td>Monsters stand still. Console: <i>"SetDestination" can only be called on an active agent that has been placed on a NavMesh</i></td><td>Bake the NavMesh (step 3). Check that the monster stands on the blue area.</td></tr>
-  <tr><td>Monsters walk through walls</td><td>The wall has no collider, or you moved it after baking. Add a Box Collider and click <b>Bake</b> again.</td></tr>
-  <tr><td>Monsters never see you</td><td>The Player is not on the <code>Ignore Raycast</code> layer (step 14). Check the children too.</td></tr>
-  <tr><td>A monster slides without moving its legs</td><td>The <code>Model</code> has no Controller, or the Walk clip has no <b>Loop Time</b> (steps 4, 5, 11).</td></tr>
-  <tr><td>A monster floats or sinks into the floor</td><td>Set the <code>Model</code> child's Position to 0, 0, 0 and untick <b>Apply Root Motion</b>.</td></tr>
-  <tr><td>There are 2 monsters at one spot</td><td>You kept an old empty object with only <code>MonsterSpawn</code> on it. Such a marker makes a monster by code. Delete it.</td></tr>
-  <tr><td>Hearts don't go down / no hearts</td><td>Replace GameManager (step 10). Check <code>UI.SetLives(Lives, MaxLives)</code> in <code>Build()</code>.</td></tr>
-  <tr><td>The monster is pink</td><td>Its material lost the shader. Click the FBX → <b>Materials</b> tab → <b>Apply</b>. Or use <b>Window → Rendering → Render Pipeline Converter</b> → Material Upgrade.</td></tr>
+  <tr><td>The monster is invisible in Play mode.</td><td>Fill <b>Model</b> and <b>Controller</b> for that monster in GoldRushAssets (step 6).</td></tr>
+  <tr><td>A monster slides without moving its legs.</td><td>The controller has no clips, or the Walk clip has no <b>Loop Time</b> (steps 4–5).</td></tr>
+  <tr><td>Monsters walk through walls.</td><td>The wall has no collider, or it is not inside <code>Static</code>.</td></tr>
+  <tr><td>Monsters never see me.</td><td>Something with a collider is in the way. The hero himself is fine: the GameManager puts him on the Ignore Raycast layer.</td></tr>
+  <tr><td>There are 2 monsters at one spot.</td><td>You kept an old empty marker that also has a Monster Spawn component. Delete it.</td></tr>
+  <tr><td>The badge or the glow is pink.</td><td>Fill <b>Lit</b> and <b>Lit Emissive</b> in GoldRushAssets (step 6).</td></tr>
+  <tr><td>The monster is pink.</td><td>Its material lost the shader. Click the FBX → <b>Materials</b> tab → <b>Apply</b>.</td></tr>
 </table></div>
-
-<p><b>Checkpoint package:</b> <code>GoldRush_Phase07_Monsters.unitypackage</code> – import it if your project does not work and you want to continue from a working version.</p>
+<p><b>Checkpoint package:</b> <code>GoldRush_Phase07_Monsters.unitypackage</code> – the project at the end of this phase.</p>
 
 <nav class="pager" aria-label="Previous and next page">
 <a class="prev" href="phase-06.html"><small>← Previous</small>Phase 6: Exit gate, win and lose</a>

@@ -22,6 +22,8 @@ namespace GoldRush.EditorTools
 
         static string SmokeFlag => Path.GetFullPath(Path.Combine(Application.dataPath, "../Temp/gr_smoke.flag"));
         static string SmokeRun => Path.GetFullPath(Path.Combine(Application.dataPath, "../Temp/gr_smoke.run"));
+        static string TrailerFlag => Path.GetFullPath(Path.Combine(Application.dataPath, "../Temp/gr_trailer.flag"));
+        static string TrailerRun => Path.GetFullPath(Path.Combine(Application.dataPath, "../Temp/gr_trailer.run"));
 
         static GoldRushSetup()
         {
@@ -199,6 +201,13 @@ namespace GoldRush.EditorTools
             PlayFromMenu();
         }
 
+        [MenuItem("Gold Rush/Record Trailer Clips", priority = 22)]
+        public static void RecordTrailer()
+        {
+            File.WriteAllText(TrailerRun, "run");
+            PlayFromMenu();
+        }
+
         [MenuItem("Gold Rush/Reset Save Data", priority = 40)]
         public static void ResetSave()
         {
@@ -230,6 +239,10 @@ namespace GoldRush.EditorTools
                 EnsureIconSprites();
                 if (!File.Exists(AssetsPath) || !File.Exists(MenuScene) || !File.Exists(LevelBaker.ScenePath(0))) Setup();
                 RunSmokeTest();
+            }
+            else if (HandleFlag(TrailerFlag))
+            {
+                RecordTrailer();
             }
             else if (HandleFlag(JobFlag))
             {

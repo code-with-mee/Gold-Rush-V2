@@ -10,8 +10,8 @@ namespace GoldRush
     {
         static Vector2 accumulated;
         int pointer = int.MinValue;
-        RectTransform area, marker;
-        CanvasGroup markerGroup;
+        [SerializeField] RectTransform area, marker;
+        [SerializeField] CanvasGroup markerGroup;
 
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
         static void ResetStatics() { accumulated = Vector2.zero; }
