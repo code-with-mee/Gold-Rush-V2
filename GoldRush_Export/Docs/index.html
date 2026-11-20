@@ -23,16 +23,23 @@
 </ul>
 <h2>Course</h2><ul>
 <li><a href="phase-00.html"><span class="num">0</span><span class="label">Create the project</span></a></li>
-<li><a href="phase-01.html"><span class="num">1</span><span class="label">The prefab kit</span></a></li>
-<li><a href="phase-02.html"><span class="num">2</span><span class="label">Level design</span></a></li>
-<li><a href="phase-03.html"><span class="num">3</span><span class="label">The player</span></a></li>
-<li><a href="phase-04.html"><span class="num">4</span><span class="label">The camera</span></a></li>
-<li><a href="phase-05.html"><span class="num">5</span><span class="label">Coins and the HUD</span></a></li>
+<li><a href="phase-01.html"><span class="num">1</span><span class="label">The main menu</span></a></li>
+<li><a href="phase-02.html"><span class="num">2</span><span class="label">Level select, shop and settings</span></a></li>
+<li><a href="phase-03.html"><span class="num">3</span><span class="label">Level design</span></a></li>
+<li><a href="phase-04.html"><span class="num">4</span><span class="label">Player and camera</span></a></li>
+<li><a href="phase-05.html"><span class="num">5</span><span class="label">Coins</span></a></li>
 <li><a href="phase-06.html"><span class="num">6</span><span class="label">Exit gate, win and lose</span></a></li>
 <li><a href="phase-07.html"><span class="num">7</span><span class="label">Monsters</span></a></li>
 <li><a href="phase-08.html"><span class="num">8</span><span class="label">Power-ups and effects</span></a></li>
-<li><a href="phase-09.html"><span class="num">9</span><span class="label">Menu, levels, shop, save</span></a></li>
+<li><a href="phase-09.html"><span class="num">9</span><span class="label">Gameplay UI</span></a></li>
 <li><a href="phase-10.html"><span class="num">10</span><span class="label">Polish and build</span></a></li>
+</ul>
+<h2>Practice</h2><ul>
+<li><a href="practicals.html"><span class="num">▶</span><span class="label">Practicals overview</span></a></li>
+<li><a href="practical-1.html"><span class="num">P1</span><span class="label">Practical 1</span></a></li>
+<li><a href="practical-2.html"><span class="num">P2</span><span class="label">Practical 2</span></a></li>
+<li><a href="practical-3.html"><span class="num">P3</span><span class="label">Practical 3</span></a></li>
+<li><a href="practical-4.html"><span class="num">P4</span><span class="label">Practical 4</span></a></li>
 </ul>
 <h2>Help</h2><ul>
 <li><a href="troubleshooting.html"><span class="num">?</span><span class="label">Troubleshooting</span></a></li>
@@ -56,24 +63,24 @@
 </section>
 
 <h2 id="build">What you will build</h2>
-<p>A complete third-person game for PC and Android. A starter package gives you the art, the materials and a kit of ready-made prefabs. You build the rest yourself: the level, the player, the camera, the scripts, the monsters and the menus.</p>
+<p>A complete third-person game for PC and Android. A starter package gives you the art, the materials and a kit of ready-made prefabs. You build the rest yourself: the menus, the level, the player, the camera, the scripts, the monsters and the game UI.</p>
+<p>You start with the <b>main menu</b>, because it is the first thing a player sees. Then you build the level and the gameplay. At the end you put the game UI (HUD and dialogs) on top, in the same style as the menu.</p>
 <div class="shots">
-  <figure><img src="images/05_level1_play.jpg" alt="The hero in Level 1, with the coin counter, timer and the exit gate"><figcaption>Level 1: collect the gold. The HUD shows coins, hearts and the timer.</figcaption></figure>
-  <figure><img src="images/05b_level1_night.jpg" alt="Level 1 at night"><figcaption>Switch between day and night at any time.</figcaption></figure>
+  <figure><img src="images/01_title.jpg" alt="The GOLD RUSH title screen with the waving hero"><figcaption>Phases 1–2: the main menu, level select, shop and settings.</figcaption></figure>
+  <figure><img src="images/05_level1_play.jpg" alt="The hero in Level 1, with the coin counter, timer and the exit gate"><figcaption>Phases 3–8: Level 1 with the hero, the gold and the gate. (The HUD on top comes in phase 9.)</figcaption></figure>
   <figure><img src="images/06_gate_open.jpg" alt="The exit gate is open"><figcaption>All gold collected: the gate opens. Run!</figcaption></figure>
-  <figure><img src="images/07_win.jpg" alt="The Level Complete dialog with stars"><figcaption>Win the level and earn up to 3 stars.</figcaption></figure>
+  <figure><img src="images/07_win.jpg" alt="The Level Complete dialog with stars"><figcaption>Phase 9: the HUD and the win dialog with up to 3 stars.</figcaption></figure>
 </div>
 
 <h2 id="learn">What you will learn</h2>
+<p>The course goes in this order: <b>menu → level design → gameplay → gameplay UI → polish</b>.</p>
 <ul class="learn">
-  <li>Work with prefabs and build a level from a ready-made kit</li>
-  <li>Set up a 3D character: import settings, an Animator Controller and a blend tree</li>
-  <li>Move the hero with a CharacterController and a third-person camera</li>
-  <li>Write small gameplay scripts in C#: coins, a game manager, an exit gate</li>
-  <li>Make monsters walk on a NavMesh with a simple state machine</li>
-  <li>Add power-ups, particles, sound and music</li>
-  <li>Build a main menu with Unity UI, save the game, and add more levels</li>
-  <li>Add touch controls and build the game for PC and Android</li>
+  <li><b>Menu (phases 1–2):</b> build a UI by hand with Unity UI: a Canvas, anchors, sliced images, buttons and screens. Connect buttons with a small script (<code>MenuAction</code>) and save the game data.</li>
+  <li><b>Level design (phase 3):</b> work with prefabs and build a level from a ready-made kit, with light, sky and fog.</li>
+  <li><b>Player (phase 4):</b> set up a 3D character with an Animator Controller and a blend tree, move it with a CharacterController and follow it with a third-person camera.</li>
+  <li><b>Gameplay (phases 5–8):</b> write small C# scripts: coins, a game manager, an exit gate, stars and saving. Make monsters walk on a NavMesh with a state machine. Add power-ups and particles.</li>
+  <li><b>Gameplay UI (phase 9):</b> build the HUD and the pause, win and lose dialogs as GameObjects in the scene, just like the menu, and connect their buttons with <code>GameAction</code>.</li>
+  <li><b>Polish (phase 10):</b> day and night, touch controls, music, more levels, and a build for PC and Android.</li>
 </ul>
 
 <h2 id="need">What you need</h2>
@@ -82,10 +89,10 @@
     <h3>You need</h3>
     <ul>
       <li><b>Unity Hub</b> and <b>Unity 6000.6.10f1 or newer</b> (Unity 6.6).</li>
-      <li>The <b>starter package</b> <code>GoldRush_Phase00_Project.unitypackage</code> (in <code>GoldRush_Export/Packages/</code>): characters, sounds, icons, fonts, materials and the prefab kit.</li>
-      <li>The <b>Resources folder</b> <code>GoldRush_Export/Resources/</code>: the big helper scripts (<code>Scripts/Helpers/</code>) and the final scripts (<code>Scripts/Final/</code>) that you import in later phases.</li>
+      <li>The <b>starter package</b> <code>GoldRush_Phase00_Project.unitypackage</code> (in <code>GoldRush_Export/Packages/</code>): characters, sounds, icons, fonts, UI shapes, materials and the prefab kit.</li>
+      <li>The <b>Resources folder</b> <code>GoldRush_Export/Resources/</code> (see below).</li>
       <li>Basic C# and a little Unity editor practice.</li>
-      <li>About <b>11 sessions</b>: one phase per session. Some phases are shorter, some longer.</li>
+      <li>About <b>11 sessions</b>: one phase per session. Some phases are shorter, some longer (phase 1 is a long one).</li>
     </ul>
   </div>
   <div class="panel">
@@ -102,12 +109,40 @@
 <h2 id="how">How to use this course</h2>
 <ul>
   <li><b>Follow the phases in order.</b> Each phase starts where the previous one ends.</li>
-  <li><b>Do one step at a time.</b> Each step has the clicks to do and the code to type or import.</li>
+  <li><b>Do one step at a time.</b> Each step has the clicks to do and the code to type or import. The screenshot under a step shows what your window should look like.</li>
   <li><b>Every phase ends with “▶ Press Play”.</b> Check that you see what the guide says before you go on.</li>
+  <li><b>Type it or import it.</b> Short scripts (up to about 250 lines) you type or paste, and the guide explains the key lines. Big helper scripts you import from the Resources folder.</li>
+  <li><b>Scripts grow.</b> Some scripts (for example <code>GameManager</code> or <code>PlayerMotor</code>) get a short <b>phase version</b> first. When a later step says <b>Replace the whole file</b>, select all the old code and paste the new version.</li>
   <li><b>Stuck?</b> Look at the “Common problems” table at the end of the phase, then the <a href="troubleshooting.html">Troubleshooting</a> page.</li>
-  <li><b>Still stuck?</b> Every phase has a <b>checkpoint package</b> in <code>GoldRush_Export/Packages/</code>. Make a new, empty project, import the package of the <b>previous</b> phase (<b>Assets → Import Package → Custom Package…</b>) and continue from there.</li>
+  <li><b>Still stuck?</b> Use the checkpoint package (see below).</li>
 </ul>
-<div class="tip">New word? Look it up in the <a href="glossary.html">Glossary</a>. Finished the course? Try the <a href="exercises.html">Exercises</a>.</div>
+
+<h3 id="resources">The Resources folder</h3>
+<div class="table-wrap"><table>
+  <tr><th>Folder</th><th>What is inside</th><th>Used in</th></tr>
+  <tr><td><code>Resources/Scripts/Helpers/</code></td><td>The big helper scripts you import instead of typing: <code>UIKit</code>, <code>ButtonFX</code>, <code>Tween</code>, <code>AudioFX</code>, <code>EnemyAI</code>, <code>FX</code>, <code>GameUI</code>, <code>GameAction</code>, …</td><td>Phases 1, 7, 8, 9</td></tr>
+  <tr><td><code>Resources/Scripts/Phases/</code></td><td>Short phase versions of big scripts, for example <code>Phase02/UI/GoldRushMenu.cs</code>.</td><td>Phase 2</td></tr>
+  <tr><td><code>Resources/Scripts/Final/</code></td><td>The final version of every script, the same as the teacher's game.</td><td>Phase 10</td></tr>
+</table></div>
+<div class="note">Do not mix it up with the Unity folder <code>Assets/GoldRush/Resources</code>. That one is a special Unity folder: scripts load files from it by name (for example <code>GoldRushAssets</code>).</div>
+
+<h3 id="packages">Checkpoint packages</h3>
+<p>Every phase has a <b>checkpoint package</b> in <code>GoldRush_Export/Packages/</code>. It holds the whole project as it is at the <b>end</b> of that phase. Got lost? Make a new, empty <b>Universal 3D</b> project (with AI Navigation and Active Input Handling = Both, see <a href="phase-00.html">Phase 0</a>), import the package of the phase you finished last (<b>Assets → Import Package → Custom Package…</b>), and continue with the next guide.</p>
+<div class="table-wrap"><table>
+  <tr><th>After phase</th><th>Package</th><th>Contains</th></tr>
+  <tr><td>0</td><td><code>GoldRush_Phase00_Project.unitypackage</code></td><td>Starter resources (no scripts) + Sandbox test scene</td></tr>
+  <tr><td>1</td><td><code>GoldRush_Phase01_MainMenu.unitypackage</code></td><td>MainMenu scene (3D stage + title screen), menu scripts</td></tr>
+  <tr><td>2</td><td><code>GoldRush_Phase02_MenuScreens.unitypackage</code></td><td>All menu screens, save data</td></tr>
+  <tr><td>3</td><td><code>GoldRush_Phase03_Level.unitypackage</code></td><td>Level1 built from the kit, markers, Scene List</td></tr>
+  <tr><td>4</td><td><code>GoldRush_Phase04_Player.unitypackage</code></td><td>Player prefab, Hero Animator Controller, third-person camera</td></tr>
+  <tr><td>5</td><td><code>GoldRush_Phase05_Coins.unitypackage</code></td><td>Coin prefab + script, GameManager, GoldRushAssets (sounds)</td></tr>
+  <tr><td>6</td><td><code>GoldRush_Phase06_Gate.unitypackage</code></td><td>Exit gate, timer, stars, save</td></tr>
+  <tr><td>7</td><td><code>GoldRush_Phase07_Monsters.unitypackage</code></td><td>NavMesh, 3 monster prefabs + controllers, EnemyAI</td></tr>
+  <tr><td>8</td><td><code>GoldRush_Phase08_PowerUps.unitypackage</code></td><td>3 power-ups, particles</td></tr>
+  <tr><td>9</td><td><code>GoldRush_Phase09_GameUI.unitypackage</code></td><td>HUD, countdown, pause / win / lose dialogs (scene objects)</td></tr>
+  <tr><td>10</td><td><code>GoldRush_Phase10_Final.unitypackage</code></td><td>The complete game (= the teacher's version)</td></tr>
+</table></div>
+<div class="tip">New word? Look it up in the <a href="glossary.html">Glossary</a>. Want to practise? Do the <a href="practicals.html">Practicals</a>. Finished the course? Try the <a href="exercises.html">Exercises</a>.</div>
 
 <h2 id="course">Course map</h2>
 <p>11 phases, from an empty project to the complete game.</p>
@@ -115,77 +150,84 @@
   <article class="card">
     <span class="tag">PHASE 0</span>
     <h3><a href="phase-00.html">Create the project</a></h3>
-    <p>A new Universal 3D project with the right packages, the input setting and the starter package.</p>
+    <p>A new Universal 3D project with the right packages, the input setting and the starter package. The hero and some kit pieces in a test scene.</p>
     <div class="links"><a href="phase-00.html">Read guide</a></div>
   </article>
   <article class="card">
     <span class="tag">PHASE 1</span>
-    <h3><a href="phase-01.html">The prefab kit</a></h3>
-    <p>A tour of the ready-made kit: what a prefab is, Prefab Mode, instances and overrides.</p>
+    <h3><a href="phase-01.html">The main menu</a></h3>
+    <div class="card-img"><img src="images/01_title.jpg" alt=""><img src="images/01b_title_day.jpg" alt=""></div>
+    <p>The title screen by hand: a 3D stage from the kit, a waving hero, the glass-style logo, PLAY / LEVELS / SHOP and the chips at the top left.</p>
     <div class="links"><a href="phase-01.html">Read guide</a></div>
   </article>
   <article class="card">
     <span class="tag">PHASE 2</span>
-    <h3><a href="phase-02.html">Level design</a></h3>
-    <div class="card-img"><img src="images/04_level1_start.jpg" alt=""></div>
-    <p>Level 1 by hand: floor, walls, lamps, sun, sky, fog and the markers.</p>
+    <h3><a href="phase-02.html">Level select, shop and settings</a></h3>
+    <div class="card-img"><img src="images/02_levels.jpg" alt=""><img src="images/03_shop.jpg" alt=""></div>
+    <p>The Levels and Shop screens and the Settings dialog. Gold, stars and what you buy are saved.</p>
     <div class="links"><a href="phase-02.html">Read guide</a></div>
   </article>
   <article class="card">
     <span class="tag">PHASE 3</span>
-    <h3><a href="phase-03.html">The player</a></h3>
-    <p>The hero with his Animator Controller. He walks with WASD and sprints with Shift.</p>
+    <h3><a href="phase-03.html">Level design</a></h3>
+    <div class="card-img"><img src="images/04_level1_start.jpg" alt=""></div>
+    <p>A tour of the prefab kit, then Level 1 from kit pieces: walls, lamps, sun, sky, fog and the markers. PLAY now opens it.</p>
     <div class="links"><a href="phase-03.html">Read guide</a></div>
   </article>
   <article class="card">
     <span class="tag">PHASE 4</span>
-    <h3><a href="phase-04.html">The camera</a></h3>
-    <p>A smooth third-person camera with mouse look that never looks through walls.</p>
+    <h3><a href="phase-04.html">Player and camera</a></h3>
+    <p>The hero's Animator Controller by hand, a Player you move with WASD and Shift, and a third-person camera with mouse look.</p>
     <div class="links"><a href="phase-04.html">Read guide</a></div>
   </article>
   <article class="card">
     <span class="tag">PHASE 5</span>
-    <h3><a href="phase-05.html">Coins and the HUD</a></h3>
-    <div class="card-img"><img src="images/05_level1_play.jpg" alt=""></div>
-    <p>Spinning coins, the pickup sound, the GameManager and the coin counter.</p>
+    <h3><a href="phase-05.html">Coins</a></h3>
+    <p>Spinning coins in every CoinSpot, the pickup sound and the GameManager that counts them (in the Console for now).</p>
     <div class="links"><a href="phase-05.html">Read guide</a></div>
   </article>
   <article class="card">
     <span class="tag">PHASE 6</span>
     <h3><a href="phase-06.html">Exit gate, win and lose</a></h3>
-    <div class="card-img"><img src="images/06_gate_open.jpg" alt=""><img src="images/07_win.jpg" alt=""></div>
-    <p>The exit gate script, the timer, stars and the win and lose dialogs.</p>
+    <div class="card-img"><img src="images/06_gate_open.jpg" alt=""></div>
+    <p>The gate opens after the last coin. The timer, stars, gold and the save, then back to the menu.</p>
     <div class="links"><a href="phase-06.html">Read guide</a></div>
   </article>
   <article class="card">
     <span class="tag">PHASE 7</span>
     <h3><a href="phase-07.html">Monsters</a></h3>
-    <div class="card-img"><img src="images/08_level2.jpg" alt=""><img src="images/10_lose.jpg" alt=""></div>
-    <p>A NavMesh and three monsters that patrol, chase and search. Hearts for the hero.</p>
+    <div class="card-img"><img src="images/08_level2.jpg" alt=""></div>
+    <p>A NavMesh and three monsters that patrol, chase and search, each with an ITSTEP badge. Hearts for the hero.</p>
     <div class="links"><a href="phase-07.html">Read guide</a></div>
   </article>
   <article class="card">
     <span class="tag">PHASE 8</span>
     <h3><a href="phase-08.html">Power-ups and effects</a></h3>
-    <p>SPEED, GHOST and MAGNET power-ups, particles and the arrow to the gate.</p>
+    <p>SPEED, GHOST and MAGNET power-ups, and particles: sparkles, dust, a hit cloud and confetti.</p>
     <div class="links"><a href="phase-08.html">Read guide</a></div>
   </article>
   <article class="card">
     <span class="tag">PHASE 9</span>
-    <h3><a href="phase-09.html">Menu, levels, shop, save</a></h3>
-    <div class="card-img"><img src="images/02_levels.jpg" alt=""><img src="images/03_shop.jpg" alt=""></div>
-    <p>The main menu, level select, shop, saving, and Levels 2–4.</p>
+    <h3><a href="phase-09.html">Gameplay UI</a></h3>
+    <div class="card-img"><img src="images/09_pause.jpg" alt=""><img src="images/07_win.jpg" alt=""></div>
+    <p>The HUD (coins, hearts, timer, day/night, pause), the 3-2-1-GO intro, pause, win and lose dialogs, toasts and world markers. Built as GameObjects, like the menu.</p>
     <div class="links"><a href="phase-09.html">Read guide</a></div>
   </article>
   <article class="card">
     <span class="tag">PHASE 10</span>
     <h3><a href="phase-10.html">Polish and build</a></h3>
-    <div class="card-img"><img src="images/05b_level1_night.jpg" alt=""><img src="images/12_daily.jpg" alt=""></div>
-    <p>Day and night, touch controls, music, final checks and a build for PC and Android.</p>
+    <div class="card-img"><img src="images/05b_level1_night.jpg" alt=""><img src="images/11_level4.jpg" alt=""></div>
+    <p>Day and night while you play, touch controls, music, Levels 2–4, the final scripts and a build for PC and Android.</p>
     <div class="links"><a href="phase-10.html">Read guide</a></div>
   </article>
   <article class="card">
-    <span class="tag">HELP AND PRACTICE</span>
+    <span class="tag">PRACTICE</span>
+    <h3><a href="practicals.html">Practicals</a></h3>
+    <p>Four practicals to do on your own, in class or at home. Each one practises what you learned in a group of phases. Start with the <a href="practicals.html">overview</a>.</p>
+    <div class="links"><a href="practicals.html">Overview</a><a href="practical-1.html">1</a><a href="practical-2.html">2</a><a href="practical-3.html">3</a><a href="practical-4.html">4</a></div>
+  </article>
+  <article class="card">
+    <span class="tag">HELP AND EXTRAS</span>
     <h3><a href="troubleshooting.html">Troubleshooting, glossary, exercises</a></h3>
     <p>Something does not work? See <a href="troubleshooting.html">Troubleshooting</a>. New word? See the <a href="glossary.html">Glossary</a>. Done? Try the <a href="exercises.html">Exercises</a>.</p>
   </article>

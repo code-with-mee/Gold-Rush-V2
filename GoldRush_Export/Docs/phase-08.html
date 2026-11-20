@@ -153,12 +153,22 @@ namespace GoldRush
     /// The model is a PowerUp_* prefab.&lt;/summary&gt;
     public class PowerUp : MonoBehaviour
     {
-        [SerializeField] PowerType type = PowerType.Speed;
-        public PowerType Type =&gt; type;
+        [Tooltip("SPEED, GHOST or MAGNET.")]
+        [SerializeField] PowerType type;
+        public PowerType Type { get =&gt; type; private set =&gt; type = value; }
         public bool Collected { get; private set; }
 
         [SerializeField] Transform visual, inner, ring;
         float phase;
+
+        void Start()
+        {
+            // a power-up placed by hand: find its parts by name and give it its own bob timing
+            if (!visual) visual = transform.Find("Visual");
+            if (!inner &amp;&amp; visual) inner = visual.Find("Inner");
+            if (!ring) ring = transform.Find("Ring");
+            if (phase == 0f) phase = Random.Range(0.01f, Mathf.PI * 2f);
+        }
 
         public static Color ColorOf(PowerType t)
         {
@@ -178,15 +188,6 @@ namespace GoldRush
                 case PowerType.Ghost: return "GHOST";
                 default: return "MAGNET";
             }
-        }
-
-        void Start()
-        {
-            phase = Random.Range(0f, Mathf.PI * 2f);
-            // a power-up placed by hand: find its parts by name if the fields are empty
-            if (!visual) visual = transform.Find("Visual");
-            if (!inner &amp;&amp; visual) inner = visual.Find("Inner");
-            if (!ring) ring = transform.Find("Ring");
         }
 
         void Update()
@@ -219,13 +220,13 @@ namespace GoldRush
     }
 }</code></pre>
 <ul>
-  <li><code>type</code> is a private field that you set in the Inspector. <code>Type</code> lets other scripts read it, but not change it.</li>
+  <li><code>type</code> is a private field that you set in the Inspector (<code>[Tooltip]</code> shows a hint when you point at it). <code>Type</code> lets other scripts read it; only the orb itself can change it (<code>private set</code>).</li>
+  <li><code>Start()</code>: if a field is empty, <code>transform.Find("Visual")</code> finds the child by its name. Then it picks a random <code>phase</code>, so two orbs never move the same.</li>
   <li><code>ColorOf()</code> and <code>NameOf()</code> give the colour and the name of each type. They are <code>static</code>: you call them on the class, <code>PowerUp.ColorOf(PowerType.Ghost)</code>.</li>
-  <li><code>Start()</code> picks a random <code>phase</code>, so two orbs never move the same. If a field is empty, <code>transform.Find("Visual")</code> finds the child by its name.</li>
   <li><code>Update()</code> moves the orb up and down with <code>Mathf.Sin</code> (14 cm), spins it 50° per second and makes the ring "breathe".</li>
   <li><code>Collect()</code> deletes the orb. <code>Collected</code> stops a second pickup.</li>
 </ul>
-<div class="tip">This is the phase 8 version. The full game file also has <code>Create()</code>, which builds an orb in code for the level builder.</div>
+<div class="tip">This is the phase 8 version. The full game file also has <code>Create()</code> and <code>Build()</code>, which build an orb in code for the level builder.</div>
 <figure class="shot todo" data-shot="phase-08/step-05" data-window="project" data-select="Assets/GoldRush/Scripts/World/PowerUp.cs"><div class="ph">Project window: Scripts/World with Coin.cs, ExitGate.cs, PowerUp.cs</div><figcaption>PowerUp.cs is in the World folder.</figcaption></figure>
 
 <!-- ======================================================= 6 -->

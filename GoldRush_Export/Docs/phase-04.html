@@ -351,6 +351,7 @@ namespace GoldRush
 <li><b><code>MoveTowards</code></b> speeds up and slows down smoothly (20 m/s²). <code>RotateTowards</code> turns the hero toward where he runs (560° per second). <code>vy</code> is the falling speed (gravity 25 m/s²).</li>
 <li><b>Animation:</b> <code>anim.SetFloat("Speed", blend, 0.15f, dt)</code> feeds the blend tree. <code>PlaybackSpeed()</code> plays the cycle faster when the hero moves faster, so the feet do not slide.</li>
 </ul>
+<div class="note">Now the Console shows a red error: <code>The type or namespace name 'ThirdPersonCamera' could not be found</code>. That is normal: PlayerMotor uses the camera script of the next step. It goes away when you finish step 9.</div>
 
 <!-- ======================================================= 9 -->
 <h2 id="step-9"><span class="step">9</span>Script: ThirdPersonCamera</h2>

@@ -703,6 +703,7 @@ public void StartLevel(int index)
 <h2 id="step-15"><span class="step">15</span>Common problems</h2>
 <div class="table-wrap"><table>
   <tr><th>Problem</th><th>Fix</th></tr>
+  <tr><td>Console: <code>The namespace 'GoldRush' already contains a definition for 'GoldRushMenu'</code>.</td><td>You have two menu scripts (for example <code>GoldRushMenu 1.cs</code>). Delete the extra one, keep <code>Scripts/UI/GoldRushMenu.cs</code> with the phase 2 code (step 4).</td></tr>
   <tr><td>Console: <code>NullReferenceException</code> in <code>GoldRushMenu.Start</code> or <code>RefreshTitle</code>.</td><td>A field of step 12 (or of phase 1, step 18) is empty. Often Gold Text, Stars Text, Stars Bar or Settings Root. Fill it.</td></tr>
   <tr><td>The level cards, the tabs or the shop items do not appear.</td><td><b>Level Cards</b>, <b>Shop Tabs</b> or <b>Shop Grid</b> is empty, or points to the wrong object. Use <code>Levels/Cards</code> and <code>Shop/ShopPanel/Glass/Tabs</code> / <code>Grid</code>.</td></tr>
   <tr><td>Two screens show at the same time.</td><td>Each Screen field needs its own screen. Check Title Screen, Level Screen and Shop Screen.</td></tr>
