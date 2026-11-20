@@ -20,7 +20,7 @@ How to use one: make a new empty Unity 6 project (Universal 3D) — or delete `A
 | GoldRush_Phase07_Monsters | 7 Monsters | + monster spawn markers (monsters are made when you press Play) |
 | GoldRush_Phase08_PowerUps | 8 Power-ups and effects | + power-ups |
 | GoldRush_Phase09_GameUI | 9 Gameplay UI | + the game UI as scene objects (HUD, countdown, pause / win / lose dialogs) |
-| GoldRush_Phase10_Final | 10 Polish and build | + Levels 2–4 and the Daily level = the complete game (the teacher's version) |
+| GoldRush_Phase10_Final | 10 Polish and build | + Levels 2–4 and the Daily level = the complete game |
 | GoldRush_Levels2to4 | (extra) | our Level 2–4 + Daily scenes only, with the Fix Script Links tool |
 | GoldRush_GameUIDialogs | (extra) | the Pause / Win / Lose dialogs as prefabs |
 

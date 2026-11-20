@@ -82,6 +82,7 @@
 
 <!-- ======================================================= 2 -->
 <h2 id="step-2"><span class="step">2</span>Check what is new</h2>
+<p>This package is the <a href="phase-08.html">Phase 8</a> scene plus one new object: <code>GameUI</code>. The level, the markers and all scripts are the same.</p>
 
 <h3 id="check-1">Check 1: GameUI in the Hierarchy</h3>
 <p>One new root object: <code>GameUI</code> (a Canvas). Next to it is the <code>EventSystem</code> (it was already there since Phase 3; it sends clicks and touches to the UI). Open <code>GameUI</code>. Its children are layers. Lower in the list = drawn on top:</p>
@@ -104,7 +105,7 @@
 <figure class="shot"><img src="images/04_level1_start.jpg" alt="" loading="lazy"><figcaption>The HUD chips sit in the corners, so the middle of the screen stays free.</figcaption></figure>
 
 <h3 id="check-4">Check 4: the dialogs</h3>
-<p>Open <code>GameUI › Modal</code>. It has <code>Countdown</code>, <code>Intro</code>, <code>Lose</code>, <code>Pause</code> and <code>Win</code>. They are greyed out (unticked): GameUI turns them on when needed. Each dialog has the same shape: <code>Dim</code> (a dark layer that blocks clicks) and <code>Panel › Glass</code> with a Badge, Title, Subtitle, stat cards and buttons.</p>
+<p>Open <code>GameUI › Modal</code>. It has <code>Intro</code>, <code>Countdown</code>, <code>Pause</code>, <code>Win</code> and <code>Lose</code>. They are greyed out (unticked): GameUI turns them on when needed. Each dialog has the same shape: <code>Dim</code> (a dark layer that blocks clicks) and <code>Panel › Glass</code> with a Badge, Title, Subtitle, stat cards and buttons.</p>
 <figure class="shot"><img src="images/phase-09/check-4.png" alt="" loading="lazy"><figcaption>All five children of Modal are unticked in edit mode.</figcaption></figure>
 
 <h3 id="check-5">Check 5: a dialog button with Game Action</h3>

@@ -52,7 +52,7 @@
 <p class="eyebrow">GOLD RUSH · Phase 4</p>
 <h1>Player and camera</h1>
 <p class="lead">The hero comes into Level1. You import the phase package, check where the hero starts and how his model and animations are set up, and then run around the yard with a third-person camera. The Player and the camera are <b>not</b> saved in the scene: the GameManager makes them in code when you press Play.</p>
-<div class="meta"><span><b>Checkpoint package</b><code>GoldRush_Phase04_Player.unitypackage</code></span><span><b>Scene</b><code>Assets/GoldRush/Scenes/Level1.unity</code></span><a class="btn secondary" href="phase-04.pdf">Download PDF</a></div>
+<div class="meta"><span><b>Package</b><code>GoldRush_Phase04_Player.unitypackage</code></span><span><b>Scene</b><code>Assets/GoldRush/Scenes/Level1.unity</code></span><a class="btn secondary" href="phase-04.pdf">Download PDF</a></div>
 
 <nav class="toc" aria-label="Steps on this page"><strong>Steps on this page</strong><ol>
   <li><a href="#step-1">What you get</a></li>
@@ -74,7 +74,7 @@
   <tr><td><code>PlayerMotor.cs</code></td><td>Moves the hero: walk, sprint, stamina, animations.</td></tr>
   <tr><td><code>ThirdPersonCamera.cs</code></td><td>The camera behind the hero. The mouse turns it. It slides closer at walls.</td></tr>
   <tr><td><code>Art/Characters/Controllers/Hero.controller</code></td><td>The hero's Animator Controller: idle, walk, run, win, hit, die.</td></tr>
-  <tr><td>The HUD</td><td>Made by code for now (hearts, timer, pause). The HUD in the scene comes in <a href="phase-09.html">Phase 9</a>.</td></tr>
+  <tr><td>The HUD</td><td>Made by code for now (coin counter, hearts, timer, day/night and pause buttons). The HUD in the scene comes in <a href="phase-09.html">Phase 9</a>.</td></tr>
 </table></div>
 <p><b>Package:</b> <code>GoldRush_Export/Packages/GoldRush_Phase04_Player.unitypackage</code>. Like every phase package, it already has <b>all</b> the final scripts. In this phase you only look at the player part.</p>
 
@@ -93,23 +93,23 @@
 <h2 id="step-3"><span class="step">3</span>Check</h2>
 <p>Look at each thing below. You do not change anything here.</p>
 
-<h3 id="check-1">3.1 No Player in the Hierarchy</h3>
+<h3 id="check-1">Check 1 · No Player in the Hierarchy</h3>
 <p>Look at the top level of the Hierarchy: <code>GameManager</code>, <code>Level 1 - Training Yard</code> and <code>EventSystem</code>. There is <b>no</b> <code>Player</code> and <b>no</b> <code>Main Camera</code>. (The overview camera and the <code>Sun</code> of Phase 3 are gone too: the game makes its own camera and sun light at Play.) That is right: they are made in code at Play.</p>
 <figure class="shot"><img src="images/phase-04/check-01.png" alt="" loading="lazy"><figcaption>No Player and no Main Camera before Play. (The finished game also shows GameUI: it comes in Phase 9.)</figcaption></figure>
 
-<h3 id="check-2">3.2 The GameManager</h3>
+<h3 id="check-2">Check 2 · The GameManager</h3>
 <p>Select <code>GameManager</code>. It has one component, <b>Game Manager</b>, with no fields. It finds everything by itself when the level starts.</p>
 <figure class="shot"><img src="images/phase-04/check-02.png" alt="" loading="lazy"><figcaption>The Game Manager component has no fields.</figcaption></figure>
 
-<h3 id="check-3">3.3 The PlayerSpawn marker</h3>
+<h3 id="check-3">Check 3 · The PlayerSpawn marker</h3>
 <p>Select <code>Level 1 - Training Yard/Gameplay/PlayerSpawn</code>. Check: <b>Position</b> <code>0, 0, -9</code>, <b>Rotation</b> <code>0, 0, 0</code>, component <b>Player Spawn</b>. In the Scene view it draws a blue ball and a blue arrow. The arrow points north, to the gate: the hero and the camera look that way at the start.</p>
 <figure class="shot"><img src="images/phase-04/check-03.png" alt="" loading="lazy"><figcaption>PlayerSpawn at 0, 0, -9, rotation 0.</figcaption></figure>
 
-<h3 id="check-4">3.4 The hero model</h3>
+<h3 id="check-4">Check 4 · The hero model</h3>
 <p>Click <code>Assets/GoldRush/Art/Characters/Hero/Hero.fbx</code>. On the <b>Rig</b> tab: <b>Animation Type</b> = <b>Generic</b>, <b>Avatar Definition</b> = <b>Create From This Model</b>. On the <b>Animation</b> tab you see the clips: <code>Idle</code>, <code>Walk</code>, <code>Run</code>, <code>Wave</code> loop; <code>Punch</code>, <code>HitReact</code>, <code>Death</code> play once.</p>
 <figure class="shot" data-shot="phase-04/check-04" data-window="inspector" data-select="Assets/GoldRush/Art/Characters/Hero/Hero.fbx"><img src="images/phase-04/step-02-a.png" alt="Rig tab of Hero.fbx" loading="lazy"><figcaption>Rig tab of Hero.fbx: Generic, Create From This Model.</figcaption></figure>
 
-<h3 id="check-5">3.5 The Hero Animator Controller</h3>
+<h3 id="check-5">Check 5 · The Hero Animator Controller</h3>
 <p>Double-click <code>Assets/GoldRush/Art/Characters/Controllers/Hero.controller</code>. The Animator window opens.</p>
 <ul>
   <li><b>Parameters</b>: <code>Speed</code> (Float) and the triggers <code>Attack</code>, <code>Hit</code>, <code>Win</code>, <code>Die</code>.</li>
@@ -119,7 +119,7 @@
 </ul>
 <figure class="shot"><img src="images/phase-04/check-05.png" alt="" loading="lazy"><figcaption>Locomotion is the orange default state. Five parameters on the left.</figcaption></figure>
 
-<h3 id="check-6">3.6 The hero in GoldRushAssets</h3>
+<h3 id="check-6">Check 6 · The hero in GoldRushAssets</h3>
 <p>Select <code>Assets/GoldRush/Resources/GoldRushAssets</code> and open <b>Hero</b>. The code builds the hero from these values.</p>
 <div class="table-wrap"><table>
   <tr><th>Hero field</th><th>Value</th><th>Why</th></tr>
@@ -130,7 +130,7 @@
 </table></div>
 <figure class="shot"><img src="images/phase-04/check-06.png" alt="" loading="lazy"><figcaption>The Hero values in GoldRushAssets.</figcaption></figure>
 
-<h3 id="check-7">3.7 Play mode: the Player</h3>
+<h3 id="check-7">Check 7 · Play mode: the Player</h3>
 <p>Press <b>▶ Play</b> and look at the Hierarchy <b>while the game runs</b>. Now there is a <code>Player</code> with a child <code>Model</code>. Select <code>Player</code>:</p>
 <ul>
   <li><b>Layer</b> = <b>Ignore Raycast</b> (camera rays fly through the hero).</li>
@@ -139,14 +139,15 @@
 </ul>
 <figure class="shot"><img src="images/04_level1_start.jpg" alt="" loading="lazy"><figcaption>Play mode only: the Player exists only while the game runs.</figcaption></figure>
 
-<h3 id="check-8">3.8 Play mode: the Main Camera</h3>
+<h3 id="check-8">Check 8 · Play mode: the Main Camera</h3>
 <p>Still in Play mode, select <code>Main Camera</code>. It has <b>Camera</b> (Field of View <code>55</code>, Near <code>0.1</code>, Far <code>400</code>), <b>Audio Listener</b> and <b>Third Person Camera</b> (Target = <code>Player</code>, Distance <code>6.2</code>, Height <code>1.15</code>, Min/Max Pitch <code>4</code> / <code>62</code>, Mouse Sensitivity <code>2.4</code>). Stop Play: both objects are gone again.</p>
 <figure class="shot"><img src="images/phase-04/camera-behind.jpg" alt="" loading="lazy"><figcaption>Play mode only: the Main Camera follows the Player.</figcaption></figure>
 
 <!-- ======================================================= 4 -->
 <h2 id="step-4"><span class="step">4</span>How it works</h2>
 <p>When the level starts, <code>GameManager.Build()</code> makes the hero and the camera (<code>Scripts/Gameplay/GameManager.cs</code>):</p>
-<pre><code>Player = FindAnyObjectByType&lt;PlayerMotor&gt;();
+<pre><code>// a little shorter than the real code
+Player = FindAnyObjectByType&lt;PlayerMotor&gt;();
 if (Player) { Player.Teleport(layout.spawn, layout.spawnYaw); Player.SetupPlaced(); }
 else Player = PlayerMotor.Create(layout.spawn, layout.spawnYaw);
 Cam = FindAnyObjectByType&lt;ThirdPersonCamera&gt;();
@@ -171,14 +172,14 @@ anim.SetFloat(AnimParams.Speed, blend, 0.15f, dt);     // 0 idle, 0.5 walk, 1 ru
   <li>The keys are turned by the camera angle (<code>yaw</code>), so <b>W</b> always runs "into the screen".</li>
   <li><b>Shift</b> sprints (<code>8.2</code> instead of <code>5</code> m/s) and uses stamina. When stamina is empty, the hero walks until it is back above 0.35.</li>
   <li><code>cc.Move()</code> moves the <b>CharacterController</b>: a capsule that stops at walls, without real physics. Gravity is the <code>vy</code> part.</li>
-  <li><code>SetFloat("Speed", …)</code> feeds the blend tree you saw in check 3.5.</li>
+  <li><code>SetFloat("Speed", …)</code> feeds the blend tree you saw in Check 5.</li>
   <li>The camera works in <code>LateUpdate()</code>, after the hero has moved. Rays from the hero to the camera find walls; then the camera comes closer (never nearer than 1.4 m).</li>
 </ul>
 
 <!-- ======================================================= 5 -->
 <h2 id="step-5"><span class="step">5</span>▶ Press Play</h2>
 <ol>
-  <li>Open <code>MainMenu</code>, press <b>▶ Play</b> and click <b>PLAY</b>. (To test faster, press Play in Level1.)</li>
+  <li>Open <code>Scenes/MainMenu</code>, press <b>▶ Play</b> and click <b>PLAY</b>. (To test faster, press Play in Level1.)</li>
   <li>Wait for the countdown (3, 2, 1, GO!). Click once in the Game view: the cursor hides.</li>
 </ol>
 <div class="table-wrap"><table>
@@ -195,7 +196,7 @@ anim.SetFloat(AnimParams.Speed, blend, 0.15f, dt);     // 0 idle, 0.5 walk, 1 ru
   <li>The screen fades in and the camera swoops down from high up to behind the hero.</li>
   <li>The hero stands on the floor and plays Idle. <b>W</b> walks, <b>Shift</b> runs. After about 3 s of sprinting he gets tired.</li>
   <li>He stops at walls and blocks. Turn the camera into a wall: it slides closer, you never look through the wall.</li>
-  <li>The HUD shows hearts, the timer and a pause button.</li>
+  <li>The HUD shows the coin counter (<code>0 / 0</code>: no coins yet), hearts, the timer, the day/night and pause buttons. A stamina bar shows while you sprint.</li>
   <li>No red errors. One yellow warning <i>"This level has no CoinSpot objects"</i> is normal: the coins come in Phase 5.</li>
 </ul>
 </div>

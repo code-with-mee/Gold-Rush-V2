@@ -52,7 +52,7 @@
 <p class="eyebrow">GOLD RUSH · Phase 5</p>
 <h1>Coins</h1>
 <p class="lead">Gold comes into the yard. The package adds six <b>CoinSpot</b> markers. When you press Play, the GameManager makes a floating, spinning coin at each one. Run into a coin: it is gone, you hear the coin sound, and the counter on the HUD goes up.</p>
-<div class="meta"><span><b>Checkpoint package</b><code>GoldRush_Phase05_Coins.unitypackage</code></span><span><b>Scene</b><code>Assets/GoldRush/Scenes/Level1.unity</code></span><a class="btn secondary" href="phase-05.pdf">Download PDF</a></div>
+<div class="meta"><span><b>Package</b><code>GoldRush_Phase05_Coins.unitypackage</code></span><span><b>Scene</b><code>Assets/GoldRush/Scenes/Level1.unity</code></span><a class="btn secondary" href="phase-05.pdf">Download PDF</a></div>
 
 <nav class="toc" aria-label="Steps on this page"><strong>Steps on this page</strong><ol>
   <li><a href="#step-1">What you get</a></li>
@@ -89,15 +89,15 @@
 <!-- ======================================================= 3 -->
 <h2 id="step-3"><span class="step">3</span>Check</h2>
 
-<h3 id="check-1">3.1 The level root</h3>
+<h3 id="check-1">Check 1 · The level root</h3>
 <p>Select <code>Level 1 - Training Yard</code>. It has the component <b>Level Scene</b> with <b>Arena Half</b> = <code>16</code> (the yard is 32 × 32 m). The GameManager looks for coins only <b>inside</b> this object. In the Scene view a yellow square shows the play area.</p>
 <figure class="shot"><img src="images/phase-05/check-01.png" alt="" loading="lazy"><figcaption>Level Scene on the level root, Arena Half 16.</figcaption></figure>
 
-<h3 id="check-2">3.2 The six coin spots</h3>
+<h3 id="check-2">Check 2 · The six coin spots</h3>
 <p>Open <code>Level 1 - Training Yard/Gameplay/Coins</code>. There are six markers, <code>CoinSpot 1</code> to <code>CoinSpot 6</code>. They have <b>no children</b>: there is no coin in the scene yet.</p>
 <figure class="shot"><img src="images/phase-05/check-02.png" alt="" loading="lazy"><figcaption>Six CoinSpots, no coins inside.</figcaption></figure>
 
-<h3 id="check-3">3.3 One coin spot</h3>
+<h3 id="check-3">Check 3 · One coin spot</h3>
 <p>Select <code>CoinSpot 1</code>. It has only a Transform and <b>Coin Spot</b> (no fields). Its Position is about <code>5.1, 0.08, 11.3</code>: on the floor. In the Scene view you see a gold ball 1 m above it: that is where the coin will float.</p>
 <div class="table-wrap"><table>
   <tr><th>Marker</th><th>Position (about)</th><th>Marker</th><th>Position (about)</th></tr>
@@ -107,16 +107,16 @@
 </table></div>
 <figure class="shot"><img src="images/phase-05/check-03.png" alt="" loading="lazy"><figcaption>A CoinSpot is only a Transform and the Coin Spot script.</figcaption></figure>
 
-<h3 id="check-4">3.4 The sounds in GoldRushAssets</h3>
+<h3 id="check-4">Check 4 · The sounds in GoldRushAssets</h3>
 <p>Select <code>Assets/GoldRush/Resources/GoldRushAssets</code>. Open <b>Sounds</b>: 16 clips from <code>Art/Audio</code>. The file name is the sound id: <code>AudioFX.Play("coin")</code> plays <code>coin.wav</code>. This phase uses <code>coin</code>; <code>gate</code> comes in Phase 6.</p>
 <figure class="shot" data-shot="phase-05/check-04" data-window="inspector" data-select="Assets/GoldRush/Resources/GoldRushAssets.asset"><img src="images/phase-05/step-09.png" alt="GoldRushAssets in the Inspector" loading="lazy"><figcaption>GoldRushAssets: the characters, the base materials and 16 sounds.</figcaption></figure>
 
-<h3 id="check-5">3.5 Play mode: the coins</h3>
+<h3 id="check-5">Check 5 · Play mode: the coins</h3>
 <p>Press <b>▶ Play</b>. Look at the Hierarchy while the game runs: a new object <code>Dynamic (runtime)</code> holds six <code>Coin</code> objects. Each has a child <code>Visual</code> (the gold disc and star). Only <code>Visual</code> moves, so the pickup point stays still.</p>
 <figure class="shot"><img src="images/phase-05/coins-collect.jpg" alt="" loading="lazy"><figcaption>Play mode only: the coins are made by code at Play, under Dynamic (runtime).</figcaption></figure>
 
-<h3 id="check-6">3.6 Play mode: the coin counter</h3>
-<p>At the top of the Game view, the HUD shows the coin counter: <code>0 / 6</code>. It is made by code for now (the scene HUD comes in Phase 9).</p>
+<h3 id="check-6">Check 6 · Play mode: the coin counter</h3>
+<p>At the top left of the Game view, the HUD shows the coin counter: <code>0 / 6</code>. It is made by code for now (the scene HUD comes in Phase 9).</p>
 <figure class="shot"><img src="images/phase-05/hud-start.jpg" alt="" loading="lazy"><figcaption>Play mode only: the counter shows 0 / 6.</figcaption></figure>
 
 <!-- ======================================================= 4 -->
@@ -134,14 +134,17 @@ foreach (var p in layout.coinPoints) coins.Add(Coin.Create(layout.dynamicRoot, p
 <pre><code>Vector3 pp = Player.transform.position + Vector3.up * 1f;
 for (int i = coins.Count - 1; i &gt;= 0; i--)
 {
-    Vector3 d = coins[i].transform.position - pp;
-    if (d.sqrMagnitude &lt; 1.45f * 1.45f) { var c = coins[i]; coins.RemoveAt(i); CollectCoin(c); }
+    var c = coins[i];
+    Vector3 d = c.transform.position - pp;
+    float sq = d.sqrMagnitude;
+    // … (the magnet power-up pulls the coin closer: Phase 8)
+    if (sq &lt; 1.45f * 1.45f) { coins.RemoveAt(i); CollectCoin(c); }
 }</code></pre>
 <ul>
   <li><b>No colliders, no triggers.</b> Closer than <b>1.45 m</b> = taken. This is simple, fast, and never misses.</li>
   <li>The hero's position is at his feet. <code>+ Vector3.up * 1f</code> compares at coin height.</li>
   <li>The loop goes <b>backwards</b>, because it removes coins from the list while it loops.</li>
-  <li><code>sqrMagnitude &lt; 1.45 * 1.45</code> is the same as "distance &lt; 1.45", but without a square root.</li>
+  <li><code>sq &lt; 1.45f * 1.45f</code> is the same as "distance &lt; 1.45", but without a square root.</li>
   <li><code>CollectCoin()</code> adds 1, plays <code>"coin"</code> (a little higher each time), shows "+1", flies a coin to the counter. After the last coin it calls <code>AllCollected()</code>.</li>
 </ul>
 <p>The coin moves itself in <code>Coin.Update()</code> (<code>Scripts/World/Coin.cs</code>):</p>
@@ -151,13 +154,17 @@ visual.rotation = Quaternion.Euler(0f, t * 140f + phase * 57.3f, 0f);           
 
 <!-- ======================================================= 5 -->
 <h2 id="step-5"><span class="step">5</span>▶ Press Play</h2>
+<ol>
+  <li>Open <code>Scenes/MainMenu</code>, press <b>▶ Play</b> and click <b>PLAY</b>. (To test faster, press Play in Level1.)</li>
+  <li>Wait for GO!, click in the Game view and collect all six coins.</li>
+</ol>
 <div class="check">
 <p><b>You should see:</b></p>
 <ul>
   <li>The intro says <i>Collect all 6 gold</i>, then 3, 2, 1, GO!</li>
   <li>Six coins float and spin, each at its own rhythm. The HUD shows <code>0 / 6</code>.</li>
   <li>Run into a coin: it is gone, you hear the coin sound, "+1" pops up and the counter goes up.</li>
-  <li>After the 6th coin: the toast <i>ALL GOLD COLLECTED!</i>, the gate sound, and the gate opens. (The gate is Phase 6.)</li>
+  <li>After the 6th coin: the toast <i>ALL GOLD COLLECTED!</i>, the gate sound, and the gate opens. If you run through the open gate, you win. The gate and the win screen are explained in Phase 6.</li>
   <li>No red errors in the Console.</li>
 </ul>
 </div>
@@ -167,7 +174,7 @@ visual.rotation = Quaternion.Euler(0f, t * 140f + phase * 57.3f, 0f);           
 <!-- ======================================================= 6 -->
 <h2 id="step-6"><span class="step">6</span>Try it</h2>
 <ol>
-  <li><b>A seventh coin.</b> Select <code>CoinSpot 6</code>, press <b>Ctrl+D</b> (<b>Cmd+D</b>) and move the copy to a free place (Y stays about <code>0</code>). Press Play: the counter shows <code>0 / 7</code>. Delete the copy afterwards.</li>
+  <li><b>A seventh coin.</b> Select <code>CoinSpot 6</code>, press <b>Ctrl+D</b> (<b>Cmd+D</b>) and move the copy to a free place (Y stays about <code>0</code>). Press Play: the counter shows <code>0 / 7</code>. (The intro still says 6 gold: it reads <code>coins = 6</code> from <code>Data.cs</code>.) Delete the copy afterwards.</li>
   <li><b>A crazy spin.</b> In <code>Scripts/World/Coin.cs</code>, change <code>t * 140f</code> to <code>t * 600f</code>, and <code>* 0.12f</code> to <code>* 0.5f</code>. The coins spin fast and jump high.</li>
   <li><b>A bigger reach.</b> In <code>Scripts/Gameplay/GameManager.cs</code>, change <code>1.45f * 1.45f</code> to <code>3f * 3f</code>. You take coins from 3 m away.</li>
 </ol>

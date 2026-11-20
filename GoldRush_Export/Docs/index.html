@@ -53,7 +53,7 @@
   <div>
     <p class="eyebrow">Unity 6 tutorial · for beginners</p>
     <h1>GOLD RUSH</h1>
-    <p class="lead">Build a 3D game from an empty Unity project, one step at a time. You run through a level as a small hero, collect all the gold, avoid the monsters and escape through the exit gate before the time runs out.</p>
+    <p class="lead">See how a complete 3D game is made in Unity 6, one phase at a time, and then build your own levels for it. In the game you run through a level as a small hero, collect all the gold, avoid the monsters and escape through the exit gate.</p>
     <div class="actions">
       <a class="btn" href="phase-00.html">Start with Phase 0 →</a>
       <a class="btn secondary" href="#course">See the course map</a>
@@ -91,7 +91,7 @@
     <ul>
       <li><b>Unity Hub</b> and <b>Unity 6000.6.10f1 or newer</b> (Unity 6.6).</li>
       <li>The <b>phase packages</b> in <code>GoldRush_Export/Packages/</code>, one per phase. Phase 0 starts with <code>GoldRush_Phase00_Project.unitypackage</code>: characters, sounds, icons, fonts, UI shapes, materials and the prefab kit.</li>
-      <li>The <b>Resources folder</b> <code>GoldRush_Export/Resources/</code> (see below).</li>
+      <li>Optional: the <b>Resources folder</b> <code>GoldRush_Export/Resources/</code> with every script as a plain file (see below).</li>
       <li>Basic C# and a little Unity editor practice.</li>
       <li>About <b>11 sessions</b> for the phases (one phase per session), then 1–2 sessions per practical.</li>
     </ul>
@@ -123,13 +123,13 @@
   <li><b>Broke something while trying?</b> Import the phase package again into a new project.</li>
 </ul>
 
-<h3 id="resources">The Resources folder</h3>
+<h3 id="resources">The course folders</h3>
 <div class="table-wrap"><table>
 <tr><th>Folder</th><th>What is inside</th><th>When you need it</th></tr>
-<tr><td><code>Packages/</code></td><td>One package per phase (import it at the start of the phase) + <code>GoldRush_Levels2to4</code> and <code>GoldRush_GameUIDialogs</code>.</td><td>Every phase and the Practicals</td></tr>
-<tr><td><code>Resources/Scripts/Final/</code></td><td>Every game script as plain <code>.cs</code> files, to read outside Unity or to copy into your own project.</td><td>Optional</td></tr>
+<tr><td><code>GoldRush_Export/Packages/</code></td><td>One package per phase (import it at the start of the phase) + <code>GoldRush_Levels2to4</code> and <code>GoldRush_GameUIDialogs</code>.</td><td>Every phase and the Practicals</td></tr>
+<tr><td><code>GoldRush_Export/Resources/Scripts/Final/</code></td><td>Every game script as plain <code>.cs</code> files, to read outside Unity. You do not need to copy them: every package already has all the scripts.</td><td>Optional</td></tr>
 </table></div>
-<div class="note">Do not mix it up with the Unity folder <code>Assets/GoldRush/Resources</code>. That one is a special Unity folder: scripts load files from it by name (for example <code>GoldRushAssets</code>).</div>
+<div class="note">Do not mix up <code>GoldRush_Export/Resources/</code> with the Unity folder <code>Assets/GoldRush/Resources</code>. That one is a special Unity folder: scripts load files from it by name (for example <code>GoldRushAssets</code>).</div>
 
 <h3 id="packages">Checkpoint packages</h3>
 <p>Every phase has a <b>package</b> in <code>GoldRush_Export/Packages/</code>. You import it at the start of the phase. It holds the whole project as it is at the <b>end</b> of that phase: the art, the scenes of that phase and (from phase 1 on) all the final scripts. Import it into a new, empty <b>Universal 3D</b> project (with AI Navigation and Active Input Handling = Both, see <a href="phase-00.html">Phase 0</a>) with <b>Assets → Import Package → Custom Package…</b>.</p>
@@ -150,7 +150,7 @@
 <div class="tip">New word? Look it up in the <a href="glossary.html">Glossary</a>. Want to practise? Do the <a href="practicals.html">Practicals</a>. Finished the course? Try the <a href="exercises.html">Exercises</a>.</div>
 
 <h2 id="course">Course map</h2>
-<p>11 phases, from an empty project to the complete game.</p>
+<p>11 phases, from an empty project to the complete game, then 4 practicals.</p>
 <div class="cards">
   <article class="card">
     <span class="tag">PHASE 0</span>

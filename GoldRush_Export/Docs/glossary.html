@@ -55,220 +55,214 @@
 
 <dl class="glossary">
   <dt>Active Input Handling</dt>
-  <dd>A Player Setting that chooses which input system Unity uses. Gold Rush needs <b>Both</b>: the code uses the classic <code>Input</code> class, and the UI uses the Input System package. Unity restarts when you change it. <span class="see">→ <a href="phase-00.html#step-6">Phase 0, step 6</a></span></dd>
+  <dd>A Player Setting that chooses which input system Unity uses. Gold Rush needs <b>Both</b>: the code uses the classic <code>Input</code> class, and the UI uses the Input System package. Unity restarts when you change it. <span class="see">→ <a href="phase-00.html#step-5">Phase 0, step 5</a></span></dd>
 
   <dt>Anchor</dt>
-  <dd>The point of the parent a UI element is attached to, from (0, 0) bottom-left to (1, 1) top-right. “Top left” keeps the gold chip in the corner on every screen size. <b>Stretch / stretch</b> makes a screen fill the whole Canvas. <span class="see">→ <a href="phase-01.html#step-12">Phase 1, step 12</a></span></dd>
+  <dd>The point of the parent a UI element is attached to, from (0, 0) bottom-left to (1, 1) top-right. “Top left” keeps the gold chip in the corner on every screen size. <b>Stretch / stretch</b> makes a screen fill the whole Canvas. <span class="see">→ <a href="phase-01.html#check-5">Phase 1, check 5</a></span></dd>
 
   <dt>Animator Controller</dt>
-  <dd>An asset that decides which animation plays: states, transitions (arrows) and parameters. You make a small one for the waving hero in the menu, build the full hero controller by hand, and make one for each monster. <span class="see">→ <a href="phase-01.html#step-8">Phase 1, step 8</a>, <a href="phase-04.html#step-3">Phase 4, step 3</a></span></dd>
+  <dd>An asset that decides which animation plays: states, transitions (arrows) and parameters. The menu hero has a small one for waving, the hero in the game has a bigger one, and each monster has its own. <span class="see">→ <a href="phase-01.html#check-3">Phase 1, check 3</a>, <a href="phase-04.html#check-5">Phase 4, check 5</a></span></dd>
 
   <dt>Any State</dt>
-  <dd>A special box in the Animator. An arrow from Any State can start from every state, for example “play Hit when the Hit trigger fires”. <span class="see">→ <a href="phase-04.html#step-6">Phase 4, step 6</a></span></dd>
+  <dd>A special box in the Animator. An arrow from Any State can start from every state, for example “play Hit when the Hit trigger fires”. <span class="see">→ <a href="phase-04.html#check-5">Phase 4, check 5</a></span></dd>
 
   <dt>Bake (NavMesh)</dt>
-  <dd>Let Unity calculate the walk map once and save it. Bake again after you move a wall. <span class="see">→ <a href="phase-07.html#step-3">Phase 7, step 3</a></span></dd>
+  <dd>Let Unity calculate the walk map and save it. Click <b>Bake</b> on the NavMesh Surface after you move a wall, to see the new blue area. The game also bakes it again each time a level starts. <span class="see">→ <a href="phase-07.html#check-1">Phase 7, check 1</a></span></dd>
 
   <dt>Blend tree</dt>
-  <dd>An Animator state that mixes several clips using a number. The <b>Locomotion</b> blend tree mixes Idle (0), Walk (0.5) and Run (1) with the <code>Speed</code> parameter. <span class="see">→ <a href="phase-04.html#step-4">Phase 4, step 4</a></span></dd>
+  <dd>An Animator state that mixes several clips using a number. The <b>Locomotion</b> blend tree mixes Idle (0), Walk (0.5) and Run (1) with the <code>Speed</code> parameter. <span class="see">→ <a href="phase-04.html#check-5">Phase 4, check 5</a></span></dd>
 
   <dt>Build Profiles (Scene List)</dt>
-  <dd>The window where you choose the platform and the scenes that go into the game. A scene that is not in the list cannot be loaded. <code>MainMenu</code> must be first (index 0), <code>Level1</code> comes next. <span class="see">→ <a href="phase-03.html#step-17">Phase 3, step 17</a></span></dd>
+  <dd>The window where you choose the platform and the scenes that go into the game. A scene that is not in the list cannot be loaded. <code>MainMenu</code> must be first (index 0), <code>Level1</code> comes next. <span class="see">→ <a href="phase-03.html#check-8">Phase 3, check 8</a>, <a href="practicals.html#step-7">Practicals, step 7</a></span></dd>
 
   <dt>Canvas</dt>
-  <dd>The root object of a Unity UI. Every image, text and button must be inside a Canvas. The menu Canvas is called <code>MenuUI</code>. The game UI of phase 9 is built the same way. <span class="see">→ <a href="phase-01.html#step-12">Phase 1, step 12</a></span></dd>
+  <dd>The root object of a Unity UI. Every image, text and button must be inside a Canvas. The menu Canvas is called <code>MenuUI</code>. The game UI of phase 9 is built the same way. <span class="see">→ <a href="phase-01.html#check-5">Phase 1, check 5</a></span></dd>
 
   <dt>Canvas Group</dt>
-  <dd>A component that fades or blocks a whole UI group at once (alpha, interactable). The menu uses it to fade each screen in. <span class="see">→ <a href="phase-01.html#step-12">Phase 1, step 12</a></span></dd>
+  <dd>A component that fades or blocks a whole UI group at once (alpha, interactable). The menu uses it to fade each screen in. <span class="see">→ <a href="phase-02.html#check-1">Phase 2, check 1</a></span></dd>
 
   <dt>CC0</dt>
-  <dd>A “no rights reserved” licence. The Quaternius characters are CC0, so you can use them in any project, even commercially. <span class="see">→ <a href="phase-00.html#step-7">Phase 0, step 7</a></span></dd>
+  <dd>A “no rights reserved” licence. The Quaternius characters are CC0, so you can use them in any project, even commercially. <span class="see">→ <a href="phase-00.html#check-2">Phase 0, check 2</a></span></dd>
 
   <dt>CharacterController</dt>
-  <dd>A Unity component that moves a capsule with <code>Move()</code> and stops at walls, without physics forces. Used for the hero (Height 1.35, Center Y 0.695). <span class="see">→ <a href="phase-04.html#step-11">Phase 4, step 11</a></span></dd>
+  <dd>A Unity component that moves a capsule with <code>Move()</code> and stops at walls, without physics forces. Used for the hero (Height 1.35, Center Y 0.695). <span class="see">→ <a href="phase-04.html#check-7">Phase 4, check 7</a></span></dd>
 
   <dt>Checkpoint package</dt>
-  <dd>A <code>.unitypackage</code> file with the project as it is at the end of a phase, for example <code>GoldRush_Phase03_Level</code>. Import it into a new, empty project if you get lost. <span class="see">→ <a href="index.html#packages">Overview: checkpoint packages</a></span></dd>
+  <dd>A <code>.unitypackage</code> file with the project as it is at the end of a phase, for example <code>GoldRush_Phase03_Level</code>. You import it at the start of each phase. Broke something? Import it again into a new, empty project. <span class="see">→ <a href="index.html#packages">Overview: checkpoint packages</a></span></dd>
 
   <dt>Collider</dt>
-  <dd>An invisible shape that other objects bump into. Walls need one so the hero stops, the camera stops, and the NavMesh leaves a hole. Glowing caps and decoration have none. The invisible <code>GateBlocker</code> is only a collider. <span class="see">→ <a href="phase-03.html#step-2">Phase 3, step 2</a></span></dd>
+  <dd>An invisible shape that other objects bump into. Walls need one so the hero stops, the camera stops, and the NavMesh leaves a hole. Glowing caps and decoration have none. The invisible <code>GateBlocker</code> is only a collider. <span class="see">→ <a href="phase-03.html#check-3">Phase 3, check 3</a></span></dd>
 
   <dt>Coroutine</dt>
-  <dd>A method that can pause with <code>yield return</code> and continue later, for example to wait a second. The camera intro and the win/lose sequences are coroutines. <span class="see">→ <a href="phase-05.html#step-8">Phase 5, step 8</a></span></dd>
+  <dd>A method that can pause with <code>yield return</code> and continue later, for example to wait a second. The camera intro and the win/lose sequences are coroutines. <span class="see">→ <a href="phase-05.html#step-4">Phase 5: How it works</a></span></dd>
 
   <dt>Dead zone</dt>
-  <dd>A small area around the centre of a joystick that counts as “not pushed”. In Gold Rush, stick values under 0.12 count as zero. <span class="see">→ <a href="phase-10.html">Phase 10</a></span></dd>
+  <dd>A small area around the centre of a joystick that counts as “not pushed”. In Gold Rush, stick values under 0.12 count as zero. <span class="see">→ <a href="phase-10.html#check-5">Phase 10, check 5</a></span></dd>
 
   <dt>Device Simulator</dt>
-  <dd>A Game view mode that shows a phone screen and turns mouse clicks into touches. Use it to test the touch controls. <span class="see">→ <a href="phase-10.html">Phase 10</a></span></dd>
+  <dd>A Game view mode that shows a phone screen and turns mouse clicks into touches. Use it to test the touch controls. <span class="see">→ <a href="phase-10.html#check-4">Phase 10, check 4</a></span></dd>
 
   <dt>Emission</dt>
-  <dd>A material setting that makes a surface glow with its own colour, even in the dark. Used for the lamp caps, the gold and the gate strips. It really shines once <code>EnvironmentSetup</code> adds bloom. <span class="see">→ <a href="phase-03.html#step-2">Phase 3, step 2</a></span></dd>
+  <dd>A material setting that makes a surface glow with its own colour, even in the dark. Used for the lamp caps, the gold and the gate strips. It really shines once <code>EnvironmentSetup</code> adds bloom. <span class="see">→ <a href="phase-03.html#check-5">Phase 3, check 5</a></span></dd>
 
   <dt>Event (C#)</dt>
-  <dd>A list of methods to call when something happens. <code>DayNight.Changed</code> tells every sun/moon button that the time of day changed. Subscribe with <code>+=</code>, unsubscribe with <code>-=</code>. <span class="see">→ <a href="phase-01.html#step-3">Phase 1, step 3</a>, <a href="phase-10.html">Phase 10</a></span></dd>
+  <dd>A list of methods to call when something happens. <code>DayNight.Changed</code> tells every sun/moon button that the time of day changed. Subscribe with <code>+=</code>, unsubscribe with <code>-=</code>. <span class="see">→ <a href="phase-10.html#step-3">Phase 10: How it works</a></span></dd>
 
   <dt>EventSystem</dt>
-  <dd>The object that sends clicks and touches to the UI. Unity adds it with the first Canvas. Without it, no button works. <span class="see">→ <a href="phase-01.html#step-12">Phase 1, step 12</a></span></dd>
+  <dd>The object that sends clicks and touches to the UI. Unity adds it with the first Canvas. Without it, no button works. <span class="see">→ <a href="phase-01.html#check-1">Phase 1, check 1</a></span></dd>
 
   <dt>Field of view (view cone)</dt>
-  <dd>How wide a monster can see. The Slime sees 130° in front, the Mushroom King 200°, the Ghost all around. <span class="see">→ <a href="phase-07.html#step-2">Phase 7, step 2</a></span></dd>
+  <dd>How wide a monster can see. The Slime sees 130° in front, the Mushroom King 200°, the Ghost all around. <span class="see">→ <a href="phase-07.html#step-4">Phase 7: How it works</a>, <a href="practicals.html#step-13">Practicals, step 13</a></span></dd>
 
   <dt>Fog</dt>
-  <dd>Makes far-away things fade into a colour. Gold Rush uses Linear fog from 35 to 120 m. <span class="see">→ <a href="phase-03.html#step-14">Phase 3, step 14</a></span></dd>
+  <dd>Makes far-away things fade into a colour. Gold Rush uses Linear fog from 35 to 120 m. <span class="see">→ <a href="phase-03.html#step-4">Phase 3: How it works</a></span></dd>
 
   <dt>GameAction</dt>
-  <dd>The small script on every button of the game UI (pause, resume, retry, menu, next). On click it plays the click sound and calls <code>GameManager.Run(action)</code>. It works like <code>MenuAction</code> in the menu. <span class="see">→ <a href="phase-09.html">Phase 9</a></span></dd>
+  <dd>The small script on every button of the game UI (pause, resume, retry, menu, next). On click it plays the click sound and calls <code>GameManager.Run(action)</code>. It works like <code>MenuAction</code> in the menu. <span class="see">→ <a href="phase-09.html#check-5">Phase 9, check 5</a></span></dd>
 
   <dt>GoldRushAssets</dt>
-  <dd>The <code>GameAssets</code> data file in <code>Assets/GoldRush/Resources</code>. It tells the scripts where the hero and monster models, the base materials, the sky and the 16 sounds are. You make it in phase 1 and fill more fields in phases 5 and 7. <span class="see">→ <a href="phase-01.html#step-7">Phase 1, step 7</a></span></dd>
+  <dd>The <code>GameAssets</code> data file in <code>Assets/GoldRush/Resources</code>. It tells the scripts where the hero and monster models, the base materials, the sky and the sounds are. It comes with every package. Phases 4, 5 and 7 look at its hero, sound and monster fields. <span class="see">→ <a href="phase-04.html#check-6">Phase 4, check 6</a>, <a href="phase-05.html#check-4">Phase 5, check 4</a>, <a href="phase-07.html#check-4">Phase 7, check 4</a></span></dd>
 
   <dt>Has Exit Time</dt>
-  <dd>A setting on an Animator arrow: wait until the clip is (almost) finished before you switch. On for the arrows back from Hit and Win, off for arrows that must react at once. <span class="see">→ <a href="phase-04.html#step-6">Phase 4, step 6</a></span></dd>
-
-  <dt>Helper script</dt>
-  <dd>A big script (more than about 250 lines) that you import from <code>Resources/Scripts/Helpers/</code> instead of typing, for example <code>UIKit</code>, <code>EnemyAI</code> or <code>FX</code>. The guide explains the few functions you call. <span class="see">→ <a href="phase-01.html#step-3">Phase 1, step 3</a></span></dd>
+  <dd>A setting on an Animator arrow: wait until the clip is (almost) finished before you switch. On for the arrows back from Hit and Win, off for arrows that must react at once. <span class="see">→ <a href="phase-04.html#check-5">Phase 4, check 5</a></span></dd>
 
   <dt>HUD</dt>
-  <dd>“Heads-up display”: the game UI that stays on screen while you play: coins, hearts, timer, the day/night and pause buttons. <span class="see">→ <a href="phase-09.html">Phase 9</a></span></dd>
+  <dd>“Heads-up display”: the game UI that stays on screen while you play: coins, hearts, timer, the day/night and pause buttons. <span class="see">→ <a href="phase-09.html#check-3">Phase 9, check 3</a></span></dd>
 
   <dt>Ignore Raycast layer</dt>
-  <dd>A built-in layer that rays do not hit. The Player is on it, so the camera's wall check and the monsters' view check do not hit the hero himself. <span class="see">→ <a href="phase-04.html#step-11">Phase 4, step 11</a></span></dd>
+  <dd>A built-in layer that rays do not hit. The Player is on it, so the camera's wall check and the monsters' view check do not hit the hero himself. <span class="see">→ <a href="phase-04.html#check-7">Phase 4, check 7</a></span></dd>
 
   <dt>JSON</dt>
-  <dd>A text format for data. The save file is a <code>SaveData</code> object turned into JSON with <code>JsonUtility</code>. <span class="see">→ <a href="phase-01.html#step-4">Phase 1, step 4</a></span></dd>
+  <dd>A text format for data. The save file is a <code>SaveData</code> object turned into JSON with <code>JsonUtility</code>. <span class="see">→ <a href="phase-02.html#step-4">Phase 2: How it works</a></span></dd>
 
   <dt>LateUpdate</dt>
-  <dd>Called every frame after all <code>Update()</code> methods. The camera uses it, so it follows a hero that has already moved. <span class="see">→ <a href="phase-04.html#step-9">Phase 4, step 9</a></span></dd>
+  <dd>Called every frame after all <code>Update()</code> methods. The camera uses it, so it follows a hero that has already moved. <span class="see">→ <a href="phase-04.html#step-4">Phase 4: How it works</a></span></dd>
 
   <dt>Lerp</dt>
-  <dd>Linear interpolation: <code>Lerp(a, b, t)</code> goes <code>t</code> of the way from <code>a</code> to <code>b</code>. Works for numbers, vectors and colours. The hero's speed eases with it, and the day/night blend is one big Lerp. <span class="see">→ <a href="phase-04.html#step-8">Phase 4, step 8</a></span></dd>
+  <dd>Linear interpolation: <code>Lerp(a, b, t)</code> goes <code>t</code> of the way from <code>a</code> to <code>b</code>. Works for numbers, vectors and colours. The hero's speed eases with it, and the day/night blend is one big Lerp. <span class="see">→ <a href="phase-10.html#step-3">Phase 10: How it works</a></span></dd>
 
   <dt>Level root (LevelScene)</dt>
-  <dd>The top object of a level, <code>Level 1 - Training Yard</code>. It has the <b>Level Scene</b> component. The GameManager only finds coins, power-ups and the gate inside it. <span class="see">→ <a href="phase-05.html#step-11">Phase 5, step 11</a></span></dd>
+  <dd>The top object of a level, for example <code>Level 1 - Training Yard</code>. It has the <b>Level Scene</b> component (with <b>Arena Half</b>). The GameManager only finds the PlayerSpawn, coins, monsters, power-ups and the gate inside it. <span class="see">→ <a href="phase-05.html#check-1">Phase 5, check 1</a>, <a href="practicals.html#step-2">Practicals, step 2</a></span></dd>
 
   <dt>Local and world position</dt>
-  <dd>The world position is measured from the centre of the scene. The local position (the one in the Inspector) is measured from the parent. A wall piece outside its group uses world space and ends up far away. <span class="see">→ <a href="phase-03.html#step-7">Phase 3, step 7</a></span></dd>
+  <dd>The world position is measured from the centre of the scene. The local position (the one in the Inspector) is measured from the parent. A wall piece outside its group uses world space and ends up far away. <span class="see">→ <a href="phase-03.html#check-3">Phase 3, check 3</a>, <a href="practicals.html#step-11">Practicals, step 11</a></span></dd>
 
   <dt>Loop Time</dt>
-  <dd>An import setting on an animation clip. When it is ticked, the clip plays again and again (Idle, Walk, Run, Wave). <span class="see">→ <a href="phase-04.html#step-2">Phase 4, step 2</a></span></dd>
+  <dd>An import setting on an animation clip. When it is ticked, the clip plays again and again (Idle, Walk, Run, Wave). <span class="see">→ <a href="phase-04.html#check-4">Phase 4, check 4</a></span></dd>
 
   <dt>Marker</dt>
-  <dd>In Gold Rush, an empty object that marks a place: <code>PlayerSpawn</code>, <code>CoinSpot</code>, <code>MonsterSpawn</code>, <code>PowerUpSpot</code>. Later phases add a small script to each one. <span class="see">→ <a href="phase-03.html#step-12">Phase 3, step 12</a></span></dd>
+  <dd>In Gold Rush, an empty object that marks a place: <code>PlayerSpawn</code>, <code>CoinSpot</code>, <code>MonsterSpawn</code>, <code>PowerUpSpot</code>. Each one has a small script of that name. When the level starts, the game makes the hero, a coin, a monster or a power-up there. The marker prefabs are in <code>Prefabs/Markers</code>. <span class="see">→ <a href="phase-04.html#check-3">Phase 4, check 3</a>, <a href="practicals.html#step-1">Practicals, step 1</a></span></dd>
 
   <dt>Mask</dt>
-  <dd>A UI component that hides everything of its children outside its own shape. The big buttons use it so the gradient and the light sweep stay inside the rounded corners. <span class="see">→ <a href="phase-01.html#step-16">Phase 1, step 16</a></span></dd>
+  <dd>A UI component that hides everything of its children outside its own shape. The big buttons use it so the gradient and the light sweep stay inside the rounded corners. <span class="see">→ <a href="phase-01.html#check-7">Phase 1, check 7</a></span></dd>
 
   <dt>Material</dt>
-  <dd>Says how a surface looks: colour, texture, shine, glow. A material is shared: change it, and every object that uses it changes. Gold Rush uses the URP <b>Lit</b> shader. All materials come with the starter package. <span class="see">→ <a href="phase-00.html#step-7">Phase 0, step 7</a></span></dd>
+  <dd>Says how a surface looks: colour, texture, shine, glow. A material is shared: change it, and every object that uses it changes. Gold Rush uses the URP <b>Lit</b> shader. All materials come with the starter package. <span class="see">→ <a href="phase-00.html#check-1">Phase 0, check 1</a></span></dd>
 
   <dt>MenuAction</dt>
-  <dd>The small script on every menu button. You type a word (<code>play</code>, <code>levels</code>, <code>shop</code>, <code>settings</code>, <code>back</code>, …). On click it plays the click sound and calls <code>GoldRushMenu.Run(word)</code>. <span class="see">→ <a href="phase-01.html#step-5">Phase 1, step 5</a></span></dd>
+  <dd>The small script on every menu button. Its <b>Action</b> field holds a word (<code>play</code>, <code>levels</code>, <code>shop</code>, <code>settings</code>, <code>back</code>, …). On click it plays the click sound and calls <code>GoldRushMenu.Run(word)</code>. <span class="see">→ <a href="phase-01.html#check-7">Phase 1, check 7</a></span></dd>
 
   <dt>Namespace</dt>
-  <dd>A name that groups classes, like a family name for code. Every Gold Rush script starts with <code>namespace GoldRush</code>. Without it, other scripts can't find the class. <span class="see">→ <a href="phase-04.html#step-7">Phase 4, step 7</a></span></dd>
+  <dd>A name that groups classes, like a family name for code. Every Gold Rush script starts with <code>namespace GoldRush</code>. Without it, other scripts can't find the class. <span class="see">→ <a href="phase-01.html#step-4">Phase 1: How it works</a></span></dd>
 
   <dt>NavMesh / NavMeshAgent</dt>
-  <dd>A NavMesh is a map of walkable ground (blue in the Scene view). A NavMeshAgent is a component that finds a path on it and walks there. A <code>NavMeshSurface</code> makes the NavMesh. <span class="see">→ <a href="phase-07.html#step-2">Phase 7, step 2</a></span></dd>
+  <dd>A NavMesh is a map of walkable ground (blue in the Scene view). A NavMeshAgent is a component that finds a path on it and walks there. A <code>NavMeshSurface</code> makes the NavMesh. <span class="see">→ <a href="phase-07.html#check-1">Phase 7, check 1</a></span></dd>
 
   <dt>Par time</dt>
-  <dd>The target time for a level (Level 1: 40 s). Finishing at or under it earns the second star. <span class="see">→ <a href="phase-06.html#step-2">Phase 6, step 2</a></span></dd>
-
-  <dt>Phase version</dt>
-  <dd>A shorter version of a script that compiles with what you have so far. A later phase says <b>Replace the whole file</b> and gives the bigger version. <code>PlayerMotor</code> and <code>GameManager</code> grow this way. <span class="see">→ <a href="phase-04.html#step-8">Phase 4, step 8</a></span></dd>
+  <dd>The target time for a level (Level 1: 40 s). Finishing at or under it earns the second star. <span class="see">→ <a href="phase-06.html#check-5">Phase 6, check 5</a>, <a href="practicals.html#step-14">Practicals, step 14</a></span></dd>
 
   <dt>Pixels Per Unit Multiplier (PPU)</dt>
-  <dd>An Image setting for sliced sprites. It sets how big the round corners are. A pill uses 128 ÷ its height. All layers of one glass piece need the same value. <span class="see">→ <a href="phase-01.html#step-14">Phase 1, step 14</a></span></dd>
+  <dd>An Image setting for sliced sprites. It sets how big the round corners are. A pill uses 128 ÷ its height. All layers of one glass piece need the same value. <span class="see">→ <a href="phase-01.html#check-6">Phase 1, check 6</a></span></dd>
 
   <dt>PlayerPrefs</dt>
-  <dd>Unity's simple key/value storage on the device. Gold Rush stores its whole save under one key. <b>Edit → Clear All PlayerPrefs</b> deletes it. <span class="see">→ <a href="phase-01.html#step-4">Phase 1, step 4</a></span></dd>
+  <dd>Unity's simple key/value storage on the device. Gold Rush stores its whole save under one key. <b>Edit → Clear All PlayerPrefs</b> deletes it. <span class="see">→ <a href="phase-02.html#step-4">Phase 2: How it works</a></span></dd>
 
   <dt>Post-processing</dt>
-  <dd>Effects on the whole picture after rendering, such as bloom (glow), vignette (dark corners) and tonemapping. Made by the helper <code>EnvironmentSetup</code>. <span class="see">→ <a href="phase-01.html#step-3">Phase 1, step 3</a></span></dd>
+  <dd>Effects on the whole picture after rendering, such as bloom (glow), vignette (dark corners) and tonemapping. Made by the helper <code>EnvironmentSetup</code>. <span class="see">→ <a href="phase-03.html#step-4">Phase 3: How it works</a></span></dd>
 
   <dt>Prefab</dt>
-  <dd>A saved GameObject you can place many times. Change the prefab, and every copy changes. The level kit is made of prefabs, and you save your own glass UI pieces as prefabs in <code>Prefabs/UI</code>. <span class="see">→ <a href="phase-03.html#step-2">Phase 3, step 2</a></span></dd>
+  <dd>A saved GameObject you can place many times. Change the prefab, and every copy changes. The level kit (<code>Prefabs/Level</code>), the markers (<code>Prefabs/Markers</code>) and the dialogs (<code>Prefabs/UI</code>) are prefabs. <span class="see">→ <a href="phase-03.html#check-1">Phase 3, check 1</a></span></dd>
 
   <dt>Prefab Mode</dt>
-  <dd>Opens a prefab on its own (double-click it) so you can look inside or edit it. A change there updates every copy in every scene. Leave with the <b>&lt;</b> arrow at the top of the Hierarchy. <span class="see">→ <a href="phase-05.html#step-10">Phase 5, step 10</a></span></dd>
+  <dd>Opens a prefab on its own (double-click it) so you can look inside or edit it. A change there updates every copy in every scene. Leave with the <b>&lt;</b> arrow at the top of the Hierarchy. <span class="see">→ <a href="phase-03.html#check-1">Phase 3, check 1</a></span></dd>
 
   <dt>Prefab instance and override</dt>
-  <dd>An instance is one copy of a prefab in a scene (blue name in the Hierarchy). A change on only that copy is an override (bold in the Inspector). <b>Overrides → Revert All</b> undoes it, <b>Apply All</b> copies it to the prefab. Never Apply All on a kit piece. <span class="see">→ <a href="phase-03.html#step-2">Phase 3, step 2</a>, <a href="phase-04.html#step-15">Phase 4, step 15</a></span></dd>
+  <dd>An instance is one copy of a prefab in a scene (blue name in the Hierarchy). A change on only that copy is an override (bold in the Inspector). <b>Overrides → Revert All</b> undoes it, <b>Apply All</b> copies it to the prefab. Never Apply All on a kit piece. <span class="see">→ <a href="phase-03.html#check-1">Phase 3, check 1</a></span></dd>
 
   <dt>Raycast</dt>
-  <dd>An invisible line shot into the scene that reports what it hits. The camera uses rays to find walls. Monsters use one to check if a wall blocks their view. <span class="see">→ <a href="phase-04.html#step-9">Phase 4, step 9</a></span></dd>
+  <dd>An invisible line shot into the scene that reports what it hits. The camera uses rays to find walls. Monsters use one to check if a wall blocks their view. <span class="see">→ <a href="phase-07.html#step-4">Phase 7: How it works</a></span></dd>
 
   <dt>Raycast Target</dt>
-  <dd>A tick box on every Image and Text. When it is on, the element catches clicks. Turn it off on decoration (glows, backdrops), or it blocks the buttons behind it. <span class="see">→ <a href="phase-01.html#step-12">Phase 1, step 12</a></span></dd>
+  <dd>A tick box on every Image and Text. When it is on, the element catches clicks. Turn it off on decoration (glows, backdrops), or it blocks the buttons behind it. <span class="see">→ <a href="phase-02.html#check-1">Phase 2, check 1</a></span></dd>
 
   <dt>Reference resolution</dt>
-  <dd>The screen size the UI is designed for (1920 × 1080). The <b>Canvas Scaler</b> (Scale With Screen Size, Match 0.5) scales it to the real screen. <span class="see">→ <a href="phase-01.html#step-12">Phase 1, step 12</a></span></dd>
+  <dd>The screen size the UI is designed for (1920 × 1080). The <b>Canvas Scaler</b> (Scale With Screen Size, Match 0.5) scales it to the real screen. <span class="see">→ <a href="phase-01.html#check-5">Phase 1, check 5</a></span></dd>
 
   <dt>Resources folder</dt>
-  <dd>A Unity folder named exactly <code>Resources</code>. Code can load files from it by name, for example <code>GoldRushAssets</code>, the UI sprites and the icons. Not the same as the course's Resources pack (<code>GoldRush_Export/Resources/</code>). <span class="see">→ <a href="phase-00.html#step-7">Phase 0, step 7</a></span></dd>
+  <dd>A Unity folder named exactly <code>Resources</code>. Code can load files from it by name, for example <code>GoldRushAssets</code>, the UI sprites and the icons. Not the same as the course's Resources pack (<code>GoldRush_Export/Resources/</code>). <span class="see">→ <a href="phase-00.html#check-1">Phase 0, check 1</a></span></dd>
 
   <dt>Rig (Generic)</dt>
-  <dd>The import setting that tells Unity the model has bones it can animate. The Gold Rush characters use <b>Generic</b>. <span class="see">→ <a href="phase-04.html#step-2">Phase 4, step 2</a></span></dd>
+  <dd>The import setting that tells Unity the model has bones it can animate. The Gold Rush characters use <b>Generic</b>. <span class="see">→ <a href="phase-04.html#check-4">Phase 4, check 4</a></span></dd>
 
   <dt>Root motion</dt>
-  <dd>Letting the animation move the character. It is <b>off</b> in Gold Rush: animations play in place, and code moves the character. <span class="see">→ <a href="phase-04.html#step-12">Phase 4, step 12</a></span></dd>
+  <dd>Letting the animation move the character. It is <b>off</b> in Gold Rush: animations play in place, and code moves the character. <span class="see">→ <a href="phase-01.html#check-3">Phase 1, check 3</a></span></dd>
 
   <dt>ScriptableObject</dt>
-  <dd>A script that is saved as an asset file, to hold data. <code>GoldRushAssets</code> is one, and so is the day/night palette. <span class="see">→ <a href="phase-01.html#step-7">Phase 1, step 7</a></span></dd>
+  <dd>A script that is saved as an asset file, to hold data. <code>GoldRushAssets</code> is one, and so is the day/night palette. <span class="see">→ <a href="phase-04.html#check-6">Phase 4, check 6</a>, <a href="phase-10.html#check-1">Phase 10, check 1</a></span></dd>
 
   <dt>Seed</dt>
-  <dd>The starting number for a random generator. The same seed always gives the same “random” level. The Daily Rush uses today's date as its seed. <span class="see">→ <a href="phase-02.html#step-3">Phase 2, step 3</a></span></dd>
+  <dd>The starting number for a random generator. The same seed always gives the same “random” level. The Daily Rush uses today's date as its seed. <span class="see">→ <a href="phase-10.html#check-7">Phase 10, check 7</a></span></dd>
 
   <dt>Singleton</dt>
-  <dd>A class with exactly one instance that others reach through a static field, like <code>GoldRushMenu.I</code> or <code>GameManager.I</code>. <span class="see">→ <a href="phase-01.html#step-5">Phase 1, step 5</a>, <a href="phase-05.html#step-8">Phase 5, step 8</a></span></dd>
+  <dd>A class with exactly one instance that others reach through a static field, like <code>GoldRushMenu.I</code> or <code>GameManager.I</code>. <span class="see">→ <a href="phase-01.html#step-4">Phase 1: How it works</a>, <a href="phase-09.html#step-3">Phase 9: How it works</a></span></dd>
 
   <dt>Skybox</dt>
-  <dd>The picture all around the scene, behind everything. Gold Rush starts with a sunset sky (<code>GR_SunsetSky</code>). <span class="see">→ <a href="phase-03.html#step-14">Phase 3, step 14</a></span></dd>
+  <dd>The picture all around the scene, behind everything. Gold Rush starts with a sunset sky (<code>GR_SunsetSky</code>). <span class="see">→ <a href="phase-03.html#step-4">Phase 3: How it works</a></span></dd>
 
   <dt>Sliced (9-slice)</dt>
-  <dd>An Image Type that keeps the corners of a sprite the same size and stretches only the middle. Rounded buttons stay round at any size. <span class="see">→ <a href="phase-01.html#step-14">Phase 1, step 14</a></span></dd>
+  <dd>An Image Type that keeps the corners of a sprite the same size and stretches only the middle. Rounded buttons stay round at any size. <span class="see">→ <a href="phase-01.html#check-6">Phase 1, check 6</a></span></dd>
 
   <dt>SmoothDamp</dt>
-  <dd>Moves a value toward a target, fast at first and slower at the end. The camera uses it to ease toward the mouse angles. <span class="see">→ <a href="phase-04.html#step-9">Phase 4, step 9</a></span></dd>
+  <dd>Moves a value toward a target, fast at first and slower at the end. The camera uses it to ease toward the mouse angles. <span class="see">→ <a href="phase-04.html#step-4">Phase 4: How it works</a></span></dd>
 
   <dt>Smoothstep</dt>
-  <dd>The curve <code>t * t * (3 - 2t)</code>: starts slow, speeds up, ends slow. Used for the gate door. <span class="see">→ <a href="phase-06.html#step-3">Phase 6, step 3</a></span></dd>
+  <dd>The curve <code>t * t * (3 - 2t)</code>: starts slow, speeds up, ends slow. Used for the gate door. <span class="see">→ <a href="phase-06.html#step-4">Phase 6: How it works</a></span></dd>
 
   <dt>sqrMagnitude</dt>
-  <dd>The squared length of a vector. Comparing squared distances skips a slow square root. Coin and power-up pickups use it. <span class="see">→ <a href="phase-05.html#step-8">Phase 5, step 8</a></span></dd>
+  <dd>The squared length of a vector. Comparing squared distances skips a slow square root. Coin and power-up pickups use it. <span class="see">→ <a href="phase-05.html#step-4">Phase 5: How it works</a></span></dd>
 
   <dt>Stamina</dt>
-  <dd>A 0–1 value that sprinting uses up and rest refills. At 0 the hero is exhausted and must walk. <span class="see">→ <a href="phase-04.html#step-8">Phase 4, step 8</a></span></dd>
+  <dd>A 0–1 value that sprinting uses up and rest refills. At 0 the hero is exhausted and must walk. <span class="see">→ <a href="phase-04.html#step-4">Phase 4: How it works</a></span></dd>
 
   <dt>State machine</dt>
-  <dd>A way to organise behaviour: always exactly one current state, with clear rules for switching. Used by the monsters (Patrol, Alert, Chase, Search, Return, Stunned) and the game (Intro, Playing, Paused, Won, Lost). <span class="see">→ <a href="phase-07.html#step-2">Phase 7, step 2</a></span></dd>
+  <dd>A way to organise behaviour: always exactly one current state, with clear rules for switching. Used by the monsters (Patrol, Alert, Chase, Search, Return, Stunned) and the game (Intro, Playing, Paused, Won, Lost). <span class="see">→ <a href="phase-07.html#step-4">Phase 7: How it works</a></span></dd>
 
   <dt>Starter package</dt>
-  <dd>The package you import in Phase 0 (<code>GoldRush_Phase00_Project.unitypackage</code>). It has the art, the UI shapes, all materials, the level kit and the models of the coin, gate and power-ups. <span class="see">→ <a href="phase-00.html#step-7">Phase 0, step 7</a></span></dd>
+  <dd>The package you import in Phase 0 (<code>GoldRush_Phase00_Project.unitypackage</code>). It has the art, the UI shapes, all materials, the level kit and the models of the coin, gate and power-ups. <span class="see">→ <a href="phase-00.html#step-6">Phase 0, step 6</a></span></dd>
 
   <dt>Static</dt>
-  <dd>A flag for objects that never move. Unity can draw them faster, and the NavMesh is baked from them. The floor, walls and blocks are under the <code>Static</code> group. The gate must <b>not</b> be static. <span class="see">→ <a href="phase-03.html#step-15">Phase 3, step 15</a></span></dd>
+  <dd>A flag for objects that never move. Unity can draw them faster, and the NavMesh is baked from them. The floor, walls and blocks are under the <code>Static</code> group. The gate must <b>not</b> be static. <span class="see">→ <a href="phase-03.html#check-2">Phase 3, check 2</a></span></dd>
 
   <dt>Time.timeScale</dt>
-  <dd>How fast game time runs. 0 freezes it (pause), 0.3 is slow motion (when you lose), 1 is normal. <span class="see">→ <a href="phase-06.html#step-8">Phase 6, step 8</a></span></dd>
+  <dd>How fast game time runs. 0 freezes it (pause), 0.3 is slow motion (when you lose), 1 is normal. <span class="see">→ <a href="phase-09.html#step-3">Phase 9: How it works</a></span></dd>
 
   <dt>Toast</dt>
-  <dd>A short message that pops up on the HUD and fades away by itself, for example the name of a power-up you picked up. <span class="see">→ <a href="phase-09.html">Phase 9</a></span></dd>
+  <dd>A short message that pops up on the HUD and fades away by itself, for example the name of a power-up you picked up. <span class="see">→ <a href="phase-09.html#check-3">Phase 9, check 3</a></span></dd>
 
   <dt>Trigger (Animator)</dt>
-  <dd>An Animator parameter that fires once, such as <code>Hit</code> or <code>Win</code>, to start an action animation. The menu hero waves with the <code>Win</code> trigger. <span class="see">→ <a href="phase-04.html#step-3">Phase 4, step 3</a></span></dd>
+  <dd>An Animator parameter that fires once, such as <code>Hit</code> or <code>Win</code>, to start an action animation. The menu hero waves with the <code>Win</code> trigger. <span class="see">→ <a href="phase-04.html#check-5">Phase 4, check 5</a></span></dd>
 
   <dt>Tween</dt>
-  <dd>An animation of a value from A to B over time, such as a slide-in or a fade. The menu buttons slide in with <code>Tween</code>. <span class="see">→ <a href="phase-01.html#step-3">Phase 1, step 3</a></span></dd>
+  <dd>An animation of a value from A to B over time, such as a slide-in or a fade. The menu buttons slide in with <code>Tween</code>. <span class="see">→ <a href="phase-01.html#step-4">Phase 1: How it works</a></span></dd>
 
   <dt>Unscaled time</dt>
-  <dd><code>Time.unscaledDeltaTime</code> keeps running even when <code>Time.timeScale</code> is 0. Needed for anything that should move while paused, like the screen fade or the <code>Bob</code> animation. <span class="see">→ <a href="phase-01.html#step-5">Phase 1, step 5</a></span></dd>
+  <dd><code>Time.unscaledDeltaTime</code> keeps running even when <code>Time.timeScale</code> is 0. Needed for anything that should move while paused, like the screen fade or the <code>Bob</code> animation. <span class="see">→ <a href="phase-10.html#step-3">Phase 10: How it works</a></span></dd>
 
   <dt>URP (Universal Render Pipeline)</dt>
   <dd>The way Unity draws the picture in this project. You get it with the <b>Universal 3D</b> template. Materials must use URP shaders, or they show pink. <span class="see">→ <a href="phase-00.html#step-2">Phase 0, step 2</a></span></dd>
 
   <dt>Yaw / pitch</dt>
-  <dd>Yaw is turning left and right, pitch is tilting up and down. The camera stores both angles (pitch between 4° and 62°). <span class="see">→ <a href="phase-04.html#step-9">Phase 4, step 9</a></span></dd>
+  <dd>Yaw is turning left and right, pitch is tilting up and down. The camera stores both angles (pitch between 4° and 62°). <span class="see">→ <a href="phase-04.html#step-4">Phase 4: How it works</a></span></dd>
 </dl>
 
 <nav class="pager" aria-label="Previous and next page">

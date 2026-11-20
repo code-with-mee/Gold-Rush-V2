@@ -396,7 +396,7 @@
 <li>Select <code>PowerUp Magnet</code>. Position <code>15, 0, 1</code>.</li>
 <li>Check its <b>Power Up Spot</b>: <b>Type</b> = <b>Magnet</b>.</li>
 </ol>
-<p>The MAGNET pulls coins from up to 11 m for 8 seconds. From the east alley you can pull the two plaza coins without going near the King, if you are fast.</p>
+<p>The MAGNET pulls coins from up to 11 m for 8 seconds. Take it, then walk west to the plaza pillars: from there (about 7 m) it pulls both plaza coins to you, and you never go next to the King. Be fast.</p>
 
 <!-- ======================================================= 11 -->
 <h2 id="step-11"><span class="step">11</span>Start, gate and NavMesh</h2>
@@ -418,7 +418,7 @@
 <pre class="long"><code>new LevelDef { title = &quot;Night Run&quot;, subtitle = &quot;Gold under the moon&quot;, seed = 808, scene = &quot;Level8&quot;, size = 36, coins = 12, patrollers = 2, chasers = 1, guards = 1, powerUps = 1, enemySpeed = 1.08f, parTime = 100, night = true },</code></pre>
 <ol start="3">
 <li>Save the file. Wait for Unity to compile. No red errors.</li>
-<li><b>File → Build Profiles → Scene List</b>: drag in <code>Scenes/Level8</code>. Check it is ticked.</li>
+<li><b>File → Build Profiles → Scene List</b>: drag in <code>Scenes/Level8</code>, under <code>Level7</code>. Check it is ticked.</li>
 </ol>
 <p>Not sure? Read <a href="practicals.html#step-6">Practicals, step 6 and 7</a>.</p>
 
@@ -438,7 +438,7 @@
 <li>No red errors in the Console.</li>
 </ul>
 </div>
-<p><b>The card:</b> it shows <b>NIGHT RUN</b>, "Gold under the moon" and "12 GOLD TO FIND". It is locked until you win the level before it. With 6 or more levels the cards are in two rows (see <a href="practicals.html#step-8">Practicals, step 8</a>).</p>
+<p><b>The card:</b> it shows <b>NIGHT RUN</b>, "Gold under the moon" and "12 GOLD TO FIND". It is in the bottom row, and it is locked until you win the level before it (see <a href="practicals.html#step-8">Practicals, step 8</a>).</p>
 <p><b>Tune the par time:</b> best time + 25 %, rounded to 5 s. Change <code>parTime</code> in <code>Data.cs</code>.</p>
 
 <!-- ======================================================= 14 -->

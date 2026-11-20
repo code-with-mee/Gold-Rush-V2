@@ -94,7 +94,7 @@
 </li>
 <li>Paper and a pencil. Good levels start as a drawing.</li>
 </ul>
-<div class="note"><code>Prefabs/Gameplay</code> has monsters and power-ups with the <b>same names</b>. Those are the finished objects that the game makes from the markers. In the practicals you always drag the <b>markers</b> from <code>Prefabs/Markers</code>, like the markers that are already in Level1.</div>
+<div class="note"><code>Prefabs/Gameplay</code> has monsters and power-ups with the <b>same names</b>. Those are the finished objects (with model and scripts). The game can use them too: a <code>Coin</code> or a <code>PowerUp_…</code> from <code>Prefabs/Gameplay</code> works anywhere under the level root. Keep it simple: in the practicals you always drag the <b>markers</b> from <code>Prefabs/Markers</code>, like the markers that are already in Level1.</div>
 <div class="tip">This guide uses the scene names <code>Level5</code> to <code>Level8</code> for practicals 1 to 4. If you skip a practical, just use the next free number.</div>
 
 <!-- ======================================================= 2 -->
@@ -349,6 +349,7 @@
 <tr><td>The intro says "Training Yard" in my level.</td><td>The <code>scene</code> text in the LevelDef is not the scene file name. Check capital letters and spaces.</td></tr>
 <tr><td>The intro says "Collect all 6 gold" but I have 8 coins.</td><td>Set <code>coins = 8</code> in the LevelDef.</td></tr>
 <tr><td>The gate opens at once / never opens.</td><td>The game counts the coins in the scene. No coins → check that each <code>CoinSpot</code> is inside the level root. Never opens → a coin is inside a block or out of reach.</td></tr>
+<tr><td>A coin or an orb is there, but I can not pick it up (or the gate opens too early).</td><td>You dragged <code>Prefabs/Gameplay/Coin</code> or <code>PowerUp_…</code> into the level on its own. Delete it and use the marker from <code>Prefabs/Markers</code> instead.</td></tr>
 <tr><td>A monster does not move.</td><td>It stands on a block, outside the walls, or more than 3 m from the blue NavMesh. Move it onto free floor.</td></tr>
 <tr><td>The hero or a monster falls through the floor near the walls.</td><td>The <code>GroundCollider</code> is too small for your arena. Make its Box Collider bigger (step 11).</td></tr>
 <tr><td>Monsters walk through my new walls.</td><td>The walls are not under <code>Static</code>. Drag them into <code>Static/Obstacles</code>. (The NavMesh is baked again when the level starts.)</td></tr>

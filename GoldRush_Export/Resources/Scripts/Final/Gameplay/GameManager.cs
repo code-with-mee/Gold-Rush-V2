@@ -199,7 +199,10 @@ namespace GoldRush
                 l.powerUpPoints.Add(pu.transform.position);
                 powerTypes.Add(pu.type);
             }
-            if (l.coinPoints.Count == 0 && coins.Count == 0) Debug.LogWarning("[GoldRush] This level has no CoinSpot objects — add some from Prefabs/Level.");
+            // coins and power-ups dragged into the level without a marker count too
+            foreach (var c in scene.GetComponentsInChildren<Coin>()) if (!coins.Contains(c)) coins.Add(c);
+            foreach (var p in scene.GetComponentsInChildren<PowerUp>()) if (!powerUps.Contains(p)) powerUps.Add(p);
+            if (l.coinPoints.Count == 0 && coins.Count == 0) Debug.LogWarning("[GoldRush] This level has no CoinSpot objects — add some from Prefabs/Markers.");
             return l;
         }
 

@@ -394,7 +394,7 @@
 <pre class="long"><code>new LevelDef { title = &quot;Guard Tower&quot;, subtitle = &quot;Sneak past the King&quot;, seed = 707, scene = &quot;Level7&quot;, size = 32, coins = 9, patrollers = 1, guards = 1, powerUps = 1, enemySpeed = 1f, parTime = 70 },</code></pre>
 <ol start="3">
 <li>Save the file. Wait for Unity to compile. No red errors.</li>
-<li><b>File → Build Profiles → Scene List</b>: drag in <code>Scenes/Level7</code>. Check it is ticked.</li>
+<li><b>File → Build Profiles → Scene List</b>: drag in <code>Scenes/Level7</code>, under <code>Level6</code>. Check it is ticked.</li>
 </ol>
 <p>Not sure? Read <a href="practicals.html#step-6">Practicals, step 6 and 7</a>.</p>
 
@@ -414,7 +414,7 @@
 <li>No red errors in the Console.</li>
 </ul>
 </div>
-<p><b>The card:</b> it shows <b>GUARD TOWER</b>, "Sneak past the King" and "9 GOLD TO FIND". It is locked until you win the level before it. With 6 or more levels the cards are in two rows (see <a href="practicals.html#step-8">Practicals, step 8</a>).</p>
+<p><b>The card:</b> it shows <b>GUARD TOWER</b>, "Sneak past the King" and "9 GOLD TO FIND". It is in the bottom row, and it is locked until you win the level before it (see <a href="practicals.html#step-8">Practicals, step 8</a>).</p>
 <p><b>Tune the par time:</b> best time + 25 %, rounded to 5 s. Change <code>parTime</code> in <code>Data.cs</code>.</p>
 
 <!-- ======================================================= 13 -->

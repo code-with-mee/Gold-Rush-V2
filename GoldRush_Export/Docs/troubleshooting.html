@@ -91,7 +91,7 @@
 <h3>I opened the scene, but PLAY (or MENU, NEXT) cannot load a scene</h3>
 <p>A package does not bring the Scene List. After every import, add the scenes to <b>File → Build Profiles → Scene List</b>, with <code>MainMenu</code> first (<a href="phase-03.html#step-2">Phase 3, step 2</a>, <a href="phase-10.html#step-1">Phase 10, step 1</a>).</p>
 <h3>A kit piece floats above the floor or sinks into it</h3>
-<p>Set its Position Y to 0. The pivot of every kit piece is at the bottom (<a href="phase-00.html#step-10">Phase 0, step 10</a>).</p>
+<p>Set its Position Y to 0. The pivot of every kit piece is at the bottom (<a href="phase-00.html#check-3">Phase 0, check 3</a>).</p>
 
 <h2 id="code">Scripts and compile errors</h2>
 <h3>Red errors after I changed a script in “Try it”</h3>
@@ -105,7 +105,7 @@
 
 <h2 id="menu">Main menu and UI</h2>
 <h3>Console: “GoldRushAssets missing”</h3>
-<p>The asset must be called exactly <code>GoldRushAssets</code> and be inside <code>Assets/GoldRush/Resources</code>. Do not move or rename files in <code>Resources</code>. Import the package again (<a href="phase-01.html#step-1">Phase 1, step 1</a>).</p>
+<p>The asset must be called exactly <code>GoldRushAssets</code> and be inside <code>Assets/GoldRush/Resources</code>. Do not move or rename files in <code>Resources</code>. Import the package again (<a href="phase-04.html#check-6">Phase 4, check 6</a>).</p>
 <h3>Buttons do nothing when I click</h3>
 <p>Are you in Play mode and clicking in the Game view? The scene needs its <code>EventSystem</code> (<a href="phase-01.html#check-1">Phase 1, check 1</a>).</p>
 <h3>Console: “Unknown menu action”</h3>
@@ -247,6 +247,8 @@
 <p>The <code>scene</code> text in the LevelDef is not the scene file name. Check capital letters and spaces (<a href="practicals.html#step-6">Practicals, step 6</a>).</p>
 <h3>I changed Level1 by mistake</h3>
 <p>You forgot <b>File → Save As</b>. <b>Edit → Undo</b>, or close the scene without saving (<a href="practicals.html#step-3">Practicals, step 3</a>).</p>
+<h3>A coin or an orb that I cannot pick up</h3>
+<p>The coin or orb is not under the level root (the object with <b>Level Scene</b>), so the game does not see it. Drag it onto the level root (for example into <code>Gameplay</code>). Or use the markers from <code>Prefabs/Markers</code> (<a href="practicals.html#step-1">Practicals, step 1</a>).</p>
 <h3>I fall through the floor near the new walls</h3>
 <p>The <code>GroundCollider</code> is too small for your arena. Set its Box Collider Size to <code>40, 1, 40</code> (<a href="practicals.html#step-11">Practicals, step 11</a>).</p>
 

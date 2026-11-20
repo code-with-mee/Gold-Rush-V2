@@ -53,11 +53,6 @@ Assets/GoldRush/Materials/M_RedTop.mat
 Assets/GoldRush/Materials/M_Teal.mat
 Assets/GoldRush/Materials/M_TealTop.mat
 Assets/GoldRush/Materials/M_Trim.mat
-Assets/GoldRush/Prefabs/Gameplay/Coin.prefab
-Assets/GoldRush/Prefabs/Gameplay/ExitGate.prefab
-Assets/GoldRush/Prefabs/Gameplay/PowerUp_Ghost.prefab
-Assets/GoldRush/Prefabs/Gameplay/PowerUp_Magnet.prefab
-Assets/GoldRush/Prefabs/Gameplay/PowerUp_Speed.prefab
 Assets/GoldRush/Prefabs/Level/AccentBlock_Orange.prefab
 Assets/GoldRush/Prefabs/Level/AccentBlock_Red.prefab
 Assets/GoldRush/Prefabs/Level/AccentBlock_Teal.prefab

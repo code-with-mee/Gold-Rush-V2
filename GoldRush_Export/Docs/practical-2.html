@@ -263,6 +263,7 @@
 <li>Save.</li>
 </ol>
 
+<div class="note"><b>About the screenshots.</b> They were made with an older Level1. In the pictures the Hierarchy also has <code>Player</code>, <code>Main Camera</code> and <code>Sun</code>, the floor is one <code>Floor_40m</code>, the walls are already split into <code>WallSouth</code>, <code>WallNorth</code> … and the markers show extra components. Your Level1 has none of that: the game makes the Player, the camera and the sun at Play, the floor is <code>Static/Floor</code> and the outer wall is <code>Static/Walls/PerimeterWall</code>. Follow the text. Everything else in the pictures is the same.</div>
 <figure class="shot"><img src="images/practical-2/step-03-a.png" alt="" loading="lazy"><figcaption>After <b>Save As</b>: the Hierarchy shows the scene <b>Level6</b>.</figcaption></figure>
 <figure class="shot"><img src="images/practical-2/step-03-b.png" alt="" loading="lazy"><figcaption>The root <code>Level 6 - The Maze</code>, <b>Arena Half</b> = 16 (the same as Level1).</figcaption></figure>
 
@@ -276,7 +277,7 @@
 </ol>
 <p>The outer walls (<code>Static/Walls/PerimeterWall</code>), the gate, the floor and <code>Decor</code> stay exactly as in Level1.</p>
 
-<figure class="shot"><img src="images/practical-2/step-04.png" alt="" loading="lazy"><figcaption>Cleared: <code>Obstacles</code> and <code>PowerUps</code> are empty. Both Slimes and the 6 CoinSpots stay. (This picture is from an older Level1: yours has no Player, Main Camera and Sun in the Hierarchy.)</figcaption></figure>
+<figure class="shot"><img src="images/practical-2/step-04.png" alt="" loading="lazy"><figcaption>Cleared: <code>Obstacles</code> and <code>PowerUps</code> are empty. Both Slimes and the 6 CoinSpots stay. (Older Level1: yours has no Player, Main Camera and Sun, and the outer wall is still one <code>PerimeterWall</code>.)</figcaption></figure>
 
 <!-- ======================================================= 5 -->
 <h2 id="step-5"><span class="step">5</span>Lamps</h2>
@@ -422,7 +423,7 @@
 <li>No red errors in the Console.</li>
 </ul>
 </div>
-<p><b>The card:</b> it is card 6, the first one in the second row. While it is locked, it shows <b>THE MAZE</b>, a lock and "Clear level 5". You unlock it when you win Level 5. Then it shows "Find the way out" and "8 GOLD TO FIND". With 6 or more levels the cards are in two rows (see <a href="practicals.html#step-8">Practicals, step 8</a>).</p>
+<p><b>The card:</b> it is card 6, the first one in the second row. While it is locked, it shows <b>THE MAZE</b>, a lock and "Clear level 5". You unlock it when you win Level 5. Then it shows "Find the way out" and "8 GOLD TO FIND" (see <a href="practicals.html#step-8">Practicals, step 8</a>).</p>
 <figure class="shot"><img src="images/practical-2/step-12-e.png" alt="" loading="lazy"><figcaption>Level Select with 6 levels: two rows. THE MAZE is card 6 in the bottom row, next to DAILY RUSH.</figcaption></figure>
 <p><b>Tune the par time:</b> best time + 25 %, rounded to 5 s. Change <code>parTime</code> in <code>Data.cs</code>.</p>
 

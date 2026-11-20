@@ -52,7 +52,7 @@
 <p class="eyebrow">GOLD RUSH · Practice</p>
 <h1>Exercises</h1>
 <p class="lead">You finished the course. Now make the game your own. Eight short projects, from a five-minute change to a new monster behaviour. Each one lists the files to open and some hints, but not the full answer.</p>
-<div class="tip">Still in the middle of the course? The <a href="practicals.html">Practicals</a> are guided tasks you can do after a group of phases. These exercises are for the end.</div>
+<div class="tip">Do the <a href="practicals.html">Practicals</a> first: there you build four new levels. These exercises change the code and are for the very end.</div>
 <div class="meta"><span><b>Before you start</b>make a copy of your project folder, so you can always go back</span><span><b>Start from</b><code>GoldRush_Phase10_Final.unitypackage</code> or your own project</span></div>
 
 <nav class="toc" aria-label="Exercises on this page"><strong>Exercises</strong><ol>
@@ -62,7 +62,7 @@
   <li><a href="#ex-4">Faster ghosts</a></li>
   <li><a href="#ex-5">A Freeze power-up</a></li>
   <li><a href="#ex-6">A freeze sound</a></li>
-  <li><a href="#ex-7">Level 5</a></li>
+  <li><a href="#ex-7">A level of your own</a></li>
   <li><a href="#ex-8">Monsters that call for help</a></li>
 </ol></nav>
 
@@ -73,8 +73,8 @@
   <tr><td>3</td><td>Your name on the badge</td><td>★☆☆</td><td>Phase 7</td></tr>
   <tr><td>4</td><td>Faster ghosts</td><td>★☆☆</td><td>Phase 7</td></tr>
   <tr><td>5</td><td>A Freeze power-up</td><td>★★☆</td><td>Phases 7, 8, 9</td></tr>
-  <tr><td>6</td><td>A freeze sound</td><td>★★☆</td><td>Phase 1</td></tr>
-  <tr><td>7</td><td>Level 5</td><td>★★☆</td><td>Phases 2, 3, 10</td></tr>
+  <tr><td>6</td><td>A freeze sound</td><td>★★☆</td><td>Phase 5</td></tr>
+  <tr><td>7</td><td>A level of your own</td><td>★★☆</td><td>Practicals</td></tr>
   <tr><td>8</td><td>Monsters that call for help</td><td>★★★</td><td>Phase 7</td></tr>
 </table></div>
 
@@ -82,8 +82,8 @@
 <p><b>Goal:</b> Level 1 has 10 coins and 4 slimes.</p>
 <ol>
   <li>Open <code>Scenes/Level1.unity</code>.</li>
-  <li>Add 4 more <code>CoinSpot</code> prefabs to <code>Gameplay/Coins</code>. Spread them out, on the floor (Y = 0) and not inside a block. Each one needs the <b>Coin Spot</b> component and a Coin inside at 0, 1, 0 (<a href="phase-05.html#step-12">Phase 5, step 12</a> and <a href="phase-05.html#step-13">step 13</a>).</li>
-  <li>Add 2 more <code>Monster_Slime</code> prefabs to <code>Gameplay/Monsters</code>. Each one must stand on the blue NavMesh (<a href="phase-07.html#step-13">Phase 7, step 13</a>).</li>
+  <li>Drag 4 more <code>Prefabs/Markers/CoinSpot</code> markers onto <code>Gameplay/Coins</code>. Spread them out, on the floor (Y = 0) and not inside a block. The game makes a coin above each one (<a href="phase-05.html#check-2">Phase 5, check 2</a>).</li>
+  <li>Drag 2 more <code>Prefabs/Markers/Monster_Slime</code> markers onto <code>Gameplay/Monsters</code>. Each one must stand on free floor, on the blue NavMesh (<a href="phase-07.html#check-2">Phase 7, check 2</a>).</li>
   <li>In <code>Scripts/Core/Data.cs</code>, change <code>coins = 6</code> to <code>coins = 10</code> and <code>patrollers = 2</code> to <code>patrollers = 4</code> in the Level 1 line, so the menu card shows the right numbers.</li>
 </ol>
 <div class="note">The coins you collect come from the CoinSpots <b>in the scene</b>. Changing only <code>Data.cs</code> is not enough.</div>
@@ -92,7 +92,7 @@
 <h2 id="ex-2"><span class="step">2</span>A new shop colour</h2>
 <p><b>Goal:</b> an “Ocean” colour that costs 40 gold.</p>
 <ul>
-  <li>File: <code>Scripts/Core/Data.cs</code>, array <code>Catalog.Colors</code> (<a href="phase-02.html#step-3">Phase 2, step 3</a>).</li>
+  <li>File: <code>Scripts/Core/Data.cs</code>, array <code>Catalog.Colors</code> (<a href="phase-02.html#check-7">Phase 2, check 7</a>).</li>
   <li>Copy one of the lines and change the id, name, price and colour. The id must be new, for example <code>"color_ocean"</code>.</li>
   <li>Not enough gold to test? Set the price to <code>1</code> for a moment, then back to <code>40</code>. Or use <b>Edit → Clear All PlayerPrefs</b> and play from the start.</li>
 </ul>
@@ -101,7 +101,7 @@
 <h2 id="ex-3"><span class="step">3</span>Your name on the badge</h2>
 <p><b>Goal:</b> the monsters wear your name instead of ITSTEP.</p>
 <ul>
-  <li>File: <code>Scripts/Gameplay/Badge.cs</code> (<a href="phase-07.html#step-9">Phase 7, step 9</a>). Change <code>DefaultText</code>.</li>
+  <li>File: <code>Scripts/Gameplay/Badge.cs</code> (<a href="phase-07.html#step-4">Phase 7: How it works</a>). Change <code>DefaultText</code>.</li>
   <li>Only the letters of ITSTEP (and space) are drawn. For every other letter in your name, add an entry to <code>Glyphs</code>: 7 strings of 5 characters, <code>#</code> for a white pixel and <code>.</code> for background.</li>
   <li>Draw the letter on squared paper first. A missing letter is skipped without any error.</li>
 </ul>
@@ -110,7 +110,7 @@
 <h2 id="ex-4"><span class="step">4</span>Faster ghosts</h2>
 <p><b>Goal:</b> make the ghosts scarier.</p>
 <ul>
-  <li>File: <code>Scripts/Gameplay/EnemyAI.cs</code>, method <code>Configure()</code>, the <code>Chaser</code> line. It is the helper you imported in <a href="phase-07.html#step-7">Phase 7, step 7</a>.</li>
+  <li>File: <code>Scripts/Gameplay/EnemyAI.cs</code>, method <code>Configure()</code>, the <code>Chaser</code> line (<a href="phase-07.html#step-4">Phase 7: How it works</a>).</li>
   <li>Try <code>chaseSpeed</code> values of 5, 6.5 and 8. The hero walks at 5 and sprints at 8.2 m/s. The level's <code>enemySpeed</code> in <code>Data.cs</code> multiplies your value.</li>
   <li>Also try <code>detectRange</code> and <code>loseRange</code>.</li>
 </ul>
@@ -121,36 +121,36 @@
 <p>A new power-up touches several files. Do it in this order:</p>
 <ol>
   <li><code>Data.cs</code>: add <code>Freeze</code> to <code>enum PowerType</code>.</li>
-  <li><code>PowerUp.cs</code>: add a <code>case PowerType.Freeze</code> to <code>ColorOf()</code> (pick an icy blue) and to <code>NameOf()</code> (<code>"FREEZE"</code>) (<a href="phase-08.html#step-5">Phase 8, step 5</a>). Without this, it looks like a red MAGNET, because <code>default:</code> is the magnet.</li>
-  <li><code>GameManager.cs</code>, <code>CollectPowerUp()</code> (<a href="phase-08.html#step-10">Phase 8, step 10</a>): add a case before <code>default:</code>. The simplest version stuns every monster:
+  <li><code>PowerUp.cs</code>: add a <code>case PowerType.Freeze</code> to <code>ColorOf()</code> (pick an icy blue) and to <code>NameOf()</code> (<code>"FREEZE"</code>) (<a href="phase-08.html#step-3">Phase 8: How it works</a>). Without this, it looks like a red MAGNET, because <code>default:</code> is the magnet.</li>
+  <li><code>GameManager.cs</code>, <code>CollectPowerUp()</code>: add a case before <code>default:</code>. The simplest version stuns every monster:
 <pre><code>case PowerType.Freeze:
     foreach (var e in enemies) if (e) e.Stun(4f);
     desc = "Monsters frozen!";
     break;</code></pre>
-  A stunned monster spins in place and cannot catch you (<a href="phase-07.html#step-2">Phase 7, step 2</a>).</li>
-  <li>Make a <code>PowerUp_Freeze</code> prefab: duplicate <code>PowerUp_Ghost</code> and set <b>Type = Freeze</b> (<a href="phase-08.html#step-6">Phase 8, step 6</a>). Put one in <code>Gameplay/PowerUps</code> in Level 1, inside a marker with a <b>Power Up Spot</b> of the same type (<a href="phase-08.html#step-8">Phase 8, step 8</a>).</li>
+  A stunned monster stops and cannot catch you (<a href="phase-07.html#step-4">Phase 7: How it works</a>).</li>
+  <li>In Level 1, drag a power-up marker from <code>Prefabs/Markers</code> (for example <code>PowerUp_Ghost</code>) onto <code>Gameplay/PowerUps</code>, rename it <code>PowerUp Freeze</code> and set its <b>Power Up Spot → Type</b> to <b>Freeze</b> (<a href="phase-08.html#check-2">Phase 8, check 2</a>).</li>
 </ol>
 <div class="tip"><b>Extra challenge:</b> make it work like GHOST, with a countdown bar. Look at how <code>GhostLeft</code>, <code>GhostDuration</code> and <code>GhostActive</code> work in <code>GameManager</code>, and copy the idea.</div>
-<p><b>Check:</b> you see a <b>FREEZE</b> toast on the HUD on pickup (<a href="phase-09.html">Phase 9</a>) and every monster spins in place with a blue “z”.</p>
+<p><b>Check:</b> you see a <b>FREEZE</b> toast on the HUD on pickup (<a href="phase-09.html">Phase 9</a>) and every monster stops for 4 seconds.</p>
 
 <h2 id="ex-6"><span class="step">6</span>A freeze sound</h2>
 <p><b>Goal:</b> FREEZE gets its own icy sound.</p>
 <ul>
   <li>Make or find a short <code>.wav</code> file and name it <code>freeze.wav</code>. A free tool such as Audacity or an online “sfxr” generator works well. A falling pitch sounds “cold”.</li>
-  <li>Put it in <code>Art/Audio/</code> and add it to the <b>Sounds</b> list of <code>GoldRushAssets</code>. The file name is the sound id (<a href="phase-01.html#step-7">Phase 1, step 7</a>).</li>
+  <li>Put it in <code>Art/Audio/</code> and add it to the <b>Sounds</b> list of <code>GoldRushAssets</code>. The file name is the sound id (<a href="phase-05.html#check-4">Phase 5, check 4</a>).</li>
   <li>Play it from your new case in <code>CollectPowerUp()</code>: <code>AudioFX.Play("freeze");</code></li>
 </ul>
 <p><b>Check:</b> the Console shows no <code>[AudioFX] Unknown sound id</code> warning, and you hear your sound on pickup.</p>
 
-<h2 id="ex-7"><span class="step">7</span>Level 5</h2>
-<p><b>Goal:</b> a fifth level that you can choose in the menu.</p>
+<h2 id="ex-7"><span class="step">7</span>A level of your own</h2>
+<p><b>Goal:</b> a ninth level, designed by you from start to end.</p>
 <ol>
-  <li>Open <code>Level4.unity</code> and use <b>File → Save As</b> → <code>Level5.unity</code>. Rename the level root and change the layout, coins and monsters. Levels 2–4 come in <a href="phase-10.html">Phase 10</a>; build your layout from the kit like in <a href="phase-03.html">Phase 3</a>.</li>
-  <li>In <code>Data.cs</code> (<a href="phase-02.html#step-3">Phase 2, step 3</a>), add a fifth <code>LevelDef</code> to <code>Levels.All</code> with <code>scene = "Level5"</code>, a title, the number of coins and a par time. Saving, stars and unlocking adapt by themselves.</li>
-  <li>Add <code>Level5</code> to <b>File → Build Profiles → Scene List</b> (<a href="phase-03.html#step-17">Phase 3, step 17</a>).</li>
-  <li><b>The level-select screen does not fit yet.</b> In <code>GoldRushMenu.cs</code>, method <code>BuildLevels()</code>, the cards are placed for exactly 4 levels + the Daily card, so your new card lands on top of the Daily card. Use <code>Levels.All.Length</code> instead of the fixed numbers, make <code>CardW</code> smaller, and make the <code>Cards</code> object in the MainMenu scene wider (<a href="phase-02.html#step-8">Phase 2, step 8</a>).</li>
+  <li>Draw the map on squared paper first (1 square = 2 m): walls, start, gate, coins, monsters, one power-up.</li>
+  <li>Build it the same way as in the Practicals: <b>Save As</b> from <code>Level1</code> (or from one of your practical levels) as <code>Level9</code>, clear it out, then place kit pieces and markers (<a href="practicals.html#step-3">Practicals, steps 3–5</a>).</li>
+  <li>Add a <code>LevelDef</code> with <code>scene = "Level9"</code> at the end of <code>Levels.All</code> and add the scene to the Scene List (<a href="practicals.html#step-6">Practicals, steps 6–7</a>).</li>
+  <li>Test it with the rules of good level design and tune the par time (<a href="practicals.html#step-12">Practicals, steps 12–14</a>).</li>
 </ol>
-<p><b>Check:</b> win Level 4 and Level 5 unlocks. Six cards in a row, none overlapping, and Level 5 plays.</p>
+<p><b>Check:</b> the card appears in Level Select (no code change needed: the menu puts the cards in rows of 5), it unlocks after the level before it, and a friend can win it on the 2nd or 3rd try.</p>
 
 <h2 id="ex-8"><span class="step">8</span>Monsters that call for help</h2>
 <p><b>Goal:</b> when one monster spots you, nearby monsters join the chase.</p>

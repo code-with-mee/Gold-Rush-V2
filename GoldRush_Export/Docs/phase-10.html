@@ -83,13 +83,14 @@
 
 <!-- ======================================================= 2 -->
 <h2 id="step-2"><span class="step">2</span>Check what is new</h2>
+<p>Level 1 is the same as in <a href="phase-09.html">Phase 9</a>. New are the scenes <code>Level2</code>, <code>Level3</code>, <code>Level4</code> and <code>Game</code>. The day/night, touch and music parts were already in every package; this phase explains them.</p>
 
 <h3 id="check-1">Check 1: the day/night palette</h3>
 <p>Select <code>Assets/GoldRush/Resources/DayNightPalette</code>. It is a list of <b>20 entries</b>. Each entry is a material with a colour by day and a colour by night. The first one is <code>M_Floor</code>: light grey <code>DBDEE6</code> by day, dark blue <code>212B52</code> by night. Glowing materials (lamps, gold) are not in the list: they look the same day and night.</p>
 <figure class="shot" data-shot="phase-10/check-1" data-window="inspector" data-select="Assets/GoldRush/Resources/DayNightPalette.asset"><img src="images/phase-10/step-03.png" alt="Inspector of DayNightPalette with 20 entries" loading="lazy"><figcaption>DayNightPalette: 20 entries. Open Entries to see the colours.</figcaption></figure>
 
 <h3 id="check-2">Check 2: Day Night Tint on the level root</h3>
-<p>Select <code>Level 1 - Training Yard</code>. Next to <b>Level Scene</b> it has a <b>Day Night Tint</b>. When the level starts, it adds the palette to its own list and tints the materials. The main menu has one too, on <code>MenuDiorama</code>.</p>
+<p>Select <code>Level 1 - Training Yard</code>. Next to <b>Level Scene</b> it has a <b>Day Night Tint</b>. When the level starts, it adds the palette to its own list and tints the materials. If a material is in both lists, the level's own entry wins. The main menu has one too, on <code>MenuDiorama</code>.</p>
 <figure class="shot"><img src="images/phase-10/check-2.png" alt="" loading="lazy"><figcaption>The level root has Level Scene and Day Night Tint.</figcaption></figure>
 
 <h3 id="check-3">Check 3: Night Light on the lamps</h3>
@@ -101,7 +102,7 @@
 <figure class="shot" data-shot="phase-10/check-4" data-window="hierarchy" data-select="GameUI/MoveArea (left half)"><img src="images/phase-10/step-06-a.png" alt="Hierarchy: GameUI with LookArea, MoveArea, WorldMarkers, HUD, Flash, Modal" loading="lazy"><figcaption>The order: LookArea, MoveArea, WorldMarkers, HUD, Flash, Modal.</figcaption></figure>
 
 <h3 id="check-5">Check 5: the Virtual Joystick</h3>
-<p>Select <code>GameUI › MoveArea (left half)</code>. Its <b>Virtual Joystick</b> has Area = MoveArea, Stick Base = <code>Stick</code>, Knob = <code>Stick/Knob</code>, <b>Radius</b> = <code>120</code>, Group = <code>Stick</code> and Edge = <code>Stick/Ring</code>. <code>LookArea (right half)</code> has a <b>Touch Look Area</b> with its <code>Finger</code> ring. And on <code>GameUI</code>, the <b>Joystick</b> field now points to MoveArea.</p>
+<p>Select <code>GameUI › MoveArea (left half)</code>. Its <b>Virtual Joystick</b> has Area = MoveArea, Stick Base = <code>Stick</code>, Knob = <code>Stick/Knob</code>, <b>Radius</b> = <code>120</code>, Group = <code>Stick</code> and Edge = <code>Stick/Ring</code>. <code>LookArea (right half)</code> has a <b>Touch Look Area</b> with its <code>Finger</code> ring. And on <code>GameUI</code>, the <b>Joystick</b> field points to MoveArea.</p>
 <figure class="shot"><img src="images/phase-10/check-5.png" alt="" loading="lazy"><figcaption>All Virtual Joystick fields are filled. Radius 120 = how far the knob can move.</figcaption></figure>
 
 <h3 id="check-6">Check 6: the music</h3>
@@ -109,7 +110,7 @@
 <figure class="shot"><img src="images/phase-10/check-6.png" alt="" loading="lazy"><figcaption>Sounds has an entry music. AudioFX finds every sound by its name.</figcaption></figure>
 
 <h3 id="check-7">Check 7: Levels 2–4 and the Daily Rush</h3>
-<p>Open <code>Assets/GoldRush/Scenes</code>. There are four new scenes. They work like Level 1: a level root with markers, a <code>GameManager</code>, a <code>GameUI</code> and an <code>EventSystem</code>. The Player and the camera are made by code at Play.</p>
+<p>Open <code>Assets/GoldRush/Scenes</code>. There are four new scenes. <code>Level2</code>–<code>Level4</code> work like Level 1: a level root with markers, a <code>GameManager</code>, a <code>GameUI</code> and an <code>EventSystem</code>. The Player and the camera are made by code at Play.</p>
 <div class="table-wrap"><table>
   <tr><th>Scene</th><th>Name</th><th>Arena</th><th>Gold</th><th>Monsters</th><th>Power-ups</th><th>Par</th></tr>
   <tr><td>Level2</td><td>Ghost Alley</td><td>40 × 40 m</td><td>8</td><td>2 Slimes, 1 Ghost</td><td>2</td><td>1:00</td></tr>
@@ -212,7 +213,7 @@ void ApplyNow()
 <h2 id="step-6"><span class="step">6</span>Try it</h2>
 <ol>
   <li><b>Slow sunset.</b> Open <code>DayNight.cs</code>. Change <code>public float transitionTime = 1.5f;</code> to <code>5f</code>. Press Play and press <kbd>N</kbd>: the change takes 5 seconds.</li>
-  <li><b>A new night colour.</b> Select <code>Resources/DayNightPalette</code>, open <b>Entries → Element 0</b> (<code>M_Floor</code>) and set <b>Night</b> to a dark green. Press Play and switch to night: the floor of every level is green.</li>
+  <li><b>A new night colour.</b> Select <code>Level 1 - Training Yard</code>. In <b>Day Night Tint</b>, open <b>Entries → Element 0</b> (<code>M_Floor</code>) and set <b>Night</b> to a dark green. Save the scene, press Play and switch to night: the floor of Level 1 is green. (Change it here, not in <code>DayNightPalette</code>: the level's own entry wins.)</li>
   <li><b>Brighter lamps.</b> Search <code>LampLight</code> in the Hierarchy, select all of them and set <b>Night Light → Night Intensity</b> to <code>6</code>. Press Play at night.</li>
 </ol>
 
