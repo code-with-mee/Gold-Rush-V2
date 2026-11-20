@@ -45,9 +45,11 @@ namespace GoldRush
             foreach (var f in Directory.GetFiles(Dir)) File.Delete(f);
             Note("smoke test start");
             yield return Wait(4f);
+            bool startNight = Save.Data.night;
+            DayNight.Set(true, true); yield return Wait(0.5f);
             yield return Shot("01_title");
-            DayNight.Toggle(); yield return Wait(2f); yield return Shot("01b_title_day");
-            DayNight.Toggle(); yield return Wait(0.2f);
+            // pick DAY in the menu: the level must start in day too (one setting everywhere)
+            DayNight.Set(false); yield return Wait(2f); yield return Shot("01b_title_day");
 
             var menu = GoldRushMenu.I;
             if (menu)
@@ -63,6 +65,8 @@ namespace GoldRush
 
             yield return WaitPlaying();
             yield return Wait(0.3f); yield return Shot("04_level1_start");
+            Note(DayNight.IsNight ? "THEME BUG: level started at night after choosing day" : "theme ok: level 1 started in day");
+            if (DayNight.IsNight) errors++;
             var gm = GameManager.I;
             if (gm)
             {
@@ -102,6 +106,8 @@ namespace GoldRush
             yield return WaitPlaying();
             yield return Wait(1.2f); yield return Shot("12_daily");
 
+            Note(DayNight.IsNight ? "theme ok: daily kept the saved night" : "theme: daily is day");
+            DayNight.Set(startNight, true);
             Note($"done, errors={errors}");
             File.WriteAllText(Path.Combine(Dir, "log.txt"), log.ToString());
             if (File.Exists(RunFlag)) File.Delete(RunFlag);

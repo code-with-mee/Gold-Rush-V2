@@ -23,7 +23,7 @@
 </ul>
 <h2>Course</h2><ul>
 <li><a href="phase-00.html"><span class="num">0</span><span class="label">Create the project</span></a></li>
-<li><a href="phase-01.html"><span class="num">1</span><span class="label">Materials and prefabs</span></a></li>
+<li><a href="phase-01.html"><span class="num">1</span><span class="label">The prefab kit</span></a></li>
 <li><a href="phase-02.html"><span class="num">2</span><span class="label">Level design</span></a></li>
 <li><a href="phase-03.html"><span class="num">3</span><span class="label">The player</span></a></li>
 <li><a href="phase-04.html"><span class="num">4</span><span class="label">The camera</span></a></li>
@@ -37,30 +37,27 @@
 <h2>Help</h2><ul>
 <li><a href="troubleshooting.html"><span class="num">?</span><span class="label">Troubleshooting</span></a></li>
 <li><a href="glossary.html"><span class="num">A–Z</span><span class="label">Glossary</span></a></li>
+<li><a href="exercises.html"><span class="num">✎</span><span class="label">Exercises</span></a></li>
 </ul>
 </aside>
 <main>
 <div class="content">
 <p class="eyebrow">GOLD RUSH · Phase 6</p>
 <h1>Exit gate, win and lose</h1>
-<p class="lead">You will build the exit gate by hand: a block frame with a door that sinks into the floor, red lights that turn green and a glowing pad. Then the <code>GameManager</code> gets the full level flow: a 3-2-1-GO intro, a timer with a par time, the gate that opens when all gold is collected, stars, and the win and lose dialogs with RETRY.</p>
+<p class="lead">You will make the provided exit gate work: its door sinks into the floor, the red lights turn green and a pad glows. Then the <code>GameManager</code> gets the full level flow: a 3-2-1-GO intro, the gate that opens when all gold is collected, the win point, stars against the par time, and the win and lose dialogs.</p>
 <div class="meta"><span><b>Checkpoint package</b><code>GoldRush_Phase06_Gate.unitypackage</code></span><span><b>Scene</b><code>Assets/GoldRush/Scenes/Level1.unity</code></span><a class="btn secondary" href="phase-06.pdf">Download PDF</a></div>
 
 <nav class="toc" aria-label="Steps on this page"><strong>Steps on this page</strong><ol>
   <li><a href="#step-1">What you need</a></li>
   <li><a href="#step-2">How a level is won (or lost)</a></li>
-  <li><a href="#step-3">Gate materials</a></li>
-  <li><a href="#step-4">Script: ExitGate</a></li>
-  <li><a href="#step-5">Build the gate frame</a></li>
-  <li><a href="#step-6">Add the door and the light strips</a></li>
-  <li><a href="#step-7">Add the EXIT sign</a></li>
-  <li><a href="#step-8">Add the green glow</a></li>
-  <li><a href="#step-9">Connect the gate and make a prefab</a></li>
-  <li><a href="#step-10">Import the new helpers</a></li>
-  <li><a href="#step-11">Script: GameManager (updated)</a></li>
-  <li><a href="#step-12">Add Level1 to the scene list</a></li>
-  <li><a href="#step-13">▶ Press Play</a></li>
-  <li><a href="#step-14">Common problems</a></li>
+  <li><a href="#step-3">Script: ExitGate</a></li>
+  <li><a href="#step-4">Look at the provided gate prefab</a></li>
+  <li><a href="#step-5">Add the ExitGate script</a></li>
+  <li><a href="#step-6">Place the gate</a></li>
+  <li><a href="#step-7">Update the PlayerMotor</a></li>
+  <li><a href="#step-8">Script: GameManager (updated)</a></li>
+  <li><a href="#step-9">▶ Press Play</a></li>
+  <li><a href="#step-10">Common problems</a></li>
 </ol></nav>
 
 <!-- ======================================================= 1 -->
@@ -74,10 +71,9 @@
 <p>New or changed files in this phase:</p>
 <div class="table-wrap"><table>
   <tr><th>File</th><th>Type or import?</th><th>What it does</th></tr>
-  <tr><td><code>Scripts/World/ExitGate.cs</code></td><td>Type</td><td>Opens the gate: door slides down, lights turn green.</td></tr>
-  <tr><td><code>Scripts/Gameplay/GameManager.cs</code></td><td>Type (replace)</td><td>Intro, timer, gate, win, lose, stars, pause, restart.</td></tr>
-  <tr><td><code>Scripts/UI/GameUI.cs</code></td><td>Import (replace)</td><td>Phase 6 version: timer, pause button, intro countdown, dialogs.</td></tr>
-  <tr><td><code>Scripts/Core/Fader.cs</code></td><td>Import</td><td>Fades the screen to black and back when a scene loads.</td></tr>
+  <tr><td><code>Scripts/World/ExitGate.cs</code></td><td>Type (replace the placeholder)</td><td>Opens the gate: door slides down, lights turn green.</td></tr>
+  <tr><td><code>Scripts/Gameplay/PlayerMotor.cs</code></td><td>Type (replace)</td><td>Waits for "GO!", waves when you win, falls when you lose.</td></tr>
+  <tr><td><code>Scripts/Gameplay/GameManager.cs</code></td><td>Type (replace)</td><td>Intro, gate, win, lose, stars, best time.</td></tr>
 </table></div>
 
 <!-- ======================================================= 2 -->
@@ -100,18 +96,8 @@
 <p>You also earn gold: 1 per coin + 5 per star. It is saved for the shop in phase 9.</p>
 
 <!-- ======================================================= 3 -->
-<h2 id="step-3"><span class="step">3</span>Gate materials</h2>
-<p>The gate frame uses <code>M_Wall</code> from phase 1. The lights need three more materials. If you made gate materials in phase 1, check their values; else make them now (<b>Create → Material</b> in <code>Materials</code>, shader <b>Universal Render Pipeline/Lit</b>):</p>
-<div class="table-wrap"><table>
-  <tr><th>Material</th><th>Settings</th><th>Used for</th></tr>
-  <tr><td><code>M_GateRed</code></td><td>Base <code>FF6A66</code>, Metallic 0, Smoothness 0.5. Emission ticked: colour <code>FF3833</code>, Intensity <code>1.4</code>.</td><td>The light strips while the gate is closed.</td></tr>
-  <tr><td><code>M_GateGreen</code></td><td>Base <code>79FF96</code>, Metallic 0, Smoothness 0.5. Emission ticked: colour <code>4DFF73</code>, Intensity <code>1.4</code>.</td><td>The strips when it is open, the ring.</td></tr>
-  <tr><td><code>M_GateGlow</code></td><td><b>Surface Type: Transparent</b>. Base <code>4DFF73</code> with Alpha <code>77</code> (about 30 %). Smoothness 0.3.</td><td>The see-through green floor pad.</td></tr>
-</table></div>
-
-<!-- ======================================================= 4 -->
-<h2 id="step-4"><span class="step">4</span>Script: ExitGate</h2>
-<p>In <code>Scripts/World</code>, create the script <code>ExitGate</code>:</p>
+<h2 id="step-3"><span class="step">3</span>Script: ExitGate</h2>
+<p>Open <code>Scripts/World/ExitGate.cs</code> (the placeholder from phase 5) and <b>replace the whole file</b> with the real gate:</p>
 <pre class="long"><code>using UnityEngine;
 
 namespace GoldRush
@@ -183,71 +169,26 @@ namespace GoldRush
   <li>Every <code>if (door)</code>, <code>if (glow)</code> … check means: a missing part does not break the gate.</li>
 </ul>
 
+<!-- ======================================================= 4 -->
+<h2 id="step-4"><span class="step">4</span>Look at the provided gate prefab</h2>
+<p>The starter package gives you the gate model: <code>Prefabs/Gameplay/ExitGate.prefab</code>. Double-click it to open prefab mode. The front faces <b>-Z</b> (into the level).</p>
+<div class="table-wrap"><table>
+  <tr><th>Child</th><th>What it is</th></tr>
+  <tr><td><code>PostLeft</code>, <code>PostRight</code>, <code>Lintel</code></td><td>The block frame (with Box Colliders). The opening is 5.5 m wide.</td></tr>
+  <tr><td><code>Door</code> › <code>Panel</code></td><td>The door, 3.3 m high. <code>Door</code> is the object that slides down. No collider.</td></tr>
+  <tr><td><code>StripTop</code>, <code>StripLeft</code>, <code>StripRight</code></td><td>The red light strips (<code>M_GlowRed</code>).</td></tr>
+  <tr><td><code>Text</code></td><td>The EXIT sign (a Text Mesh).</td></tr>
+  <tr><td><code>Glow</code> › <code>Pad</code>, <code>Ring</code></td><td>The green floor pad, 1.6 m in front of the gate. Switched off (unticked).</td></tr>
+  <tr><td><code>GlowLight</code></td><td>A green point light, range 9, its Light component switched off.</td></tr>
+  <tr><td><code>MarkerAnchor</code></td><td>An empty point 5.6 m up. Phase 8 puts the EXIT label here.</td></tr>
+</table></div>
+<figure class="shot todo"><div class="ph">Screenshot: ExitGate prefab mode – Hierarchy with the children above, the closed gate in the Scene view</div><figcaption>The provided gate model.</figcaption></figure>
+
 <!-- ======================================================= 5 -->
-<h2 id="step-5"><span class="step">5</span>Build the gate frame</h2>
-<p>All positions below are <b>local</b> (inside <code>ExitGate</code>). The front of the gate faces the level (the <b>-Z</b> side).</p>
+<h2 id="step-5"><span class="step">5</span>Add the ExitGate script</h2>
 <ol>
-  <li><b>GameObject → Create Empty</b>. Name it <code>ExitGate</code>. Position <code>0, 0, 0</code>, rotation <code>0, 0, 0</code>.</li>
-  <li><b>Add Component → Exit Gate</b>.</li>
-  <li>Add these cubes as children (right-click <code>ExitGate</code> → <b>3D Object → Cube</b>). Material <code>M_Wall</code>. <b>Keep</b> their Box Colliders.
-    <div class="table-wrap"><table>
-      <tr><th>Name</th><th>Position</th><th>Scale</th></tr>
-      <tr><td><code>PostLeft</code></td><td>-3.4, 2.3, 0.5</td><td>1.3, 4.6, 1.7</td></tr>
-      <tr><td><code>PostRight</code></td><td>3.4, 2.3, 0.5</td><td>1.3, 4.6, 1.7</td></tr>
-      <tr><td><code>Lintel</code> (the top beam)</td><td>0, 4.125, 0.5</td><td>8.1, 1.25, 1.5</td></tr>
-    </table></div></li>
-  <li>Right-click <code>ExitGate</code> → <b>Create Empty</b>, name it <code>Blocker</code>. Position <code>0, 2.5, 1.25</code>.</li>
-  <li><b>Add Component → Box Collider</b> on <code>Blocker</code>. Size <code>7.5, 5, 1</code>. It is invisible. It stops the hero from walking out of the level through the open gate.</li>
-</ol>
-
-<!-- ======================================================= 6 -->
-<h2 id="step-6"><span class="step">6</span>Add the door and the light strips</h2>
-<ol>
-  <li>Right-click <code>ExitGate</code> → <b>Create Empty</b>, name it <code>Door</code>. Position <code>0, 0, 0</code>. (This empty object is what slides down.)</li>
-  <li>Right-click <code>Door</code> → <b>3D Object → Cube</b>, name it <code>Panel</code>. Position <code>0, 1.75, 0.5</code>, scale <code>5.3, 3.5, 0.4</code>, material <code>M_Wall</code>. <b>Remove</b> its Box Collider (the Blocker does that job).</li>
-  <li>Add three thin cubes as children of <code>ExitGate</code>. Material <code>M_GateRed</code>. Remove their colliders. <b>Cast Shadows: Off</b>.
-    <div class="table-wrap"><table>
-      <tr><th>Name</th><th>Position</th><th>Scale</th></tr>
-      <tr><td><code>StripTop</code></td><td>0, 3.6, -0.26</td><td>5.7, 0.12, 0.06</td></tr>
-      <tr><td><code>StripLeft</code></td><td>-3.05, 1.65, -0.38</td><td>0.12, 2.9, 0.06</td></tr>
-      <tr><td><code>StripRight</code></td><td>3.05, 1.65, -0.38</td><td>0.12, 2.9, 0.06</td></tr>
-    </table></div></li>
-</ol>
-
-<!-- ======================================================= 7 -->
-<h2 id="step-7"><span class="step">7</span>Add the EXIT sign</h2>
-<ol>
-  <li>Right-click <code>ExitGate</code> → <b>3D Object → Legacy → Text - 3D</b> (in some Unity versions: <b>3D Text</b>). Name it <code>Text</code>.</li>
-  <li>Position <code>0, 4.13, -0.34</code>. Rotation <code>0, 0, 0</code>.</li>
-  <li>In the <b>Text Mesh</b> component: Text <code>EXIT</code>, Character Size <code>0.065</code>, Font Size <code>100</code>, Font Style <b>Bold</b>, Anchor <b>Middle Center</b>, Alignment <b>Center</b>, Color <code>FF6157</code>.</li>
-  <li>In the <b>Mesh Renderer</b>, set <b>Cast Shadows</b> to <b>Off</b>.</li>
-</ol>
-<div class="tip">You can not read the text? Look at the gate from the <b>front</b> (from inside the level, the -Z side). From the back, the text is mirrored.</div>
-
-<!-- ======================================================= 8 -->
-<h2 id="step-8"><span class="step">8</span>Add the green glow</h2>
-<ol>
-  <li>Right-click <code>ExitGate</code> → <b>Create Empty</b>, name it <code>Glow</code>. Position <code>0, 0, -1.6</code>.</li>
-  <li>Right-click <code>Glow</code> → <b>3D Object → Cube</b>, name it <code>Pad</code>. Position <code>0, 0.008, 0</code>, scale <code>3.4, 0.012, 3.4</code>, material <code>M_GateGlow</code>. Remove the collider. Cast Shadows Off.</li>
-  <li>Right-click <code>Glow</code> → <b>Create Empty</b>, name it <code>Ring</code>. Position <code>0, 0, 0</code>.</li>
-  <li>Add 4 cubes to <code>Ring</code>. Material <code>M_GateGreen</code>, no collider, scale <code>1.4, 0.03, 0.14</code>:
-    <div class="table-wrap"><table>
-      <tr><th>Cube</th><th>Position</th><th>Rotation</th></tr>
-      <tr><td>1</td><td>0, 0.02, 1.1</td><td>0, 0, 0</td></tr>
-      <tr><td>2</td><td>1.1, 0.02, 0</td><td>0, 90, 0</td></tr>
-      <tr><td>3</td><td>0, 0.02, -1.1</td><td>0, 180, 0</td></tr>
-      <tr><td>4</td><td>-1.1, 0.02, 0</td><td>0, 270, 0</td></tr>
-    </table></div></li>
-  <li>Select <code>Glow</code> and <b>untick</b> the box next to its name. It is hidden until the gate opens.</li>
-  <li>Right-click <code>ExitGate</code> → <b>Light → Point Light</b>, name it <code>GlowLight</code>. Position <code>0, 2, -1.5</code>. Colour <code>4DFF73</code>, Range <code>9</code>, Intensity <code>0</code>, Shadow Type <b>No Shadows</b>. <b>Untick</b> the <b>Light</b> component (not the object).</li>
-  <li>Right-click <code>ExitGate</code> → <b>Create Empty</b>, name it <code>MarkerAnchor</code>. Position <code>0, 5.6, 0</code>. (Phase 8 puts the EXIT label here.)</li>
-</ol>
-<figure class="shot todo"><div class="ph">Screenshot: ExitGate Hierarchy (PostLeft, PostRight, Lintel, Blocker, Door › Panel, StripTop/Left/Right, Text, Glow › Pad, Ring, GlowLight, MarkerAnchor) and the gate in the Scene view</div><figcaption>The finished gate (closed).</figcaption></figure>
-
-<!-- ======================================================= 9 -->
-<h2 id="step-9"><span class="step">9</span>Connect the gate and make a prefab</h2>
-<ol>
-  <li>Select <code>ExitGate</code>. Fill the fields of the <b>Exit Gate</b> component by dragging from the Hierarchy:
+  <li>Still in prefab mode, select the root <code>ExitGate</code>. <b>Add Component → Exit Gate</b>.</li>
+  <li>Fill its fields by dragging from the Hierarchy:
     <div class="table-wrap"><table>
       <tr><th>Field</th><th>Drag in</th></tr>
       <tr><td>Door</td><td><code>Door</code></td></tr>
@@ -257,30 +198,179 @@ namespace GoldRush
       <tr><td>Glow Light</td><td><code>GlowLight</code></td></tr>
       <tr><td>Text</td><td><code>Text</code></td></tr>
       <tr><td>Strips (size 3)</td><td><code>StripTop</code>, <code>StripLeft</code>, <code>StripRight</code></td></tr>
-      <tr><td>Green Strip</td><td>the material <code>M_GateGreen</code> (from the Project window)</td></tr>
+      <tr><td>Green Strip</td><td>the material <code>M_GlowGreen</code> (from the Project window)</td></tr>
     </table></div></li>
-  <li>Drag <code>ExitGate</code> into <code>Assets/GoldRush/Prefabs/Gameplay</code> to make a prefab.</li>
-  <li>Put the gate in the gap of the back wall: drag it under <code>Level</code> (next to the walls) and set its position. For Level 1: <code>0, 0, 16</code>. If phase 2 left a <b>gate marker</b> there, use its position and then delete the marker.</li>
-  <li>Look at it from inside the level: the EXIT sign and the red strips face you.</li>
+  <li>Check: <code>Glow</code> is unticked, and the <b>Light</b> component on <code>GlowLight</code> is unticked. They switch on when the gate opens.</li>
+  <li>Leave prefab mode (the <b>&lt;</b> arrow).</li>
 </ol>
 <figure class="shot todo"><div class="ph">Screenshot: Inspector of ExitGate with all fields filled</div><figcaption>All fields of Exit Gate are filled.</figcaption></figure>
 
-<!-- ======================================================= 10 -->
-<h2 id="step-10"><span class="step">10</span>Import the new helpers</h2>
+<!-- ======================================================= 6 -->
+<h2 id="step-6"><span class="step">6</span>Place the gate</h2>
 <ol>
-  <li>From the Resources folder <code>Scripts/Helpers/</code>, drag <code>Fader.cs</code> into <code>Assets/GoldRush/Scripts/Core</code>.</li>
-  <li>From <code>Scripts/Helpers/Phase06/</code>, drag <code>GameUI.cs</code> into <code>Assets/GoldRush/Scripts/UI</code>. Unity asks to replace the old one: click <b>Replace</b>.
-    (Or delete the old <code>GameUI.cs</code> first.)</li>
+  <li>Drag the <code>ExitGate</code> prefab from the Project window onto <code>Level 1 - Training Yard → Gameplay</code> in the Hierarchy. It must be inside the level: the GameManager only looks there.</li>
+  <li>Set its position to the gate marker from phase 2, <code>ExitGateSpot</code>: <code>0, 0, 16</code> (the gap in the back wall). Rotation <code>0, 0, 0</code>. Then delete <code>ExitGateSpot</code>.</li>
+  <li>At the top right of the Inspector, make sure <b>Static</b> is <b>not</b> ticked. The door moves, so the gate can not be static.</li>
+  <li>Look at it from inside the level: the EXIT sign and the red strips face you.</li>
 </ol>
-<p>Unity shows compile errors now: the new GameUI needs the new GameManager. That is normal. Step 11 fixes it.</p>
-<div class="table-wrap"><table>
-  <tr><th>Helper</th><th>What you call</th></tr>
-  <tr><td><code>GameUI</code> (phase 6)</td><td><code>Intro(def, number)</code> (the 3-2-1-GO), <code>ShowControlsHint()</code>, <code>ShowPause()</code> / <code>HidePause()</code>, <code>ShowWin(result)</code>, <code>ShowLose(result)</code>. It reads <code>Elapsed</code> and <code>Def.parTime</code> for the timer.</td></tr>
-  <tr><td><code>Fader</code></td><td><code>Fader.FadeIn()</code> at the start, <code>Fader.Load(sceneName)</code> to load a scene with a fade.</td></tr>
-</table></div>
+<div class="tip">Behind the gap, your level already has the invisible <code>GateBlocker</code> from phase 2 (a Box Collider 7.5 × 5 × 1 at <code>0, 2.5, 17.25</code>). It stops the hero from walking out through the open gate.</div>
 
-<!-- ======================================================= 11 -->
-<h2 id="step-11"><span class="step">11</span>Script: GameManager (updated)</h2>
+<!-- ======================================================= 7 -->
+<h2 id="step-7"><span class="step">7</span>Update the PlayerMotor</h2>
+<p>The hero must wait for "GO!", wave when you win and fall when you lose.
+Open <code>Scripts/Gameplay/PlayerMotor.cs</code> and <b>replace the whole file</b> with this updated version:</p>
+<pre class="long"><code>using System.Collections;
+using UnityEngine;
+
+namespace GoldRush
+{
+    /// &lt;summary&gt;Third-person player: CharacterController movement (collides with props), sprint/stamina,
+    /// walk/run animation, win/lose poses.
+    /// PHASE 6 VERSION: later phases add power-ups, hits, sounds and dust.&lt;/summary&gt;
+    [RequireComponent(typeof(CharacterController))]
+    public class PlayerMotor : MonoBehaviour
+    {
+        public float walkSpeed = 5f;
+        public float sprintSpeed = 8.2f;
+        public float acceleration = 20f;
+        public float turnSpeed = 560f;
+
+        [Header("Animation")]
+        [Tooltip("Ground speed (m/s) the Walk clip was animated for (measured from the feet).")]
+        public float clipWalkSpeed = 0.59f;
+        [Tooltip("Ground speed (m/s) the Run clip was animated for (measured from the feet).")]
+        public float clipRunSpeed = 0.84f;
+
+        public VirtualJoystick joystick;
+        public ThirdPersonCamera cam;
+
+        public float Stamina { get; private set; } = 1f;
+        public bool Exhausted { get; private set; }
+        public bool Sprinting { get; private set; }
+        public bool Frozen { get; set; }
+        public Vector3 Velocity =&gt; velocity;
+        public Animator Anim =&gt; anim;
+
+        CharacterController cc;
+        float animSpeed = 1f;
+        Animator anim;
+        Vector3 velocity;
+        float vy;
+
+        void Awake()
+        {
+            cc = GetComponent&lt;CharacterController&gt;();
+            anim = GetComponentInChildren&lt;Animator&gt;(); // the Animator on the "Model" child
+        }
+
+        Vector2 ReadInput()
+        {
+            Vector2 v = joystick ? joystick.Value : Vector2.zero;
+            float kx = (Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.RightArrow) ? 1 : 0) - (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.LeftArrow) ? 1 : 0);
+            float ky = (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.UpArrow) ? 1 : 0) - (Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.DownArrow) ? 1 : 0);
+            if (kx != 0 || ky != 0) v = new Vector2(kx, ky).normalized;
+            return Vector2.ClampMagnitude(v, 1f);
+        }
+
+        void Update()
+        {
+            float dt = Time.deltaTime;
+            if (dt &lt;= 0f) return;
+            var gm = GameManager.I;
+            bool canMove = !Frozen &amp;&amp; gm != null &amp;&amp; gm.State == GameState.Playing;
+
+            Vector2 input = canMove ? ReadInput() : Vector2.zero;
+            float yaw = cam ? cam.Yaw : 0f;
+            Vector3 dir = Quaternion.Euler(0, yaw, 0) * new Vector3(input.x, 0, input.y);
+            float mag = Mathf.Clamp01(dir.magnitude);
+
+            bool wantSprint = canMove &amp;&amp; mag &gt; 0.2f &amp;&amp; ((joystick &amp;&amp; joystick.Held &amp;&amp; joystick.Value.magnitude &gt; 0.9f) || Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift));
+            if (Exhausted &amp;&amp; Stamina &gt; 0.35f) Exhausted = false;
+            Sprinting = wantSprint &amp;&amp; !Exhausted &amp;&amp; Stamina &gt; 0f;
+            if (Sprinting)
+            {
+                Stamina = Mathf.Max(0f, Stamina - dt * 0.3f);
+                if (Stamina &lt;= 0f) Exhausted = true;
+            }
+            else Stamina = Mathf.Min(1f, Stamina + dt * (mag &gt; 0.1f ? 0.18f : 0.32f));
+
+            float speed = Sprinting ? sprintSpeed : walkSpeed;
+            Vector3 targetVel = mag &gt; 0.01f ? dir.normalized * (mag * speed) : Vector3.zero;
+            velocity = Vector3.MoveTowards(velocity, targetVel, acceleration * dt);
+
+            if (velocity.sqrMagnitude &gt; 0.05f &amp;&amp; !Frozen)
+            {
+                var targetRot = Quaternion.LookRotation(new Vector3(velocity.x, 0, velocity.z));
+                transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRot, turnSpeed * dt);
+            }
+
+            if (cc.isGrounded &amp;&amp; vy &lt; 0) vy = -2f; else vy -= 25f * dt;
+            if (cc.enabled) cc.Move((velocity + Vector3.up * vy) * dt);
+
+            // animation (0 idle, 0.5 walk, 1 run)
+            float horiz = new Vector3(velocity.x, 0, velocity.z).magnitude;
+            float blend = horiz &lt; 0.1f ? 0f : Mathf.Lerp(0.45f, 1f, Mathf.InverseLerp(2.5f, sprintSpeed, horiz));
+            if (anim &amp;&amp; anim.runtimeAnimatorController) anim.SetFloat("Speed", blend, 0.15f, dt);
+            // play the walk/run cycle as fast as the hero moves, so the feet don't slide
+            if (anim &amp;&amp; !Frozen)
+            {
+                float target = PlaybackSpeed(blend, horiz);
+                animSpeed = Mathf.Lerp(animSpeed, target, 1f - Mathf.Exp(-5f * dt)); // ease, never jump
+                anim.speed = animSpeed;
+            }
+        }
+
+        public void PlayVictory()
+        {
+            Frozen = true;
+            velocity = Vector3.zero;
+            StartCoroutine(VictoryCo());
+        }
+
+        IEnumerator VictoryCo()
+        {
+            if (anim) anim.SetFloat(AnimParams.Speed, 0f);
+            // turn to face the camera, then wave (the "Win" clip)
+            Quaternion start = transform.rotation;
+            Vector3 toCam = cam ? cam.transform.position - transform.position : -transform.forward;
+            toCam.y = 0;
+            Quaternion face = toCam.sqrMagnitude &gt; 0.01f ? Quaternion.LookRotation(toCam) : start;
+            for (float t = 0; t &lt; 1f; t += Time.deltaTime / 0.35f)
+            {
+                transform.rotation = Quaternion.Slerp(start, face, t);
+                yield return null;
+            }
+            if (anim) { anim.speed = 1f; anim.SetTrigger(AnimParams.Win); }
+        }
+
+        public void PlayCaught()
+        {
+            Frozen = true;
+            velocity = Vector3.zero;
+            if (anim) { anim.speed = 1f; anim.SetFloat(AnimParams.Speed, 0f); anim.SetTrigger(AnimParams.Die); }
+        }
+
+        /// &lt;summary&gt;Animation playback speed so the feet match the ground.
+        /// blend = Animator "Speed" value (0.5 walk .. 1 run), groundSpeed = how fast the hero really moves.&lt;/summary&gt;
+        float PlaybackSpeed(float blend, float groundSpeed)
+        {
+            if (groundSpeed &lt; 0.15f) return 1f;
+            float natural = Mathf.Lerp(clipWalkSpeed, clipRunSpeed, Mathf.InverseLerp(0.5f, 1f, blend));
+            float ratio = groundSpeed / Mathf.Max(0.1f, natural);
+            // match most of the stride but keep it gentle: fluid motion matters more than perfect feet
+            return Mathf.Clamp(Mathf.Lerp(1f, ratio, 0.7f), 0.8f, 2.2f);
+        }
+    }
+}</code></pre>
+<ul>
+  <li><b><code>canMove</code></b> is now only true while <code>GameManager.I.State == GameState.Playing</code>. During the intro, pause, win and lose, the hero stands still.</li>
+  <li><b><code>PlayVictory()</code></b> freezes the hero, turns him toward the camera in 0.35 s (<code>Quaternion.Slerp</code>), then fires the <code>Win</code> trigger: the wave animation from phase 3.</li>
+  <li><b><code>PlayCaught()</code></b> freezes the hero and fires the <code>Die</code> trigger.</li>
+  <li><b><code>AnimParams.Win</code></b> is the parameter name "Win" from <code>GameAssets.cs</code>, stored as a fast number (hash).</li>
+</ul>
+
+<!-- ======================================================= 8 -->
+<h2 id="step-8"><span class="step">8</span>Script: GameManager (updated)</h2>
 <p>Open <code>Scripts/Gameplay/GameManager.cs</code>. <b>Replace the whole file</b> with this updated version:</p>
 <pre class="long"><code>using System.Collections;
 using System.Collections.Generic;
@@ -290,6 +380,7 @@ namespace GoldRush
 {
     public enum GameState { Intro, Playing, Paused, Won, Lost }
 
+    /// &lt;summary&gt;The numbers the win / lose dialog shows.&lt;/summary&gt;
     public struct RunResult
     {
         public bool won;
@@ -302,10 +393,13 @@ namespace GoldRush
         public bool hasNext;
     }
 
-    /// &lt;summary&gt;Gameplay scene root: owns game state, rules, scoring and saving. (Phase 6 version: no monsters yet.)&lt;/summary&gt;
+    /// &lt;summary&gt;Gameplay scene root: reads the hand-made level, owns game state, rules and scoring.
+    /// PHASE 6 VERSION: coins, HUD, intro, exit gate, win, lose, pause. Phase 7 adds the monsters.&lt;/summary&gt;
     public class GameManager : MonoBehaviour
     {
         public static GameManager I { get; private set; }
+
+        public const float SpeedDuration = 6f, GhostDuration = 6f, MagnetDuration = 8f;
 
         public LevelDef Def { get; private set; }
         public GameState State { get; private set; } = GameState.Intro;
@@ -320,6 +414,11 @@ namespace GoldRush
         public ThirdPersonCamera Cam { get; private set; }
         public GameUI UI { get; private set; }
         public ExitGate Gate { get; private set; }
+
+        // power-up timers: the HUD already reads them, phase 8 sets them
+        public float SpeedLeft { get; private set; }
+        public float GhostLeft { get; private set; }
+        public float MagnetLeft { get; private set; }
 
         readonly List&lt;Coin&gt; coins = new List&lt;Coin&gt;();
 
@@ -357,7 +456,6 @@ namespace GoldRush
             LockCursor(false);
             if (I == this) I = null;
             Time.timeScale = 1f;
-            AudioFX.SetTension(false);
         }
 
         void Start()
@@ -370,35 +468,49 @@ namespace GoldRush
         {
             UIKit.EnsureEventSystem();
 
-            // the hero and the camera are already in the scene (phases 3 and 4)
+            var scene = FindAnyObjectByType&lt;LevelScene&gt;();
+            if (!scene) { Debug.LogError("[GoldRush] No LevelScene in this scene. Add it to the level root object."); return; }
+
+            // the hero and the camera are already in the scene: move the hero to the PlayerSpawn marker
+            var spawn = scene.GetComponentInChildren&lt;PlayerSpawn&gt;();
+            Vector3 spawnPos = spawn ? spawn.transform.position : Vector3.zero;
+            float spawnYaw = spawn ? spawn.transform.eulerAngles.y : 0f;
             Player = FindAnyObjectByType&lt;PlayerMotor&gt;();
+            var cc = Player.GetComponent&lt;CharacterController&gt;();
+            cc.enabled = false;                       // a CharacterController ignores teleports while enabled
+            Player.transform.SetPositionAndRotation(spawnPos, Quaternion.Euler(0, spawnYaw, 0));
+            cc.enabled = true;
             Cam = FindAnyObjectByType&lt;ThirdPersonCamera&gt;();
+            Cam.Init(Player.transform, spawnYaw);
+            EnvironmentSetup.Apply(Cam.GetComponent&lt;Camera&gt;(), false, Def.night);
 
             UI = GameUI.Create(this);
+            Player.joystick = UI.Joystick;
+            Player.cam = Cam;
 
-            // every CoinSpot marker holds one Coin (placed by hand in the Scene view)
-            foreach (var spot in FindObjectsByType&lt;CoinSpot&gt;(FindObjectsSortMode.None))
+            // every CoinSpot marker holds one Coin that you placed by hand
+            foreach (var spot in scene.GetComponentsInChildren&lt;CoinSpot&gt;())
             {
                 var c = spot.GetComponentInChildren&lt;Coin&gt;();
                 if (c) coins.Add(c);
             }
             if (coins.Count == 0) Debug.LogWarning("[GoldRush] This level has no coins — add CoinSpot markers with a Coin inside.");
-            Gate = FindAnyObjectByType&lt;ExitGate&gt;();
+            Gate = scene.GetComponentInChildren&lt;ExitGate&gt;();
+            if (Gate) UI.AddGateLabel(Gate);
 
             TotalCoins = coins.Count;
             MaxLives = Lives = Mathf.Max(1, Def.lives);
             UI.SetCoins(0, TotalCoins, false);
+            UI.SetLives(Lives, MaxLives);
             Fader.FadeIn();
         }
 
         IEnumerator IntroCo()
         {
             State = GameState.Intro;
-            if (Player) Player.Frozen = true;   // no running before "GO!"
             Cam.PlayIntro(2.8f);
             yield return UI.Intro(Def, GameSession.IsDaily ? 0 : GameSession.LevelIndex + 1);
             State = GameState.Playing;
-            if (Player) Player.Frozen = false;
             LockCursor(true);
             bool firstTime = !Save.Data.seenTutorial;
             if (firstTime || (!GameSession.IsDaily &amp;&amp; GameSession.LevelIndex == 0)) UI.ShowControlsHint();
@@ -412,13 +524,16 @@ namespace GoldRush
                 if (State == GameState.Playing) Pause();
                 else if (State == GameState.Paused) Resume();
             }
-            if (Input.GetKeyDown(KeyCode.L)) DebugLose();   // TEST ONLY: removed in phase 7 (monsters)
+            if (Input.GetKeyDown(KeyCode.L)) DebugLose();   // TEST ONLY: phase 7 removes this line
             if (State != GameState.Playing || !Player) return;
             // clicked back into the game window after the cursor was freed (e.g. alt-tab)
             if (UseMouseLook &amp;&amp; Cursor.lockState != CursorLockMode.Locked &amp;&amp; Input.GetMouseButtonDown(0)) LockCursor(true);
 
             float dt = Time.deltaTime;
             Elapsed += dt;
+            SpeedLeft = Mathf.Max(0, SpeedLeft - dt);
+            GhostLeft = Mathf.Max(0, GhostLeft - dt);
+            MagnetLeft = Mathf.Max(0, MagnetLeft - dt);
 
             Vector3 pp = Player.transform.position + Vector3.up * 1f;
 
@@ -426,7 +541,8 @@ namespace GoldRush
             {
                 var c = coins[i];
                 if (c == null || c.Collected) { coins.RemoveAt(i); continue; }
-                float sq = (c.transform.position - pp).sqrMagnitude;
+                Vector3 d = c.transform.position - pp;
+                float sq = d.sqrMagnitude;
                 if (sq &lt; 1.45f * 1.45f) { coins.RemoveAt(i); CollectCoin(c); }
             }
 
@@ -450,6 +566,7 @@ namespace GoldRush
             c.Collect();
             Collected++;
             AudioFX.Play("coin", 1f, 1f + 0.05f * (Collected % 5));
+            UI.Markers.FloatText(pos + Vector3.up * 0.6f, "+1", UIKit.Gold, 64);
             UI.FlyCoin(pos, Collected, TotalCoins);
             if (Collected &gt;= TotalCoins) AllCollected();
         }
@@ -561,10 +678,40 @@ namespace GoldRush
         }
 
         public void Restart() { Time.timeScale = 1f; Fader.Load(UnityEngine.SceneManagement.SceneManager.GetActiveScene().name); }
+        public void BackToMenu() { Time.timeScale = 1f; Fader.Load(Scenes.Menu); }
 
-        // ---------------------------------------------------------------- test hooks
+        public void NextLevel()
+        {
+            if (!GameSession.HasNext) { BackToMenu(); return; }
+            GameSession.LevelIndex++;
+            Fader.Load(GameSession.SceneName);
+        }
 
-        /// &lt;summary&gt;Phase 6 only: press L to see the lose screen (monsters arrive in phase 7).&lt;/summary&gt;
+        // ---------------------------------------------------------------- helpers
+
+        /// &lt;summary&gt;Where the off-screen arrow should point: nearest coin, or the gate once it is open.&lt;/summary&gt;
+        public Transform ArrowTarget
+        {
+            get
+            {
+                if (!Player) return null;
+                if (Gate &amp;&amp; Gate.IsOpen) return Gate.transform;
+                Transform best = null;
+                float bestSq = float.MaxValue;
+                Vector3 p = Player.transform.position;
+                foreach (var c in coins)
+                {
+                    if (!c || c.Collected) continue;
+                    float sq = (c.transform.position - p).sqrMagnitude;
+                    if (sq &lt; bestSq) { bestSq = sq; best = c.transform; }
+                }
+                return best;
+            }
+        }
+
+        // ---------------------------------------------------------------- test hook
+
+        /// &lt;summary&gt;PHASE 6 ONLY: press L to see the lose dialog. In phase 7 the monsters catch you instead.&lt;/summary&gt;
         public void DebugLose()
         {
             if (State == GameState.Playing) Lose();
@@ -578,22 +725,13 @@ namespace GoldRush
   <li><b>Gate:</b> <code>AllCollected()</code> calls <code>Gate.Open()</code>. Then every frame <code>Update</code> checks the flat distance (<code>d.y = 0</code>) to <code>Gate.WinPoint</code>. Under 2.4 m → <code>Win()</code>.</li>
   <li><b><code>Win()</code></b> counts the stars, updates the best time and the gold in <code>Save.Data</code>, saves, waits 1.5 s (<code>WinCo</code>) and shows the dialog.</li>
   <li><b><code>Lose()</code></b> slows time down to 30 % for 1.1 s (a dramatic slow motion), then shows the lose dialog. For now only <kbd>L</kbd> calls it (<code>DebugLose</code>).</li>
-  <li><b>Pause:</b> <code>Time.timeScale = 0f</code> stops everything that uses <code>Time.deltaTime</code>. <code>Resume()</code> sets it back to 1. <code>Restart()</code> reloads the scene with the Fader.</li>
+  <li><b><code>Hits</code></b> counts monster hits for the third star. It stays 0 until phase 7.</li>
+  <li>Everything else (coins, HUD, pause, RETRY) is the same as in phase 5.</li>
 </ul>
 <div class="note">The line with <code>KeyCode.L</code> and the method <code>DebugLose</code> are for testing only. In phase 7 the monsters call <code>Lose()</code>, and you remove them.</div>
 
-<!-- ======================================================= 12 -->
-<h2 id="step-12"><span class="step">12</span>Add Level1 to the scene list</h2>
-<p><b>RETRY</b> loads the scene again by its name. Unity can only load scenes that are in the build list.</p>
-<ol>
-  <li><b>File → Build Profiles</b>.</li>
-  <li>In <b>Scene List</b>, click <b>Add Open Scenes</b>. <code>Scenes/Level1</code> appears with a tick.</li>
-  <li>Close the window. Save the scene.</li>
-</ol>
-<div class="tip">The scene must be called exactly <code>Level1</code>. The GameManager uses the name to find the level settings (6 coins, par 40 s).</div>
-
-<!-- ======================================================= 13 -->
-<h2 id="step-13"><span class="step">13</span>▶ Press Play</h2>
+<!-- ======================================================= 9 -->
+<h2 id="step-9"><span class="step">9</span>▶ Press Play</h2>
 <p>Press <b>Play</b> and play the whole level.</p>
 <div class="check">
 <b>You should see:</b>
@@ -603,7 +741,7 @@ namespace GoldRush
   <li><kbd>Esc</kbd> opens <b>PAUSED</b> with your gold and time. <b>RESUME</b> continues; the timer did not count while paused.</li>
   <li>After the 6th coin: the gate sound, a small camera shake, the door slides down, the strips and the EXIT sign turn green, the pad glows.</li>
   <li>Walk onto the green pad: the hero waves, and after 1.5 s <b>LEVEL COMPLETE!</b> shows 2 or 3 stars, your time, your best time and the gold earned.</li>
-  <li><b>RETRY</b> fades out and starts the level again.</li>
+  <li><b>RETRY</b> fades out and starts the level again. (<b>MENU</b> and <b>NEXT</b> work from phase 9, when the menu and the other levels exist.)</li>
   <li>Press <kbd>L</kbd> while playing: slow motion, then <b>CAUGHT!</b> with RETRY.</li>
   <li>No red errors in the Console.</li>
 </ul>
@@ -616,19 +754,20 @@ namespace GoldRush
 </div>
 <div class="tip">You get only 2 stars? Then you were slower than 40 seconds. Try again: sprint with <kbd>Shift</kbd>.</div>
 
-<!-- ======================================================= 14 -->
-<h2 id="step-14"><span class="step">14</span>Common problems</h2>
+<!-- ======================================================= 10 -->
+<h2 id="step-10"><span class="step">10</span>Common problems</h2>
 <div class="table-wrap"><table>
   <tr><th>Problem</th><th>Fix</th></tr>
   <tr><td>All coins collected, but the gate does not open.</td><td>The <code>ExitGate</code> object has no <b>Exit Gate</b> component, or it is not in the scene. Check also the <b>Door</b> field.</td></tr>
-  <tr><td>The gate opens but the strips stay red.</td><td>The <b>Strips</b> list or the <b>Green Strip</b> material is empty (step 9).</td></tr>
-  <tr><td>The green pad is visible before the gate opens.</td><td>Untick the <code>Glow</code> object (step 8).</td></tr>
+  <tr><td>The gate opens but the strips stay red.</td><td>The <b>Strips</b> list or the <b>Green Strip</b> material is empty (step 5).</td></tr>
+  <tr><td>The green pad is visible before the gate opens.</td><td>Untick the <code>Glow</code> object in the prefab (step 5).</td></tr>
   <tr><td>I stand at the gate and nothing happens.</td><td>The gate opens only after <b>all</b> coins. Also check the gate rotation is <code>0, 0, 0</code>: the win point is on its -Z side.</td></tr>
-  <tr><td>The hero walks out through the open gate.</td><td>The <b>Blocker</b> Box Collider is missing (step 5).</td></tr>
-  <tr><td>RETRY: <i>Scene 'Level1' couldn't be loaded because it has not been added to the build settings</i>.</td><td>Do step 12.</td></tr>
+  <tr><td>The hero walks out through the open gate.</td><td>The <code>GateBlocker</code> from phase 2 is missing (see the tip in step 6).</td></tr>
+  <tr><td>The door does not move, the strips turn green at once.</td><td>The gate is marked <b>Static</b>. Untick Static on <code>ExitGate</code> and its children.</td></tr>
+  <tr><td>NEXT or MENU: <i>Scene … couldn't be loaded</i>.</td><td>Normal for now. These scenes come in phase 9.</td></tr>
   <tr><td>The timer stays at <code>0:00.0</code>.</td><td>The intro never ended. Look for a red error in the Console during the countdown.</td></tr>
-  <tr><td>The hero can move during the countdown, or does not wave at the end.</td><td>Your <code>PlayerMotor</code> needs <code>Frozen</code> and <code>PlayVictory()</code> from phase 3.</td></tr>
-  <tr><td>Errors about <code>BackToMenu</code>, <code>Markers</code> or <code>PowerUp</code> in GameUI.</td><td>You imported the full <code>GameUI.cs</code>. Use the one from <code>Helpers/Phase06/</code>.</td></tr>
+  <tr><td>The hero can move during the countdown, or does not wave at the end.</td><td>Replace <code>PlayerMotor.cs</code> with the phase 6 version (step 7). The Animator needs the <code>Win</code> and <code>Die</code> triggers (phase 3).</td></tr>
+  <tr><td><i>'ExitGate' does not contain a definition for …</i></td><td>The placeholder from phase 5 is still there. Replace the whole file (step 3).</td></tr>
 </table></div>
 <p><b>Checkpoint package:</b> <code>GoldRush_Phase06_Gate.unitypackage</code> – the project at the end of this phase.</p>
 

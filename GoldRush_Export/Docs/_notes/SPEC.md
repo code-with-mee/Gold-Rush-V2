@@ -21,7 +21,7 @@ Short sentences. One action per step. No jargon without a one-line explanation.
 | # | File | Title | Students build | Ends with "Press Play: you should see…" |
 |---|------|-------|----------------|-----------------------------------------|
 | 0 | phase-00.html | Create the project | Unity Hub → new **Universal 3D** project "GoldRush" (Unity 6000.6.10f1 or newer). Check packages: **AI Navigation**, **Input System** (Player Settings → Active Input Handling = Both). Import the Resources folder. Create the folder layout. | the Project window has the folders and the hero model shows in a scene |
-| 1 | phase-01.html | Materials and prefabs | URP Lit materials (floor grid, block, wall, accent colours, gold, gate). Block, wall, pillar, lamp prefabs (pivot at the bottom). Prefab vs instance, prefab mode. | a test scene with a few prefabs |
+| 1 | phase-01.html | The prefab kit | **Prefabs and materials are PROVIDED** in the starter package (no creating cubes/materials/colours). Short tour: what a prefab is, open one in Prefab Mode, change a material colour once, prefab vs instance, override/revert. | a test scene with a few kit prefabs |
 | 2 | phase-02.html | Level design | Level1 scene: floor, outer walls, blocks, lamps, directional light, sky, fog. Grid snapping. Empty "markers" for spawn, coins, monsters, gate. | fly around the level in the Scene view |
 | 3 | phase-03.html | The player | Hero model import settings (Rig = Generic, loop clips). Build the **Animator Controller by hand** (blend tree Idle/Walk/Run on `Speed`, triggers Attack/Hit/Win/Die). Player prefab: CharacterController + PlayerMotor. Keyboard movement + sprint. | the hero runs around with the right animation |
 | 4 | phase-04.html | The camera | ThirdPersonCamera: follow, mouse look, hidden/locked cursor (Esc frees it), smoothing, no clipping into walls. | smooth third-person view |
@@ -48,6 +48,12 @@ Assets/GoldRush/
   Scenes/          MainMenu, Level1..Level4
   Scripts/         Core/, Audio/, World/, Level/, Gameplay/, UI/   (same folders as the repo)
 ```
+
+## Provided prefabs (user decision)
+Students do NOT build 3D objects or materials by hand. The starter package (Phase 0) gives them ready prefabs + materials:
+level kit (blocks, walls, pillar, lamp, floor, accent blocks, barrier, terminal), and the VISUAL parts of gameplay objects
+(coin model, exit gate model, power-up models). Guides only say "drag prefab X into the scene" and focus on
+placing, scripts, components, wiring and Inspector values. Keep at most ONE short "try changing a colour" step.
 
 ## Resources pack (what students get, GoldRush_Export/Resources/)
 - `Characters/` Hero.fbx, Slime.fbx, Ghost.fbx, MushroomKing.fbx (Quaternius, CC0; animations inside the FBX), licences.

@@ -379,7 +379,7 @@ namespace GoldRush
         void BuildLevelsScreen()
         {
             var dim = UIKit.Img(levelScreen, null, UIKit.WithAlpha(UIKit.Navy, 0.55f), "Dim"); dim.rectTransform.Fill();
-            ScreenHeader(levelScreen, "SELECT LEVEL", "Night levels are darker — watch for glowing monsters!");
+            ScreenHeader(levelScreen, "SELECT LEVEL", "Collect all the gold, then run to the exit!");
             BackButton(levelScreen);
             levelCards = UIKit.Rect("Cards", levelScreen).At(new Vector2(0.5f, 0.5f), new Vector2(0, -50), new Vector2(5 * CardW + 4 * CardGap, CardH), new Vector2(0.5f, 0.5f));
         }
@@ -423,7 +423,6 @@ namespace GoldRush
             var ct = face.transform;
 
             CardBadge(ct, locked ? UIKit.Gray : UIKit.Gold, (i + 1).ToString(), null);
-            if (def.night) UIKit.InfoChip(ct, UIKit.Icon.Moon, "NIGHT", UIKit.Cream, new Vector2(112, 36)).At(new Vector2(1, 1), new Vector2(-14, -14), new Vector2(112, 36), new Vector2(1, 1));
             CardText(ct, def.title.ToUpper(), 32, locked ? UIKit.WithAlpha(UIKit.Cream, 0.6f) : UIKit.Cream, -152, 46);
 
             if (locked)
@@ -464,7 +463,6 @@ namespace GoldRush
             root.At(new Vector2(0.5f, 0.5f), pos, new Vector2(CardW, CardH), new Vector2(0.5f, 0.5f));
             var ct = face.transform;
             CardBadge(ct, UIKit.Purple, null, UIKit.Icon.Calendar);
-            UIKit.InfoChip(ct, UIKit.Icon.Moon, "NIGHT", UIKit.Cream, new Vector2(112, 36)).At(new Vector2(1, 1), new Vector2(-14, -14), new Vector2(112, 36), new Vector2(1, 1));
             CardText(ct, "DAILY RUSH", 32, UIKit.Cream, -152, 46);
             CardText(ct, def.subtitle, 21, UIKit.WithAlpha(UIKit.Cream, 0.7f), -198, 30);
             CardText(ct, $"{def.coins} gold  •  {def.patrollers + def.chasers + def.guards} monsters", 22, UIKit.Cream, -244, 32);

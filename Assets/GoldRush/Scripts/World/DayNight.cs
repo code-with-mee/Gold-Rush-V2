@@ -62,6 +62,7 @@ namespace GoldRush
                 d.sky = new Material(skyboxAsset) { name = "Sky (runtime)" };
                 RenderSettings.skybox = d.sky;
             }
+            night = Save.Data.night; // the player's saved choice wins over the scene default
             d.value = d.target = night ? 1f : 0f;
             d.tints.AddRange(pendingTints);
             d.nightLights.AddRange(pendingLights);
@@ -81,6 +82,7 @@ namespace GoldRush
         {
             if (!I) return;
             I.target = night ? 1f : 0f;
+            if (Save.Data.night != night) { Save.Data.night = night; Save.Persist(); } // remembered everywhere
             if (instant) { I.value = I.target; I.ApplyNow(); }
             Changed?.Invoke(night);
         }

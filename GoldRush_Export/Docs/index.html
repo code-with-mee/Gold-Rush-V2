@@ -1,0 +1,220 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>GOLD RUSH – Unity tutorial</title>
+<meta name="description" content="Build a third-person 3D gold-collecting game in Unity 6, step by step, from an empty project.">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+<header class="site-header">
+  <a class="brand" href="index.html"><span class="brand-mark">GR</span>GOLD RUSH <small>Unity tutorial</small></a>
+  <nav class="header-links" aria-label="Quick links">
+    <a class="hide-sm" href="index.html">Course</a>
+    <a href="troubleshooting.html">Help</a>
+    <a href="glossary.html">Glossary</a>
+  </nav>
+</header>
+<div class="layout">
+<aside class="sidebar" aria-label="Site navigation">
+<h2>Start</h2><ul>
+<li><a href="index.html" aria-current="page"><span class="num">★</span><span class="label">Overview</span></a></li>
+</ul>
+<h2>Course</h2><ul>
+<li><a href="phase-00.html"><span class="num">0</span><span class="label">Create the project</span></a></li>
+<li><a href="phase-01.html"><span class="num">1</span><span class="label">The prefab kit</span></a></li>
+<li><a href="phase-02.html"><span class="num">2</span><span class="label">Level design</span></a></li>
+<li><a href="phase-03.html"><span class="num">3</span><span class="label">The player</span></a></li>
+<li><a href="phase-04.html"><span class="num">4</span><span class="label">The camera</span></a></li>
+<li><a href="phase-05.html"><span class="num">5</span><span class="label">Coins and the HUD</span></a></li>
+<li><a href="phase-06.html"><span class="num">6</span><span class="label">Exit gate, win and lose</span></a></li>
+<li><a href="phase-07.html"><span class="num">7</span><span class="label">Monsters</span></a></li>
+<li><a href="phase-08.html"><span class="num">8</span><span class="label">Power-ups and effects</span></a></li>
+<li><a href="phase-09.html"><span class="num">9</span><span class="label">Menu, levels, shop, save</span></a></li>
+<li><a href="phase-10.html"><span class="num">10</span><span class="label">Polish and build</span></a></li>
+</ul>
+<h2>Help</h2><ul>
+<li><a href="troubleshooting.html"><span class="num">?</span><span class="label">Troubleshooting</span></a></li>
+<li><a href="glossary.html"><span class="num">A–Z</span><span class="label">Glossary</span></a></li>
+<li><a href="exercises.html"><span class="num">✎</span><span class="label">Exercises</span></a></li>
+</ul>
+</aside>
+<main>
+<div class="content">
+<section class="hero">
+  <div>
+    <p class="eyebrow">Unity 6 tutorial · for beginners</p>
+    <h1>GOLD RUSH</h1>
+    <p class="lead">Build a 3D game from an empty Unity project, one step at a time. You run through a level as a small hero, collect all the gold, avoid the monsters and escape through the exit gate before the time runs out.</p>
+    <div class="actions">
+      <a class="btn" href="phase-00.html">Start with Phase 0 →</a>
+      <a class="btn secondary" href="#course">See the course map</a>
+    </div>
+  </div>
+  <img src="images/01_title.jpg" alt="The GOLD RUSH title screen">
+</section>
+
+<h2 id="build">What you will build</h2>
+<p>A complete third-person game for PC and Android. A starter package gives you the art, the materials and a kit of ready-made prefabs. You build the rest yourself: the level, the player, the camera, the scripts, the monsters and the menus.</p>
+<div class="shots">
+  <figure><img src="images/05_level1_play.jpg" alt="The hero in Level 1, with the coin counter, timer and the exit gate"><figcaption>Level 1: collect the gold. The HUD shows coins, hearts and the timer.</figcaption></figure>
+  <figure><img src="images/05b_level1_night.jpg" alt="Level 1 at night"><figcaption>Switch between day and night at any time.</figcaption></figure>
+  <figure><img src="images/06_gate_open.jpg" alt="The exit gate is open"><figcaption>All gold collected: the gate opens. Run!</figcaption></figure>
+  <figure><img src="images/07_win.jpg" alt="The Level Complete dialog with stars"><figcaption>Win the level and earn up to 3 stars.</figcaption></figure>
+</div>
+
+<h2 id="learn">What you will learn</h2>
+<ul class="learn">
+  <li>Work with prefabs and build a level from a ready-made kit</li>
+  <li>Set up a 3D character: import settings, an Animator Controller and a blend tree</li>
+  <li>Move the hero with a CharacterController and a third-person camera</li>
+  <li>Write small gameplay scripts in C#: coins, a game manager, an exit gate</li>
+  <li>Make monsters walk on a NavMesh with a simple state machine</li>
+  <li>Add power-ups, particles, sound and music</li>
+  <li>Build a main menu with Unity UI, save the game, and add more levels</li>
+  <li>Add touch controls and build the game for PC and Android</li>
+</ul>
+
+<h2 id="need">What you need</h2>
+<div class="two-col">
+  <div class="panel">
+    <h3>You need</h3>
+    <ul>
+      <li><b>Unity Hub</b> and <b>Unity 6000.6.10f1 or newer</b> (Unity 6.6).</li>
+      <li>The <b>starter package</b> <code>GoldRush_Phase00_Project.unitypackage</code> (in <code>GoldRush_Export/Packages/</code>): characters, sounds, icons, fonts, materials and the prefab kit.</li>
+      <li>The <b>Resources folder</b> <code>GoldRush_Export/Resources/</code>: the big helper scripts (<code>Scripts/Helpers/</code>) and the final scripts (<code>Scripts/Final/</code>) that you import in later phases.</li>
+      <li>Basic C# and a little Unity editor practice.</li>
+      <li>About <b>11 sessions</b>: one phase per session. Some phases are shorter, some longer.</li>
+    </ul>
+  </div>
+  <div class="panel">
+    <h3>Start</h3>
+    <ol class="steps-start">
+      <li>Open <a href="phase-00.html">Phase 0</a>.</li>
+      <li>Make a new <b>Universal 3D</b> project called <b>GoldRush</b>.</li>
+      <li>Import the starter package, as the guide shows.</li>
+    </ol>
+    <p>You start from an <b>empty project</b>. Do not import the packages of later phases into it.</p>
+  </div>
+</div>
+
+<h2 id="how">How to use this course</h2>
+<ul>
+  <li><b>Follow the phases in order.</b> Each phase starts where the previous one ends.</li>
+  <li><b>Do one step at a time.</b> Each step has the clicks to do and the code to type or import.</li>
+  <li><b>Every phase ends with “▶ Press Play”.</b> Check that you see what the guide says before you go on.</li>
+  <li><b>Stuck?</b> Look at the “Common problems” table at the end of the phase, then the <a href="troubleshooting.html">Troubleshooting</a> page.</li>
+  <li><b>Still stuck?</b> Every phase has a <b>checkpoint package</b> in <code>GoldRush_Export/Packages/</code>. Make a new, empty project, import the package of the <b>previous</b> phase (<b>Assets → Import Package → Custom Package…</b>) and continue from there.</li>
+</ul>
+<div class="tip">New word? Look it up in the <a href="glossary.html">Glossary</a>. Finished the course? Try the <a href="exercises.html">Exercises</a>.</div>
+
+<h2 id="course">Course map</h2>
+<p>11 phases, from an empty project to the complete game.</p>
+<div class="cards">
+  <article class="card">
+    <span class="tag">PHASE 0</span>
+    <h3><a href="phase-00.html">Create the project</a></h3>
+    <p>A new Universal 3D project with the right packages, the input setting and the starter package.</p>
+    <div class="links"><a href="phase-00.html">Read guide</a></div>
+  </article>
+  <article class="card">
+    <span class="tag">PHASE 1</span>
+    <h3><a href="phase-01.html">The prefab kit</a></h3>
+    <p>A tour of the ready-made kit: what a prefab is, Prefab Mode, instances and overrides.</p>
+    <div class="links"><a href="phase-01.html">Read guide</a></div>
+  </article>
+  <article class="card">
+    <span class="tag">PHASE 2</span>
+    <h3><a href="phase-02.html">Level design</a></h3>
+    <div class="card-img"><img src="images/04_level1_start.jpg" alt=""></div>
+    <p>Level 1 by hand: floor, walls, lamps, sun, sky, fog and the markers.</p>
+    <div class="links"><a href="phase-02.html">Read guide</a></div>
+  </article>
+  <article class="card">
+    <span class="tag">PHASE 3</span>
+    <h3><a href="phase-03.html">The player</a></h3>
+    <p>The hero with his Animator Controller. He walks with WASD and sprints with Shift.</p>
+    <div class="links"><a href="phase-03.html">Read guide</a></div>
+  </article>
+  <article class="card">
+    <span class="tag">PHASE 4</span>
+    <h3><a href="phase-04.html">The camera</a></h3>
+    <p>A smooth third-person camera with mouse look that never looks through walls.</p>
+    <div class="links"><a href="phase-04.html">Read guide</a></div>
+  </article>
+  <article class="card">
+    <span class="tag">PHASE 5</span>
+    <h3><a href="phase-05.html">Coins and the HUD</a></h3>
+    <div class="card-img"><img src="images/05_level1_play.jpg" alt=""></div>
+    <p>Spinning coins, the pickup sound, the GameManager and the coin counter.</p>
+    <div class="links"><a href="phase-05.html">Read guide</a></div>
+  </article>
+  <article class="card">
+    <span class="tag">PHASE 6</span>
+    <h3><a href="phase-06.html">Exit gate, win and lose</a></h3>
+    <div class="card-img"><img src="images/06_gate_open.jpg" alt=""><img src="images/07_win.jpg" alt=""></div>
+    <p>The exit gate script, the timer, stars and the win and lose dialogs.</p>
+    <div class="links"><a href="phase-06.html">Read guide</a></div>
+  </article>
+  <article class="card">
+    <span class="tag">PHASE 7</span>
+    <h3><a href="phase-07.html">Monsters</a></h3>
+    <div class="card-img"><img src="images/08_level2.jpg" alt=""><img src="images/10_lose.jpg" alt=""></div>
+    <p>A NavMesh and three monsters that patrol, chase and search. Hearts for the hero.</p>
+    <div class="links"><a href="phase-07.html">Read guide</a></div>
+  </article>
+  <article class="card">
+    <span class="tag">PHASE 8</span>
+    <h3><a href="phase-08.html">Power-ups and effects</a></h3>
+    <p>SPEED, GHOST and MAGNET power-ups, particles and the arrow to the gate.</p>
+    <div class="links"><a href="phase-08.html">Read guide</a></div>
+  </article>
+  <article class="card">
+    <span class="tag">PHASE 9</span>
+    <h3><a href="phase-09.html">Menu, levels, shop, save</a></h3>
+    <div class="card-img"><img src="images/02_levels.jpg" alt=""><img src="images/03_shop.jpg" alt=""></div>
+    <p>The main menu, level select, shop, saving, and Levels 2–4.</p>
+    <div class="links"><a href="phase-09.html">Read guide</a></div>
+  </article>
+  <article class="card">
+    <span class="tag">PHASE 10</span>
+    <h3><a href="phase-10.html">Polish and build</a></h3>
+    <div class="card-img"><img src="images/05b_level1_night.jpg" alt=""><img src="images/12_daily.jpg" alt=""></div>
+    <p>Day and night, touch controls, music, final checks and a build for PC and Android.</p>
+    <div class="links"><a href="phase-10.html">Read guide</a></div>
+  </article>
+  <article class="card">
+    <span class="tag">HELP AND PRACTICE</span>
+    <h3><a href="troubleshooting.html">Troubleshooting, glossary, exercises</a></h3>
+    <p>Something does not work? See <a href="troubleshooting.html">Troubleshooting</a>. New word? See the <a href="glossary.html">Glossary</a>. Done? Try the <a href="exercises.html">Exercises</a>.</p>
+  </article>
+</div>
+
+<h2 id="rules">Game rules</h2>
+<ul>
+  <li>Collect <b>all the gold</b> in the level. Then the <b>exit gate</b> opens.</li>
+  <li>Walk onto the green pad in front of the gate to win.</li>
+  <li>Monsters patrol the level. If one catches you, you lose a heart. No hearts left: you lose.</li>
+  <li>Stars: <b>★ 1</b> for finishing, <b>★ 2</b> for beating the par time, <b>★ 3</b> for not being hit.</li>
+  <li>You earn gold for coins and stars. Spend it in the shop on colours and hats.</li>
+  <li>Power-ups: <b>SPEED</b> (run faster), <b>GHOST</b> (monsters can't see you), <b>MAGNET</b> (gold flies to you).</li>
+  <li>Controls: <kbd>WASD</kbd> move, mouse look, <kbd>Shift</kbd> sprint, <kbd>Esc</kbd> pause, <kbd>N</kbd> day/night. On a phone: left half moves, right half looks.</li>
+</ul>
+
+<h2 id="credits">Credits</h2>
+<ul>
+  <li>Characters: <b>Quaternius</b> – CC0 (free to use)</li>
+  <li>Font: <b>Poppins</b> – SIL Open Font License</li>
+  <li>Icons: <b>Material Icons</b> by Google – Apache License 2.0</li>
+</ul>
+
+<nav class="pager" aria-label="Previous and next page">
+<a class="next" href="phase-00.html"><small>Next →</small>Phase 0: Create the project</a>
+</nav>
+<footer class="site-footer">GOLD RUSH – a Unity 6 tutorial project. Characters: Quaternius (CC0). Font: Poppins (SIL Open Font License). Icons: Material Icons by Google (Apache 2.0).</footer>
+</div>
+</main>
+</div>
+</body>
+</html>

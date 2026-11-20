@@ -26,7 +26,7 @@
 </ul>
 <h2>Course</h2><ul>
 <li><a href="phase-00.html"><span class="num">0</span><span class="label">Create the project</span></a></li>
-<li><a href="phase-01.html"><span class="num">1</span><span class="label">Materials and prefabs</span></a></li>
+<li><a href="phase-01.html"><span class="num">1</span><span class="label">The prefab kit</span></a></li>
 <li><a href="phase-02.html" aria-current="page"><span class="num">2</span><span class="label">Level design</span></a></li>
 <li><a href="phase-03.html"><span class="num">3</span><span class="label">The player</span></a></li>
 <li><a href="phase-04.html"><span class="num">4</span><span class="label">The camera</span></a></li>
@@ -40,6 +40,7 @@
 <h2>Help</h2><ul>
 <li><a href="troubleshooting.html"><span class="num">?</span><span class="label">Troubleshooting</span></a></li>
 <li><a href="glossary.html"><span class="num">A–Z</span><span class="label">Glossary</span></a></li>
+<li><a href="exercises.html"><span class="num">✎</span><span class="label">Exercises</span></a></li>
 </ul>
 </aside>
 <main>
@@ -74,7 +75,7 @@
 <!-- ======================================================= 1 -->
 <h2 id="step-1"><span class="step">1</span>What you need</h2>
 <ul>
-  <li>The project from <a href="phase-01.html">Phase 1</a> (or import <code>GoldRush_Phase01_Prefabs.unitypackage</code>). You need the prefabs in <code>Prefabs/Level</code>, the <code>M_</code> materials and <code>GR_SunsetSky</code>.</li>
+  <li>The project from <a href="phase-01.html">Phase 1</a> (or import <code>GoldRush_Phase01_Prefabs.unitypackage</code>). You need the kit in <code>Prefabs/Level</code> and the sky material <code>GR_SunsetSky</code> (both from the starter package).</li>
   <li>No new packages. No scripts in this phase.</li>
 </ul>
 
@@ -145,14 +146,10 @@
 <!-- ======================================================= 6 -->
 <h2 id="step-6"><span class="step">6</span>The floor</h2>
 <ol>
-  <li>Right-click <code>Static/Floor</code> → <b>3D Object → Cube</b>. Name it <code>Ground</code>.</li>
-  <li>Set <b>Position</b> <code>0, -0.3, 0</code> and <b>Scale</b> <code>40, 0.6, 40</code>. The top face is now exactly at <code>Y = 0</code>.</li>
-  <li>Drag <code>M_Floor</code> onto it. You see 2 m tiles.</li>
-  <li>Right-click <code>Scenery</code> → <b>3D Object → Plane</b>. Name it <code>OuterGround</code>.</li>
-  <li>Set <b>Position</b> <code>0, -0.6, 0</code> and <b>Scale</b> <code>48, 1, 48</code>. (A plane is 10 m, so this is 480 m wide.)</li>
-  <li>Drag <code>M_OuterGround</code> onto it.</li>
-  <li>On <code>OuterGround</code>, remove the <b>Mesh Collider</b> (<b>⋮ → Remove Component</b>). Nobody walks there.</li>
+  <li>Drag <code>Prefabs/Level/Floor_40m</code> onto <code>Static/Floor</code> in the Hierarchy. Set <b>Position</b> <code>0, 0, 0</code>.</li>
+  <li>Drag <code>Prefabs/Level/OuterGround</code> onto <code>Scenery</code>. Set <b>Position</b> <code>0, 0, 0</code> (the prefab already sits 0.6 m lower inside).</li>
 </ol>
+<p>The floor is 40 × 40 m with 2 m tiles. Its top is at <code>Y = 0</code> and it is solid, so the hero can walk on it. </p>
 <p>The floor stands 0.6 m above the darker outer ground, like a stage. The fog (step 14) hides the far edge of the outer ground.</p>
 
 <!-- ======================================================= 7 -->
@@ -230,7 +227,7 @@
   <tr><td>13</td><td><code>Barrier_Orange</code></td><td><code>-2.5, 0, -5</code></td><td>0</td><td>In front of the start</td></tr>
   <tr><td>14</td><td><code>AccentBlock_Red</code></td><td><code>10.5, 0, -10</code></td><td>0</td><td></td></tr>
   <tr><td>15</td><td><code>AccentBlock_Teal</code></td><td><code>12, 0, -3.5</code></td><td>0</td><td></td></tr>
-  <tr><td>16</td><td><code>AccentBlock_Orange</code></td><td><code>10.5, 0, 12</code></td><td>0</td><td></td></tr>
+  <tr><td>16</td><td><code>Terminal</code></td><td><code>10.5, 0, 12</code></td><td>90</td><td>Screen faces the middle</td></tr>
   <tr><td>17</td><td><code>AccentBlock_Red</code></td><td><code>-7.5, 0, 7</code></td><td>0</td><td></td></tr>
 </table></div>
 <div class="tip">This layout is close to the real Level 1. You can change it later, but keep a free path from the start (south) to the gate (north), and keep obstacles at least 1 m away from the walls so monsters can walk around them.</div>
@@ -342,7 +339,7 @@
 <p><b>You should see:</b></p>
 <ul>
   <li>A light grid floor with walls on all four sides and an opening in the north wall.</li>
-  <li>8 lamp posts, pillars with cyan bands, grey blocks and red, orange and teal accent blocks.</li>
+  <li>8 lamp posts, pillars with cyan bands, grey blocks, red and teal accent blocks, an orange barrier and a terminal.</li>
   <li>A warm sunset sky, soft shadows and fog in the distance.</li>
   <li>The marker icons (blue, yellow, green, red, purple) in the Scene view.</li>
   <li>No red errors in the Console.</li>
@@ -356,13 +353,13 @@
   <tr><td>A wall piece is in the wrong place, far away.</td><td>It is not a child of its wall group, so its position is in world space. Drag it onto <code>WallSouth</code> (or the right group) and type the local position again.</td></tr>
   <tr><td>The east/west walls run the wrong way.</td><td>Set the <b>group</b> rotation (<code>WallEast</code>, <code>WallWest</code>) to <code>0, 90, 0</code>, not the children.</td></tr>
   <tr><td>Gaps at the corners.</td><td>Add the 4 corner pillars at <code>±16.5, 0, ±16.5</code>.</td></tr>
-  <tr><td>Blocks float or sink into the floor.</td><td>Y must be <code>0</code> (only the stacked block #10 has Y <code>2</code>). The floor cube must be at Y <code>-0.3</code> with scale Y <code>0.6</code>.</td></tr>
-  <tr><td>The floor has no grid, or giant tiles.</td><td>Check <code>M_Floor</code>: grid texture in Base Map, Tiling <code>20, 20</code>.</td></tr>
+  <tr><td>Blocks float or sink into the floor.</td><td>Y must be <code>0</code> (only the stacked block #10 has Y <code>2</code>). <code>Floor_40m</code> must be at <code>0, 0, 0</code>.</td></tr>
+  <tr><td>The floor has no grid, or giant tiles.</td><td>Use the <code>Floor_40m</code> prefab, not a plain cube. If <code>M_Floor</code> was changed, import the starter package again and tick only <code>Materials</code>.</td></tr>
   <tr><td>The sky is grey/blue, not sunset.</td><td>Lighting → Environment → Skybox Material must be <code>GR_SunsetSky</code>.</td></tr>
   <tr><td>No fog.</td><td>Lighting → Environment → Other Settings → Fog ticked, Mode Linear, Start 35, End 120. In the Scene view, turn on Fog in the effects menu.</td></tr>
   <tr><td>Everything is very dark.</td><td>Check the Sun Intensity (<code>1.5</code>) and the gradient ambient colours.</td></tr>
   <tr><td>I cannot see the markers.</td><td>Give them an icon (step 12). Check that <b>Gizmos</b> is on in the Scene view toolbar.</td></tr>
-  <tr><td>Game view: "No cameras rendering".</td><td>You deleted the Main Camera. Add one: <b>GameObject → Camera</b>, tag it <b>MainCamera</b>, and set it as in step 16.</td></tr>
+  <tr><td>Game view: "No cameras rendering".</td><td>You deleted the Main Camera. Make a new scene camera with <b>GameObject → Camera</b>, tag it <b>MainCamera</b>, and set it as in step 16.</td></tr>
   <tr><td>Grid snapping does nothing.</td><td>It only works with the Move tool in <b>Global</b> handle mode. Or type the numbers in the Inspector.</td></tr>
 </table></div>
 <p>More fixes are on the <a href="troubleshooting.html">Troubleshooting</a> page. New words are in the <a href="glossary.html">Glossary</a>.</p>
@@ -370,7 +367,7 @@
 <p><b>Next:</b> in <a href="phase-03.html">Phase 3</a> the hero comes alive: animations, movement and sprint.</p>
 
 <nav class="pager" aria-label="Previous and next page">
-<a class="prev" href="phase-01.html"><small>← Previous</small>Phase 1: Materials and prefabs</a>
+<a class="prev" href="phase-01.html"><small>← Previous</small>Phase 1: The prefab kit</a>
 <a class="next" href="phase-03.html"><small>Next →</small>Phase 3: The player</a>
 </nav>
 <footer class="site-footer">GOLD RUSH – a Unity 6 tutorial project. Characters: Quaternius (CC0). Font: Poppins (SIL Open Font License). Icons: Material Icons by Google (Apache 2.0).</footer>

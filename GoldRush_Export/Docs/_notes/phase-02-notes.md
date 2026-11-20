@@ -39,14 +39,16 @@ y -0.6 (tiling 120), 8 lamps at (±14.4,±14.4), (±14.4,0), (±4.5,-14.4), floo
 18 rim blocks (scenery), structures/obstacles below. Spawn (0,0,-9) yaw 0.
 
 Guide simplifications:
-- Floor = one Cube (40×0.6×40 at y -0.3, M_Floor tiling 20) instead of Quad + plinth + GroundCollider.
-- OuterGround = Plane scale 48 (480 m) at y -0.6, Mesh Collider removed.
+- User decision: everything is placed from the provided kit (no primitives, no materials). Only empties and one
+  Box Collider (GateBlocker) are created by hand.
+- Floor = kit prefab `Floor_40m` at (0,0,0) under `Static/Floor`; `OuterGround` kit prefab at (0,0,0) under
+  `Scenery` (its quad sits at local y -0.6). See phase-01-notes "Starter package contents".
 - Walls: groups `WallSouth/North/East/West` of Wall_8m/Wall_4m prefabs at local x ±4, ±12 (north: Wall_8m ±12,
   Wall_4m ±6). **Gate opening is 8 m (x -4..4) instead of 5.5 m**; the ExitGate frame (posts at ±3.4, 1.3 wide,
   covering 2.75..4.05) fills the extra width. GateBlocker 8×5×1 at (0,2.5,17.25).
 - Corners: Pillar prefab (1×3×1) instead of 1.7×3.2×1.7 blocks. No pilasters.
 - Lamps rounded to ±14.5.
-- Obstacles mapped to the phase 1 prefabs (17 objects):
+- Obstacles mapped to the phase 1 prefabs (17 objects, all kit prefabs):
 
 | Real object (pos, yaw) | Guide |
 |---|---|
@@ -59,9 +61,9 @@ Guide simplifications:
 | Barrier (-2.5,0,-5) length 4 | Barrier_Orange (3 m) same pos |
 | Block (10.5,0,-10) 1.5×2.5×3 | AccentBlock_Red (10.5,0,-10) |
 | Block (12,0,-3.5) 1.47 | AccentBlock_Teal (12,0,-3.5) |
-| Terminal (10.5,0,12) | AccentBlock_Orange (10.5,0,12) |
+| Terminal (10.5,0,12) yaw 90 | Terminal (10.5,0,12) rot Y 90 |
 | Block (-7.5,0,7) 1.27 | AccentBlock_Red (-7.5,0,7) |
-| FloorStrips, FloorPads, Towers, Rim blocks | not built |
+| FloorStrips, FloorPads, Towers, Rim blocks | not placed (FloorPad_Cyan is in the kit; optional) |
 
 - Markers (real → guide, rounded to 0.5 m, y 0.08 → 0): CoinSpot 1 (5.12,11.32)→(5,11.5); 2 (-6.49,-12.5)→
   (-6.5,-12.5); 3 (14.27,-7.36)→(14.5,-7.5); 4 (-7.35,0)→(-7.5,0); 5 (-14.39,12.74)→(-14.5,12.5);

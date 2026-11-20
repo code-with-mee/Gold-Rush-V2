@@ -1,22 +1,80 @@
-# Phase 1 notes: Materials and prefabs
+# Phase 1 notes: The prefab kit
+
+User decision: prefabs and materials are PROVIDED in the starter package `GoldRush_Phase00_Project.unitypackage`.
+Phase 1 is a short tour only (no material creation, no cube building). The guide shows the kit table with
+thumbnail placeholders, Prefab Mode (LampPost), one optional colour change (M_BlockTop → yellow → back to EDF0F7),
+overrides/revert on a Block_1x1x1 instance.
+
+## Starter package contents (for the code owner)
+Build it from the repo assets, renaming the materials (mapping below). **No script components** may be on any
+prefab (package is imported before scripts exist): strip `NightLight`, `DayNightTint`, `ExitGate`, `Coin`,
+`PowerUp`, `PlayerSpawn`, `CoinSpot`, `MonsterSpawn`, `PowerUpSpot`. Keep colliders and lights.
+
+### Art / Resources
+- `Art/Characters/{Hero,Monsters,Licenses}` (Hero.fbx, Slime.fbx, Ghost.fbx, MushroomKing.fbx, Atlas_Monsters.png).
+  Default import settings are fine (phase 3/7 change them by hand) – or ship CharacterImportRules results; the
+  phase 3/7 writers decide.
+- `Art/Audio/*.wav`, `Art/UI/*.png` (shapes), `Art/Textures/grid.png` (+ badge).
+- `Resources/Icons/*.png` with Sprite import settings in the .meta, `Resources/Fonts/Poppins-*.ttf`.
+
+### Materials (`Assets/GoldRush/Materials/`)
+| Name | What it is |
+|---|---|
+| M_Floor | grid floor, tiling 20 (Level1, 40 m floor) |
+| M_OuterGround | dark grid ground outside, tiling 120 |
+| M_Block / M_BlockTop / M_Trim | grey block sides / lighter top slab / dark feet, poles, plinth |
+| M_Red, M_RedTop, M_Orange, M_OrangeTop, M_Teal, M_TealTop | accent block bodies and tops |
+| M_GlowCyan, M_GlowOrange, M_GlowLamp, M_GlowRed, M_GlowGreen | emissive glows (bands, strips, lamp caps, gate lights) |
+| M_GateGlow, M_GateBeam | transparent green gate disc / light column (repo Cube 4 / Cube 5) |
+| M_Gold, M_GoldDark | coin outer ring / centre (from Coin.cs values; not in repo as assets) |
+| M_PowerSpeed, M_PowerGhost, M_PowerMagnet (+ shell variants) | power-up orb materials from PowerUp.cs (glow = Emissive(c,c,2.2,0.6,0.1), shell = Transparent(c, a 0.28, 0.9)); c = (0.2,0.9,1) / (0.76,0.56,1) / (1,0.26,0.24). Names suggested; not referenced in my guides |
+| M_Tower, M_TowerTop, M_Pad | only if Terminal/FloorPad/scenery need them (M_Pad = FloorPad plate) |
+| GR_Lit, GR_LitEmissive, GR_LitTransparent, GR_Particle, GR_SunsetSky | base materials for code + sky (as GoldRushSetup makes them; already in the repo under these names) |
+| (texture) tex_grid → use Art/Textures/grid.png | grid texture used by M_Floor, M_OuterGround |
+
+Duplicate repo materials (several "Cube n"/"FloorStrip n" with slightly different glow strength) should be merged
+into the single M_Glow* names; the guides only name the materials in the table above.
+
+### Prefabs/Level (the kit; guide table in phase 1 step 3)
+| Prefab | Size | Source |
+|---|---|---|
+| Floor_40m | 40×40, top at Y 0, solid | NEW: from `Props.GridPlatform(40, 0.6)` + GroundCollider (box 34×1×34 at y -0.5, or a box over the whole 40×40) – repo Level1 `Static/Floor/Platform` + `GroundCollider` |
+| OuterGround | 480 m quad at local y -0.6, no collider | NEW: from repo Level1 `Scenery/OuterGround` (pivot at 0, child/quad at -0.6) |
+| Block_1x1x1, Block_2x2x2, Block_4x1x2 | as named | repo prefabs |
+| AccentBlock_Red / Orange / Teal | 1.5 cube | repo prefabs |
+| Wall_4m, Wall_8m | 4/8 × 2.3 × 1, length along X | repo prefabs |
+| Pillar | 1×3×1, cyan band | repo |
+| Barrier_Orange | 3 × 0.95 × 0.6 | repo |
+| LampPost | point light 2.4 / range 9 / no shadows | repo, **remove NightLight** (phase 10 adds it) |
+| Terminal | 1.1 × 1.5 × 0.75, screen on local -Z | repo |
+| FloorPad_Cyan | 3 m, no collider | repo |
+
+Phase 1 step 6 describes LampPost children generically (dark base and pole, glowing cap, hat, `LampLight`), so
+the repo child names ("Cube") are fine; nicer names (Base/Pole/Cap/Hat) welcome. Step 8 uses `Block_1x1x1/Top`
+(repo name is `Top`, OK).
+
+### Prefabs/Gameplay (visual models only, no scripts)
+| Prefab | From |
+|---|---|
+| Coin | `Coin.Create` visual: root + `Visual` child (cylinder 0.72×0.06 M_Gold, cylinder 0.5×0.085 M_GoldDark, 0.2 cube star rotated 45° on Z, all rotated 90° on X, no colliders). Phase 5 adds the Coin script. |
+| ExitGate | repo `Prefabs/Level/Gameplay/ExitGate.prefab` without the ExitGate component (keep children Door, Glow, GlowLight, Text, MarkerAnchor, strips). Phase 6 adds the script and wires `door/glow/glowRing/markerAnchor/glowLight/text/strips/greenStrip` (= M_GlowGreen). |
+| PowerUp_Speed / _Ghost / _Magnet | `PowerUp.Create` visual per type (orb shell sphere 0.95 + glow core etc.). Phase 8 adds the script. Note: repo `Prefabs/Level/Gameplay/PowerUp_*.prefab` are MARKERS (PowerUpSpot) – different thing; avoid the name clash (markers in my guide are plain empties named `PowerUp Magnet`). |
 
 ## Code changes needed
-1. **Coins use runtime materials, not M_Gold.** `World/Coin.cs` `Coin.Create` builds its materials with
-   `Mats.Emissive(...)` at runtime, and `GameManager.Build()` calls `Coin.Create` for every CoinSpot. So the
-   hand-made `M_Gold` / `M_GoldDark` (phase 1 step 6) are only used if phase 5 makes a Coin prefab.
-   Suggested change (owner/phase 5 decides): give `GameAssets` a `public GameObject coinPrefab;` (or
-   `Material gold, goldInner;`) and let `Coin.Create` use it when set, falling back to the current code.
-   Without the change the guide is still correct (materials exist, game works), only M_Gold is unused.
-2. **GameAssets has no `[CreateAssetMenu]`** (`Core/GameAssets.cs` line 52). The GR_ base materials made in phase 1
-   step 7 must be dragged into `GoldRushAssets.asset` (fields `lit`, `litEmissive`, `litTransparent`, `particle`,
-   `skybox`). Add `[CreateAssetMenu(fileName = "GoldRushAssets", menuName = "Gold Rush/Game Assets")]` so
-   students can create it by hand (in `Assets/GoldRush/Resources/`) in the phase that first needs it
-   (`Mats.*` is used by Coin/ExitGate/FX; `EnvironmentSetup` reads `skybox`).
-3. **ExitGate** (`World/ExitGate.cs`) builds itself in code via `Props.*` (runtime-cloned materials). If phase 6
-   builds a gate prefab by hand, its serialized fields (`strips`, `greenStrip`, `door`, `glow`...) must be filled;
-   `greenStrip` = `M_GlowGreen`, strips use `M_GlowRed`. Two transparent gate materials exist in the repo
-   (`Cube 4.mat` = (0.3,1,0.45,a 0.3) smooth 0.3 = floor disc, `Cube 5.mat` = (0.4,1,0.5,a 0.07) smooth 0.1 = light
-   column). They were NOT made in phase 1; phase 6 can make them (`M_GateGlow`, `M_GateBeam`) from GR_LitTransparent.
+1. **Runtime-built objects vs. provided visuals.** `GameManager.Build()` calls `Coin.Create`, `PowerUp.Create`
+   (and the generated level uses `ExitGate.Create`); these build their own meshes/materials in code. For the
+   provided visual prefabs to be used, the code needs a prefab path: e.g. `GameAssets.coinPrefab`,
+   `GameAssets.powerUpPrefabs[3]`, and `Coin.Create`/`PowerUp.Create` instantiate the prefab when set (fallback:
+   current code). ExitGate is found in the scene (`GetComponentInChildren<ExitGate>`), so a scene gate prefab
+   already works once the component is added and its serialized fields are filled (phase 6).
+2. **GameAssets has no `[CreateAssetMenu]`** (`Core/GameAssets.cs` line 52). Add
+   `[CreateAssetMenu(fileName = "GoldRushAssets", menuName = "Gold Rush/Game Assets")]` so students can create
+   `Resources/GoldRushAssets.asset` and drag in GR_Lit, GR_LitEmissive, GR_LitTransparent, GR_Particle,
+   GR_SunsetSky (fields lit, litEmissive, litTransparent, particle, skybox). Or ship it in the starter package
+   (then it must not reference scripts that do not exist yet – it IS a script asset, so it cannot be in the phase 0
+   package before `GameAssets.cs` exists; ship it with the phase that adds GameAssets.cs).
+3. **Rename the repo material assets** per the mapping below (owner plans to do this) and point the repo
+   prefabs/scenes at the merged M_Glow* materials.
 4. **Day/night colours (phase 10).** In the repo the level materials are tinted by a `DayNightTint` on the level
    root (entries: material, day, night) and saved in `Resources/DayNightPalette.asset`. Hand-made M_ materials
    need entries. Night colours from `Props.cs`:
@@ -69,27 +127,13 @@ from the .mat files and `Props.cs`.
 HDR intensity in the Unity picker is in stops: value = colour × 2^intensity, so ×2 = 1, ×2.6 ≈ 1.38 (guide: 1.4).
 Glow base colour = Lerp(c, white, 0.25), as `Props.Glow` does.
 
-## Prefabs built in phase 1 (folder `Assets/GoldRush/Prefabs/Level/`, repo uses `Prefabs/Level/Blocks/`)
-Block_1x1x1, Block_2x2x2, Block_4x1x2, AccentBlock_Red/Orange/Teal (1.5 m), Wall_4m, Wall_8m, Pillar,
-Barrier_Orange, LampPost. Sizes/children copied from the real prefabs (`Props.Block` cap 0.14, inset ≤0.09).
-Simplifications vs. repo:
-- **Wall_4m / Wall_8m**: real ones are a "Wall" root with Block children rotated yaw 90 (Body scale 1×2.16×4);
-  the guide uses one unrotated Body (4 or 8 × 2.16 × 1) + Top. Same look, except Wall_8m has no middle seam.
-- Barrier_Orange top scale 2.952×0.14×0.552 rounded to 2.95×0.14×0.55.
-- Child names: repo uses "Cube" for trim/glow parts; the guide uses Base, Band, FootLeft/FootRight, Pole, Cap, Hat.
-- Not built: Terminal, FloorPad_Cyan (decor), and the Gameplay prefabs (ExitGate, PlayerSpawn, CoinSpot,
-  Monster_*, PowerUp_*): those belong to phases 2/5–8.
-- Lamp light: Point, colour (1,0.88,0.7) = FFE0B2, intensity 2.4, range 9, no shadows, at y 2.9 (as repo).
-  No NightLight yet (phase 10).
-
 ## Phase versions of scripts
 None (no scripts in phase 1).
 
 ## Screenshot placeholders
-1. Inspector of M_Floor (URP Lit, grid texture in Base Map, Tiling 20 × 20, Smoothness 0.35)
-2. HDR colour picker for Emission with hex 4CD9FF and Intensity 1
-3. Project window, Materials folder with all M_ materials as coloured balls
-4. Hierarchy Block_1x1x1 with Body and Top, Scene view of the block
-5. Prefab Mode of Block_2x2x2 (blue background, < arrow at the top of the Hierarchy)
-6. Pillar and Barrier_Orange side by side in the Scene view
-7. Sandbox scene with the hero, three blocks, a wall, a pillar and a lamp post
+1–15. Thumbnail of each level-kit prefab (phase 1 step 3 table): Floor_40m, OuterGround, Block_1x1x1,
+   Block_2x2x2, Block_4x1x2, AccentBlock_Red, AccentBlock_Orange, AccentBlock_Teal, Wall_4m, Wall_8m, Pillar,
+   Barrier_Orange, LampPost, Terminal, FloorPad_Cyan
+16–20. Thumbnail of each gameplay model (step 4 table): Coin, ExitGate, PowerUp_Speed, PowerUp_Ghost, PowerUp_Magnet
+21. Sandbox scene with the hero, three blocks, a wall, a pillar and a lamp post
+22. Prefab Mode of LampPost (blue background, < arrow at the top of the Hierarchy, LampLight selected)

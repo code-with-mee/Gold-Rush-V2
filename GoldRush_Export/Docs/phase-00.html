@@ -23,7 +23,7 @@
 </ul>
 <h2>Course</h2><ul>
 <li><a href="phase-00.html" aria-current="page"><span class="num">0</span><span class="label">Create the project</span></a></li>
-<li><a href="phase-01.html"><span class="num">1</span><span class="label">Materials and prefabs</span></a></li>
+<li><a href="phase-01.html"><span class="num">1</span><span class="label">The prefab kit</span></a></li>
 <li><a href="phase-02.html"><span class="num">2</span><span class="label">Level design</span></a></li>
 <li><a href="phase-03.html"><span class="num">3</span><span class="label">The player</span></a></li>
 <li><a href="phase-04.html"><span class="num">4</span><span class="label">The camera</span></a></li>
@@ -37,14 +37,15 @@
 <h2>Help</h2><ul>
 <li><a href="troubleshooting.html"><span class="num">?</span><span class="label">Troubleshooting</span></a></li>
 <li><a href="glossary.html"><span class="num">A–Z</span><span class="label">Glossary</span></a></li>
+<li><a href="exercises.html"><span class="num">✎</span><span class="label">Exercises</span></a></li>
 </ul>
 </aside>
 <main>
 <div class="content">
 <p class="eyebrow">GOLD RUSH · Phase 0</p>
 <h1>Create the project</h1>
-<p class="lead">You make a new, empty Unity project called <b>GoldRush</b>. You check the packages the game needs, set the input mode, create the folders and import the art (characters, sounds, icons, fonts, textures). At the end the hero model stands in a test scene.</p>
-<div class="meta"><span><b>Checkpoint package</b><code>GoldRush_Phase00_Project.unitypackage</code></span><span><b>Scene</b><code>Assets/GoldRush/Scenes/Sandbox.unity</code></span><a class="btn secondary" href="phase-00.pdf">Download PDF</a></div>
+<p class="lead">You make a new, empty Unity project called <b>GoldRush</b>. You check the packages the game needs and set the input mode. Then you import the <b>starter package</b>: it gives you the art (characters, sounds, icons, fonts), all materials and the ready-made level prefabs. At the end the hero model stands in a test scene.</p>
+<div class="meta"><span><b>Starter / checkpoint package</b><code>GoldRush_Phase00_Project.unitypackage</code></span><span><b>Scene</b><code>Assets/GoldRush/Scenes/Sandbox.unity</code></span><a class="btn secondary" href="phase-00.pdf">Download PDF</a></div>
 
 <nav class="toc" aria-label="Steps on this page"><strong>Steps on this page</strong><ol>
   <li><a href="#step-1">What you need</a></li>
@@ -53,30 +54,18 @@
   <li><a href="#step-4">Check the packages</a></li>
   <li><a href="#step-5">Install AI Navigation</a></li>
   <li><a href="#step-6">Set Active Input Handling to Both</a></li>
-  <li><a href="#step-7">Create the folders</a></li>
-  <li><a href="#step-8">Import the characters</a></li>
-  <li><a href="#step-9">Import sounds, textures and UI files</a></li>
-  <li><a href="#step-10">Make the icons sprites</a></li>
-  <li><a href="#step-11">Make a test scene</a></li>
-  <li><a href="#step-12">Put the hero in the scene</a></li>
-  <li><a href="#step-13">▶ Press Play</a></li>
-  <li><a href="#step-14">Common problems</a></li>
+  <li><a href="#step-7">Import the starter package</a></li>
+  <li><a href="#step-8">Add the other folders</a></li>
+  <li><a href="#step-9">Make a test scene with the hero</a></li>
+  <li><a href="#step-10">▶ Press Play</a></li>
+  <li><a href="#step-11">Common problems</a></li>
 </ol></nav>
 
 <!-- ======================================================= 1 -->
 <h2 id="step-1"><span class="step">1</span>What you need</h2>
 <ul>
   <li><b>Unity Hub</b> and <b>Unity 6000.6.10f1</b> or newer (Unity 6.6). The course was made with 6000.6.10f1.</li>
-  <li>The <b>Resources pack</b>: the folder <code>GoldRush_Export/Resources/</code>. It has these folders:
-    <div class="table-wrap"><table>
-      <tr><th>Folder</th><th>What is inside</th></tr>
-      <tr><td><code>Characters/</code></td><td><code>Hero.fbx</code>, <code>Slime.fbx</code>, <code>Ghost.fbx</code>, <code>MushroomKing.fbx</code> (3D models by Quaternius, free to use, CC0) with their animations, the monster texture, and the licence files.</td></tr>
-      <tr><td><code>Audio/</code></td><td>Sound effects and music (<code>.wav</code>): coin, step, hit, win, lose, …</td></tr>
-      <tr><td><code>UI/</code></td><td>Icons (<code>Icons/</code>), the Poppins font (<code>Fonts/</code>), and panel and button shapes.</td></tr>
-      <tr><td><code>Textures/</code></td><td>The floor grid texture and the ITSTEP badge.</td></tr>
-      <tr><td><code>Scripts/Helpers/</code></td><td>Big helper scripts. You import them later, in the phase that needs them. <b>Do not import them now.</b></td></tr>
-    </table></div>
-  </li>
+  <li>The starter package <code>GoldRush_Phase00_Project.unitypackage</code>.</li>
 </ul>
 <div class="tip">Each phase ends with a <b>checkpoint package</b>. If you get lost, import the package of the previous phase into a new empty project and continue from there.</div>
 
@@ -97,13 +86,12 @@
 
 <!-- ======================================================= 3 -->
 <h2 id="step-3"><span class="step">3</span>Clean up the template</h2>
-<p>The template comes with some example files. Remove the ones you do not need.</p>
 <ol>
   <li>In the <b>Project</b> window, open the <code>Assets</code> folder.</li>
   <li>Right-click the <code>TutorialInfo</code> folder → <b>Delete</b> → <b>Delete</b>.</li>
   <li>Right-click the <code>Readme</code> file → <b>Delete</b> → <b>Delete</b>.</li>
 </ol>
-<div class="note"><b>Keep</b> the <code>Settings</code> folder. It holds the URP settings (the <code>PC_RPAsset</code> and <code>Mobile_RPAsset</code> files). Without it, everything turns pink.</div>
+<div class="note"><b>Keep</b> the <code>Settings</code> folder. It holds the URP settings (<code>PC_RPAsset</code>, <code>Mobile_RPAsset</code>). Without it, everything turns pink.</div>
 
 <!-- ======================================================= 4 -->
 <h2 id="step-4"><span class="step">4</span>Check the packages</h2>
@@ -145,116 +133,63 @@
 <div class="note">If you forget this step, you get a red error later: <i>"You are trying to read Input using the UnityEngine.Input class, but you have switched active Input handling to Input System package"</i>. Come back here and choose <b>Both</b>.</div>
 
 <!-- ======================================================= 7 -->
-<h2 id="step-7"><span class="step">7</span>Create the folders</h2>
-<p>All game files live in one folder: <code>Assets/GoldRush</code>. Make the folders now, so every file has a home.</p>
+<h2 id="step-7"><span class="step">7</span>Import the starter package</h2>
 <ol>
-  <li>In the Project window, right-click <code>Assets</code> → <b>Create → Folder</b>. Name it <code>GoldRush</code>.</li>
-  <li>Right-click <code>GoldRush</code> → <b>Create → Folder</b>. Make each folder in the tree below the same way.</li>
+  <li>Open <b>Assets → Import Package → Custom Package…</b></li>
+  <li>Choose <code>GoldRush_Phase00_Project.unitypackage</code>. Click <b>Open</b>.</li>
+  <li>Keep everything ticked. Click <b>Import</b>. Wait until the import bar is gone.</li>
 </ol>
+<p>Everything is now in <code>Assets/GoldRush</code>:</p>
+<div class="table-wrap"><table>
+  <tr><th>Folder</th><th>What is inside</th></tr>
+  <tr><td><code>Art/Characters</code></td><td>The hero and the three monsters (<code>Hero.fbx</code>, <code>Slime.fbx</code>, <code>Ghost.fbx</code>, <code>MushroomKing.fbx</code>, by Quaternius, CC0), with their animations, and the licences.</td></tr>
+  <tr><td><code>Art/Audio</code></td><td>Sound effects and music (<code>.wav</code>): coin, step, hit, win, lose, …</td></tr>
+  <tr><td><code>Art/UI</code>, <code>Art/Textures</code></td><td>Panel and button shapes, the floor grid texture, the ITSTEP badge.</td></tr>
+  <tr><td><code>Resources/Icons</code>, <code>Resources/Fonts</code></td><td>The UI icons (already set up as sprites) and the Poppins font. <b>Resources</b> is a special folder: scripts load files from it by name while the game runs.</td></tr>
+  <tr><td><code>Materials</code></td><td>All materials, ready to use: <code>M_Floor</code>, <code>M_Block</code>, <code>M_Red</code>, <code>M_GlowCyan</code>, <code>M_Gold</code>, … and the base materials <code>GR_Lit</code>, <code>GR_SunsetSky</code>, …</td></tr>
+  <tr><td><code>Prefabs/Level</code></td><td>The level kit: floor, blocks, walls, pillar, lamp post, barrier, … You meet them in phase 1.</td></tr>
+  <tr><td><code>Prefabs/Gameplay</code></td><td>The 3D models of the coin, the exit gate and the power-ups. They get their scripts in phases 5, 6 and 8.</td></tr>
+</table></div>
+<div class="note">Do not move or rename files in <code>Resources</code>. Do not change the import settings of the models yet: you set them up in phase 3 (hero) and phase 7 (monsters).</div>
+
+<!-- ======================================================= 8 -->
+<h2 id="step-8"><span class="step">8</span>Add the other folders</h2>
+<p>Make the folders for the files you create yourself. Right-click <code>Assets/GoldRush</code> → <b>Create → Folder</b>. When you are done, the tree looks like this:</p>
 <pre><code>Assets/GoldRush/
-  Art/
-    Characters/
-    Audio/
-    UI/
-    Textures/
-  Animations/
-  Materials/
-  Prefabs/
-    Level/
-    Gameplay/
-  Resources/
-    Icons/
-    Fonts/
-  Scenes/
-  Scripts/
+  Art/           (from the package)
+  Animations/    ← new: Animator Controllers (phase 3 and 7)
+  Materials/     (from the package)
+  Prefabs/       (from the package)
+  Resources/     (from the package)
+  Scenes/        ← new: the menu and the levels
+  Scripts/       ← new
     Core/
     Audio/
     World/
     Level/
     Gameplay/
     UI/</code></pre>
-<div class="table-wrap"><table>
-  <tr><th>Folder</th><th>What goes in it</th></tr>
-  <tr><td><code>Art</code></td><td>Files you import and do not change: models, sounds, pictures.</td></tr>
-  <tr><td><code>Animations</code></td><td>The Animator Controllers you build (phase 3 and 7).</td></tr>
-  <tr><td><code>Materials</code></td><td>The colours and surfaces (phase 1).</td></tr>
-  <tr><td><code>Prefabs</code></td><td>Ready-made objects: level blocks in <code>Level</code>, player, coin, gate and monsters in <code>Gameplay</code>.</td></tr>
-  <tr><td><code>Resources</code></td><td>A special folder name. Scripts can load files from it by name while the game runs (<code>Resources.Load</code>). The UI scripts load the icons and fonts from here.</td></tr>
-  <tr><td><code>Scenes</code></td><td>The menu and the levels.</td></tr>
-  <tr><td><code>Scripts</code></td><td>The C# code, in the same sub-folders as the real game.</td></tr>
-</table></div>
-<div class="tip">Spelling matters. Scripts look for <code>Resources/Icons</code> and <code>Resources/Fonts</code> by name. Use the exact names, with capital letters.</div>
+<div class="tip">If a folder already exists, skip it. Spelling matters: use the exact names, with capital letters.</div>
 <figure class="shot todo"><div class="ph">Screenshot: Project window with the full Assets/GoldRush folder tree open</div><figcaption>The folder layout.</figcaption></figure>
 
-<!-- ======================================================= 8 -->
-<h2 id="step-8"><span class="step">8</span>Import the characters</h2>
-<p>To import a file, drag it from your computer's file window (Finder or Explorer) into a folder in the Unity Project window. Unity copies it into the project.</p>
-<ol>
-  <li>Open <code>GoldRush_Export/Resources/Characters/</code> in Finder (Mac) or Explorer (Windows).</li>
-  <li>In Unity, click the folder <code>Assets/GoldRush/Art/Characters</code>.</li>
-  <li>Drag everything inside <code>Resources/Characters/</code> (the <code>Hero</code>, <code>Monsters</code> and <code>Licenses</code> folders) into the right side of the Project window.</li>
-  <li>Wait until the import bar is gone.</li>
-</ol>
-<p>You should now have:</p>
-<pre><code>Art/Characters/Hero/Hero.fbx
-Art/Characters/Monsters/Slime.fbx, Ghost.fbx, MushroomKing.fbx, Atlas_Monsters.png
-Art/Characters/Licenses/…</code></pre>
-<div class="note">Do not change the import settings of the models yet. You set them up in phase 3 (hero) and phase 7 (monsters).</div>
-
 <!-- ======================================================= 9 -->
-<h2 id="step-9"><span class="step">9</span>Import sounds, textures and UI files</h2>
-<p>Do the same drag and drop for the other folders:</p>
-<div class="table-wrap"><table>
-  <tr><th>Drag the files from…</th><th>…into this Unity folder</th></tr>
-  <tr><td><code>Resources/Audio/</code> (all <code>.wav</code> files)</td><td><code>Assets/GoldRush/Art/Audio</code></td></tr>
-  <tr><td><code>Resources/Textures/</code> (grid, badge)</td><td><code>Assets/GoldRush/Art/Textures</code></td></tr>
-  <tr><td><code>Resources/UI/</code> panel and button shapes (<code>.png</code>)</td><td><code>Assets/GoldRush/Art/UI</code></td></tr>
-  <tr><td><code>Resources/UI/Icons/</code> (all icon <code>.png</code> files and the licence)</td><td><code>Assets/GoldRush/Resources/Icons</code></td></tr>
-  <tr><td><code>Resources/UI/Fonts/</code> (<code>Poppins-*.ttf</code> and the licence)</td><td><code>Assets/GoldRush/Resources/Fonts</code></td></tr>
-</table></div>
-<div class="note">Icons and fonts go into <b>Resources</b>, not into <code>Art/UI</code>. The menu script loads them with <code>Resources.Load("Icons/…")</code> and <code>Resources.Load("Fonts/…")</code>. In the wrong folder, the buttons have no icons and no text font.</div>
+<h2 id="step-9"><span class="step">9</span>Make a test scene with the hero</h2>
+<p>A <b>scene</b> is one level or screen of the game. We use a small test scene, <code>Sandbox</code>, in phase 0 and 1.</p>
+<ol>
+  <li>Open <b>File → New Scene</b>. Pick <b>Basic (URP)</b> (or <b>Standard (URP)</b>). Click <b>Create</b>.</li>
+  <li><b>File → Save As…</b> → folder <code>Assets/GoldRush/Scenes</code> → name <code>Sandbox</code> → <b>Save</b>.</li>
+  <li>Drag <code>Prefabs/Level/Floor_40m</code> into the Hierarchy. Set its <b>Position</b> to <code>0, 0, 0</code>.</li>
+  <li>Drag <code>Art/Characters/Hero/Hero.fbx</code> into the Hierarchy. Set its <b>Position</b> to <code>0, 0, 0</code>.</li>
+  <li>Move the mouse over the Scene view and press <b>F</b>. The view zooms to the hero.</li>
+  <li>Select <b>Main Camera</b>. Set <b>Position</b> <code>0, 1.5, -4</code> and <b>Rotation</b> <code>10, 0, 0</code>.</li>
+  <li>Save the scene (<b>Ctrl+S</b> / <b>Cmd+S</b>).</li>
+</ol>
+<p>The hero is about 1.35 m tall in the game. In phase 3 you turn this model into the player.</p>
+<div class="tip">The template also has <code>Assets/Scenes/SampleScene</code>. You do not need it. You can delete the <code>Assets/Scenes</code> folder.</div>
+<figure class="shot todo"><div class="ph">Screenshot: Scene view with the hero model standing on the grid floor</div><figcaption>The hero in the Sandbox scene.</figcaption></figure>
 
 <!-- ======================================================= 10 -->
-<h2 id="step-10"><span class="step">10</span>Make the icons sprites</h2>
-<p>The UI shows the icons as <b>sprites</b> (2D pictures for the UI). Tell Unity to import them that way.</p>
-<ol>
-  <li>Open <code>Assets/GoldRush/Resources/Icons</code>.</li>
-  <li>Click the first icon. Hold <b>Shift</b> and click the last icon. All icons are selected. (Do not select the <code>.txt</code> licence.)</li>
-  <li>In the Inspector, set <b>Texture Type</b> to <b>Sprite (2D and UI)</b>.</li>
-  <li>Tick <b>Alpha Is Transparency</b>.</li>
-  <li>Set <b>Compression</b> to <b>None</b>.</li>
-  <li>Click <b>Apply</b> at the bottom of the Inspector.</li>
-</ol>
-<figure class="shot todo"><div class="ph">Screenshot: Inspector with many icons selected, Texture Type = Sprite (2D and UI), Compression = None</div><figcaption>Import settings for the icons.</figcaption></figure>
-
-<!-- ======================================================= 11 -->
-<h2 id="step-11"><span class="step">11</span>Make a test scene</h2>
-<p>A <b>scene</b> is one level or screen of the game. We use a small test scene, <code>Sandbox</code>, to try things out in phase 0 and 1.</p>
-<ol>
-  <li>Open <b>File → New Scene</b>.</li>
-  <li>Pick <b>Basic (URP)</b> (or <b>Standard (URP)</b>) and click <b>Create</b>.</li>
-  <li>Open <b>File → Save As…</b></li>
-  <li>Go to <code>Assets/GoldRush/Scenes</code>. Name the file <code>Sandbox</code>. Click <b>Save</b>.</li>
-</ol>
-<p>The new scene has a <b>Main Camera</b> and a <b>Directional Light</b> (the sun).</p>
-<div class="tip">The template also has <code>Assets/Scenes/SampleScene</code>. You do not need it. You can delete the <code>Assets/Scenes</code> folder.</div>
-
-<!-- ======================================================= 12 -->
-<h2 id="step-12"><span class="step">12</span>Put the hero in the scene</h2>
-<ol>
-  <li>Make a floor: <b>GameObject → 3D Object → Plane</b>. In the Inspector, set <b>Position</b> to <code>0, 0, 0</code>.</li>
-  <li>Open <code>Assets/GoldRush/Art/Characters/Hero</code>.</li>
-  <li>Drag <code>Hero.fbx</code> into the <b>Hierarchy</b> window.</li>
-  <li>Select <code>Hero</code> in the Hierarchy. Set <b>Position</b> to <code>0, 0, 0</code>.</li>
-  <li>Move the mouse over the Scene view and press <b>F</b>. The view zooms to the hero.</li>
-  <li>Select <b>Main Camera</b>. Set <b>Position</b> to <code>0, 1.5, -4</code> and <b>Rotation</b> to <code>10, 0, 0</code>.</li>
-  <li>Save the scene: <b>File → Save</b> (<b>Ctrl+S</b> / <b>Cmd+S</b>).</li>
-</ol>
-<p>The hero is small, about 1.35 m tall in the game. In phase 3 you turn this model into the player.</p>
-<figure class="shot todo"><div class="ph">Screenshot: Scene view with the hero model standing on the plane</div><figcaption>The hero in the Sandbox scene.</figcaption></figure>
-
-<!-- ======================================================= 13 -->
-<h2 id="step-13"><span class="step">13</span>▶ Press Play</h2>
+<h2 id="step-10"><span class="step">10</span>▶ Press Play</h2>
 <ol>
   <li>Click the <b>▶ Play</b> button at the top.</li>
   <li>Look at the <b>Game</b> view.</li>
@@ -263,31 +198,30 @@ Art/Characters/Licenses/…</code></pre>
 <div class="check">
 <p><b>You should see:</b></p>
 <ul>
-  <li>The hero model in the Game view, standing still (in a T-pose or a rest pose: that is fine for now).</li>
-  <li>The Project window has the full <code>Assets/GoldRush</code> folder tree with the imported files.</li>
+  <li>The hero model in the Game view, standing on the grid floor (in a T-pose or rest pose: that is fine for now).</li>
+  <li>The Project window has the full <code>Assets/GoldRush</code> folder tree.</li>
   <li>No red errors in the <b>Console</b> (<b>Window → General → Console</b>).</li>
 </ul>
 </div>
 
-<!-- ======================================================= 14 -->
-<h2 id="step-14"><span class="step">14</span>Common problems</h2>
+<!-- ======================================================= 11 -->
+<h2 id="step-11"><span class="step">11</span>Common problems</h2>
 <div class="table-wrap"><table>
   <tr><th>Problem</th><th>Fix</th></tr>
-  <tr><td>Everything is pink (models, plane).</td><td>The URP settings are missing. Do not delete the <code>Settings</code> folder. Check <b>Edit → Project Settings → Graphics</b>: <b>Default Render Pipeline</b> must be a URP asset (for example <code>PC_RPAsset</code>). If you made a <b>3D (Built-In)</b> project by mistake, make a new project with <b>Universal 3D</b>.</td></tr>
+  <tr><td>Everything is pink.</td><td>The URP settings are missing. Do not delete the <code>Settings</code> folder. Check <b>Edit → Project Settings → Graphics</b>: <b>Default Render Pipeline</b> must be a URP asset (for example <code>PC_RPAsset</code>). If you made a <b>3D (Built-In)</b> project by mistake, make a new project with <b>Universal 3D</b>.</td></tr>
   <tr><td>The template <b>Universal 3D</b> is not in the list.</td><td>Scroll down in Unity Hub, or click the download icon next to it. Check that you picked Unity 6000.6.10f1 or newer.</td></tr>
   <tr><td>I cannot find <b>Package Management</b> in the Window menu.</td><td>In some Unity 6 versions it is <b>Window → Package Manager</b> directly.</td></tr>
   <tr><td>Active Input Handling: I chose Both, but nothing happened.</td><td>Unity must restart. Close Unity yourself and open the project again from Unity Hub.</td></tr>
-  <tr><td>The hero is grey or white.</td><td>The model colours come from the FBX file. Select <code>Hero.fbx</code> → Inspector → <b>Materials</b> tab → <b>Location</b>: <b>Use Embedded Materials</b> → <b>Apply</b>.</td></tr>
-  <tr><td>The hero is very far away or tiny in the Game view.</td><td>Check the Main Camera position and rotation from step 12.</td></tr>
-  <tr><td>Icons do not change to sprites.</td><td>You forgot <b>Apply</b>. Or a <code>.txt</code> file was in the selection: select only the <code>.png</code> files.</td></tr>
+  <tr><td>Red errors right after the import.</td><td>Check that <b>AI Navigation</b> is installed (step 5), then reimport the package.</td></tr>
+  <tr><td>The hero is very far away or tiny in the Game view.</td><td>Check the Main Camera position and rotation from step 9.</td></tr>
 </table></div>
 <p>More fixes are on the <a href="troubleshooting.html">Troubleshooting</a> page. New words are in the <a href="glossary.html">Glossary</a>.</p>
-<p><b>Checkpoint package:</b> <code>GoldRush_Phase00_Project.unitypackage</code></p>
-<p><b>Next:</b> in <a href="phase-01.html">Phase 1</a> you make the materials and the building blocks (prefabs) for the levels.</p>
+<p><b>Checkpoint package:</b> <code>GoldRush_Phase00_Project.unitypackage</code> (the starter package plus your Sandbox scene)</p>
+<p><b>Next:</b> in <a href="phase-01.html">Phase 1</a> you take a tour of the prefab kit.</p>
 
 <nav class="pager" aria-label="Previous and next page">
 <a class="prev" href="index.html"><small>← Previous</small>Overview</a>
-<a class="next" href="phase-01.html"><small>Next →</small>Phase 1: Materials and prefabs</a>
+<a class="next" href="phase-01.html"><small>Next →</small>Phase 1: The prefab kit</a>
 </nav>
 <footer class="site-footer">GOLD RUSH – a Unity 6 tutorial project. Characters: Quaternius (CC0). Font: Poppins (SIL Open Font License). Icons: Material Icons by Google (Apache 2.0).</footer>
 </div>

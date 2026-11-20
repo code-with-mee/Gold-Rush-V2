@@ -28,7 +28,7 @@ namespace GoldRush
         public float enemySpeed = 1f;
         public float parTime;       // seconds, for the "beat par" star
         public int lives = 2;       // survive the first hit
-        public bool night;          // starts at night (players can still toggle day/night)
+        public bool night;          // default look for a brand-new save (the player's day/night choice is saved in SaveData.night)
         public string scene;        // hand-made level scene (null = generate from seed)
         public bool daily;
     }
@@ -124,6 +124,7 @@ namespace GoldRush
         public string hat = "hat_none";
         public bool music = true;
         public bool sfx = true;
+        public bool night = true;   // day/night look: ONE setting for the menu and every level
         public bool seenTutorial;
         public string dailyDate = "";
         public float dailyBest = -1f;

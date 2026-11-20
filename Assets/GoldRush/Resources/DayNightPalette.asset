@@ -106,3 +106,45 @@ MonoBehaviour:
   - material: {fileID: 2100000, guid: c0e90ed276e5e428aa18909b13d14821, type: 2}
     day: {r: 0.83, g: 0.85, b: 0.9, a: 1}
     night: {r: 0.27, g: 0.31, b: 0.47, a: 1}
+  - material: {fileID: 2100000, guid: cd9f321047a2f4ac1a7043b69cd076a8, type: 2}
+    day: {r: 0.86, g: 0.87, b: 0.9, a: 1}
+    night: {r: 0.13, g: 0.17, b: 0.32, a: 1}
+  - material: {fileID: 2100000, guid: 7b51ca4a167014c688c3d8c2c17dbc60, type: 2}
+    day: {r: 0.42, g: 0.45, b: 0.52, a: 1}
+    night: {r: 0.15, g: 0.18, b: 0.3, a: 1}
+  - material: {fileID: 2100000, guid: 0f629f1b94a3f4a60a449929ad020e2c, type: 2}
+    day: {r: 0.93, g: 0.94, b: 0.97, a: 1}
+    night: {r: 0.44, g: 0.5, b: 0.68, a: 1}
+  - material: {fileID: 2100000, guid: 3730fac8da89644ffbf4397568ef92e4, type: 2}
+    day: {r: 0.6, g: 0.63, b: 0.69, a: 1}
+    night: {r: 0.07, g: 0.09, b: 0.19, a: 1}
+  - material: {fileID: 2100000, guid: 7b6bcb97dbc8141e3bc1b297b2ef6765, type: 2}
+    day: {r: 0.7, g: 0.72, b: 0.78, a: 1}
+    night: {r: 0.09, g: 0.12, b: 0.25, a: 1}
+  - material: {fileID: 2100000, guid: 304b0da79b8da40889c3a10cc2964101, type: 2}
+    day: {r: 0.8, g: 0.82, b: 0.86, a: 1}
+    night: {r: 0.32, g: 0.36, b: 0.5, a: 1}
+  - material: {fileID: 2100000, guid: 815b97185250442e5a88f76365af1043, type: 2}
+    day: {r: 0.2, g: 0.74, b: 0.74, a: 1}
+    night: {r: 0.1, g: 0.42, b: 0.52, a: 1}
+  - material: {fileID: 2100000, guid: 9875a481b275e4da7bdf5f841d8472f0, type: 2}
+    day: {r: 0.42, g: 0.87, b: 0.85, a: 1}
+    night: {r: 0.16, g: 0.56, b: 0.63, a: 1}
+  - material: {fileID: 2100000, guid: cfb65aa760e96439183a96e316a5b49f, type: 2}
+    day: {r: 0.93, g: 0.3, b: 0.3, a: 1}
+    night: {r: 0.62, g: 0.17, b: 0.26, a: 1}
+  - material: {fileID: 2100000, guid: d5c7aea3de240497695e532df79e3b02, type: 2}
+    day: {r: 1, g: 0.47, b: 0.44, a: 1}
+    night: {r: 0.76, g: 0.26, b: 0.33, a: 1}
+  - material: {fileID: 2100000, guid: 65528dd906d55477bbda7522f5d16d8f, type: 2}
+    day: {r: 1, g: 0.6, b: 0.22, a: 1}
+    night: {r: 0.72, g: 0.38, b: 0.2, a: 1}
+  - material: {fileID: 2100000, guid: 8eee1dc1891a8494bbb21022a53e81cb, type: 2}
+    day: {r: 1, g: 0.74, b: 0.42, a: 1}
+    night: {r: 0.85, g: 0.5, b: 0.28, a: 1}
+  - material: {fileID: 2100000, guid: 39c5cc07c4c3946db8bf62ff2e6b10db, type: 2}
+    day: {r: 0.7, g: 0.73, b: 0.79, a: 1}
+    night: {r: 0.19, g: 0.22, b: 0.35, a: 1}
+  - material: {fileID: 2100000, guid: 14e250169d16a4fd5b92173af8882106, type: 2}
+    day: {r: 0.83, g: 0.85, b: 0.9, a: 1}
+    night: {r: 0.27, g: 0.31, b: 0.47, a: 1}
