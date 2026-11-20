@@ -63,11 +63,11 @@
 </section>
 
 <h2 id="build">What you will build</h2>
-<p>A complete third-person game for PC and Android. A starter package gives you the art, the materials and a kit of ready-made prefabs. You build the rest yourself: the menus, the level, the player, the camera, the scripts, the monsters and the game UI.</p>
-<p>You start with the <b>main menu</b>, because it is the first thing a player sees. Then you build the level and the gameplay. At the end you put the game UI (HUD and dialogs) on top, in the same style as the menu.</p>
+<p>A complete third-person game for PC and Android. Every phase gives you a package with the game as it is at the end of that phase: the art, the prefab kit, all the scripts and the scenes. You import it, check how it is built and read how the code works. Then, in the <a href="practicals.html">Practicals</a>, you build new levels yourself.</p>
+<p>You start with the <b>main menu</b>, because it is the first thing a player sees. Then come the level and the gameplay. At the end the game UI (HUD and dialogs) goes on top, in the same style as the menu.</p>
 <div class="shots">
   <figure><img src="images/01_title.jpg" alt="The GOLD RUSH title screen with the waving hero"><figcaption>Phases 1–2: the main menu, level select, shop and settings.</figcaption></figure>
-  <figure><img src="images/05_level1_play.jpg" alt="The hero in Level 1, with the coin counter, timer and the exit gate"><figcaption>Phases 3–8: Level 1 with the hero, the gold and the gate. (The HUD on top comes in phase 9.)</figcaption></figure>
+  <figure><img src="images/05_level1_play.jpg" alt="The hero in Level 1, with the coin counter, timer and the exit gate"><figcaption>Phases 3–8: Level 1 with the hero, the gold and the gate. (Until phase 9 the HUD is made by code.)</figcaption></figure>
   <figure><img src="images/06_gate_open.jpg" alt="The exit gate is open"><figcaption>All gold collected: the gate opens. Run!</figcaption></figure>
   <figure><img src="images/07_win.jpg" alt="The Level Complete dialog with stars"><figcaption>Phase 9: the HUD and the win dialog with up to 3 stars.</figcaption></figure>
 </div>
@@ -75,12 +75,13 @@
 <h2 id="learn">What you will learn</h2>
 <p>The course goes in this order: <b>menu → level design → gameplay → gameplay UI → polish</b>.</p>
 <ul class="learn">
-  <li><b>Menu (phases 1–2):</b> build a UI by hand with Unity UI: a Canvas, anchors, sliced images, buttons and screens. Connect buttons with a small script (<code>MenuAction</code>) and save the game data.</li>
-  <li><b>Level design (phase 3):</b> work with prefabs and build a level from a ready-made kit, with light, sky and fog.</li>
-  <li><b>Player (phase 4):</b> set up a 3D character with an Animator Controller and a blend tree, move it with a CharacterController and follow it with a third-person camera.</li>
-  <li><b>Gameplay (phases 5–8):</b> write small C# scripts: coins, a game manager, an exit gate, stars and saving. Make monsters walk on a NavMesh with a state machine. Add power-ups and particles.</li>
-  <li><b>Gameplay UI (phase 9):</b> build the HUD and the pause, win and lose dialogs as GameObjects in the scene, just like the menu, and connect their buttons with <code>GameAction</code>.</li>
+  <li><b>Menu (phases 1–2):</b> how a Unity UI is built: a Canvas, anchors, sliced images, buttons and screens. How a button reaches the code with a small script (<code>MenuAction</code>), and how the game data is saved.</li>
+  <li><b>Level design (phase 3):</b> prefabs, a level made from a ready-made kit, light, sky and fog.</li>
+  <li><b>Player (phase 4):</b> a 3D character with an Animator Controller and a blend tree, moved with a CharacterController and followed by a third-person camera.</li>
+  <li><b>Gameplay (phases 5–8):</b> read and change small C# scripts: coins, a game manager, an exit gate, stars and saving. Monsters that walk on a NavMesh with a state machine. Power-ups and particles.</li>
+  <li><b>Gameplay UI (phase 9):</b> the HUD and the pause, win and lose dialogs as GameObjects in the scene, just like the menu, with buttons connected by <code>GameAction</code>.</li>
   <li><b>Polish (phase 10):</b> day and night, touch controls, music, more levels, and a build for PC and Android.</li>
+<li><b>Practicals:</b> design and build four new levels yourself, from paper map to menu card.</li>
 </ul>
 
 <h2 id="need">What you need</h2>
@@ -89,10 +90,10 @@
     <h3>You need</h3>
     <ul>
       <li><b>Unity Hub</b> and <b>Unity 6000.6.10f1 or newer</b> (Unity 6.6).</li>
-      <li>The <b>starter package</b> <code>GoldRush_Phase00_Project.unitypackage</code> (in <code>GoldRush_Export/Packages/</code>): characters, sounds, icons, fonts, UI shapes, materials and the prefab kit.</li>
+      <li>The <b>phase packages</b> in <code>GoldRush_Export/Packages/</code>, one per phase. Phase 0 starts with <code>GoldRush_Phase00_Project.unitypackage</code>: characters, sounds, icons, fonts, UI shapes, materials and the prefab kit.</li>
       <li>The <b>Resources folder</b> <code>GoldRush_Export/Resources/</code> (see below).</li>
       <li>Basic C# and a little Unity editor practice.</li>
-      <li>About <b>11 sessions</b>: one phase per session. Some phases are shorter, some longer (phase 1 is a long one).</li>
+      <li>About <b>11 sessions</b> for the phases (one phase per session), then 1–2 sessions per practical.</li>
     </ul>
   </div>
   <div class="panel">
@@ -100,9 +101,9 @@
     <ol class="steps-start">
       <li>Open <a href="phase-00.html">Phase 0</a>.</li>
       <li>Make a new <b>Universal 3D</b> project called <b>GoldRush</b>.</li>
-      <li>Import the starter package, as the guide shows.</li>
+      <li>Import the Phase 0 package, as the guide shows.</li>
     </ol>
-    <p>You start from an <b>empty project</b>. Do not import the packages of later phases into it.</p>
+    <p>You start from an <b>empty project</b>. Each later phase starts again in a new, empty project (or after you delete <code>Assets/GoldRush</code>).</p>
   </div>
 </div>
 
@@ -127,7 +128,6 @@
 <tr><th>Folder</th><th>What is inside</th><th>When you need it</th></tr>
 <tr><td><code>Packages/</code></td><td>One package per phase (import it at the start of the phase) + <code>GoldRush_Levels2to4</code> and <code>GoldRush_GameUIDialogs</code>.</td><td>Every phase and the Practicals</td></tr>
 <tr><td><code>Resources/Scripts/Final/</code></td><td>Every game script as plain <code>.cs</code> files, to read outside Unity or to copy into your own project.</td><td>Optional</td></tr>
-<tr><td><code>Resources/Scripts/Helpers/</code>, <code>Phases/</code></td><td>Script copies for teachers who want students to build parts by hand.</td><td>Optional (teachers)</td></tr>
 </table></div>
 <div class="note">Do not mix it up with the Unity folder <code>Assets/GoldRush/Resources</code>. That one is a special Unity folder: scripts load files from it by name (for example <code>GoldRushAssets</code>).</div>
 
@@ -136,16 +136,16 @@
 <div class="table-wrap"><table>
   <tr><th>After phase</th><th>Package</th><th>Contains</th></tr>
   <tr><td>0</td><td><code>GoldRush_Phase00_Project.unitypackage</code></td><td>Starter resources (no scripts) + Sandbox test scene</td></tr>
-  <tr><td>1</td><td><code>GoldRush_Phase01_MainMenu.unitypackage</code></td><td>MainMenu scene (3D stage + title screen), menu scripts</td></tr>
-  <tr><td>2</td><td><code>GoldRush_Phase02_MenuScreens.unitypackage</code></td><td>All menu screens, save data</td></tr>
-  <tr><td>3</td><td><code>GoldRush_Phase03_Level.unitypackage</code></td><td>Level1 built from the kit, markers, Scene List</td></tr>
-  <tr><td>4</td><td><code>GoldRush_Phase04_Player.unitypackage</code></td><td>Player prefab, Hero Animator Controller, third-person camera</td></tr>
-  <tr><td>5</td><td><code>GoldRush_Phase05_Coins.unitypackage</code></td><td>Coin prefab + script, GameManager, GoldRushAssets (sounds)</td></tr>
-  <tr><td>6</td><td><code>GoldRush_Phase06_Gate.unitypackage</code></td><td>Exit gate, timer, stars, save</td></tr>
-  <tr><td>7</td><td><code>GoldRush_Phase07_Monsters.unitypackage</code></td><td>NavMesh, 3 monster prefabs + controllers, EnemyAI</td></tr>
-  <tr><td>8</td><td><code>GoldRush_Phase08_PowerUps.unitypackage</code></td><td>3 power-ups, particles</td></tr>
-  <tr><td>9</td><td><code>GoldRush_Phase09_GameUI.unitypackage</code></td><td>HUD, countdown, pause / win / lose dialogs (scene objects)</td></tr>
-  <tr><td>10</td><td><code>GoldRush_Phase10_Final.unitypackage</code></td><td>The complete game (= the teacher's version)</td></tr>
+  <tr><td>1</td><td><code>GoldRush_Phase01_MainMenu.unitypackage</code></td><td>+ all scripts, MainMenu scene (3D stage + all menu screens)</td></tr>
+  <tr><td>2</td><td><code>GoldRush_Phase02_MenuScreens.unitypackage</code></td><td>Same scenes as phase 1 (the guide looks at the other screens and the save)</td></tr>
+  <tr><td>3</td><td><code>GoldRush_Phase03_Level.unitypackage</code></td><td>+ Level1: only the level (kit pieces, lights) and an overview camera</td></tr>
+  <tr><td>4</td><td><code>GoldRush_Phase04_Player.unitypackage</code></td><td>+ GameManager and PlayerSpawn (player and camera are made at Play)</td></tr>
+  <tr><td>5</td><td><code>GoldRush_Phase05_Coins.unitypackage</code></td><td>+ the six CoinSpots</td></tr>
+  <tr><td>6</td><td><code>GoldRush_Phase06_Gate.unitypackage</code></td><td>Same scenes as phase 5 (the guide looks at the gate and the win / lose rules)</td></tr>
+  <tr><td>7</td><td><code>GoldRush_Phase07_Monsters.unitypackage</code></td><td>+ NavMesh Surface and two monster markers</td></tr>
+  <tr><td>8</td><td><code>GoldRush_Phase08_PowerUps.unitypackage</code></td><td>+ a power-up marker</td></tr>
+  <tr><td>9</td><td><code>GoldRush_Phase09_GameUI.unitypackage</code></td><td>+ the game UI as scene objects: HUD, countdown, pause / win / lose dialogs</td></tr>
+  <tr><td>10</td><td><code>GoldRush_Phase10_Final.unitypackage</code></td><td>+ Levels 2–4 and the Daily Rush: the complete game. You build the Practicals on top of it.</td></tr>
 </table></div>
 <div class="tip">New word? Look it up in the <a href="glossary.html">Glossary</a>. Want to practise? Do the <a href="practicals.html">Practicals</a>. Finished the course? Try the <a href="exercises.html">Exercises</a>.</div>
 
@@ -162,7 +162,7 @@
     <span class="tag">PHASE 1</span>
     <h3><a href="phase-01.html">The main menu</a></h3>
     <div class="card-img"><img src="images/01_title.jpg" alt=""><img src="images/01b_title_day.jpg" alt=""></div>
-    <p>The title screen by hand: a 3D stage from the kit, a waving hero, the glass-style logo, PLAY / LEVELS / SHOP and the chips at the top left.</p>
+    <p>The title screen: a 3D stage from the kit, a waving hero, the glass-style logo, PLAY / LEVELS / SHOP and the chips at the top left.</p>
     <div class="links"><a href="phase-01.html">Read guide</a></div>
   </article>
   <article class="card">
@@ -176,19 +176,19 @@
     <span class="tag">PHASE 3</span>
     <h3><a href="phase-03.html">Level design</a></h3>
     <div class="card-img"><img src="images/04_level1_start.jpg" alt=""></div>
-    <p>A tour of the prefab kit, then Level 1 from kit pieces: walls, lamps, sun, sky, fog and the markers. PLAY now opens it.</p>
+    <p>A tour of the prefab kit, then Level 1 made from kit pieces: walls, lamps, sun, sky and fog. PLAY now opens it.</p>
     <div class="links"><a href="phase-03.html">Read guide</a></div>
   </article>
   <article class="card">
     <span class="tag">PHASE 4</span>
     <h3><a href="phase-04.html">Player and camera</a></h3>
-    <p>The hero's Animator Controller by hand, a Player you move with WASD and Shift, and a third-person camera with mouse look.</p>
+    <p>The hero's Animator Controller, a Player you move with WASD and Shift, and a third-person camera with mouse look. Both are made by code at Play.</p>
     <div class="links"><a href="phase-04.html">Read guide</a></div>
   </article>
   <article class="card">
     <span class="tag">PHASE 5</span>
     <h3><a href="phase-05.html">Coins</a></h3>
-    <p>Spinning coins in every CoinSpot, the pickup sound and the GameManager that counts them (in the Console for now).</p>
+    <p>Spinning coins in every CoinSpot, the pickup sound and the GameManager that counts them on the HUD.</p>
     <div class="links"><a href="phase-05.html">Read guide</a></div>
   </article>
   <article class="card">
@@ -222,13 +222,13 @@
     <span class="tag">PHASE 10</span>
     <h3><a href="phase-10.html">Polish and build</a></h3>
     <div class="card-img"><img src="images/05b_level1_night.jpg" alt=""><img src="images/11_level4.jpg" alt=""></div>
-    <p>Day and night while you play, touch controls, music, Levels 2–4, the final scripts and a build for PC and Android.</p>
+    <p>Day and night while you play, touch controls, music, Levels 2–4, the Daily Rush and a build for PC and Android.</p>
     <div class="links"><a href="phase-10.html">Read guide</a></div>
   </article>
   <article class="card">
     <span class="tag">PRACTICE</span>
     <h3><a href="practicals.html">Practicals</a></h3>
-    <p>Four practicals to do on your own, in class or at home. Each one practises what you learned in a group of phases. Start with the <a href="practicals.html">overview</a>.</p>
+    <p>Build four new levels yourself (Level5–Level8) with the kit and the markers. P1 and P2 step by step, P3 and P4 as challenges. Start with the <a href="practicals.html">overview</a>.</p>
     <div class="links"><a href="practicals.html">Overview</a><a href="practical-1.html">1</a><a href="practical-2.html">2</a><a href="practical-3.html">3</a><a href="practical-4.html">4</a></div>
   </article>
   <article class="card">

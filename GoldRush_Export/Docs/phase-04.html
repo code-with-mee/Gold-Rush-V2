@@ -68,7 +68,7 @@
 <h2 id="step-1"><span class="step">1</span>What you get</h2>
 <p>The package has the whole Level1 from <a href="phase-03.html">Phase 3</a>, plus the parts for the hero:</p>
 <div class="table-wrap"><table>
-  <tr><th>New in this phase</th><th>What it does</th></tr>
+  <tr><th>New or explained in this phase</th><th>What it does</th></tr>
   <tr><td><code>GameManager</code> (object in the scene)</td><td>The boss of the level. At Play it makes the Player and the camera.</td></tr>
   <tr><td><code>Gameplay/PlayerSpawn</code> (marker)</td><td>Where the hero starts and which way he looks.</td></tr>
   <tr><td><code>PlayerMotor.cs</code></td><td>Moves the hero: walk, sprint, stamina, animations.</td></tr>
@@ -94,8 +94,8 @@
 <p>Look at each thing below. You do not change anything here.</p>
 
 <h3 id="check-1">3.1 No Player in the Hierarchy</h3>
-<p>Look at the top level of the Hierarchy: <code>GameManager</code> and <code>Level 1 - Training Yard</code>. There is <b>no</b> <code>Player</code> and <b>no</b> <code>Main Camera</code>. That is right: they are made in code at Play.</p>
-<figure class="shot"><img src="images/phase-04/check-01.png" alt="" loading="lazy"><figcaption>No Player and no Main Camera before Play. (The finished game also shows GameUI and EventSystem: they come in Phase 9.)</figcaption></figure>
+<p>Look at the top level of the Hierarchy: <code>GameManager</code>, <code>Level 1 - Training Yard</code> and <code>EventSystem</code>. There is <b>no</b> <code>Player</code> and <b>no</b> <code>Main Camera</code>. (The overview camera and the <code>Sun</code> of Phase 3 are gone too: the game makes its own camera and sun light at Play.) That is right: they are made in code at Play.</p>
+<figure class="shot"><img src="images/phase-04/check-01.png" alt="" loading="lazy"><figcaption>No Player and no Main Camera before Play. (The finished game also shows GameUI: it comes in Phase 9.)</figcaption></figure>
 
 <h3 id="check-2">3.2 The GameManager</h3>
 <p>Select <code>GameManager</code>. It has one component, <b>Game Manager</b>, with no fields. It finds everything by itself when the level starts.</p>

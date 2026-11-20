@@ -51,14 +51,14 @@
 <div class="content">
 <p class="eyebrow">GOLD RUSH · Practical 1 · Easy</p>
 <h1>Coin Garden</h1>
-<p class="lead">A small, friendly garden. Four glowing flower beds each hold a coin, and more coins lead you to the exit. Only one slow Slime walks around. You practise the basic skills: copy a scene, shrink the walls, place and snap pieces, and move markers.</p>
+<p class="lead">A small, friendly garden. Four glowing flower beds each hold a coin, and more coins lead you to the exit. Only one slow Slime walks around. You practise the basic skills: copy a scene, build smaller walls, place and snap pieces, and move markers.</p>
 <div class="meta"><span><b>Scene</b><code>Assets/GoldRush/Scenes/Level5.unity</code></span><span><b>Size</b>24 × 24 m</span><span><b>Time</b>about 1 lesson</span></div>
 <nav class="toc" aria-label="Steps on this page"><strong>Steps on this page</strong><ol>
 <li><a href="#step-1">Goal and values</a></li>
 <li><a href="#step-2">The map</a></li>
 <li><a href="#step-3">Make the scene</a></li>
 <li><a href="#step-4">Clear out</a></li>
-<li><a href="#step-5">Shrink the walls</a></li>
+<li><a href="#step-5">Build smaller walls</a></li>
 <li><a href="#step-6">Lamps</a></li>
 <li><a href="#step-7">Garden pieces</a></li>
 <li><a href="#step-8">Coins</a></li>
@@ -72,8 +72,8 @@
 
 <!-- ======================================================= 1 -->
 <h2 id="step-1"><span class="step">1</span>Goal and values</h2>
-<div class="panel"><h3>Goal</h3><p>Build a <b>24 × 24 m</b> open level with <b>8 coins</b>, <b>1 Slime</b> and no power-ups. A new player must win it on the first try.</p><p>You learn: <b>Save As</b> a scene, move and delete wall pieces, snapping, CoinSpots, one monster, LevelDef.</p></div>
-<p><b>What you need:</b> <a href="practicals.html">Practicals overview</a> (read steps 1–11) and a working <code>Level1</code>.</p>
+<div class="panel"><h3>Goal</h3><p>Build a <b>24 × 24 m</b> open level with <b>8 coins</b>, <b>1 Slime</b> and no power-ups. A new player must win it on the first try.</p><p>You learn: <b>Save As</b> a scene, build walls from kit pieces, snapping, CoinSpots, one monster marker, LevelDef.</p></div>
+<p><b>What you need:</b> the <a href="practicals.html">Practicals overview</a> (read steps 1–11) and your project with the <a href="phase-10.html">Phase 10</a> package (<code>GoldRush_Phase10_Final</code>) imported. You start from its <code>Level1</code>.</p>
 <p><b>The LevelDef values</b> (you type them in step 11):</p>
 <div class="table-wrap"><table>
 <tr><th>Field</th><th>Value</th></tr>
@@ -241,22 +241,25 @@
 <h2 id="step-4"><span class="step">4</span>Clear out</h2>
 <p>Delete these (select, then <b>Delete</b>):</p>
 <ol>
-<li>All 17 children of <code>Static/Obstacles</code>. (Click the first, <b>Shift</b>-click the last.) Keep the <code>Obstacles</code> group itself.</li>
+<li>All 12 children of <code>Static/Obstacles</code>. (Click the first, <b>Shift</b>-click the last.) Keep the <code>Obstacles</code> group itself.</li>
+<li><code>Static/Structures/LCover</code> (the L-shaped cover).</li>
+<li>All children of <code>Decor</code> (the glowing pads and lines of Level1: they do not fit the smaller garden).</li>
 <li><code>Gameplay/Monsters/Slime 2</code>. Keep <code>Slime 1</code>.</li>
-<li><code>Gameplay/PowerUps/PowerUp Magnet</code> (and <code>PowerUp Speed</code> / <code>PowerUp Ghost</code> if you kept the test power-ups of Phase 8). This level has no power-ups.</li>
+<li><code>Gameplay/PowerUps/PowerUp Magnet</code>. This level has no power-ups.</li>
 </ol>
-<p>Keep the 6 CoinSpots, the walls, the lamps, <code>PlayerSpawn</code>, <code>ExitGate</code>, <code>GameManager</code>, <code>Player</code>, the camera and the UI.</p>
-
-<figure class="shot"><img src="images/practical-1/step-04.png" alt="" loading="lazy"><figcaption>Cleared: <code>Obstacles</code> is empty, <code>Monsters</code> has only <code>Slime 1</code>, <code>PowerUps</code> is empty. Walls, lamps, gate and the 6 CoinSpots are still there.</figcaption></figure>
+<p>Keep the 6 CoinSpots, the walls (for now), the lamps, <code>PlayerSpawn</code>, <code>ExitGate</code>, <code>GameManager</code>, <code>GameUI</code> and <code>EventSystem</code>.</p>
+<figure class="shot"><img src="images/practical-1/step-04.png" alt="" loading="lazy"><figcaption>Cleared: <code>Obstacles</code> is empty, <code>Monsters</code> has only <code>Slime 1</code>, <code>PowerUps</code> is empty. Walls, lamps, gate and the 6 CoinSpots are still there. (This picture is from an older Level1: yours has no Player, Main Camera and Sun, and the walls are still one <code>PerimeterWall</code>.)</figcaption></figure>
 
 <!-- ======================================================= 5 -->
-<h2 id="step-5"><span class="step">5</span>Shrink the walls</h2>
-<p>Level1 is 32 m wide. The garden is 24 m wide, so every wall moves 4 m inwards and loses a piece. You keep using the same wall groups from Phase 3.</p>
+<h2 id="step-5"><span class="step">5</span>Build smaller walls</h2>
+<p>Level1 is 32 m wide. The garden is 24 m wide, so you replace the Level1 wall with new, smaller walls from the kit (see <a href="practicals.html#step-11">Practicals, step 11</a>).</p>
 <ol>
-<li><code>WallSouth</code>: Position <code>0, 0, -12.5</code>. It has four <code>Wall_8m</code> children. Delete the one at X <code>12</code>. Set the others to X <code>-8</code>, <code>0</code>, <code>8</code>.</li>
-<li><code>WallEast</code> and <code>WallWest</code>: the same. Position <code>12.5, 0, 0</code> and <code>-12.5, 0, 0</code> (Rotation stays <code>0, 90, 0</code>). Delete one child, the others at X <code>-8</code>, <code>0</code>, <code>8</code>.</li>
-<li><code>WallNorth</code>: Position <code>0, 0, 12.5</code>. Delete the two <code>Wall_4m</code>. Move the two <code>Wall_8m</code> to X <code>-8</code> and <code>8</code>. The 8 m gap for the gate is still in the middle.</li>
-<li><code>Corners</code>: move the 4 pillars to <code>±12.5, 0, ±12.5</code>.</li>
+<li>Open <code>Static/Walls/PerimeterWall</code>. Drag its child <code>GateBlocker</code> onto <code>Static/Walls</code>.</li>
+<li>Delete <code>PerimeterWall</code>.</li>
+<li>Right-click <code>Static/Walls</code> → <b>Create Empty</b>. Name it <code>WallSouth</code>, Position <code>0, 0, -12.5</code>. Drag three <code>Wall_8m</code> from <code>Prefabs/Level</code> onto it, at local X <code>-8</code>, <code>0</code> and <code>8</code> (Y and Z <code>0</code>).</li>
+<li>Make <code>WallEast</code> (<code>12.5, 0, 0</code>) and <code>WallWest</code> (<code>-12.5, 0, 0</code>) the same way, with Rotation <code>0, 90, 0</code> and the same three children. Tip: select <code>WallSouth</code>, <b>Ctrl+D</b>, rename and change Position and Rotation.</li>
+<li><code>WallNorth</code>: Position <code>0, 0, 12.5</code>, only two <code>Wall_8m</code>, at X <code>-8</code> and <code>8</code>. The 8 m gap for the gate stays in the middle.</li>
+<li><code>Corners</code>: an empty group at <code>0, 0, 0</code> with 4 <code>Pillar</code>s at <code>±12.5, 0, ±12.5</code>.</li>
 </ol>
 <div class="table-wrap"><table>
 <tr><th>Group</th><th>Position</th><th>Rotation</th><th>Children (local X)</th></tr>
@@ -265,12 +268,11 @@
 <tr><td><code>WallEast</code></td><td><code>12.5, 0, 0</code></td><td><code>0, 90, 0</code></td><td>Wall_8m at X <code>-8</code> · Wall_8m at X <code>0</code> · Wall_8m at X <code>8</code></td></tr>
 <tr><td><code>WallWest</code></td><td><code>-12.5, 0, 0</code></td><td><code>0, 90, 0</code></td><td>Wall_8m at X <code>-8</code> · Wall_8m at X <code>0</code> · Wall_8m at X <code>8</code></td></tr>
 <tr><td><code>Corners</code></td><td>4 × <code>Pillar</code></td><td>–</td><td><code>-12.5, 0, -12.5</code> · <code>12.5, 0, -12.5</code> · <code>-12.5, 0, 12.5</code> · <code>12.5, 0, 12.5</code></td></tr>
-<tr><td><code>GateBlocker</code></td><td><code>0, 2.5, 13.25</code></td><td>–</td><td>Box Collider, Size <code>8, 5, 1</code>. You move it in step 10.</td></tr>
+<tr><td><code>GateBlocker</code></td><td><code>0, 2.5, 13.25</code></td><td>–</td><td>Box Collider, Size <code>7.5, 5, 1</code> (keep it). You move it in step 10.</td></tr>
 <tr><td><code>ExitGate</code></td><td><code>0, 0, 12</code></td><td><code>0, 0, 0</code></td><td>In the middle of the gap. Not static. You move it in step 10.</td></tr>
 </table></div>
 <div class="tip">Select a wall child and press <b>V</b>, then drag a corner onto the next wall: they snap together without a gap.</div>
-
-<figure class="shot"><img src="images/practical-1/step-05-a.png" alt="" loading="lazy"><figcaption>The wall groups now have 3 + 2 + 3 + 3 <code>Wall_8m</code> and 4 pillars.</figcaption></figure>
+<figure class="shot"><img src="images/practical-1/step-05-a.png" alt="" loading="lazy"><figcaption>The wall groups now have 3 + 2 + 3 + 3 <code>Wall_8m</code> and 4 pillars. <code>GateBlocker</code> is a child of <code>Walls</code>.</figcaption></figure>
 <figure class="shot"><img src="images/practical-1/step-05-b.png" alt="" loading="lazy"><figcaption>Top view: a 24 × 24 m square with the 8 m gap in the north wall. The lamps, coins and the gate are still at the old places (you move them next).</figcaption></figure>
 
 <!-- ======================================================= 6 -->
@@ -309,10 +311,10 @@
 
 <!-- ======================================================= 8 -->
 <h2 id="step-8"><span class="step">8</span>Coins</h2>
-<p>The 6 CoinSpots from Level1 are still there. Move them and add 2 more.</p><p>You need <b>8</b> CoinSpots, each with a <code>Coin</code> inside (local position <code>0, 1, 0</code>).</p>
+<p>The 6 CoinSpots from Level1 are still there. Move them and add 2 more.</p><p>You need <b>8</b> CoinSpots. A CoinSpot is an empty marker: the game makes the coin 1 m above it when you press Play.</p>
 <ol>
 <li>Open <code>Gameplay/Coins</code>. Keep the CoinSpots you have and move them to the new positions.</li>
-<li>Need more? Select a CoinSpot (with its Coin) and press <b>Ctrl+D</b> / <b>Cmd+D</b>. Rename it with the next number.</li>
+<li>Need more? Select a CoinSpot and press <b>Ctrl+D</b> / <b>Cmd+D</b> (or drag <code>Prefabs/Markers/CoinSpot</code> onto <code>Gameplay/Coins</code>). Rename it with the next number.</li>
 <li>Delete CoinSpots you do not need.</li>
 </ol>
 <div class="table-wrap"><table>
@@ -327,31 +329,31 @@
 <tr><td><code>CoinSpot 8</code></td><td><code>10, 0, 8</code></td><td>Corner reward, right of the gate, close to the Slime</td></tr>
 </table></div>
 
-<figure class="shot"><img src="images/practical-1/step-08-a.png" alt="" loading="lazy"><figcaption>8 CoinSpots, each with a <code>Coin</code> inside.</figcaption></figure>
+<figure class="shot"><img src="images/practical-1/step-08-a.png" alt="" loading="lazy"><figcaption>8 CoinSpots in <code>Gameplay/Coins</code>. (In the older Level1 of this picture each CoinSpot had a Coin inside. Yours are empty markers: that is right.)</figcaption></figure>
 <figure class="shot"><img src="images/practical-1/step-08-b.png" alt="" loading="lazy"><figcaption>Top view: one coin on each flower bed, coins 5 and 6 in the middle, 7 and 8 left and right of the gate.</figcaption></figure>
 
 <!-- ======================================================= 9 -->
 <h2 id="step-9"><span class="step">9</span>Monsters</h2>
-<p>One Slime is enough. It is slow (1.5 m/s) and only sees 8.5 m in front of it. But it wanders around the whole time, also during the intro, so it starts far away from the player: in a 24 m garden, 10 m is not enough (in our test a Slime at <code>3, 0, 3</code> caught the player 2 seconds after the start).</p><p>Monsters go into <code>Gameplay/Monsters</code>. Drag the prefab from <code>Prefabs/Gameplay</code> onto the group, type the position, and rename it. Delete the old Slimes you do not need.</p>
+<p>One Slime is enough. It is slow (1.5 m/s) and only sees 8.5 m in front of it. But it wanders around the whole time, also during the intro, so it starts far away from the player: in a 24 m garden, 10 m is not enough (in our test a Slime at <code>3, 0, 3</code> caught the player 2 seconds after the start).</p><p>Monsters go into <code>Gameplay/Monsters</code>. To add one, drag a marker from <code>Prefabs/Markers</code> (<code>Monster_Slime</code>, <code>Monster_Ghost</code> or <code>Monster_MushroomKing</code>) onto the group, type the position, and rename it. Delete the old Slimes you do not need.</p>
 <div class="table-wrap"><table>
-<tr><th>Name</th><th>Prefab</th><th>Position</th><th>Note</th></tr>
+<tr><th>Name</th><th>Marker</th><th>Position</th><th>Note</th></tr>
 <tr><td><code>Slime 1</code></td><td><code>Monster_Slime</code></td><td><code>7, 0, 8</code></td><td>Keep <code>Slime 1</code>, move it (you deleted <code>Slime 2</code> in step 4). 18 m from the start, near coin 8.</td></tr>
 </table></div>
 
-<figure class="shot"><img src="images/practical-1/step-09.png" alt="" loading="lazy"><figcaption><code>Slime 1</code> at <code>7, 0, 8</code>: Monster Spawn (Patroller), Nav Mesh Agent and Enemy AI.</figcaption></figure>
+<figure class="shot"><img src="images/practical-1/step-09.png" alt="" loading="lazy"><figcaption><code>Slime 1</code> at <code>7, 0, 8</code>: Monster Spawn, Type = Patroller. (Your Slime 1 is only a marker. The picture shows an older version that also had Nav Mesh Agent and Enemy AI: the game adds those at Play.)</figcaption></figure>
 
 <!-- ======================================================= 10 -->
 <h2 id="step-10"><span class="step">10</span>Start, gate and NavMesh</h2>
 <ol>
 <li>Select <code>Gameplay/PlayerSpawn</code>. Position <code>0, 0, -9</code>, Rotation <code>0, 0, 0</code> (looks north, to the gate).</li>
 <li>Select <code>Static/ExitGate</code>. Position <code>0, 0, 12</code>, Rotation <code>0, 0, 0</code>.</li>
-<li>Select <code>Static/Walls/GateBlocker</code>. Position <code>0, 2.5, 13.25</code>. Box Collider Size <code>8, 5, 1</code>.</li>
+<li>Select <code>Static/Walls/GateBlocker</code>. Position <code>0, 2.5, 13.25</code>. Keep its Box Collider (Size <code>7.5, 5, 1</code>).</li>
 <li>Select <code>Static</code>. In <b>NavMesh Surface</b>, click <b>Bake</b>. Look at the blue area: it must reach every coin and the gate. (The blue strip outside the walls is the rest of <code>Floor_40m</code>. Nobody can get there, so it does not matter.)</li>
 <li>Save.</li>
 </ol>
 <p>The start and the gate are the same as in Level1, only the gate and blocker move 4 m south.</p>
 
-<figure class="shot"><img src="images/practical-1/step-10-a.png" alt="" loading="lazy"><figcaption><code>GateBlocker</code> at <code>0, 2.5, 13.25</code> with a Box Collider of <code>8, 5, 1</code>.</figcaption></figure>
+<figure class="shot"><img src="images/practical-1/step-10-a.png" alt="" loading="lazy"><figcaption><code>GateBlocker</code> at <code>0, 2.5, 13.25</code> with its Box Collider.</figcaption></figure>
 <figure class="shot"><img src="images/practical-1/step-10-b.png" alt="" loading="lazy"><figcaption>After <b>Bake</b>: the blue NavMesh covers the whole garden and goes around every block.</figcaption></figure>
 
 <!-- ======================================================= 11 -->
@@ -390,13 +392,13 @@
 <li>No red errors in the Console.</li>
 </ul>
 </div>
-<p><b>The card:</b> while it is locked, it shows <b>5</b>, <b>COIN GARDEN</b>, a lock and "Clear level 4". You unlock it when you win Level 4. Then it shows "Pick the golden flowers" and "8 GOLD TO FIND" (after a win: your best time). With the updated menu the cards are in two rows; with the old menu it hides under DAILY RUSH (see <a href="practicals.html#step-8">Practicals, step 8</a>).</p>
+<p><b>The card:</b> while it is locked, it shows <b>5</b>, <b>COIN GARDEN</b>, a lock and "Clear level 4". You unlock it when you win Level 4. Then it shows "Pick the golden flowers" and "8 GOLD TO FIND" (after a win: your best time). With 6 or more levels the cards are in two rows (see <a href="practicals.html#step-8">Practicals, step 8</a>).</p>
 <figure class="shot"><img src="images/practical-1/step-12-e.png" alt="" loading="lazy"><figcaption>Level Select: the COIN GARDEN card is number 5. It is locked ("Clear level 4") until you win Level 4.</figcaption></figure>
 <p><b>Tune the par time:</b> best time + 25 %, rounded to 5 s. Change <code>parTime</code> in <code>Data.cs</code>.</p>
 
 <!-- ======================================================= 13 -->
 <h2 id="step-13"><span class="step">13</span>Make it harder</h2>
-<div class="tip"><b>Make it harder</b> (pick one or two, test after each):<ul><li>Add a second <code>Monster_Slime</code> at <code>-6, 0, 9</code> (near coin 7).</li><li>Set <code>enemySpeed = 1f</code> and <code>lives = 2</code>.</li><li>Lower <code>parTime</code> to <code>25</code>.</li><li>Add a <code>PowerUp Speed</code> at <code>0, 0, -6</code> and make the par time even shorter.</li><li>Move coin 5 behind the centre block, so the player has to search.</li></ul></div>
+<div class="tip"><b>Make it harder</b> (pick one or two, test after each):<ul><li>Add a second <code>Monster_Slime</code> marker at <code>-6, 0, 9</code> (near coin 7).</li><li>Set <code>enemySpeed = 1f</code> and <code>lives = 2</code>.</li><li>Lower <code>parTime</code> to <code>25</code>.</li><li>Drag the marker <code>Prefabs/Markers/PowerUp_Speed</code> onto <code>Gameplay/PowerUps</code>, put it at <code>0, 0, -6</code> and make the par time even shorter (update <code>powerUps</code> in the LevelDef too).</li><li>Move coin 5 behind the centre block, so the player has to search.</li></ul></div>
 
 <!-- ======================================================= 14 -->
 <h2 id="step-14"><span class="step">14</span>Self-check</h2>

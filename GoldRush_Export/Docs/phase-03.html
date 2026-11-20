@@ -71,8 +71,6 @@
 <p>A <b>prefab</b> is a saved GameObject (with its children and components) stored as a file. You can place it in a scene many times. Open <code>Assets/GoldRush/Prefabs/Level</code>. Sizes are width × height × depth.</p>
 <div class="table-wrap"><table>
 <tr><th>Picture</th><th>Prefab</th><th>Size</th><th>What it is</th></tr>
-<div class="table-wrap"><table>
-<tr><th>Picture</th><th>Prefab</th><th>Size</th><th>What it is</th></tr>
 <tr><td><figure class="shot thumb"><img src="images/kit/Floor_40m.png" alt="Floor_40m" loading="lazy"></figure></td><td><code>Floor_40m</code></td><td>40 × 40 m</td><td>Grid floor (2 m tiles) on a dark plinth. The top is at Y = 0. Solid.</td></tr>
 <tr><td><figure class="shot thumb"><img src="images/kit/OuterGround.png" alt="OuterGround" loading="lazy"></figure></td><td><code>OuterGround</code></td><td>480 × 480 m</td><td>Big dark ground around the level, 0.6 m lower. No collider.</td></tr>
 <tr><td><figure class="shot thumb"><img src="images/kit/Block_1x1x1.png" alt="Block_1x1x1" loading="lazy"></figure></td><td><code>Block_1x1x1</code></td><td>1 × 1 × 1</td><td>Small grey block.</td></tr>
@@ -86,8 +84,7 @@
 <tr><td><figure class="shot thumb"><img src="images/kit/Terminal.png" alt="Terminal" loading="lazy"></figure></td><td><code>Terminal</code></td><td>1.1 × 1.5 × 0.75</td><td>Computer console with a glowing screen.</td></tr>
 <tr><td><figure class="shot thumb"><img src="images/kit/FloorPad_Cyan.png" alt="FloorPad_Cyan" loading="lazy"></figure></td><td><code>FloorPad_Cyan</code></td><td>3 × 3 m</td><td>Flat glowing pad. Decoration, no collider.</td></tr>
 </table></div>
-</table></div>
-<p><code>Prefabs/Gameplay</code> has the coin, the exit gate and the power-ups. You meet them in Phases 5, 6 and 8.</p>
+<p><code>Prefabs/Gameplay</code> has the finished game objects: <code>Player</code>, <code>Coin</code>, <code>ExitGate</code>, the three monsters and the three power-ups. <code>Prefabs/Markers</code> has the <b>markers</b> that say where they start: <code>PlayerSpawn</code>, <code>CoinSpot</code>, <code>Monster_Slime</code> / <code>_Ghost</code> / <code>_MushroomKing</code> and <code>PowerUp_Speed</code> / <code>_Ghost</code> / <code>_Magnet</code>. You meet them in Phases 4–8 and use them in the <a href="practicals.html">Practicals</a>.</p>
 <div class="note"><b>Pivot at the bottom.</b> A kit piece at <code>Y = 0</code> stands exactly on the floor. Do not click <b>Overrides → Apply All</b> on a kit piece in a scene: that changes the prefab file, so every copy in every scene changes.</div>
 
 <!-- ======================================================= 2 -->

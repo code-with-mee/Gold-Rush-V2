@@ -68,7 +68,7 @@
 <h2 id="step-1"><span class="step">1</span>What you get</h2>
 <p>Everything from <a href="phase-06.html">Phase 6</a>, plus:</p>
 <div class="table-wrap"><table>
-  <tr><th>New in this phase</th><th>What it does</th></tr>
+  <tr><th>New or explained in this phase</th><th>What it does</th></tr>
   <tr><td><b>NavMesh Surface</b> on <code>Static</code></td><td>Builds the walk map from the floor, walls and blocks. It is built again each time the level starts.</td></tr>
   <tr><td><code>Gameplay/Monsters</code> with <code>Slime 1</code>, <code>Slime 2</code></td><td>MonsterSpawn markers: which monster, and where it starts.</td></tr>
   <tr><td><code>EnemyAI.cs</code></td><td>The monster brain: patrol, alert, chase, search, stunned.</td></tr>
@@ -76,6 +76,7 @@
   <tr><td><code>Slime</code>, <code>Ghost</code>, <code>MushroomKing</code> controllers</td><td>In <code>Art/Characters/Controllers</code>. Same layout as the Hero controller.</td></tr>
   <tr><td>GameManager: hearts</td><td>Hits, lives, knockback, lose.</td></tr>
 </table></div>
+<p>New in the scene: the NavMesh Surface and the two markers. The scripts and controllers were already in every package since Phase 1; this phase explains them.</p>
 <p><b>Package:</b> <code>GoldRush_Export/Packages/GoldRush_Phase07_Monsters.unitypackage</code>. It needs the <b>AI Navigation</b> package (<code>com.unity.ai.navigation</code>) from Phase 0.</p>
 
 <!-- ======================================================= 2 -->

@@ -51,7 +51,7 @@
 <div class="content">
 <p class="eyebrow">GOLD RUSH · Practice</p>
 <h1>Practicals: design your own levels</h1>
-<p class="lead">You know the whole game now. In these practicals you are the <b>level designer</b>. You build four new levels with the pieces you already have: the kit in <code>Prefabs/Level</code>, the <code>Coin</code>, the <code>ExitGate</code>, the power-ups and the three monster prefabs, plus the markers. No new scripts. This page shows how to add <b>any</b> new level to the game and gives you the rules of good level design. Then the four practicals go from easy to hard.</p>
+<p class="lead">You know the whole game now. In these practicals you are the <b>level designer</b>. You build four new levels with the pieces you already have: the kit in <code>Prefabs/Level</code> and the markers in <code>Prefabs/Markers</code> (start, coins, monsters, power-ups). No new scripts. This page shows how to add <b>any</b> new level to the game and gives you the rules of good level design. Then the four practicals go from easy to hard.</p>
 <div class="meta"><span><b>New scenes</b><code>Level5</code> … <code>Level8</code></span><span><b>Code to edit</b><code>Scripts/Core/Data.cs</code></span><span><b>Time</b>about 1–2 lessons per practical</span></div>
 <nav class="toc" aria-label="Steps on this page"><strong>Steps on this page</strong><ol>
 <li><a href="#step-1">What you need</a></li>
@@ -80,13 +80,21 @@
 
 <!-- ======================================================= 1 -->
 <h2 id="step-1"><span class="step">1</span>What you need</h2>
-
 <ul>
-<li><a href="phase-10.html">Phase 10</a> is finished: Levels 1–4 play, and the menu shows 4 level cards and the <b>DAILY RUSH</b> card.</li>
-<li>Your <code>Level1</code> scene from the course. Every practical starts as a copy of it, so the Player, the camera, the GameManager, the game UI, the sun and the sky are already there.</li>
-<li>The monster prefabs <code>Monster_Slime</code>, <code>Monster_Ghost</code>, <code>Monster_MushroomKing</code> (Phase 7) and the power-up prefabs <code>PowerUp_Speed</code>, <code>PowerUp_Ghost</code>, <code>PowerUp_Magnet</code> (Phase 8) in <code>Prefabs/Gameplay</code>.</li>
+<li>The <a href="phase-10.html">Phase 10</a> package <code>GoldRush_Phase10_Final.unitypackage</code> imported into your project, with all six scenes in the Scene List. Levels 1–4 play, and the menu shows 4 level cards and the <b>DAILY RUSH</b> card.</li>
+<li>The <code>Level1</code> scene from that package. Every practical starts as a copy of it, so the <code>GameManager</code>, the <code>GameUI</code>, the <code>EventSystem</code>, the floor, the walls and the gate are already there. (The Player, the camera and the sun are not in the scene: the GameManager makes them when you press Play.)</li>
+<li>The kit in <code>Prefabs/Level</code> (walls, blocks, pillars, lamps, …) and the markers in <code>Prefabs/Markers</code>:
+<div class="table-wrap"><table>
+<tr><th>Marker prefab</th><th>Component</th><th>What the game makes there at Play</th></tr>
+<tr><td><code>PlayerSpawn</code></td><td>Player Spawn</td><td>The hero and the camera (one per level)</td></tr>
+<tr><td><code>CoinSpot</code></td><td>Coin Spot</td><td>A coin, 1 m above the marker</td></tr>
+<tr><td><code>Monster_Slime</code>, <code>Monster_Ghost</code>, <code>Monster_MushroomKing</code></td><td>Monster Spawn (Type = Patroller / Chaser / Guard)</td><td>That monster</td></tr>
+<tr><td><code>PowerUp_Speed</code>, <code>PowerUp_Ghost</code>, <code>PowerUp_Magnet</code></td><td>Power Up Spot (Type = Speed / Ghost / Magnet)</td><td>That power-up orb</td></tr>
+</table></div>
+</li>
 <li>Paper and a pencil. Good levels start as a drawing.</li>
 </ul>
+<div class="note"><code>Prefabs/Gameplay</code> has monsters and power-ups with the <b>same names</b>. Those are the finished objects that the game makes from the markers. In the practicals you always drag the <b>markers</b> from <code>Prefabs/Markers</code>, like the markers that are already in Level1.</div>
 <div class="tip">This guide uses the scene names <code>Level5</code> to <code>Level8</code> for practicals 1 to 4. If you skip a practical, just use the next free number.</div>
 
 <!-- ======================================================= 2 -->
@@ -122,7 +130,7 @@
 <text x="380" y="142" text-anchor="middle" fill="#6b7280" font-size="12">The scene name in the LevelDef must be exactly the file name of the scene.</text>
 </g></svg>
 <figcaption>Scene → LevelDef → Build Profiles → card.</figcaption></figure>
-<p>When the level starts, the <b>GameManager</b> finds the <code>LevelScene</code> component on your level root. It reads everything under it: <code>PlayerSpawn</code>, every <code>CoinSpot</code>, every <code>MonsterSpawn</code> (your monster prefabs), every <code>PowerUpSpot</code> and the <code>ExitGate</code>. It also bakes the NavMesh again, so you can move walls freely. You never write code for a level: you only <b>place objects</b>.</p>
+<p>When the level starts, the <b>GameManager</b> finds the <code>LevelScene</code> component on your level root. It reads everything under it: <code>PlayerSpawn</code>, every <code>CoinSpot</code>, every <code>MonsterSpawn</code>, every <code>PowerUpSpot</code> and the <code>ExitGate</code>. It also bakes the NavMesh again, so you can move walls freely. You never write code for a level: you only <b>place objects</b>.</p>
 <div class="note">The GameManager finds the level settings by the <b>scene name</b>. A scene that is not in <code>Levels.All</code> plays with the settings of Level 1 (title "Training Yard", par 40).</div>
 
 <!-- ======================================================= 3 -->
@@ -154,19 +162,17 @@
 
 <!-- ======================================================= 5 -->
 <h2 id="step-5"><span class="step">5</span>Clear out what you do not need</h2>
-
 <p>Delete the things your new level does not use. <b>Keep</b> the things in the right column.</p>
 <div class="table-wrap"><table>
 <tr><th>Usually delete or change</th><th>Always keep</th></tr>
-<tr><td>Children of <code>Static/Obstacles</code> (the old blocks)</td><td><code>GameManager</code>, <code>Player</code>, <code>Main Camera</code>, the game UI canvas, <code>EventSystem</code>, <code>Sun</code></td></tr>
-<tr><td>Extra <code>CoinSpot</code>s in <code>Gameplay/Coins</code> (or move them)</td><td><code>Static/Floor</code> (<code>Floor_40m</code>) and <code>Scenery</code></td></tr>
+<tr><td>The 12 children of <code>Static/Obstacles</code> and the <code>LCover</code> in <code>Static/Structures</code> (the old blocks)</td><td><code>GameManager</code>, <code>GameUI</code>, <code>EventSystem</code></td></tr>
+<tr><td>Extra <code>CoinSpot</code>s in <code>Gameplay/Coins</code> (or move them)</td><td><code>Static/Floor</code> (the floor and its <code>GroundCollider</code>) and <code>Scenery</code></td></tr>
 <tr><td>Monsters in <code>Gameplay/Monsters</code> (or move them)</td><td>The <code>NavMesh Surface</code> on <code>Static</code></td></tr>
-<tr><td>Power-ups in <code>Gameplay/PowerUps</code></td><td><code>PlayerSpawn</code> (one only), <code>ExitGate</code>, <code>GateBlocker</code></td></tr>
+<tr><td>Power-ups in <code>Gameplay/PowerUps</code> (or move them)</td><td><code>PlayerSpawn</code> (one only), <code>ExitGate</code>, <code>GateBlocker</code></td></tr>
+<tr><td>The children of <code>Decor</code> (glowing pads and lines made for Level1), if you change the size of the arena</td><td>The groups themselves (<code>Obstacles</code>, <code>Coins</code>, …), even when they are empty</td></tr>
 </table></div>
-
-<div class="tip">Do not delete a <code>CoinSpot</code> you want to use again: move it. A CoinSpot with its <code>Coin</code> inside is easy to copy with <b>Ctrl+D</b> / <b>Cmd+D</b>.</div>
-
-<figure class="shot"><img src="images/practicals/step-05.png" alt="" loading="lazy"><figcaption>A cleared copy: <code>Obstacles</code> is empty. GameManager, Player, camera, UI, floor, walls, gate and PlayerSpawn stay.</figcaption></figure>
+<div class="tip">Do not delete a <code>CoinSpot</code> you want to use again: move it. A CoinSpot is an empty marker, so it is easy to copy with <b>Ctrl+D</b> / <b>Cmd+D</b>. Or drag a new one from <code>Prefabs/Markers/CoinSpot</code>.</div>
+<figure class="shot"><img src="images/practicals/step-05.png" alt="" loading="lazy"><figcaption>A cleared copy: <code>Obstacles</code> is empty. GameManager, GameUI, EventSystem, floor, walls, gate and PlayerSpawn stay. (This picture is from an older Level1: yours has no Player, Main Camera and Sun in the Hierarchy.)</figcaption></figure>
 
 <!-- ======================================================= 6 -->
 <h2 id="step-6"><span class="step">6</span>Add a LevelDef in Data.cs</h2>
@@ -190,7 +196,7 @@
 <tr><td><code>parTime</code></td><td>Seconds. Win faster than this for the ★ "beat par" star. See step 14.</td></tr>
 <tr><td><code>lives</code></td><td>Hearts (1–3, the HUD has 3 hearts). Default 2 = you survive the first hit.</td></tr>
 <tr><td><code>enemySpeed</code></td><td>Multiplies every monster's speed. <code>0.9f</code> = easy, <code>1f</code> = normal, <code>1.1f</code> = hard.</td></tr>
-<tr><td><code>seed</code></td><td>Only picks a power-up type if a PowerUpSpot has none. Use any number, for example 505.</td></tr>
+<tr><td><code>seed</code></td><td>Not used by hand-made levels (only by the Daily Rush). Use any number, for example 505.</td></tr>
 <tr><td><code>size</code>, <code>patrollers</code>, <code>chasers</code>, <code>guards</code>, <code>powerUps</code></td><td>Not used by hand-made levels. Fill them in anyway (they describe your level).</td></tr>
 <tr><td><code>night</code></td><td>Only the start look for a brand-new save. The player's moon button decides day or night.</td></tr>
 </table></div>
@@ -219,7 +225,6 @@
 </ul>
 <figure class="shot"><img src="images/practicals/step-08.png" alt="" loading="lazy"><figcaption>Level Select with 6 levels (the updated menu): Levels 1–5 in the top row, Level 6 and DAILY RUSH in the bottom row. New levels are locked.</figcaption></figure>
 
-<div class="note"><b>Old menu script?</b> The first version of <code>GoldRushMenu.cs</code> has room for exactly 5 cards. Then your Level 5 card hides <b>under</b> the DAILY RUSH card, and Level 6 and later are off the screen. Ask your teacher for the updated <code>GoldRushMenu.cs</code> (two rows of cards). Until then, test your level by pressing Play in its own scene (step 9).</div>
 
 <!-- ======================================================= 9 -->
 <h2 id="step-9"><span class="step">9</span>Play your level</h2>
@@ -239,7 +244,7 @@
 <p>You place every piece by dragging a prefab into the right group and typing the position. These tricks make it faster:</p>
 <div class="table-wrap"><table>
 <tr><th>Do this</th><th>To</th></tr>
-<tr><td>Drag a prefab from <code>Prefabs/Level</code> onto a group in the <b>Hierarchy</b></td><td>Put it inside the group (Static/Obstacles, …). Then type the Position.</td></tr>
+<tr><td>Drag a prefab from <code>Prefabs/Level</code> or <code>Prefabs/Markers</code> onto a group in the <b>Hierarchy</b></td><td>Put it inside the group (Static/Obstacles, …). Then type the Position.</td></tr>
 <tr><td>Select, then <b>Ctrl+D</b> / <b>Cmd+D</b></td><td>Copy it in the same place. Change only one number.</td></tr>
 <tr><td>Hold <b>Ctrl</b> / <b>Cmd</b> while you drag the Move arrows (<b>W</b>)</td><td>Snap: it moves in fixed steps. Set the step in the Scene view toolbar → <b>Grid and Snap</b> → Move = <code>0.5</code>.</td></tr>
 <tr><td>Hold <b>Ctrl</b> / <b>Cmd</b> while you rotate (<b>E</b>)</td><td>Rotate in 15° steps. Walls only use Y = <code>0</code> or <code>90</code>.</td></tr>
@@ -251,24 +256,31 @@
 <div class="note">Pivot at the bottom: every kit piece at <b>Y = 0</b> stands on the floor. Only stacked blocks get a Y above 0.</div>
 <ul>
 <li>Solid pieces go into <code>Static</code> (and its groups), so the NavMesh sees them. Coins, monsters and power-ups go into <code>Gameplay</code>.</li>
-<li>Markers stay on the floor (<code>Y = 0</code>). The coin inside a <code>CoinSpot</code> has local position <code>0, 1, 0</code>.</li>
+<li>Markers stay on the floor (<code>Y = 0</code>). The game makes the coin 1 m above its <code>CoinSpot</code>, and the power-up orb above its marker.</li>
 </ul>
 
 <!-- ======================================================= 11 -->
 <h2 id="step-11"><span class="step">11</span>Walls of any size</h2>
-
-<p>The outer walls are built like in <a href="phase-03.html">Phase 3</a>. For an arena with <b>Arena Half = H</b>:</p>
+<p>Level1 has one outer wall object, <code>Static/Walls/PerimeterWall</code>, made for a 32 × 32 m yard (Arena Half 16). Keep it when your level is 32 × 32 m too (Practicals 2 and 3). For another size, you replace it with your own walls from the kit (Practicals 1 and 4):</p>
+<ol>
+<li>Open <code>Static/Walls/PerimeterWall</code>. Drag its child <code>GateBlocker</code> onto <code>Static/Walls</code>, so it is a child of <code>Walls</code>.</li>
+<li>Delete <code>PerimeterWall</code> (with all its wall pieces and posts).</li>
+<li>Right-click <code>Static/Walls</code> → <b>Create Empty</b> five times. Name the new groups <code>WallSouth</code>, <code>WallNorth</code>, <code>WallEast</code>, <code>WallWest</code> and <code>Corners</code>.</li>
+<li>Drag <code>Wall_8m</code> / <code>Wall_4m</code> pieces into each wall group and <code>Pillar</code>s into <code>Corners</code>. Type the positions from the practical.</li>
+</ol>
+<p>The rules for an arena with <b>Arena Half = H</b>:</p>
 <ul>
 <li>Wall groups stand at <code>±(H + 0.5)</code>: <code>WallSouth</code> at Z <code>-(H+0.5)</code>, <code>WallNorth</code> at Z <code>H+0.5</code>, <code>WallEast</code> / <code>WallWest</code> at X <code>±(H+0.5)</code> with Rotation <code>0, 90, 0</code>.</li>
-<li>Each side is <code>2H</code> long. Fill it with <code>Wall_8m</code> and <code>Wall_4m</code> pieces, end to end. The north wall also needs the 8 m gap. With the gate in the middle, <b>H = 12 or 16</b> works with these pieces.</li>
-<li>The gate needs an <b>8 m gap</b> in the north wall. The gate stands in the gap at Z = <code>H</code>. The <code>GateBlocker</code> (Box Collider <code>8, 5, 1</code>) stands at Z = <code>H + 1.25</code>, Y <code>2.5</code>.</li>
+<li>Each side is <code>2H</code> long. Fill it with <code>Wall_8m</code> and <code>Wall_4m</code> pieces, end to end. The pieces are children of the group, so you only type their <b>local X</b>.</li>
+<li>The gate needs an <b>8 m gap</b> in the north wall. The gate stands in the gap at Z = <code>H</code>. The <code>GateBlocker</code> stands at Z = <code>H + 1.25</code>, Y <code>2.5</code>. Keep its Box Collider (Size <code>7.5, 5, 1</code>).</li>
 <li>Corner pillars at <code>(±(H+0.5), 0, ±(H+0.5))</code>.</li>
-<li><code>Floor_40m</code> is 40 × 40 m. Keep <b>H at 18 or less</b>, so the walls stay on the floor.</li>
+<li>The floor is 40 × 40 m. Keep <b>H at 18 or less</b>, so the walls stay on the floor.</li>
+<li>You walk on <code>Static/Floor/GroundCollider</code>, a Box Collider of <code>34, 1, 34</code>. That is enough up to H = 16. For a bigger arena, set its Size to <code>40, 1, 40</code>.</li>
 </ul>
 <div class="table-wrap"><table>
 <tr><th>Arena Half</th><th>Size</th><th>Each side</th><th>North wall (gate in the middle)</th></tr>
 <tr><td><code>12</code></td><td>24 × 24 m</td><td>3 × Wall_8m</td><td>Wall_8m · <i>gap</i> · Wall_8m</td></tr>
-<tr><td><code>16</code></td><td>32 × 32 m (Level1)</td><td>4 × Wall_8m</td><td>Wall_8m, Wall_4m · <i>gap</i> · Wall_4m, Wall_8m</td></tr>
+<tr><td><code>16</code></td><td>32 × 32 m (Level1)</td><td>4 × Wall_8m</td><td>Wall_8m, Wall_4m · <i>gap</i> · Wall_4m, Wall_8m (or keep <code>PerimeterWall</code>)</td></tr>
 <tr><td><code>18</code></td><td>36 × 36 m</td><td>4 × Wall_8m + 1 × Wall_4m</td><td>Move the gate 2 m to the side (X = -2), see Practical 4</td></tr>
 </table></div>
 
@@ -332,13 +344,13 @@
 <div class="table-wrap"><table>
 <tr><th>Problem</th><th>Fix</th></tr>
 <tr><td>My card is not in Level Select.</td><td>Check the new line in <code>Data.cs</code> (no red errors in the Console). The menu only shows levels from <code>Levels.All</code>.</td></tr>
-<tr><td>My card hides under the DAILY RUSH card.</td><td>Your <code>GoldRushMenu.cs</code> is the old version (room for 5 cards). Ask for the updated one. Test from your scene for now.</td></tr>
 <tr><td>The card is locked.</td><td>Normal. Win the level before it. Or press Play in your scene to test.</td></tr>
 <tr><td>Clicking the card: <i>"Scene 'Level5' couldn't be loaded…"</i></td><td>Add the scene to <b>Build Profiles → Scene List</b> (step 7).</td></tr>
 <tr><td>The intro says "Training Yard" in my level.</td><td>The <code>scene</code> text in the LevelDef is not the scene file name. Check capital letters and spaces.</td></tr>
 <tr><td>The intro says "Collect all 6 gold" but I have 8 coins.</td><td>Set <code>coins = 8</code> in the LevelDef.</td></tr>
 <tr><td>The gate opens at once / never opens.</td><td>The game counts the coins in the scene. No coins → check that each <code>CoinSpot</code> is inside the level root. Never opens → a coin is inside a block or out of reach.</td></tr>
 <tr><td>A monster does not move.</td><td>It stands on a block, outside the walls, or more than 3 m from the blue NavMesh. Move it onto free floor.</td></tr>
+<tr><td>The hero or a monster falls through the floor near the walls.</td><td>The <code>GroundCollider</code> is too small for your arena. Make its Box Collider bigger (step 11).</td></tr>
 <tr><td>Monsters walk through my new walls.</td><td>The walls are not under <code>Static</code>. Drag them into <code>Static/Obstacles</code>. (The NavMesh is baked again when the level starts.)</td></tr>
 <tr><td>I changed Level1 by mistake.</td><td>You forgot <b>Save As</b>. <b>Edit → Undo</b>, or close the scene without saving.</td></tr>
 <tr><td>Red errors after editing Data.cs.</td><td>Look for a missing <code>,</code> <code>}</code> or <code>"</code> in your new line. Compare it with the line above.</td></tr>

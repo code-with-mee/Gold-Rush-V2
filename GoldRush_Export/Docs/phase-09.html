@@ -52,7 +52,7 @@
 <p class="eyebrow">GOLD RUSH · Phase 9</p>
 <h1>Gameplay UI</h1>
 <p class="lead">Until now the game made its HUD in code. In this package the game UI is a real object in the scene: <code>GameUI</code>. It holds the HUD (gold, hearts, timer, day/night and pause buttons, power-up bars, arrow, messages), the level intro with the 3-2-1-GO countdown, and the PAUSED, LEVEL COMPLETE and CAUGHT dialogs. They are built from GameObjects, just like the menu, so you can see and change every part.</p>
-<div class="meta"><span><b>Package</b><code>GoldRush_Phase09_GameUI.unitypackage</code></span><span><b>Scene</b><code>Assets/GoldRush/Scenes/Level1.unity</code></span><span><b>New</b><code>GameUI</code>, <code>EventSystem</code></span><a class="btn secondary" href="phase-09.pdf">Download PDF</a></div>
+<div class="meta"><span><b>Package</b><code>GoldRush_Phase09_GameUI.unitypackage</code></span><span><b>Scene</b><code>Assets/GoldRush/Scenes/Level1.unity</code></span><span><b>New</b><code>GameUI</code></span><a class="btn secondary" href="phase-09.pdf">Download PDF</a></div>
 
 <div class="shots">
   <figure><img src="images/04_level1_start.jpg" alt="HUD at the start of Level 1: gold counter, hearts, timer, day/night and pause buttons, hint at the bottom" loading="lazy">HUD</figure>
@@ -83,8 +83,8 @@
 <!-- ======================================================= 2 -->
 <h2 id="step-2"><span class="step">2</span>Check what is new</h2>
 
-<h3>Check 1: GameUI and EventSystem in the Hierarchy</h3>
-<p>Two new root objects: <code>GameUI</code> (a Canvas) and <code>EventSystem</code> (it sends clicks and touches to the UI). Open <code>GameUI</code>. Its children are layers. Lower in the list = drawn on top:</p>
+<h3 id="check-1">Check 1: GameUI in the Hierarchy</h3>
+<p>One new root object: <code>GameUI</code> (a Canvas). Next to it is the <code>EventSystem</code> (it was already there since Phase 3; it sends clicks and touches to the UI). Open <code>GameUI</code>. Its children are layers. Lower in the list = drawn on top:</p>
 <div class="table-wrap"><table>
   <tr><th>Child of GameUI</th><th>What it is</th></tr>
   <tr><td><code>LookArea (right half)</code>, <code>MoveArea (left half)</code></td><td>Invisible touch areas for phones (phase 10).</td></tr>
@@ -95,19 +95,19 @@
 </table></div>
 <figure class="shot" data-shot="phase-09/check-1" data-window="hierarchy" data-select="GameUI"><img src="images/phase-09/step-05-a.png" alt="Hierarchy of Level1 with GameUI and EventSystem at the root" loading="lazy"><figcaption>GameUI and EventSystem sit at the root, next to the level.</figcaption></figure>
 
-<h3>Check 2: the GameUI component</h3>
+<h3 id="check-2">Check 2: the GameUI component</h3>
 <p>Select <code>GameUI</code>. Check the <b>Canvas</b> (Screen Space - Overlay, <b>Sort Order 10</b>), the <b>Canvas Scaler</b> (Scale With Screen Size, <b>1920 × 1080</b>, <b>Match 0.5</b>) and the <b>Game UI</b> script. Game UI has one field for every part it fills in: Coin Text, Hearts, Timer Text, Pause Dialog, Win Dialog, Lose Dialog… All fields are filled.</p>
 <figure class="shot" data-shot="phase-09/check-2" data-window="inspector" data-select="GameUI"><img src="images/phase-09/step-05-b.png" alt="Inspector of GameUI: Canvas Sort Order 10, Canvas Scaler 1920 x 1080 Match 0.5, Game UI script" loading="lazy"><figcaption>Sort Order 10, 1920 × 1080, Match 0.5, and the Game UI fields start with Canvas Rt and Hud.</figcaption></figure>
 
-<h3>Check 3: the HUD</h3>
+<h3 id="check-3">Check 3: the HUD</h3>
 <p>Look at the Game view (no Play yet). You see the HUD as it is saved: the gold counter and hearts at the top left, the timer, the sun/moon button and the pause button at the top right. Some parts (power-up bars, arrow, hint) are unticked: the game shows them when it needs them.</p>
 <figure class="shot"><img src="images/04_level1_start.jpg" alt="" loading="lazy"><figcaption>The HUD chips sit in the corners, so the middle of the screen stays free.</figcaption></figure>
 
-<h3>Check 4: the dialogs</h3>
+<h3 id="check-4">Check 4: the dialogs</h3>
 <p>Open <code>GameUI › Modal</code>. It has <code>Countdown</code>, <code>Intro</code>, <code>Lose</code>, <code>Pause</code> and <code>Win</code>. They are greyed out (unticked): GameUI turns them on when needed. Each dialog has the same shape: <code>Dim</code> (a dark layer that blocks clicks) and <code>Panel › Glass</code> with a Badge, Title, Subtitle, stat cards and buttons.</p>
 <figure class="shot"><img src="images/phase-09/check-4.png" alt="" loading="lazy"><figcaption>All five children of Modal are unticked in edit mode.</figcaption></figure>
 
-<h3>Check 5: a dialog button with Game Action</h3>
+<h3 id="check-5">Check 5: a dialog button with Game Action</h3>
 <p>Select <code>GameUI › Modal › Pause › Panel › Glass › RESUME</code>. It has a <b>Button</b>, a <b>Button FX</b> (the press animation) and a <b>Game Action</b> with <b>Action</b> = <code>resume</code>. Every dialog button works like this:</p>
 <div class="table-wrap"><table>
   <tr><th>Dialog</th><th>Buttons (action)</th></tr>
@@ -117,11 +117,11 @@
 </table></div>
 <figure class="shot"><img src="images/phase-09/check-5.png" alt="" loading="lazy"><figcaption>Game Action → Action = resume. The spelling must be exact.</figcaption></figure>
 
-<h3>Check 6: the pause and day/night buttons in the HUD</h3>
+<h3 id="check-6">Check 6: the pause and day/night buttons in the HUD</h3>
 <p>Select <code>GameUI › HUD › DayNight</code>. It has a <b>Day Night Button</b> with a <b>Sun</b> and a <b>Moon</b> icon. The <code>HUD › Pause</code> button has no Game Action: GameUI connects it in code (in <code>Bind()</code>).</p>
 <figure class="shot"><img src="images/phase-09/check-6.png" alt="" loading="lazy"><figcaption>Sun and Moon are filled. The button also listens to the N key.</figcaption></figure>
 
-<h3>Check 7: World Markers</h3>
+<h3 id="check-7">Check 7: World Markers</h3>
 <p>Select <code>GameUI › WorldMarkers</code>. Its <b>World Markers</b> component has <b>Root</b> = WorldMarkers itself. It is empty now: the labels over monsters, power-ups and the gate are added in Play mode.</p>
 <figure class="shot"><img src="images/phase-09/check-7.png" alt="" loading="lazy"><figcaption>Root = WorldMarkers. The markers are made at Play.</figcaption></figure>
 
@@ -200,6 +200,8 @@ public void Run(string action)
   <tr><td>I click on the HUD, but the camera turns.</td><td>While you play, the mouse is locked. Press <kbd>Esc</kbd> first to free it.</td></tr>
   <tr><td>NEXT gives <code>Scene 'Level2' couldn't be loaded</code>.</td><td>Normal in this phase. Level 2 comes in phase 10.</td></tr>
 </table></div>
+<p>More fixes are on the <a href="troubleshooting.html">Troubleshooting</a> page.</p>
+<p><b>Checkpoint package:</b> <code>GoldRush_Phase09_GameUI.unitypackage</code></p>
 
 <nav class="pager" aria-label="Previous and next page">
 <a class="prev" href="phase-08.html"><small>← Previous</small>Phase 8: Power-ups and effects</a>

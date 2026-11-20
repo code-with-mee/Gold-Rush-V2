@@ -84,31 +84,31 @@
 <!-- ======================================================= 2 -->
 <h2 id="step-2"><span class="step">2</span>Check what is new</h2>
 
-<h3>Check 1: the day/night palette</h3>
+<h3 id="check-1">Check 1: the day/night palette</h3>
 <p>Select <code>Assets/GoldRush/Resources/DayNightPalette</code>. It is a list of <b>20 entries</b>. Each entry is a material with a colour by day and a colour by night. The first one is <code>M_Floor</code>: light grey <code>DBDEE6</code> by day, dark blue <code>212B52</code> by night. Glowing materials (lamps, gold) are not in the list: they look the same day and night.</p>
 <figure class="shot" data-shot="phase-10/check-1" data-window="inspector" data-select="Assets/GoldRush/Resources/DayNightPalette.asset"><img src="images/phase-10/step-03.png" alt="Inspector of DayNightPalette with 20 entries" loading="lazy"><figcaption>DayNightPalette: 20 entries. Open Entries to see the colours.</figcaption></figure>
 
-<h3>Check 2: Day Night Tint on the level root</h3>
+<h3 id="check-2">Check 2: Day Night Tint on the level root</h3>
 <p>Select <code>Level 1 - Training Yard</code>. Next to <b>Level Scene</b> it has a <b>Day Night Tint</b>. When the level starts, it adds the palette to its own list and tints the materials. The main menu has one too, on <code>MenuDiorama</code>.</p>
 <figure class="shot"><img src="images/phase-10/check-2.png" alt="" loading="lazy"><figcaption>The level root has Level Scene and Day Night Tint.</figcaption></figure>
 
-<h3>Check 3: Night Light on the lamps</h3>
+<h3 id="check-3">Check 3: Night Light on the lamps</h3>
 <p>In the Hierarchy search box, type <code>LampLight</code>. Select one. It has a <b>Light</b> and a <b>Night Light</b> with <b>Night Intensity</b> = <code>2.4</code>. The light over the gate (<code>Static/ExitGate/LanternLight</code>) has <code>1.8</code>. They are off by day and fade in at night.</p>
 <figure class="shot"><img src="images/phase-10/check-3.png" alt="" loading="lazy"><figcaption>Night Intensity 2.4 = how bright the lamp is at full night.</figcaption></figure>
 
-<h3>Check 4: the touch areas</h3>
+<h3 id="check-4">Check 4: the touch areas</h3>
 <p>Open <code>GameUI</code>. The first two children are <code>LookArea (right half)</code> and <code>MoveArea (left half)</code>. They are Images with alpha 0 and <b>Raycast Target</b> on: you can't see them, but they catch touches. Because they are first, every HUD button is drawn on top of them and still gets its click.</p>
 <figure class="shot" data-shot="phase-10/check-4" data-window="hierarchy" data-select="GameUI/MoveArea (left half)"><img src="images/phase-10/step-06-a.png" alt="Hierarchy: GameUI with LookArea, MoveArea, WorldMarkers, HUD, Flash, Modal" loading="lazy"><figcaption>The order: LookArea, MoveArea, WorldMarkers, HUD, Flash, Modal.</figcaption></figure>
 
-<h3>Check 5: the Virtual Joystick</h3>
+<h3 id="check-5">Check 5: the Virtual Joystick</h3>
 <p>Select <code>GameUI › MoveArea (left half)</code>. Its <b>Virtual Joystick</b> has Area = MoveArea, Stick Base = <code>Stick</code>, Knob = <code>Stick/Knob</code>, <b>Radius</b> = <code>120</code>, Group = <code>Stick</code> and Edge = <code>Stick/Ring</code>. <code>LookArea (right half)</code> has a <b>Touch Look Area</b> with its <code>Finger</code> ring. And on <code>GameUI</code>, the <b>Joystick</b> field now points to MoveArea.</p>
 <figure class="shot"><img src="images/phase-10/check-5.png" alt="" loading="lazy"><figcaption>All Virtual Joystick fields are filled. Radius 120 = how far the knob can move.</figcaption></figure>
 
-<h3>Check 6: the music</h3>
+<h3 id="check-6">Check 6: the music</h3>
 <p>There is no music object in the scene. <code>AudioFX</code> makes itself (<code>[AudioFX]</code>, it stays when scenes change) and plays the clip named <code>music</code>. Select <code>Assets/GoldRush/Resources/GoldRushAssets</code>: its <b>Sounds</b> list has <code>music</code> next to coin, step, hit, win and the others.</p>
 <figure class="shot"><img src="images/phase-10/check-6.png" alt="" loading="lazy"><figcaption>Sounds has an entry music. AudioFX finds every sound by its name.</figcaption></figure>
 
-<h3>Check 7: Levels 2–4 and the Daily Rush</h3>
+<h3 id="check-7">Check 7: Levels 2–4 and the Daily Rush</h3>
 <p>Open <code>Assets/GoldRush/Scenes</code>. There are four new scenes. They work like Level 1: a level root with markers, a <code>GameManager</code>, a <code>GameUI</code> and an <code>EventSystem</code>. The Player and the camera are made by code at Play.</p>
 <div class="table-wrap"><table>
   <tr><th>Scene</th><th>Name</th><th>Arena</th><th>Gold</th><th>Monsters</th><th>Power-ups</th><th>Par</th></tr>
@@ -119,7 +119,7 @@
 </table></div>
 <figure class="shot"><img src="images/phase-10/check-7.png" alt="" loading="lazy"><figcaption>Six scenes: MainMenu, Level1 to Level4 and Game.</figcaption></figure>
 
-<h3>Check 8: the Build Profiles</h3>
+<h3 id="check-8">Check 8: the Build Profiles</h3>
 <p>Open <b>File → Build Profiles</b>. The <b>Scene List</b> has all six scenes ticked, <code>MainMenu</code> at index 0. Under <b>Platforms</b> you see <b>Windows</b> (Mac: <b>macOS</b>) and <b>Android</b>.</p>
 <figure class="shot"><img src="images/phase-10/check-8.png" alt="" loading="lazy"><figcaption>MainMenu is first. All six scenes are ticked.</figcaption></figure>
 
@@ -232,10 +232,12 @@ void ApplyNow()
   <p><b>Well done! You now have the complete game</b>: the menu, four levels and the Daily Rush, the shop, saving, day and night, touch controls and music, as a real PC and Android app.</p>
   <p>Now go to the <a href="practicals.html">Practicals</a> to build your own levels.</p>
 </div>
+<p>More fixes are on the <a href="troubleshooting.html">Troubleshooting</a> page.</p>
+<p><b>Checkpoint package:</b> <code>GoldRush_Phase10_Final.unitypackage</code> (keep this project: you build the Practicals in it).</p>
 
 <nav class="pager" aria-label="Previous and next page">
 <a class="prev" href="phase-09.html"><small>← Previous</small>Phase 9: Gameplay UI</a>
-<a class="next" href="practicals.html"><small>Next →</small>Practicals: build your own levels</a>
+<a class="next" href="practicals.html"><small>Next →</small>Practicals: design your own levels</a>
 </nav>
 <footer class="site-footer">GOLD RUSH – a Unity 6 tutorial project. Characters: Quaternius (CC0). Font: Poppins (SIL Open Font License). Icons: Material Icons by Google (Apache 2.0).</footer>
 </div>

@@ -77,23 +77,24 @@
 <!-- ======================================================= 2 -->
 <h2 id="step-2"><span class="step">2</span>Check what is new</h2>
 
-<h3>Check 1: the PowerUps group</h3>
+<h3 id="check-1">Check 1: the PowerUps group</h3>
 <p>In the Hierarchy, open <code>Level 1 - Training Yard › Gameplay › PowerUps</code>. It has one child: <code>PowerUp Magnet</code>. Like the coins, a power-up is a marker inside the level root.</p>
 <figure class="shot" data-shot="phase-08/check-1" data-window="hierarchy" data-select="Level 1 - Training Yard/Gameplay/PowerUps/PowerUp Magnet"><img src="images/phase-08/step-07-b.png" alt="Hierarchy of Level1 with Gameplay, PowerUps and PowerUp Magnet selected" loading="lazy"><figcaption>PowerUp Magnet sits in Gameplay › PowerUps, next to Coins and Monsters.</figcaption></figure>
 
-<h3>Check 2: the Power Up Spot component</h3>
+<h3 id="check-2">Check 2: the Power Up Spot component</h3>
 <p>Select <code>PowerUp Magnet</code>. In the Inspector you see a <b>Power Up Spot</b> component with <b>Type</b> = <code>Magnet</code>. The marker stands on the floor, at Position about <code>-14.4, 0.08, -8.6</code>.</p>
 <figure class="shot"><img src="images/phase-08/check-2.png" alt="" loading="lazy"><figcaption>Type = Magnet. The type decides the colour and the effect.</figcaption></figure>
 
-<h3>Check 3: the marker in the Scene view</h3>
+<h3 id="check-3">Check 3: the marker in the Scene view</h3>
 <p>Press <kbd>F</kbd> with the marker selected. A <b>red wire ball</b> floats 1.1 m above the floor. That is the gizmo: you only see it in the editor. Cyan = SPEED, purple = GHOST, red = MAGNET.</p>
 <figure class="shot"><img src="images/phase-08/check-3.png" alt="" loading="lazy"><figcaption>The red ball shows where the MAGNET orb will float.</figcaption></figure>
 
-<h3>Check 4: the power-up models</h3>
-<p>In the Project window, select <code>Assets/GoldRush/Prefabs/Gameplay/PowerUp_Magnet</code>. It is only the <b>model</b>: a glass ball (<code>Visual</code> with <code>Sphere</code> and <code>Inner</code>) and a <code>Ring</code> on the ground. It has no script. The marker in Level 1 has no model inside: the game makes the orb in code when the level starts.</p>
+<h3 id="check-4">Check 4: the power-up models</h3>
+<p>In the Project window, select <code>Assets/GoldRush/Prefabs/Gameplay/PowerUp_Magnet</code>. It is the finished orb: a glass ball (<code>Visual</code> with <code>Sphere</code> and <code>Inner</code>), a <code>Ring</code> on the ground and the <b>Power Up</b> script (Type = Magnet). The marker in Level 1 has no orb inside: the game makes the orb in code when the level starts.</p>
+<p>The marker itself is a prefab too: <code>Prefabs/Markers/PowerUp_Magnet</code> (only a <b>Power Up Spot</b>). <code>Prefabs/Markers</code> also has <code>PowerUp_Speed</code> and <code>PowerUp_Ghost</code>. You use these markers in the <a href="practicals.html">Practicals</a>.</p>
 <figure class="shot" data-shot="phase-08/check-4" data-window="inspector" data-select="Assets/GoldRush/Prefabs/Gameplay/PowerUp_Magnet.prefab"><img src="images/phase-08/step-06.png" alt="Inspector of the PowerUp_Magnet prefab with a red glass ball and a ring in the preview" loading="lazy"><figcaption>PowerUp_Magnet: a red glass ball with a magnet inside, and a dashed ring.</figcaption></figure>
 
-<h3>Check 5: the scripts</h3>
+<h3 id="check-5">Check 5: the scripts</h3>
 <p>Find the three scripts of this phase in the Project window:</p>
 <div class="table-wrap"><table>
   <tr><th>File</th><th>What it does</th></tr>
@@ -103,7 +104,7 @@
 </table></div>
 <figure class="shot"><img src="images/phase-08/check-5.png" alt="" loading="lazy"><figcaption>PowerUp.cs is in Scripts/World, next to Coin.cs and ExitGate.cs.</figcaption></figure>
 
-<h3>Check 6: the particle material</h3>
+<h3 id="check-6">Check 6: the particle material</h3>
 <p>Select <code>Assets/GoldRush/Resources/GoldRushAssets</code>. Its <b>Particle</b> field is <code>GR_Particle</code>. Every effect in <code>FX.cs</code> uses a copy of this material.</p>
 <figure class="shot"><img src="images/phase-08/check-6.png" alt="" loading="lazy"><figcaption>Particle = GR_Particle. If it is empty, particles show as pink squares.</figcaption></figure>
 
@@ -185,9 +186,11 @@ case PowerType.Speed: SpeedLeft = SpeedDuration; desc = "Super speed!"; break;</
   <tr><td>Particles are pink squares.</td><td>Select <code>Resources/GoldRushAssets</code> and set <b>Particle</b> = <code>GR_Particle</code>.</td></tr>
   <tr><td>There is no orb in Play mode.</td><td>The marker must be inside the level root (<code>Level 1 - Training Yard › Gameplay › PowerUps</code>) and have a <b>Power Up Spot</b> component.</td></tr>
   <tr><td>I walk into the orb and nothing happens.</td><td>Walk right through the middle (closer than 1.6 m). The marker must stand on the floor (Y about 0).</td></tr>
-  <tr><td>Two orbs at one place, or an orb that does not spin.</td><td>You dragged a <code>Prefabs/Gameplay/PowerUp_*</code> model into the marker. The model has no <b>Power Up</b> script. Delete it, or add a <b>Power Up</b> component with the same Type.</td></tr>
+  <tr><td>An orb that I cannot pick up.</td><td>You dragged a <code>Prefabs/Gameplay/PowerUp_*</code> orb into the level on its own. The GameManager only finds power-ups inside a <b>Power Up Spot</b>. Use a marker from <code>Prefabs/Markers</code> instead (or put the orb inside a marker).</td></tr>
   <tr><td>Monsters still see me in GHOST mode.</td><td>GHOST lasts only 6 s. Look at the power-up bar in the HUD: when it is empty, the power is off.</td></tr>
 </table></div>
+<p>More fixes are on the <a href="troubleshooting.html">Troubleshooting</a> page.</p>
+<p><b>Checkpoint package:</b> <code>GoldRush_Phase08_PowerUps.unitypackage</code></p>
 
 <nav class="pager" aria-label="Previous and next page">
 <a class="prev" href="phase-07.html"><small>← Previous</small>Phase 7: Monsters</a>
