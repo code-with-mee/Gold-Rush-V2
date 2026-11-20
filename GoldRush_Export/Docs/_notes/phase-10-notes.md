@@ -49,3 +49,7 @@ Step 12 pastes the real file as it is now. If you change the clip loading, tell 
 ## Regenerating the pages
 Both pages were built by a small script that inserts the real source files into the page. If code changes, the
 code blocks can be regenerated from `Assets/GoldRush/Scripts` (ask the guide writer).
+
+## Compile check (2026-11-20)
+- Step 3 DayNight and step 12 AudioFX are now the real files (Save.Data.night; .wav sounds with Synth fallback).
+  Step 12 imports `Helpers/Audio/Synth.cs` first. DayNightTint/DayNightPalette already come in phase 7 (step 5 says "replace").

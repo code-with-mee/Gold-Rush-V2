@@ -133,7 +133,7 @@ namespace GoldRush
         public float enemySpeed = 1f;
         public float parTime;       // seconds, for the "beat par" star
         public int lives = 2;       // survive the first hit
-        public bool night;          // starts at night (players can still toggle day/night)
+        public bool night;          // default look for a brand-new save (the player's day/night choice is saved in SaveData.night)
         public string scene;        // hand-made level scene (null = generate from seed)
         public bool daily;
     }
@@ -229,6 +229,7 @@ namespace GoldRush
         public string hat = "hat_none";
         public bool music = true;
         public bool sfx = true;
+        public bool night = true;   // day/night look: ONE setting for the menu and every level
         public bool seenTutorial;
         public string dailyDate = "";
         public float dailyBest = -1f;
@@ -332,10 +333,10 @@ namespace GoldRush
     }
 }</code></pre>
 <ul>
-  <li><code>Levels.All</code> is the list of the 4 levels. Each <code>LevelDef</code> has a title, its scene name, the number of coins and monsters, the par time and <code>night</code>. Change a number here and the level changes.</li>
+  <li><code>Levels.All</code> is the list of the 4 levels. Each <code>LevelDef</code> has a title, its scene name, the number of coins and monsters and the par time. Change a number here and the level changes. (<code>LevelDef.night</code> is only the default look for a brand-new save.)</li>
   <li><code>Levels.Daily()</code> makes the Daily Rush. The <b>seed</b> is today's date, so every player gets the same level today, and a new one tomorrow.</li>
   <li><code>GameSession.LevelIndex</code> remembers which level to play (<code>-1</code> = daily). It is <code>static</code>, so it survives a scene change.</li>
-  <li><code>SaveData</code> is everything we save: gold, unlocked levels, stars, best times, owned items, colour, hat, music and sound.</li>
+  <li><code>SaveData</code> is everything we save: gold, unlocked levels, stars, best times, owned items, colour, hat, music, sound and <code>night</code>. <code>night</code> is ONE day/night setting for the menu and every level: the moon button changes it (phase 10).</li>
   <li><code>Save.Persist()</code> turns <code>SaveData</code> into JSON text and stores it in <b>PlayerPrefs</b> (a small save box that Unity gives every game). <code>Save.Data</code> loads it the first time you use it.</li>
   <li><code>Catalog</code> is the shop: 7 colours and 5 hats with their prices.</li>
 </ul>
@@ -711,7 +712,7 @@ namespace GoldRush
   <tr><td><code>Level3</code></td><td><code>Level 3 - King's Vault</code></td><td><code>24</code></td><td>10</td><td>2 Slime, 2 Ghost, 2 MushroomKing</td><td>Ghost, Magnet, Speed</td></tr>
   <tr><td><code>Level4</code></td><td><code>Level 4 - Gold Fever</code></td><td><code>28</code></td><td>13</td><td>3 Slime, 3 Ghost, 2 MushroomKing</td><td>Ghost, Magnet, Magnet, Speed</td></tr>
 </table></div>
-<div class="note">You do not need to bake the NavMesh again. The GameManager rebuilds it when the level starts. The par time, monster speed and night come from <code>Levels.All</code> in <code>Data.cs</code> (Levels 3 and 4 start at night).</div>
+<div class="note">You do not need to bake the NavMesh again. The GameManager rebuilds it when the level starts. The par time and monster speed come from <code>Levels.All</code> in <code>Data.cs</code>. Day or night is one saved setting (<code>Save.Data.night</code>) for every level: the moon button switches it.</div>
 <div class="tip">Short on time? Import <code>GoldRush_Export/Resources/Scenes/GoldRush_Levels2to4.unitypackage</code>. It has the three finished level scenes from the real game.</div>
 <figure class="shot todo"><div class="ph">Screenshot: Scene view of Level2 from above, with the yellow arena box, coin spots and monster markers</div><figcaption>Level 2 – Ghost Alley.</figcaption></figure>
 

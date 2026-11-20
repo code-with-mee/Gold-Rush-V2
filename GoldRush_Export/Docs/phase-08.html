@@ -137,7 +137,7 @@ namespace GoldRush
 <h2 id="step-5"><span class="step">5</span>Script: PowerUp</h2>
 <p>This script builds the orb from simple shapes and animates it.</p>
 <ol>
-  <li>Look in <code>Assets/GoldRush/Scripts/World/</code>. If <code>PowerUp.cs</code> is already there (it can come with the HUD helpers, because the HUD shows power-up names), open it and compare it with the code below.</li>
+  <li>Open <code>Assets/GoldRush/Scripts/World/PowerUp.cs</code>. It is the small placeholder from phase 5 (the HUD needs the power-up names).</li>
   <li>If it is not there: right-click → <b>Create → MonoBehaviour Script</b>, name it <code>PowerUp</code>.</li>
   <li>Replace everything with this code. Save.</li>
 </ol>
@@ -694,7 +694,7 @@ namespace GoldRush
                 if (type == EnemyType.Guard &amp;&amp; guardIndex &lt; layout.guardHomes.Count) home = layout.guardHomes[guardIndex++];
                 enemies.Add(EnemyAI.Create(layout.dynamicRoot, layout.enemyPoints[i], type, home, Def.enemySpeed, layout.half, UI.Markers));
             }
-            // monster prefabs you placed in the scene by hand
+            // monster prefabs placed in the scene by hand
             foreach (var e in FindObjectsByType&lt;EnemyAI&gt;())
             {
                 if (enemies.Contains(e)) continue;
@@ -729,10 +729,15 @@ namespace GoldRush
             var spawn = scene.GetComponentInChildren&lt;PlayerSpawn&gt;();
             l.spawn = spawn ? spawn.transform.position : Vector3.zero;
             l.spawnYaw = spawn ? spawn.transform.eulerAngles.y : 0f;
-            foreach (var c in scene.GetComponentsInChildren&lt;CoinSpot&gt;()) l.coinPoints.Add(c.transform.position);
+            foreach (var c in scene.GetComponentsInChildren&lt;CoinSpot&gt;())
+            {
+                var placed = c.GetComponentInChildren&lt;Coin&gt;();
+                if (placed) coins.Add(placed);               // a Coin prefab placed by hand
+                else l.coinPoints.Add(c.transform.position); // an empty marker: Build() makes a coin here
+            }
             foreach (var m in scene.GetComponentsInChildren&lt;MonsterSpawn&gt;())
             {
-                if (m.GetComponent&lt;EnemyAI&gt;()) continue; // a placed monster prefab: set up in Build()
+                if (m.GetComponent&lt;EnemyAI&gt;()) continue;     // a monster prefab placed by hand: set up in Build()
                 Vector3 p = m.transform.position;
                 if (UnityEngine.AI.NavMesh.SamplePosition(p, out var hit, 3f, UnityEngine.AI.NavMesh.AllAreas)) p = hit.position;
                 l.enemyPoints.Add(p);
@@ -744,7 +749,7 @@ namespace GoldRush
                 l.powerUpPoints.Add(pu.transform.position);
                 powerTypes.Add(pu.type);
             }
-            if (l.coinPoints.Count == 0) Debug.LogWarning("[GoldRush] This level has no CoinSpot objects — add some from Prefabs/Level.");
+            if (l.coinPoints.Count == 0 &amp;&amp; coins.Count == 0) Debug.LogWarning("[GoldRush] This level has no CoinSpot objects — add some from Prefabs/Level.");
             return l;
         }
 

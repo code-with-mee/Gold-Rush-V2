@@ -150,3 +150,9 @@ The ITSTEP texture in `Resources/Textures` is only mentioned as optional decorat
 2. Animator window of Slime.controller (Locomotion, Attack, Hit, Win, Die, Any State) (step 5)
 3. Inspector of Monster_Slime (Monster Spawn, Nav Mesh Agent, Enemy AI) + Hierarchy with the Model child (step 11)
 4. Game view: a Slime with the red "!" bubble chasing the hero, 2 hearts in the HUD (step 15)
+
+## Compile check (2026-11-20, scratchpad phasecheck tool, see phase-manifest.json)
+- Step 8 now imports explicitly what the phase 7 code needs: Helpers `EnemyAI`, `CharacterFactory`, `OriginalMaterials`,
+  `Mats`, `LevelBuilder`, `Props`, `DayNightTint`, `DayNightPalette`, plus the real `Coin.cs` and `ExitGate.cs` from
+  `Resources/Scripts/Final/World/` (LevelBuilder calls `Coin.Create` / `ExitGate.Create`).
+- Phase 7/8 GameManager `LevelFromScene()` now keeps hand-placed Coins (real code); before, every CoinSpot got a second coin.

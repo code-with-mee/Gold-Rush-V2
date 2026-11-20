@@ -134,7 +134,7 @@ namespace GoldRush
         public float enemySpeed = 1f;
         public float parTime;       // seconds, for the "beat par" star
         public int lives = 2;       // survive the first hit
-        public bool night;          // starts at night (players can still toggle day/night)
+        public bool night;          // default look for a brand-new save (the player's day/night choice is saved in SaveData.night)
         public string scene;        // hand-made level scene (null = generate from seed)
         public bool daily;
     }
@@ -230,6 +230,7 @@ namespace GoldRush
         public string hat = "hat_none";
         public bool music = true;
         public bool sfx = true;
+        public bool night = true;   // day/night look: ONE setting for the menu and every level
         public bool seenTutorial;
         public string dailyDate = "";
         public float dailyBest = -1f;
@@ -336,7 +337,7 @@ namespace GoldRush
   <li><b><code>LevelDef</code></b> holds the settings of one level. Level 1, <i>Training Yard</i>, has <code>coins = 6</code> and <code>parTime = 40</code> seconds.</li>
   <li><b><code>Levels.All</code></b> is the list of the 4 levels. <code>scene = "Level1"</code> links a level to its scene name.</li>
   <li><b><code>GameSession</code></b> remembers which level you play now (<code>LevelIndex</code>, 0 = Level 1).</li>
-  <li><b><code>Save</code></b> stores gold, stars and settings with <code>PlayerPrefs</code>. The sound player reads <code>Save.Data.sfx</code> (sound on or off).</li>
+  <li><b><code>Save</code></b> stores gold, stars and settings with <code>PlayerPrefs</code>. The sound player reads <code>Save.Data.sfx</code> (sound on or off). <code>Save.Data.night</code> remembers day or night (the moon button in the HUD).</li>
   <li>The enums <code>EnemyType</code>, <code>PowerType</code>, the shop (<code>Catalog</code>) and the daily level are used in phases 7–9. They are here so the file is complete.</li>
 </ul>
 
@@ -788,14 +789,7 @@ namespace GoldRush
             return c;
         }
 
-        /// &lt;summary&gt;A camera placed in the scene by hand: start right behind the target.&lt;/summary&gt;
-        void Start()
-        {
-            // curDist &gt; 0 means the GameManager already called Init (and maybe PlayIntro): keep that
-            if (target &amp;&amp; curDist &lt;= 0f) Init(target, target.eulerAngles.y);
-        }
-
-        /// &lt;summary&gt;Puts the camera behind the target at once (no glide from far away).&lt;/summary&gt;
+        /// &lt;summary&gt;Starts following a target from behind (also used for a camera placed in the scene).&lt;/summary&gt;
         public void Init(Transform newTarget, float startYaw)
         {
             target = newTarget;
@@ -805,6 +799,12 @@ namespace GoldRush
             curYaw = yaw;
             curPitch = pitch;
             Snap();
+        }
+
+        void Start()
+        {
+            // a camera placed in the scene with a Target set, that nobody initialised yet
+            if (target &amp;&amp; curDist &lt;= 0f) Init(target, target.eulerAngles.y);
         }
 
         public void PlayIntro(float duration)
@@ -946,7 +946,8 @@ namespace GoldRush
         void Start()
         {
             // a coin placed by hand gets its own random start, so the coins don't all bob together
-            if (phase == 0f) phase = Random.Range(0f, Mathf.PI * 2f);
+            if (phase == 0f) phase = Random.Range(0.01f, Mathf.PI * 2f);
+            if (!visual &amp;&amp; transform.childCount &gt; 0) visual = transform.GetChild(0);
         }
 
         void Update()
@@ -966,10 +967,10 @@ namespace GoldRush
     }
 }</code></pre>
 <ul>
-  <li><b><code>visual</code></b> is the child with the coin shapes. Only the visual moves; the Coin object stays still, so the pickup point never changes.</li>
+  <li><b><code>visual</code></b> is the child with the coin shapes. Only the visual moves; the Coin object stays still, so the pickup point never changes. If the field is empty, <code>Start()</code> uses the first child.</li>
   <li><b>Bob:</b> <code>Mathf.Sin(t * 2.2f + phase) * 0.12f</code> moves the visual up and down by 12 cm.</li>
   <li><b>Spin:</b> <code>t * 140f</code> turns it 140 degrees per second around the Y axis.</li>
-  <li><b><code>phase</code></b> is a random start value, so the coins do not all bob together.</li>
+  <li><b><code>phase</code></b> is a random start value (picked in <code>Start()</code> when it is 0), so the coins do not all bob together.</li>
   <li><b><code>Collect()</code></b> marks the coin as collected and destroys it. <code>[SerializeField]</code> shows a private field in the Inspector.</li>
 </ul>
 
@@ -1350,7 +1351,7 @@ It is only the look (a gold rim, a dark face and a star, no colliders). You add 
   <tr><th>Problem</th><th>Fix</th></tr>
   <tr><td>Console: <i>No LevelScene in this scene</i>.</td><td>Add the <b>Level Scene</b> component to <code>Level 1 - Training Yard</code> (step 14).</td></tr>
   <tr><td>The counter shows <code>0 / 0</code>; Console: <i>This level has no coins</i>.</td><td>Each Coin must be a <b>child</b> of a <b>Coin Spot</b>, and the CoinSpots must be inside the level root.</td></tr>
-  <tr><td>The coins do not move.</td><td>The <b>Coin</b> component is missing, or its <b>Visual</b> field is empty. Open the prefab and do step 13 again.</td></tr>
+  <tr><td>The coins do not move.</td><td>The <b>Coin</b> component is missing, or the coin has no <b>Visual</b> child. Open the prefab and do step 13 again.</td></tr>
   <tr><td>I run through a coin and nothing happens.</td><td>The child Coin must be at local position <code>0, 1, 0</code>, and the marker on the floor (Y = 0).</td></tr>
   <tr><td>No sound; Console: <code>[AudioFX] Unknown sound id: coin</code>.</td><td>The <b>Sounds</b> list in GoldRushAssets is empty, or the file is not called <code>coin.wav</code> (step 12).</td></tr>
   <tr><td>Console: <i>GoldRushAssets missing</i>.</td><td>The asset must be called <code>GoldRushAssets</code> and be inside <code>Assets/GoldRush/Resources</code>.</td></tr>

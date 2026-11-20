@@ -167,6 +167,7 @@ namespace GoldRush
                 d.sky = new Material(skyboxAsset) { name = "Sky (runtime)" };
                 RenderSettings.skybox = d.sky;
             }
+            night = Save.Data.night; // the player's saved choice wins over the scene default
             d.value = d.target = night ? 1f : 0f;
             d.tints.AddRange(pendingTints);
             d.nightLights.AddRange(pendingLights);
@@ -186,6 +187,7 @@ namespace GoldRush
         {
             if (!I) return;
             I.target = night ? 1f : 0f;
+            if (Save.Data.night != night) { Save.Data.night = night; Save.Persist(); } // remembered everywhere
             if (instant) { I.value = I.target; I.ApplyNow(); }
             Changed?.Invoke(night);
         }
@@ -286,6 +288,7 @@ namespace GoldRush
   <li><code>Color.Lerp(day, night, t)</code> mixes two colours: <code>t = 0</code> gives the day colour, <code>t = 1</code> the night colour.</li>
   <li><code>RegisterTint</code> and <code>RegisterNightLight</code> add objects to the lists. If <code>DayNight</code> does not exist yet, they wait in the <b>pending</b> lists.</li>
   <li><code>Changed</code> is an <b>event</b>: the day/night button listens to it to swap its icon.</li>
+  <li><code>Save.Data.night</code> is ONE day/night setting for the menu and every level. When a scene starts, the saved choice wins over the scene default; <code>Set()</code> (used by <code>Toggle()</code>) saves a new choice with <code>Save.Persist()</code>.</li>
   <li>It uses <code>Time.unscaledDeltaTime</code>, so it still works when the game is paused.</li>
 </ul>
 
@@ -379,7 +382,7 @@ namespace GoldRush
         }
     }
 }</code></pre>
-<p><code>Assets/GoldRush/Scripts/World/DayNightPalette.cs</code> – create it.</p>
+<p><code>Assets/GoldRush/Scripts/World/DayNightPalette.cs</code> – replace the whole file (or create it). You imported both files in phase 7; check that they are the same as this code.</p>
 <pre class="long"><code>using System.Collections.Generic;
 using UnityEngine;
 
@@ -850,6 +853,7 @@ namespace GoldRush
 
 <!-- ======================================================= 12 -->
 <h2 id="step-12"><span class="step">12</span>Script: AudioFX (music)</h2>
+<p>The final AudioFX can make its sounds in code when the <code>.wav</code> files are missing. That code is in a helper. Drag <code>Synth.cs</code> from <code>GoldRush_Export/Resources/Scripts/Helpers/Audio/</code> into <code>Assets/GoldRush/Scripts/Audio/</code> first.</p>
 <p><code>Assets/GoldRush/Scripts/Audio/AudioFX.cs</code> – replace the whole file with this final version.</p>
 <pre class="long"><code>using System.Collections.Generic;
 using UnityEngine;
@@ -912,7 +916,13 @@ namespace GoldRush
         void Init()
         {
             if (clips != null) return;
-            clips = Synth.BuildAll();
+            // the sound files (Art/Audio/*.wav) are listed in the GoldRushAssets asset; "coin.wav" -&gt; id "coin"
+            clips = new Dictionary&lt;string, AudioClip&gt;();
+            var assets = GameAssets.I;
+            if (assets &amp;&amp; assets.sounds != null)
+                foreach (var clip in assets.sounds)
+                    if (clip) clips[clip.name] = clip;
+            if (clips.Count == 0) clips = Synth.BuildAll(); // no sound files yet: make them from code
 
             pool = new AudioSource[PoolSize];
             for (int i = 0; i &lt; PoolSize; i++)
@@ -1058,6 +1068,7 @@ namespace GoldRush
   <li><code>Duck(amount, seconds)</code> makes the music quieter for a moment, so you hear the win or lose sound.</li>
   <li><code>RefreshMute()</code> reads <code>Save.Data.music</code> and <code>Save.Data.sfx</code>. The menu Settings and the pause menu call it.</li>
   <li>Music volume is <code>0.3</code>. Eight <b>AudioSources</b> play sound effects, so several sounds can play at once.</li>
+  <li>The sounds still come from the <b>Sounds</b> list of <code>GoldRushAssets</code>. Only if that list is empty, <code>Synth.BuildAll()</code> makes every sound in code (a fallback).</li>
 </ul>
 
 <!-- ======================================================= 13 -->

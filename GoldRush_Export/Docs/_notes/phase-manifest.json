@@ -1,0 +1,1084 @@
+{
+ "3": [
+  {
+   "path": "Assets/GoldRush/Scripts/Gameplay/PlayerMotor.cs",
+   "source": "typed in phase 3"
+  },
+  {
+   "path": "Assets/GoldRush/Scripts/Level/PlayerSpawn.cs",
+   "source": "typed in phase 3"
+  },
+  {
+   "path": "Assets/GoldRush/Scripts/UI/VirtualJoystick.cs",
+   "source": "typed in phase 3"
+  }
+ ],
+ "4": [
+  {
+   "path": "Assets/GoldRush/Scripts/Gameplay/PlayerMotor.cs",
+   "source": "typed in phase 4"
+  },
+  {
+   "path": "Assets/GoldRush/Scripts/Gameplay/ThirdPersonCamera.cs",
+   "source": "typed in phase 4"
+  },
+  {
+   "path": "Assets/GoldRush/Scripts/Level/PlayerSpawn.cs",
+   "source": "typed in phase 3"
+  },
+  {
+   "path": "Assets/GoldRush/Scripts/UI/TouchLookArea.cs",
+   "source": "typed in phase 4"
+  },
+  {
+   "path": "Assets/GoldRush/Scripts/UI/VirtualJoystick.cs",
+   "source": "typed in phase 3"
+  }
+ ],
+ "5": [
+  {
+   "path": "Assets/GoldRush/Scripts/Audio/AudioFX.cs",
+   "source": "typed in phase 5"
+  },
+  {
+   "path": "Assets/GoldRush/Scripts/Core/Data.cs",
+   "source": "typed in phase 5"
+  },
+  {
+   "path": "Assets/GoldRush/Scripts/Core/Fader.cs",
+   "source": "Helpers/Core/Fader.cs"
+  },
+  {
+   "path": "Assets/GoldRush/Scripts/Core/GameAssets.cs",
+   "source": "typed in phase 5"
+  },
+  {
+   "path": "Assets/GoldRush/Scripts/Core/Tween.cs",
+   "source": "Helpers/Core/Tween.cs"
+  },
+  {
+   "path": "Assets/GoldRush/Scripts/Core/TweenRunner.cs",
+   "source": "Helpers/Core/TweenRunner.cs"
+  },
+  {
+   "path": "Assets/GoldRush/Scripts/Gameplay/GameManager.cs",
+   "source": "typed in phase 5"
+  },
+  {
+   "path": "Assets/GoldRush/Scripts/Gameplay/PlayerMotor.cs",
+   "source": "typed in phase 4"
+  },
+  {
+   "path": "Assets/GoldRush/Scripts/Gameplay/ThirdPersonCamera.cs",
+   "source": "typed in phase 5"
+  },
+  {
+   "path": "Assets/GoldRush/Scripts/Level/CoinSpot.cs",
+   "source": "typed in phase 5"
+  },
+  {
+   "path": "Assets/GoldRush/Scripts/Level/LevelScene.cs",
+   "source": "typed in phase 5"
+  },
+  {
+   "path": "Assets/GoldRush/Scripts/Level/PlayerSpawn.cs",
+   "source": "typed in phase 3"
+  },
+  {
+   "path": "Assets/GoldRush/Scripts/UI/Bob.cs",
+   "source": "Helpers/UI/Bob.cs"
+  },
+  {
+   "path": "Assets/GoldRush/Scripts/UI/ButtonFX.cs",
+   "source": "Helpers/UI/ButtonFX.cs"
+  },
+  {
+   "path": "Assets/GoldRush/Scripts/UI/CoinFlip.cs",
+   "source": "Helpers/UI/CoinFlip.cs"
+  },
+  {
+   "path": "Assets/GoldRush/Scripts/UI/DayNightButton.cs",
+   "source": "Helpers/UI/DayNightButton.cs"
+  },
+  {
+   "path": "Assets/GoldRush/Scripts/UI/GameUI.cs",
+   "source": "Helpers/UI/GameUI.cs"
+  },
+  {
+   "path": "Assets/GoldRush/Scripts/UI/TouchLookArea.cs",
+   "source": "Helpers/UI/TouchLookArea.cs"
+  },
+  {
+   "path": "Assets/GoldRush/Scripts/UI/UIKit.cs",
+   "source": "Helpers/UI/UIKit.cs"
+  },
+  {
+   "path": "Assets/GoldRush/Scripts/UI/VirtualJoystick.cs",
+   "source": "Helpers/UI/VirtualJoystick.cs"
+  },
+  {
+   "path": "Assets/GoldRush/Scripts/UI/WorldMarkers.cs",
+   "source": "Helpers/UI/WorldMarkers.cs"
+  },
+  {
+   "path": "Assets/GoldRush/Scripts/World/Coin.cs",
+   "source": "typed in phase 5"
+  },
+  {
+   "path": "Assets/GoldRush/Scripts/World/DayNight.cs",
+   "source": "Helpers/World/DayNight.cs"
+  },
+  {
+   "path": "Assets/GoldRush/Scripts/World/EnvironmentSetup.cs",
+   "source": "Helpers/World/EnvironmentSetup.cs"
+  },
+  {
+   "path": "Assets/GoldRush/Scripts/World/ExitGate.cs",
+   "source": "typed in phase 5"
+  },
+  {
+   "path": "Assets/GoldRush/Scripts/World/NightLight.cs",
+   "source": "Helpers/World/NightLight.cs"
+  },
+  {
+   "path": "Assets/GoldRush/Scripts/World/PowerUp.cs",
+   "source": "typed in phase 5"
+  }
+ ],
+ "6": [
+  {
+   "path": "Assets/GoldRush/Scripts/Audio/AudioFX.cs",
+   "source": "typed in phase 5"
+  },
+  {
+   "path": "Assets/GoldRush/Scripts/Core/Data.cs",
+   "source": "typed in phase 5"
+  },
+  {
+   "path": "Assets/GoldRush/Scripts/Core/Fader.cs",
+   "source": "Helpers/Core/Fader.cs"
+  },
+  {
+   "path": "Assets/GoldRush/Scripts/Core/GameAssets.cs",
+   "source": "typed in phase 5"
+  },
+  {
+   "path": "Assets/GoldRush/Scripts/Core/Tween.cs",
+   "source": "Helpers/Core/Tween.cs"
+  },
+  {
+   "path": "Assets/GoldRush/Scripts/Core/TweenRunner.cs",
+   "source": "Helpers/Core/TweenRunner.cs"
+  },
+  {
+   "path": "Assets/GoldRush/Scripts/Gameplay/GameManager.cs",
+   "source": "typed in phase 6"
+  },
+  {
+   "path": "Assets/GoldRush/Scripts/Gameplay/PlayerMotor.cs",
+   "source": "typed in phase 6"
+  },
+  {
+   "path": "Assets/GoldRush/Scripts/Gameplay/ThirdPersonCamera.cs",
+   "source": "typed in phase 5"
+  },
+  {
+   "path": "Assets/GoldRush/Scripts/Level/CoinSpot.cs",
+   "source": "typed in phase 5"
+  },
+  {
+   "path": "Assets/GoldRush/Scripts/Level/LevelScene.cs",
+   "source": "typed in phase 5"
+  },
+  {
+   "path": "Assets/GoldRush/Scripts/Level/PlayerSpawn.cs",
+   "source": "typed in phase 3"
+  },
+  {
+   "path": "Assets/GoldRush/Scripts/UI/Bob.cs",
+   "source": "Helpers/UI/Bob.cs"
+  },
+  {
+   "path": "Assets/GoldRush/Scripts/UI/ButtonFX.cs",
+   "source": "Helpers/UI/ButtonFX.cs"
+  },
+  {
+   "path": "Assets/GoldRush/Scripts/UI/CoinFlip.cs",
+   "source": "Helpers/UI/CoinFlip.cs"
+  },
+  {
+   "path": "Assets/GoldRush/Scripts/UI/DayNightButton.cs",
+   "source": "Helpers/UI/DayNightButton.cs"
+  },
+  {
+   "path": "Assets/GoldRush/Scripts/UI/GameUI.cs",
+   "source": "Helpers/UI/GameUI.cs"
+  },
+  {
+   "path": "Assets/GoldRush/Scripts/UI/TouchLookArea.cs",
+   "source": "Helpers/UI/TouchLookArea.cs"
+  },
+  {
+   "path": "Assets/GoldRush/Scripts/UI/UIKit.cs",
+   "source": "Helpers/UI/UIKit.cs"
+  },
+  {
+   "path": "Assets/GoldRush/Scripts/UI/VirtualJoystick.cs",
+   "source": "Helpers/UI/VirtualJoystick.cs"
+  },
+  {
+   "path": "Assets/GoldRush/Scripts/UI/WorldMarkers.cs",
+   "source": "Helpers/UI/WorldMarkers.cs"
+  },
+  {
+   "path": "Assets/GoldRush/Scripts/World/Coin.cs",
+   "source": "typed in phase 5"
+  },
+  {
+   "path": "Assets/GoldRush/Scripts/World/DayNight.cs",
+   "source": "Helpers/World/DayNight.cs"
+  },
+  {
+   "path": "Assets/GoldRush/Scripts/World/EnvironmentSetup.cs",
+   "source": "Helpers/World/EnvironmentSetup.cs"
+  },
+  {
+   "path": "Assets/GoldRush/Scripts/World/ExitGate.cs",
+   "source": "typed in phase 6"
+  },
+  {
+   "path": "Assets/GoldRush/Scripts/World/NightLight.cs",
+   "source": "Helpers/World/NightLight.cs"
+  },
+  {
+   "path": "Assets/GoldRush/Scripts/World/PowerUp.cs",
+   "source": "typed in phase 5"
+  }
+ ],
+ "7": [
+  {
+   "path": "Assets/GoldRush/Scripts/Audio/AudioFX.cs",
+   "source": "typed in phase 5"
+  },
+  {
+   "path": "Assets/GoldRush/Scripts/Core/Data.cs",
+   "source": "typed in phase 5"
+  },
+  {
+   "path": "Assets/GoldRush/Scripts/Core/Fader.cs",
+   "source": "Helpers/Core/Fader.cs"
+  },
+  {
+   "path": "Assets/GoldRush/Scripts/Core/GameAssets.cs",
+   "source": "typed in phase 5"
+  },
+  {
+   "path": "Assets/GoldRush/Scripts/Core/Mats.cs",
+   "source": "Final/Core/Mats.cs"
+  },
+  {
+   "path": "Assets/GoldRush/Scripts/Core/Tween.cs",
+   "source": "Helpers/Core/Tween.cs"
+  },
+  {
+   "path": "Assets/GoldRush/Scripts/Core/TweenRunner.cs",
+   "source": "Helpers/Core/TweenRunner.cs"
+  },
+  {
+   "path": "Assets/GoldRush/Scripts/Gameplay/Badge.cs",
+   "source": "typed in phase 7"
+  },
+  {
+   "path": "Assets/GoldRush/Scripts/Gameplay/CharacterFactory.cs",
+   "source": "Final/Gameplay/CharacterFactory.cs"
+  },
+  {
+   "path": "Assets/GoldRush/Scripts/Gameplay/EnemyAI.cs",
+   "source": "Final/Gameplay/EnemyAI.cs"
+  },
+  {
+   "path": "Assets/GoldRush/Scripts/Gameplay/GameManager.cs",
+   "source": "typed in phase 7"
+  },
+  {
+   "path": "Assets/GoldRush/Scripts/Gameplay/OriginalMaterials.cs",
+   "source": "Final/Gameplay/OriginalMaterials.cs"
+  },
+  {
+   "path": "Assets/GoldRush/Scripts/Gameplay/PlayerMotor.cs",
+   "source": "typed in phase 7"
+  },
+  {
+   "path": "Assets/GoldRush/Scripts/Gameplay/ThirdPersonCamera.cs",
+   "source": "typed in phase 5"
+  },
+  {
+   "path": "Assets/GoldRush/Scripts/Level/CoinSpot.cs",
+   "source": "typed in phase 5"
+  },
+  {
+   "path": "Assets/GoldRush/Scripts/Level/LevelScene.cs",
+   "source": "typed in phase 5"
+  },
+  {
+   "path": "Assets/GoldRush/Scripts/Level/MonsterSpawn.cs",
+   "source": "typed in phase 7"
+  },
+  {
+   "path": "Assets/GoldRush/Scripts/Level/PlayerSpawn.cs",
+   "source": "typed in phase 3"
+  },
+  {
+   "path": "Assets/GoldRush/Scripts/UI/Bob.cs",
+   "source": "Helpers/UI/Bob.cs"
+  },
+  {
+   "path": "Assets/GoldRush/Scripts/UI/ButtonFX.cs",
+   "source": "Helpers/UI/ButtonFX.cs"
+  },
+  {
+   "path": "Assets/GoldRush/Scripts/UI/CoinFlip.cs",
+   "source": "Helpers/UI/CoinFlip.cs"
+  },
+  {
+   "path": "Assets/GoldRush/Scripts/UI/DayNightButton.cs",
+   "source": "Helpers/UI/DayNightButton.cs"
+  },
+  {
+   "path": "Assets/GoldRush/Scripts/UI/GameUI.cs",
+   "source": "Helpers/UI/GameUI.cs"
+  },
+  {
+   "path": "Assets/GoldRush/Scripts/UI/TouchLookArea.cs",
+   "source": "Helpers/UI/TouchLookArea.cs"
+  },
+  {
+   "path": "Assets/GoldRush/Scripts/UI/UIKit.cs",
+   "source": "Helpers/UI/UIKit.cs"
+  },
+  {
+   "path": "Assets/GoldRush/Scripts/UI/VirtualJoystick.cs",
+   "source": "Helpers/UI/VirtualJoystick.cs"
+  },
+  {
+   "path": "Assets/GoldRush/Scripts/UI/WorldMarkers.cs",
+   "source": "Helpers/UI/WorldMarkers.cs"
+  },
+  {
+   "path": "Assets/GoldRush/Scripts/World/Coin.cs",
+   "source": "Final/World/Coin.cs"
+  },
+  {
+   "path": "Assets/GoldRush/Scripts/World/DayNight.cs",
+   "source": "Helpers/World/DayNight.cs"
+  },
+  {
+   "path": "Assets/GoldRush/Scripts/World/DayNightPalette.cs",
+   "source": "Final/World/DayNightPalette.cs"
+  },
+  {
+   "path": "Assets/GoldRush/Scripts/World/DayNightTint.cs",
+   "source": "Final/World/DayNightTint.cs"
+  },
+  {
+   "path": "Assets/GoldRush/Scripts/World/EnvironmentSetup.cs",
+   "source": "Helpers/World/EnvironmentSetup.cs"
+  },
+  {
+   "path": "Assets/GoldRush/Scripts/World/ExitGate.cs",
+   "source": "Final/World/ExitGate.cs"
+  },
+  {
+   "path": "Assets/GoldRush/Scripts/World/LevelBuilder.cs",
+   "source": "Final/World/LevelBuilder.cs"
+  },
+  {
+   "path": "Assets/GoldRush/Scripts/World/NightLight.cs",
+   "source": "Helpers/World/NightLight.cs"
+  },
+  {
+   "path": "Assets/GoldRush/Scripts/World/PowerUp.cs",
+   "source": "typed in phase 5"
+  },
+  {
+   "path": "Assets/GoldRush/Scripts/World/Props.cs",
+   "source": "Final/World/Props.cs"
+  }
+ ],
+ "8": [
+  {
+   "path": "Assets/GoldRush/Scripts/Audio/AudioFX.cs",
+   "source": "typed in phase 5"
+  },
+  {
+   "path": "Assets/GoldRush/Scripts/Core/Data.cs",
+   "source": "typed in phase 5"
+  },
+  {
+   "path": "Assets/GoldRush/Scripts/Core/Fader.cs",
+   "source": "Helpers/Core/Fader.cs"
+  },
+  {
+   "path": "Assets/GoldRush/Scripts/Core/GameAssets.cs",
+   "source": "typed in phase 5"
+  },
+  {
+   "path": "Assets/GoldRush/Scripts/Core/Mats.cs",
+   "source": "Final/Core/Mats.cs"
+  },
+  {
+   "path": "Assets/GoldRush/Scripts/Core/Tween.cs",
+   "source": "Helpers/Core/Tween.cs"
+  },
+  {
+   "path": "Assets/GoldRush/Scripts/Core/TweenRunner.cs",
+   "source": "Helpers/Core/TweenRunner.cs"
+  },
+  {
+   "path": "Assets/GoldRush/Scripts/Gameplay/Badge.cs",
+   "source": "typed in phase 7"
+  },
+  {
+   "path": "Assets/GoldRush/Scripts/Gameplay/CharacterFactory.cs",
+   "source": "Final/Gameplay/CharacterFactory.cs"
+  },
+  {
+   "path": "Assets/GoldRush/Scripts/Gameplay/EnemyAI.cs",
+   "source": "Final/Gameplay/EnemyAI.cs"
+  },
+  {
+   "path": "Assets/GoldRush/Scripts/Gameplay/FX.cs",
+   "source": "Helpers/Gameplay/FX.cs"
+  },
+  {
+   "path": "Assets/GoldRush/Scripts/Gameplay/GameManager.cs",
+   "source": "typed in phase 8"
+  },
+  {
+   "path": "Assets/GoldRush/Scripts/Gameplay/OriginalMaterials.cs",
+   "source": "Final/Gameplay/OriginalMaterials.cs"
+  },
+  {
+   "path": "Assets/GoldRush/Scripts/Gameplay/PlayerMotor.cs",
+   "source": "typed in phase 8"
+  },
+  {
+   "path": "Assets/GoldRush/Scripts/Gameplay/ThirdPersonCamera.cs",
+   "source": "typed in phase 5"
+  },
+  {
+   "path": "Assets/GoldRush/Scripts/Level/CoinSpot.cs",
+   "source": "typed in phase 5"
+  },
+  {
+   "path": "Assets/GoldRush/Scripts/Level/LevelScene.cs",
+   "source": "typed in phase 5"
+  },
+  {
+   "path": "Assets/GoldRush/Scripts/Level/MonsterSpawn.cs",
+   "source": "typed in phase 7"
+  },
+  {
+   "path": "Assets/GoldRush/Scripts/Level/PlayerSpawn.cs",
+   "source": "typed in phase 3"
+  },
+  {
+   "path": "Assets/GoldRush/Scripts/Level/PowerUpSpot.cs",
+   "source": "typed in phase 8"
+  },
+  {
+   "path": "Assets/GoldRush/Scripts/UI/Bob.cs",
+   "source": "Helpers/UI/Bob.cs"
+  },
+  {
+   "path": "Assets/GoldRush/Scripts/UI/ButtonFX.cs",
+   "source": "Helpers/UI/ButtonFX.cs"
+  },
+  {
+   "path": "Assets/GoldRush/Scripts/UI/CoinFlip.cs",
+   "source": "Helpers/UI/CoinFlip.cs"
+  },
+  {
+   "path": "Assets/GoldRush/Scripts/UI/DayNightButton.cs",
+   "source": "Helpers/UI/DayNightButton.cs"
+  },
+  {
+   "path": "Assets/GoldRush/Scripts/UI/GameUI.cs",
+   "source": "Helpers/UI/GameUI.cs"
+  },
+  {
+   "path": "Assets/GoldRush/Scripts/UI/TouchLookArea.cs",
+   "source": "Helpers/UI/TouchLookArea.cs"
+  },
+  {
+   "path": "Assets/GoldRush/Scripts/UI/UIKit.cs",
+   "source": "Helpers/UI/UIKit.cs"
+  },
+  {
+   "path": "Assets/GoldRush/Scripts/UI/VirtualJoystick.cs",
+   "source": "Helpers/UI/VirtualJoystick.cs"
+  },
+  {
+   "path": "Assets/GoldRush/Scripts/UI/WorldMarkers.cs",
+   "source": "Helpers/UI/WorldMarkers.cs"
+  },
+  {
+   "path": "Assets/GoldRush/Scripts/World/Coin.cs",
+   "source": "Final/World/Coin.cs"
+  },
+  {
+   "path": "Assets/GoldRush/Scripts/World/DayNight.cs",
+   "source": "Helpers/World/DayNight.cs"
+  },
+  {
+   "path": "Assets/GoldRush/Scripts/World/DayNightPalette.cs",
+   "source": "Final/World/DayNightPalette.cs"
+  },
+  {
+   "path": "Assets/GoldRush/Scripts/World/DayNightTint.cs",
+   "source": "Final/World/DayNightTint.cs"
+  },
+  {
+   "path": "Assets/GoldRush/Scripts/World/EnvironmentSetup.cs",
+   "source": "Helpers/World/EnvironmentSetup.cs"
+  },
+  {
+   "path": "Assets/GoldRush/Scripts/World/ExitGate.cs",
+   "source": "Final/World/ExitGate.cs"
+  },
+  {
+   "path": "Assets/GoldRush/Scripts/World/LevelBuilder.cs",
+   "source": "Final/World/LevelBuilder.cs"
+  },
+  {
+   "path": "Assets/GoldRush/Scripts/World/NightLight.cs",
+   "source": "Helpers/World/NightLight.cs"
+  },
+  {
+   "path": "Assets/GoldRush/Scripts/World/PowerUp.cs",
+   "source": "typed in phase 8"
+  },
+  {
+   "path": "Assets/GoldRush/Scripts/World/Props.cs",
+   "source": "Final/World/Props.cs"
+  }
+ ],
+ "9": [
+  {
+   "path": "Assets/GoldRush/Scripts/Audio/AudioFX.cs",
+   "source": "typed in phase 5"
+  },
+  {
+   "path": "Assets/GoldRush/Scripts/Core/Data.cs",
+   "source": "typed in phase 9"
+  },
+  {
+   "path": "Assets/GoldRush/Scripts/Core/Fader.cs",
+   "source": "typed in phase 9"
+  },
+  {
+   "path": "Assets/GoldRush/Scripts/Core/GameAssets.cs",
+   "source": "typed in phase 5"
+  },
+  {
+   "path": "Assets/GoldRush/Scripts/Core/Mats.cs",
+   "source": "Final/Core/Mats.cs"
+  },
+  {
+   "path": "Assets/GoldRush/Scripts/Core/Tween.cs",
+   "source": "Helpers/Core/Tween.cs"
+  },
+  {
+   "path": "Assets/GoldRush/Scripts/Core/TweenRunner.cs",
+   "source": "Helpers/Core/TweenRunner.cs"
+  },
+  {
+   "path": "Assets/GoldRush/Scripts/Gameplay/Badge.cs",
+   "source": "typed in phase 7"
+  },
+  {
+   "path": "Assets/GoldRush/Scripts/Gameplay/CharacterFactory.cs",
+   "source": "Final/Gameplay/CharacterFactory.cs"
+  },
+  {
+   "path": "Assets/GoldRush/Scripts/Gameplay/EnemyAI.cs",
+   "source": "Final/Gameplay/EnemyAI.cs"
+  },
+  {
+   "path": "Assets/GoldRush/Scripts/Gameplay/FX.cs",
+   "source": "Helpers/Gameplay/FX.cs"
+  },
+  {
+   "path": "Assets/GoldRush/Scripts/Gameplay/GameManager.cs",
+   "source": "typed in phase 8"
+  },
+  {
+   "path": "Assets/GoldRush/Scripts/Gameplay/OriginalMaterials.cs",
+   "source": "Final/Gameplay/OriginalMaterials.cs"
+  },
+  {
+   "path": "Assets/GoldRush/Scripts/Gameplay/PlayerMotor.cs",
+   "source": "typed in phase 8"
+  },
+  {
+   "path": "Assets/GoldRush/Scripts/Gameplay/ThirdPersonCamera.cs",
+   "source": "typed in phase 5"
+  },
+  {
+   "path": "Assets/GoldRush/Scripts/Level/CoinSpot.cs",
+   "source": "typed in phase 5"
+  },
+  {
+   "path": "Assets/GoldRush/Scripts/Level/LevelScene.cs",
+   "source": "typed in phase 5"
+  },
+  {
+   "path": "Assets/GoldRush/Scripts/Level/MonsterSpawn.cs",
+   "source": "typed in phase 7"
+  },
+  {
+   "path": "Assets/GoldRush/Scripts/Level/PlayerSpawn.cs",
+   "source": "typed in phase 3"
+  },
+  {
+   "path": "Assets/GoldRush/Scripts/Level/PowerUpSpot.cs",
+   "source": "typed in phase 8"
+  },
+  {
+   "path": "Assets/GoldRush/Scripts/UI/Bob.cs",
+   "source": "Helpers/UI/Bob.cs"
+  },
+  {
+   "path": "Assets/GoldRush/Scripts/UI/ButtonFX.cs",
+   "source": "Helpers/UI/ButtonFX.cs"
+  },
+  {
+   "path": "Assets/GoldRush/Scripts/UI/CoinFlip.cs",
+   "source": "Helpers/UI/CoinFlip.cs"
+  },
+  {
+   "path": "Assets/GoldRush/Scripts/UI/DayNightButton.cs",
+   "source": "Helpers/UI/DayNightButton.cs"
+  },
+  {
+   "path": "Assets/GoldRush/Scripts/UI/GameUI.cs",
+   "source": "Helpers/UI/GameUI.cs"
+  },
+  {
+   "path": "Assets/GoldRush/Scripts/UI/GoldRushMenu.cs",
+   "source": "Helpers/UI/GoldRushMenu.cs"
+  },
+  {
+   "path": "Assets/GoldRush/Scripts/UI/LogoTitle.cs",
+   "source": "Helpers/UI/LogoTitle.cs"
+  },
+  {
+   "path": "Assets/GoldRush/Scripts/UI/MenuAction.cs",
+   "source": "typed in phase 9"
+  },
+  {
+   "path": "Assets/GoldRush/Scripts/UI/TouchLookArea.cs",
+   "source": "Helpers/UI/TouchLookArea.cs"
+  },
+  {
+   "path": "Assets/GoldRush/Scripts/UI/UIKit.cs",
+   "source": "Helpers/UI/UIKit.cs"
+  },
+  {
+   "path": "Assets/GoldRush/Scripts/UI/VirtualJoystick.cs",
+   "source": "Helpers/UI/VirtualJoystick.cs"
+  },
+  {
+   "path": "Assets/GoldRush/Scripts/UI/WorldMarkers.cs",
+   "source": "Helpers/UI/WorldMarkers.cs"
+  },
+  {
+   "path": "Assets/GoldRush/Scripts/World/Coin.cs",
+   "source": "Final/World/Coin.cs"
+  },
+  {
+   "path": "Assets/GoldRush/Scripts/World/DayNight.cs",
+   "source": "Helpers/World/DayNight.cs"
+  },
+  {
+   "path": "Assets/GoldRush/Scripts/World/DayNightPalette.cs",
+   "source": "Final/World/DayNightPalette.cs"
+  },
+  {
+   "path": "Assets/GoldRush/Scripts/World/DayNightTint.cs",
+   "source": "Final/World/DayNightTint.cs"
+  },
+  {
+   "path": "Assets/GoldRush/Scripts/World/EnvironmentSetup.cs",
+   "source": "Helpers/World/EnvironmentSetup.cs"
+  },
+  {
+   "path": "Assets/GoldRush/Scripts/World/ExitGate.cs",
+   "source": "Final/World/ExitGate.cs"
+  },
+  {
+   "path": "Assets/GoldRush/Scripts/World/LevelBuilder.cs",
+   "source": "Final/World/LevelBuilder.cs"
+  },
+  {
+   "path": "Assets/GoldRush/Scripts/World/NightLight.cs",
+   "source": "Helpers/World/NightLight.cs"
+  },
+  {
+   "path": "Assets/GoldRush/Scripts/World/PowerUp.cs",
+   "source": "typed in phase 8"
+  },
+  {
+   "path": "Assets/GoldRush/Scripts/World/Props.cs",
+   "source": "Final/World/Props.cs"
+  }
+ ],
+ "10-pre": [
+  {
+   "path": "Assets/GoldRush/Scripts/Audio/AudioFX.cs",
+   "source": "typed in phase 10"
+  },
+  {
+   "path": "Assets/GoldRush/Scripts/Audio/Synth.cs",
+   "source": "Helpers/Audio/Synth.cs"
+  },
+  {
+   "path": "Assets/GoldRush/Scripts/Core/Data.cs",
+   "source": "typed in phase 9"
+  },
+  {
+   "path": "Assets/GoldRush/Scripts/Core/Fader.cs",
+   "source": "typed in phase 9"
+  },
+  {
+   "path": "Assets/GoldRush/Scripts/Core/GameAssets.cs",
+   "source": "typed in phase 5"
+  },
+  {
+   "path": "Assets/GoldRush/Scripts/Core/Mats.cs",
+   "source": "Final/Core/Mats.cs"
+  },
+  {
+   "path": "Assets/GoldRush/Scripts/Core/Tween.cs",
+   "source": "Helpers/Core/Tween.cs"
+  },
+  {
+   "path": "Assets/GoldRush/Scripts/Core/TweenRunner.cs",
+   "source": "Helpers/Core/TweenRunner.cs"
+  },
+  {
+   "path": "Assets/GoldRush/Scripts/Gameplay/Badge.cs",
+   "source": "typed in phase 7"
+  },
+  {
+   "path": "Assets/GoldRush/Scripts/Gameplay/CharacterFactory.cs",
+   "source": "Final/Gameplay/CharacterFactory.cs"
+  },
+  {
+   "path": "Assets/GoldRush/Scripts/Gameplay/EnemyAI.cs",
+   "source": "Final/Gameplay/EnemyAI.cs"
+  },
+  {
+   "path": "Assets/GoldRush/Scripts/Gameplay/FX.cs",
+   "source": "Helpers/Gameplay/FX.cs"
+  },
+  {
+   "path": "Assets/GoldRush/Scripts/Gameplay/GameManager.cs",
+   "source": "typed in phase 8"
+  },
+  {
+   "path": "Assets/GoldRush/Scripts/Gameplay/OriginalMaterials.cs",
+   "source": "Final/Gameplay/OriginalMaterials.cs"
+  },
+  {
+   "path": "Assets/GoldRush/Scripts/Gameplay/PlayerMotor.cs",
+   "source": "typed in phase 8"
+  },
+  {
+   "path": "Assets/GoldRush/Scripts/Gameplay/ThirdPersonCamera.cs",
+   "source": "typed in phase 5"
+  },
+  {
+   "path": "Assets/GoldRush/Scripts/Level/CoinSpot.cs",
+   "source": "typed in phase 5"
+  },
+  {
+   "path": "Assets/GoldRush/Scripts/Level/LevelScene.cs",
+   "source": "typed in phase 5"
+  },
+  {
+   "path": "Assets/GoldRush/Scripts/Level/MonsterSpawn.cs",
+   "source": "typed in phase 7"
+  },
+  {
+   "path": "Assets/GoldRush/Scripts/Level/PlayerSpawn.cs",
+   "source": "typed in phase 3"
+  },
+  {
+   "path": "Assets/GoldRush/Scripts/Level/PowerUpSpot.cs",
+   "source": "typed in phase 8"
+  },
+  {
+   "path": "Assets/GoldRush/Scripts/UI/Bob.cs",
+   "source": "Helpers/UI/Bob.cs"
+  },
+  {
+   "path": "Assets/GoldRush/Scripts/UI/ButtonFX.cs",
+   "source": "Helpers/UI/ButtonFX.cs"
+  },
+  {
+   "path": "Assets/GoldRush/Scripts/UI/CoinFlip.cs",
+   "source": "Helpers/UI/CoinFlip.cs"
+  },
+  {
+   "path": "Assets/GoldRush/Scripts/UI/DayNightButton.cs",
+   "source": "typed in phase 10"
+  },
+  {
+   "path": "Assets/GoldRush/Scripts/UI/GameUI.cs",
+   "source": "Helpers/UI/GameUI.cs"
+  },
+  {
+   "path": "Assets/GoldRush/Scripts/UI/GoldRushMenu.cs",
+   "source": "Helpers/UI/GoldRushMenu.cs"
+  },
+  {
+   "path": "Assets/GoldRush/Scripts/UI/LogoTitle.cs",
+   "source": "Helpers/UI/LogoTitle.cs"
+  },
+  {
+   "path": "Assets/GoldRush/Scripts/UI/MenuAction.cs",
+   "source": "typed in phase 9"
+  },
+  {
+   "path": "Assets/GoldRush/Scripts/UI/TouchLookArea.cs",
+   "source": "typed in phase 10"
+  },
+  {
+   "path": "Assets/GoldRush/Scripts/UI/UIKit.cs",
+   "source": "Helpers/UI/UIKit.cs"
+  },
+  {
+   "path": "Assets/GoldRush/Scripts/UI/VirtualJoystick.cs",
+   "source": "typed in phase 10"
+  },
+  {
+   "path": "Assets/GoldRush/Scripts/UI/WorldMarkers.cs",
+   "source": "Helpers/UI/WorldMarkers.cs"
+  },
+  {
+   "path": "Assets/GoldRush/Scripts/World/Coin.cs",
+   "source": "Final/World/Coin.cs"
+  },
+  {
+   "path": "Assets/GoldRush/Scripts/World/DayNight.cs",
+   "source": "typed in phase 10"
+  },
+  {
+   "path": "Assets/GoldRush/Scripts/World/DayNightPalette.cs",
+   "source": "typed in phase 10"
+  },
+  {
+   "path": "Assets/GoldRush/Scripts/World/DayNightTint.cs",
+   "source": "typed in phase 10"
+  },
+  {
+   "path": "Assets/GoldRush/Scripts/World/EnvironmentSetup.cs",
+   "source": "typed in phase 10"
+  },
+  {
+   "path": "Assets/GoldRush/Scripts/World/ExitGate.cs",
+   "source": "Final/World/ExitGate.cs"
+  },
+  {
+   "path": "Assets/GoldRush/Scripts/World/LevelBuilder.cs",
+   "source": "Final/World/LevelBuilder.cs"
+  },
+  {
+   "path": "Assets/GoldRush/Scripts/World/NightLight.cs",
+   "source": "typed in phase 10"
+  },
+  {
+   "path": "Assets/GoldRush/Scripts/World/PowerUp.cs",
+   "source": "typed in phase 8"
+  },
+  {
+   "path": "Assets/GoldRush/Scripts/World/Props.cs",
+   "source": "Final/World/Props.cs"
+  }
+ ],
+ "10": [
+  {
+   "path": "Assets/GoldRush/Scripts/Audio/AudioFX.cs",
+   "source": "Final/Audio/AudioFX.cs"
+  },
+  {
+   "path": "Assets/GoldRush/Scripts/Audio/Synth.cs",
+   "source": "Final/Audio/Synth.cs"
+  },
+  {
+   "path": "Assets/GoldRush/Scripts/Core/Data.cs",
+   "source": "Final/Core/Data.cs"
+  },
+  {
+   "path": "Assets/GoldRush/Scripts/Core/Fader.cs",
+   "source": "Final/Core/Fader.cs"
+  },
+  {
+   "path": "Assets/GoldRush/Scripts/Core/GameAssets.cs",
+   "source": "Final/Core/GameAssets.cs"
+  },
+  {
+   "path": "Assets/GoldRush/Scripts/Core/Mats.cs",
+   "source": "Final/Core/Mats.cs"
+  },
+  {
+   "path": "Assets/GoldRush/Scripts/Core/Tween.cs",
+   "source": "Final/Core/Tween.cs"
+  },
+  {
+   "path": "Assets/GoldRush/Scripts/Core/TweenRunner.cs",
+   "source": "Final/Core/TweenRunner.cs"
+  },
+  {
+   "path": "Assets/GoldRush/Scripts/Gameplay/Badge.cs",
+   "source": "Final/Gameplay/Badge.cs"
+  },
+  {
+   "path": "Assets/GoldRush/Scripts/Gameplay/CharacterFactory.cs",
+   "source": "Final/Gameplay/CharacterFactory.cs"
+  },
+  {
+   "path": "Assets/GoldRush/Scripts/Gameplay/EnemyAI.cs",
+   "source": "Final/Gameplay/EnemyAI.cs"
+  },
+  {
+   "path": "Assets/GoldRush/Scripts/Gameplay/FX.cs",
+   "source": "Final/Gameplay/FX.cs"
+  },
+  {
+   "path": "Assets/GoldRush/Scripts/Gameplay/GameManager.cs",
+   "source": "Final/Gameplay/GameManager.cs"
+  },
+  {
+   "path": "Assets/GoldRush/Scripts/Gameplay/OriginalMaterials.cs",
+   "source": "Final/Gameplay/OriginalMaterials.cs"
+  },
+  {
+   "path": "Assets/GoldRush/Scripts/Gameplay/PlayerMotor.cs",
+   "source": "Final/Gameplay/PlayerMotor.cs"
+  },
+  {
+   "path": "Assets/GoldRush/Scripts/Gameplay/ThirdPersonCamera.cs",
+   "source": "Final/Gameplay/ThirdPersonCamera.cs"
+  },
+  {
+   "path": "Assets/GoldRush/Scripts/Level/CoinSpot.cs",
+   "source": "Final/Level/CoinSpot.cs"
+  },
+  {
+   "path": "Assets/GoldRush/Scripts/Level/LevelScene.cs",
+   "source": "Final/Level/LevelScene.cs"
+  },
+  {
+   "path": "Assets/GoldRush/Scripts/Level/MonsterSpawn.cs",
+   "source": "Final/Level/MonsterSpawn.cs"
+  },
+  {
+   "path": "Assets/GoldRush/Scripts/Level/PlayerSpawn.cs",
+   "source": "Final/Level/PlayerSpawn.cs"
+  },
+  {
+   "path": "Assets/GoldRush/Scripts/Level/PowerUpSpot.cs",
+   "source": "Final/Level/PowerUpSpot.cs"
+  },
+  {
+   "path": "Assets/GoldRush/Scripts/UI/Bob.cs",
+   "source": "Final/UI/Bob.cs"
+  },
+  {
+   "path": "Assets/GoldRush/Scripts/UI/ButtonFX.cs",
+   "source": "Final/UI/ButtonFX.cs"
+  },
+  {
+   "path": "Assets/GoldRush/Scripts/UI/CoinFlip.cs",
+   "source": "Final/UI/CoinFlip.cs"
+  },
+  {
+   "path": "Assets/GoldRush/Scripts/UI/DayNightButton.cs",
+   "source": "Final/UI/DayNightButton.cs"
+  },
+  {
+   "path": "Assets/GoldRush/Scripts/UI/GameUI.cs",
+   "source": "Final/UI/GameUI.cs"
+  },
+  {
+   "path": "Assets/GoldRush/Scripts/UI/GoldRushMenu.cs",
+   "source": "Final/UI/GoldRushMenu.cs"
+  },
+  {
+   "path": "Assets/GoldRush/Scripts/UI/LogoTitle.cs",
+   "source": "Final/UI/LogoTitle.cs"
+  },
+  {
+   "path": "Assets/GoldRush/Scripts/UI/MenuAction.cs",
+   "source": "Final/UI/MenuAction.cs"
+  },
+  {
+   "path": "Assets/GoldRush/Scripts/UI/TouchLookArea.cs",
+   "source": "Final/UI/TouchLookArea.cs"
+  },
+  {
+   "path": "Assets/GoldRush/Scripts/UI/UIKit.cs",
+   "source": "Final/UI/UIKit.cs"
+  },
+  {
+   "path": "Assets/GoldRush/Scripts/UI/VirtualJoystick.cs",
+   "source": "Final/UI/VirtualJoystick.cs"
+  },
+  {
+   "path": "Assets/GoldRush/Scripts/UI/WorldMarkers.cs",
+   "source": "Final/UI/WorldMarkers.cs"
+  },
+  {
+   "path": "Assets/GoldRush/Scripts/World/Coin.cs",
+   "source": "Final/World/Coin.cs"
+  },
+  {
+   "path": "Assets/GoldRush/Scripts/World/DayNight.cs",
+   "source": "Final/World/DayNight.cs"
+  },
+  {
+   "path": "Assets/GoldRush/Scripts/World/DayNightPalette.cs",
+   "source": "Final/World/DayNightPalette.cs"
+  },
+  {
+   "path": "Assets/GoldRush/Scripts/World/DayNightTint.cs",
+   "source": "Final/World/DayNightTint.cs"
+  },
+  {
+   "path": "Assets/GoldRush/Scripts/World/EnvironmentSetup.cs",
+   "source": "Final/World/EnvironmentSetup.cs"
+  },
+  {
+   "path": "Assets/GoldRush/Scripts/World/ExitGate.cs",
+   "source": "Final/World/ExitGate.cs"
+  },
+  {
+   "path": "Assets/GoldRush/Scripts/World/LevelBuilder.cs",
+   "source": "Final/World/LevelBuilder.cs"
+  },
+  {
+   "path": "Assets/GoldRush/Scripts/World/NightLight.cs",
+   "source": "Final/World/NightLight.cs"
+  },
+  {
+   "path": "Assets/GoldRush/Scripts/World/PowerUp.cs",
+   "source": "Final/World/PowerUp.cs"
+  },
+  {
+   "path": "Assets/GoldRush/Scripts/World/Props.cs",
+   "source": "Final/World/Props.cs"
+  }
+ ]
+}

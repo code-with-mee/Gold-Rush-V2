@@ -73,7 +73,7 @@
   <li>Your project from <a href="phase-06.html">Phase 6</a>: the Player prefab, the camera, coins, the HUD, the exit gate and the win/lose dialogs all work.</li>
   <li>The package <b>AI Navigation</b> (<code>com.unity.ai.navigation</code>, version 2.0). You checked it in Phase 0. Open <b>Window → Package Manager</b> and look under <b>In Project</b> if you are not sure.</li>
   <li>The monster models in <code>Assets/GoldRush/Art/Characters/Monsters/</code>: <code>Slime.fbx</code>, <code>Ghost.fbx</code>, <code>MushroomKing.fbx</code>.</li>
-  <li>The helper script <code>Resources/Scripts/Helpers/EnemyAI.cs</code> from the Resources pack.</li>
+  <li>The helper scripts in <code>Resources/Scripts/Helpers/</code> (<code>EnemyAI.cs</code> and the level builder helpers, step 8) and <code>Coin.cs</code>, <code>ExitGate.cs</code> from <code>Resources/Scripts/Final/World/</code>.</li>
 </ul>
 <p>Open the scene <code>Assets/GoldRush/Scenes/Level1.unity</code>.</p>
 
@@ -388,7 +388,18 @@ namespace GoldRush
 <ol>
   <li>In Finder or Explorer, open the Resources pack folder <code>Scripts/Helpers/</code>.</li>
   <li>Drag <code>EnemyAI.cs</code> into <code>Assets/GoldRush/Scripts/Gameplay/</code> in Unity.</li>
-  <li>Look in <code>Scripts/Gameplay/</code> for <code>CharacterFactory.cs</code>. If it is not there, drag it in from <code>Scripts/Helpers/</code> too. It sizes models and makes the night glow lights.</li>
+  <li>Drag these helpers from <code>Scripts/Helpers/</code> too, into the same folder names in <code>Assets/GoldRush/Scripts/</code>. If Unity asks to replace a file, click <b>Replace</b>.</li>
+</ol>
+<div class="table-wrap"><table>
+  <tr><th>Into Scripts/…</th><th>Files</th><th>What they do</th></tr>
+  <tr><td><code>Gameplay</code></td><td><code>CharacterFactory.cs</code>, <code>OriginalMaterials.cs</code></td><td>Size the monster models, the shop colours and hats, the night glow lights.</td></tr>
+  <tr><td><code>Core</code></td><td><code>Mats.cs</code></td><td>Makes materials in code (the Badge and the glows use it).</td></tr>
+  <tr><td><code>World</code></td><td><code>LevelBuilder.cs</code>, <code>Props.cs</code>, <code>DayNightTint.cs</code>, <code>DayNightPalette.cs</code></td><td>Build a whole level in code. The new GameManager uses this when a scene has no <code>LevelScene</code> (the Daily Rush in phase 9). Phase 10 explains the two DayNight files.</td></tr>
+</table></div>
+<p>The level builder makes coins and a gate in code, so <code>Coin</code> and <code>ExitGate</code> need their full versions with a <code>Create()</code> function. Your coin and gate prefabs keep working exactly as before.</p>
+<ol>
+  <li>Open the Resources pack folder <code>Scripts/Final/World/</code>.</li>
+  <li>Drag <code>Coin.cs</code> and <code>ExitGate.cs</code> into <code>Assets/GoldRush/Scripts/World/</code>. Click <b>Replace</b>.</li>
   <li>Wait for Unity to compile. The Console shows red errors until you finish step 10 (EnemyAI needs the new GameManager and PlayerMotor). That's normal.</li>
 </ol>
 <p>Now read the three most important parts. First, the numbers for each monster type:</p>
@@ -881,7 +892,7 @@ namespace GoldRush
                 if (type == EnemyType.Guard &amp;&amp; guardIndex &lt; layout.guardHomes.Count) home = layout.guardHomes[guardIndex++];
                 enemies.Add(EnemyAI.Create(layout.dynamicRoot, layout.enemyPoints[i], type, home, Def.enemySpeed, layout.half, UI.Markers));
             }
-            // monster prefabs you placed in the scene by hand
+            // monster prefabs placed in the scene by hand
             foreach (var e in FindObjectsByType&lt;EnemyAI&gt;())
             {
                 if (enemies.Contains(e)) continue;
@@ -916,17 +927,22 @@ namespace GoldRush
             var spawn = scene.GetComponentInChildren&lt;PlayerSpawn&gt;();
             l.spawn = spawn ? spawn.transform.position : Vector3.zero;
             l.spawnYaw = spawn ? spawn.transform.eulerAngles.y : 0f;
-            foreach (var c in scene.GetComponentsInChildren&lt;CoinSpot&gt;()) l.coinPoints.Add(c.transform.position);
+            foreach (var c in scene.GetComponentsInChildren&lt;CoinSpot&gt;())
+            {
+                var placed = c.GetComponentInChildren&lt;Coin&gt;();
+                if (placed) coins.Add(placed);               // a Coin prefab placed by hand
+                else l.coinPoints.Add(c.transform.position); // an empty marker: Build() makes a coin here
+            }
             foreach (var m in scene.GetComponentsInChildren&lt;MonsterSpawn&gt;())
             {
-                if (m.GetComponent&lt;EnemyAI&gt;()) continue; // a placed monster prefab: set up in Build()
+                if (m.GetComponent&lt;EnemyAI&gt;()) continue;     // a monster prefab placed by hand: set up in Build()
                 Vector3 p = m.transform.position;
                 if (UnityEngine.AI.NavMesh.SamplePosition(p, out var hit, 3f, UnityEngine.AI.NavMesh.AllAreas)) p = hit.position;
                 l.enemyPoints.Add(p);
                 l.enemyTypes.Add(m.type);
                 if (m.type == EnemyType.Guard) l.guardHomes.Add(m.HomePosition);
             }
-            if (l.coinPoints.Count == 0) Debug.LogWarning("[GoldRush] This level has no CoinSpot objects — add some from Prefabs/Level.");
+            if (l.coinPoints.Count == 0 &amp;&amp; coins.Count == 0) Debug.LogWarning("[GoldRush] This level has no CoinSpot objects — add some from Prefabs/Level.");
             return l;
         }
 
@@ -1178,6 +1194,7 @@ namespace GoldRush
   <li><b>Hearts:</b> <code>MaxLives = Lives = Mathf.Max(1, Def.lives)</code>. Level 1 has 2 lives, so you see 2 hearts. <code>UI.SetLives()</code> draws them in the HUD.</li>
   <li><b>Placed monsters:</b> in <code>Build()</code>, <code>FindObjectsByType&lt;EnemyAI&gt;</code> finds your Slimes and calls <code>SetupPlaced()</code> on each one. The list <code>enemies</code> remembers them.</li>
   <li><b>NavMesh:</b> <code>LevelFromScene()</code> calls <code>surface.BuildNavMesh()</code> on your <code>NavMeshSurface</code>: a fresh bake when the level starts. It also skips <code>MonsterSpawn</code> objects that already are a monster.</li>
+  <li><b>Coins and level builder:</b> <code>LevelFromScene()</code> keeps the Coins you placed in the CoinSpots; an empty CoinSpot gets a coin from <code>Coin.Create()</code>. A scene with no <code>LevelScene</code> is built in code by <code>LevelBuilder.Build(Def)</code> (the Daily Rush, phase 9).</li>
   <li><b><code>OnPlayerCaught()</code></b>: one hit = <code>Hits++</code> and <code>Lives--</code>, a sound, a camera shake and a red flash. At 0 lives you lose. Otherwise you are pushed away and safe for 2.2 s, and the monster is stunned for 2.6 s.</li>
   <li><b><code>AllCollected()</code></b> calls <code>e.Enrage(1.1f)</code>: when the gate opens, all monsters get 10% faster!</li>
   <li><b>Tension music:</b> at the end of <code>Update()</code>, if any monster is chasing you, <code>AudioFX.SetTension(true)</code> makes the music exciting.</li>
@@ -1267,6 +1284,7 @@ namespace GoldRush
 <div class="table-wrap"><table>
   <tr><th>Problem</th><th>Fix</th></tr>
   <tr><td>Error: <code>The type or namespace name 'EnemyAI' could not be found</code></td><td>Import <code>EnemyAI.cs</code> (step 8) into <code>Scripts/Gameplay/</code>.</td></tr>
+  <tr><td>Error: <code>The type or namespace name 'Mats' could not be found</code> (or <code>Props</code>, <code>LevelLayout</code>, <code>LevelBuilder</code>), or <code>'Coin' does not contain a definition for 'Create'</code></td><td>Import the helpers and the full <code>Coin.cs</code> / <code>ExitGate.cs</code> from step 8.</td></tr>
   <tr><td>Error: <code>'GameManager' does not contain a definition for 'GhostActive'</code></td><td>You still have the old GameManager. Replace the whole file (step 10).</td></tr>
   <tr><td>Monsters stand still. Console: <i>"SetDestination" can only be called on an active agent that has been placed on a NavMesh</i></td><td>Bake the NavMesh (step 3). Check that the monster stands on the blue area.</td></tr>
   <tr><td>Monsters walk through walls</td><td>The wall has no collider, or you moved it after baking. Add a Box Collider and click <b>Bake</b> again.</td></tr>
