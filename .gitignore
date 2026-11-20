@@ -54,3 +54,7 @@ Thumbs.db
 # ---- exported zips (share copies, not source) ----
 /GoldRush_Export.zip
 *.zip
+
+# ---- videos: too big for git, share separately ----
+GoldRush_Export/Videos/**/*.mp4
+GoldRush_Export/Videos/*.mp4
