@@ -107,27 +107,32 @@
 </div>
 
 <h2 id="how">How to use this course</h2>
+<p>The course has two parts. In the <b>phases</b> you learn how the game works. In the <b>Practicals</b> you build levels yourself.</p>
+<p>Every phase has the same four parts:</p>
+<ol class="steps-start">
+  <li><b>Import the package.</b> Import the phase package into a new, empty project (or delete <code>Assets/GoldRush</code> first). Then add the scenes to <b>File → Build Profiles → Scene List</b>, with <code>MainMenu</code> first.</li>
+  <li><b>Check.</b> The guide shows you what is new: which objects, components and values to look at. A screenshot under each check shows what your window should look like.</li>
+  <li><b>Understand.</b> A short code tour shows the key lines of the main script. Then <b>“▶ Press Play”</b> tells you what you should see.</li>
+  <li><b>Try.</b> Make one to three small changes (a value, a field, a line of code) and see what happens.</li>
+</ol>
 <ul>
-  <li><b>Follow the phases in order.</b> Each phase starts where the previous one ends.</li>
-  <li><b>Do one step at a time.</b> Each step has the clicks to do and the code to type or import. The screenshot under a step shows what your window should look like.</li>
-  <li><b>Every phase ends with “▶ Press Play”.</b> Check that you see what the guide says before you go on.</li>
-  <li><b>Type it or import it.</b> Short scripts (up to about 250 lines) you type or paste, and the guide explains the key lines. Big helper scripts you import from the Resources folder.</li>
-  <li><b>Scripts grow.</b> Some scripts (for example <code>GameManager</code> or <code>PlayerMotor</code>) get a short <b>phase version</b> first. When a later step says <b>Replace the whole file</b>, select all the old code and paste the new version.</li>
+  <li><b>Follow the phases in order.</b> Each phase adds one part of the game: menu, level, player, coins, gate, monsters, power-ups, game UI, polish.</li>
+  <li><b>Then do the Practicals.</b> That is where you build your own levels: <a href="practical-1.html">P1</a> and <a href="practical-2.html">P2</a> step by step with screenshots, <a href="practical-3.html">P3</a> and <a href="practical-4.html">P4</a> as challenges.</li>
   <li><b>Stuck?</b> Look at the “Common problems” table at the end of the phase, then the <a href="troubleshooting.html">Troubleshooting</a> page.</li>
-  <li><b>Still stuck?</b> Use the checkpoint package (see below).</li>
+  <li><b>Broke something while trying?</b> Import the phase package again into a new project.</li>
 </ul>
 
 <h3 id="resources">The Resources folder</h3>
 <div class="table-wrap"><table>
-  <tr><th>Folder</th><th>What is inside</th><th>Used in</th></tr>
-  <tr><td><code>Resources/Scripts/Helpers/</code></td><td>The big helper scripts you import instead of typing: <code>UIKit</code>, <code>ButtonFX</code>, <code>Tween</code>, <code>AudioFX</code>, <code>EnemyAI</code>, <code>FX</code>, <code>GameUI</code>, <code>GameAction</code>, …</td><td>Phases 1, 7, 8, 9</td></tr>
-  <tr><td><code>Resources/Scripts/Phases/</code></td><td>Short phase versions of big scripts, for example <code>Phase02/UI/GoldRushMenu.cs</code>.</td><td>Phase 2</td></tr>
-  <tr><td><code>Resources/Scripts/Final/</code></td><td>The final version of every script, the same as the teacher's game.</td><td>Phase 10</td></tr>
+<tr><th>Folder</th><th>What is inside</th><th>When you need it</th></tr>
+<tr><td><code>Packages/</code></td><td>One package per phase (import it at the start of the phase) + <code>GoldRush_Levels2to4</code>, <code>GoldRush_GameUIDialogs</code> and <code>GoldRush_Practicals_Solution</code>.</td><td>Every phase and the Practicals</td></tr>
+<tr><td><code>Resources/Scripts/Final/</code></td><td>Every game script as plain <code>.cs</code> files, to read outside Unity or to copy into your own project.</td><td>Optional</td></tr>
+<tr><td><code>Resources/Scripts/Helpers/</code>, <code>Phases/</code></td><td>Script copies for teachers who want students to build parts by hand.</td><td>Optional (teachers)</td></tr>
 </table></div>
 <div class="note">Do not mix it up with the Unity folder <code>Assets/GoldRush/Resources</code>. That one is a special Unity folder: scripts load files from it by name (for example <code>GoldRushAssets</code>).</div>
 
 <h3 id="packages">Checkpoint packages</h3>
-<p>Every phase has a <b>checkpoint package</b> in <code>GoldRush_Export/Packages/</code>. It holds the whole project as it is at the <b>end</b> of that phase. Got lost? Make a new, empty <b>Universal 3D</b> project (with AI Navigation and Active Input Handling = Both, see <a href="phase-00.html">Phase 0</a>), import the package of the phase you finished last (<b>Assets → Import Package → Custom Package…</b>), and continue with the next guide.</p>
+<p>Every phase has a <b>package</b> in <code>GoldRush_Export/Packages/</code>. You import it at the start of the phase. It holds the whole project as it is at the <b>end</b> of that phase: the art, the scenes of that phase and (from phase 1 on) all the final scripts. Import it into a new, empty <b>Universal 3D</b> project (with AI Navigation and Active Input Handling = Both, see <a href="phase-00.html">Phase 0</a>) with <b>Assets → Import Package → Custom Package…</b>.</p>
 <div class="table-wrap"><table>
   <tr><th>After phase</th><th>Package</th><th>Contains</th></tr>
   <tr><td>0</td><td><code>GoldRush_Phase00_Project.unitypackage</code></td><td>Starter resources (no scripts) + Sandbox test scene</td></tr>

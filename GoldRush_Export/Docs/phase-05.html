@@ -51,902 +51,140 @@
 <div class="content">
 <p class="eyebrow">GOLD RUSH · Phase 5</p>
 <h1>Coins</h1>
-<p class="lead">You bring the gold to life. You add the Coin script to the coin prefab, put a coin in every CoinSpot marker, and write the <b>GameManager</b>: the boss of the level. It moves the hero to the start, flies the camera in, counts the coins and plays the pickup sound. There is no HUD yet (it comes in phase 9), so the Console counts for you: <code>Coin 1 / 6</code>.</p>
+<p class="lead">Gold comes into the yard. The package adds six <b>CoinSpot</b> markers. When you press Play, the GameManager makes a floating, spinning coin at each one. Run into a coin: it is gone, you hear the coin sound, and the counter on the HUD goes up.</p>
 <div class="meta"><span><b>Checkpoint package</b><code>GoldRush_Phase05_Coins.unitypackage</code></span><span><b>Scene</b><code>Assets/GoldRush/Scenes/Level1.unity</code></span><a class="btn secondary" href="phase-05.pdf">Download PDF</a></div>
 
 <nav class="toc" aria-label="Steps on this page"><strong>Steps on this page</strong><ol>
-  <li><a href="#step-1">What you need</a></li>
-  <li><a href="#step-2">How coin pickup works</a></li>
-  <li><a href="#step-3">Script: CoinSpot</a></li>
-  <li><a href="#step-4">Script: LevelScene</a></li>
-  <li><a href="#step-5">Script: Coin</a></li>
-  <li><a href="#step-6">Update the PlayerMotor</a></li>
-  <li><a href="#step-7">Update the camera</a></li>
-  <li><a href="#step-8">Script: GameManager</a></li>
-  <li><a href="#step-9">Check GoldRushAssets: hero and sounds</a></li>
-  <li><a href="#step-10">Make the Coin prefab work</a></li>
-  <li><a href="#step-11">Mark the level root</a></li>
-  <li><a href="#step-12">Mark the coin spots</a></li>
-  <li><a href="#step-13">Put a coin in each spot</a></li>
-  <li><a href="#step-14">Check the start point, hero and camera</a></li>
-  <li><a href="#step-15">Add the GameManager to the scene</a></li>
-  <li><a href="#step-16">▶ Press Play</a></li>
-  <li><a href="#step-17">Common problems</a></li>
+  <li><a href="#step-1">What you get</a></li>
+  <li><a href="#step-2">Import the package</a></li>
+  <li><a href="#step-3">Check</a></li>
+  <li><a href="#step-4">How it works</a></li>
+  <li><a href="#step-5">▶ Press Play</a></li>
+  <li><a href="#step-6">Try it</a></li>
+  <li><a href="#step-7">Common problems</a></li>
 </ol></nav>
 
 <!-- ======================================================= 1 -->
-<h2 id="step-1"><span class="step">1</span>What you need</h2>
-<ul>
-  <li>Phase 4 is finished: the hero runs around <code>Level1</code> and the camera follows him.
-    If you start here, import <code>GoldRush_Phase04_Player.unitypackage</code> (<b>Assets → Import Package → Custom Package…</b>).</li>
-  <li>Open the scene <code>Assets/GoldRush/Scenes/Level1.unity</code>.</li>
-  <li>The coin model from the starter package: <code>Assets/GoldRush/Prefabs/Gameplay/Coin.prefab</code>.</li>
-  <li>The sounds from the starter package: <code>Assets/GoldRush/Art/Audio/</code> (16 <code>.wav</code> files).</li>
-</ul>
-<p>These scripts are already in your project from phases 1–4. Check that they are there:</p>
+<h2 id="step-1"><span class="step">1</span>What you get</h2>
+<p>Everything from <a href="phase-04.html">Phase 4</a>, plus:</p>
 <div class="table-wrap"><table>
-  <tr><th>Folder in Scripts/</th><th>Files</th><th>From</th></tr>
-  <tr><td><code>Core</code></td><td><code>Data.cs</code>, <code>GameAssets.cs</code>, <code>Fader.cs</code>, <code>Tween.cs</code>, <code>TweenRunner.cs</code></td><td>phases 1–2</td></tr>
-  <tr><td><code>Audio</code></td><td><code>AudioFX.cs</code>, <code>Synth.cs</code></td><td>phase 1</td></tr>
-  <tr><td><code>UI</code></td><td><code>UIKit.cs</code>, <code>ButtonFX.cs</code> and the menu scripts; the stubs <code>VirtualJoystick.cs</code>, <code>TouchLookArea.cs</code></td><td>phases 1–4</td></tr>
-  <tr><td><code>World</code></td><td><code>EnvironmentSetup.cs</code>, <code>DayNight.cs</code>, <code>NightLight.cs</code></td><td>phase 1</td></tr>
-  <tr><td><code>Level</code></td><td><code>PlayerSpawn.cs</code></td><td>phase 4</td></tr>
-  <tr><td><code>Gameplay</code></td><td><code>PlayerMotor.cs</code>, <code>ThirdPersonCamera.cs</code></td><td>phase 4</td></tr>
+  <tr><th>New in this phase</th><th>What it does</th></tr>
+  <tr><td><code>Gameplay/Coins</code> with <code>CoinSpot 1</code> … <code>CoinSpot 6</code></td><td>Empty markers on the floor. A coin appears 1 m above each one.</td></tr>
+  <tr><td><code>CoinSpot.cs</code> (Scripts/Level)</td><td>The marker script. It only draws a gold ball in the Scene view.</td></tr>
+  <tr><td><code>Coin.cs</code> (Scripts/World)</td><td>Makes the coin (in code), lets it bob and spin, and removes it when you take it.</td></tr>
+  <tr><td>GameManager: coin pickup</td><td>Counts the coins, plays the sound, updates the HUD counter.</td></tr>
 </table></div>
-<p>New or changed files in this phase:</p>
-<div class="table-wrap"><table>
-  <tr><th>File</th><th>Type or import?</th><th>What it does</th></tr>
-  <tr><td><code>Level/CoinSpot.cs</code></td><td>Type</td><td>Marks a place for a coin.</td></tr>
-  <tr><td><code>Level/LevelScene.cs</code></td><td>Type</td><td>Marks the root of the level.</td></tr>
-  <tr><td><code>World/Coin.cs</code></td><td>Type</td><td>Makes the coin float and spin.</td></tr>
-  <tr><td><code>Gameplay/PlayerMotor.cs</code></td><td>Type (replace)</td><td>The hero now listens to the GameManager.</td></tr>
-  <tr><td><code>Gameplay/ThirdPersonCamera.cs</code></td><td>Type (replace)</td><td>The full camera, with the intro swoop. The GameManager takes over the cursor.</td></tr>
-  <tr><td><code>Gameplay/GameManager.cs</code></td><td>Type</td><td>The boss of the level: start point, coins, sounds, pause.</td></tr>
-</table></div>
-<p>All paths start with <code>Assets/GoldRush/Scripts/</code>. You make every new script the same way: right-click the folder → <b>Create → Scripting → MonoBehaviour Script</b>, type the name, double-click it, delete everything and type (or paste) the code. Save with <b>Ctrl+S</b> (Mac: <b>Cmd+S</b>).</p>
-<div class="note">There is <b>no HUD</b> in this phase (no coin counter on the screen). The game UI comes in phase 9. Until then, the game writes what happens into the <b>Console</b> window (<b>Window → General → Console</b>), for example <code>Coin 3 / 6</code>.</div>
+<p><b>Package:</b> <code>GoldRush_Export/Packages/GoldRush_Phase05_Coins.unitypackage</code></p>
 
 <!-- ======================================================= 2 -->
-<h2 id="step-2"><span class="step">2</span>How coin pickup works</h2>
+<h2 id="step-2"><span class="step">2</span>Import the package</h2>
 <ol>
-  <li>In phase 3 you put empty <code>CoinSpot</code> markers on the floor. Now each marker gets one <b>Coin</b> inside it, 1 metre above the floor.</li>
-  <li>When the level starts, the <b>GameManager</b> finds the level root (the object with <code>LevelScene</code>), then every coin inside it. Level 1 has 6.</li>
-  <li>Every frame it measures the distance from the hero to each coin. Closer than <b>1.45 m</b>? The hero takes it.</li>
-  <li>The coin disappears, the coin sound plays and the Console shows <code>Coin 1 / 6</code>.</li>
-  <li>After the last coin the Console shows <code>ALL GOLD COLLECTED!</code> (In phase 6 this opens the exit gate.)</li>
+  <li>Make a <b>new</b> Universal 3D project and set it up like in <a href="phase-00.html">Phase 0</a>. Or delete the folder <code>Assets/GoldRush</code> in your project first.</li>
+  <li><b>Assets → Import Package → Custom Package…</b> → <code>GoldRush_Phase05_Coins.unitypackage</code> → <b>Import</b>.</li>
+  <li>Wait for the compile. No red errors in the Console.</li>
+  <li><b>File → Build Profiles → Scene List</b>: <code>Scenes/MainMenu</code> (number 0), then <code>Scenes/Level1</code>.</li>
+  <li>Open <code>Assets/GoldRush/Scenes/Level1.unity</code>.</li>
 </ol>
-<div class="tip">The coins have <b>no colliders</b> and no triggers. A distance check is simple, fast, and never misses a coin. The hero's position is at his feet, so the code adds 1 metre (<code>Vector3.up * 1f</code>) to compare at coin height.</div>
 
 <!-- ======================================================= 3 -->
-<h2 id="step-3"><span class="step">3</span>Script: CoinSpot</h2>
-<p>A marker script. It has no game code: the GameManager looks for it. It also draws a gold ball in the Scene view, so you can see where the coin will be.</p>
-<ol><li>In the Project window, open <code>Assets/GoldRush/Scripts/Level/</code>. Create the script <code>CoinSpot</code> and type this code:</li></ol>
-<p><code>Assets/GoldRush/Scripts/Level/CoinSpot.cs</code></p>
-<pre class="long"><code>using UnityEngine;
+<h2 id="step-3"><span class="step">3</span>Check</h2>
 
-namespace GoldRush
-{
-    /// &lt;summary&gt;A gold coin appears here when the level starts. The level is won after collecting all of them.&lt;/summary&gt;
-    public class CoinSpot : MonoBehaviour
-    {
-        void OnDrawGizmos()
-        {
-            Gizmos.color = new Color(1f, 0.78f, 0.2f);
-            Gizmos.DrawSphere(transform.position + Vector3.up * 1f, 0.35f);
-            Gizmos.DrawLine(transform.position, transform.position + Vector3.up * 1f);
-        }
-    }
-}</code></pre>
-<ul>
-  <li><code>OnDrawGizmos()</code> runs only in the editor. It draws in the Scene view, never in the game.</li>
-  <li><code>Gizmos.DrawSphere</code> draws a gold ball 1 m above the marker: the coin will float there.</li>
-</ul>
+<h3 id="check-1">3.1 The level root</h3>
+<p>Select <code>Level 1 - Training Yard</code>. It has the component <b>Level Scene</b> with <b>Arena Half</b> = <code>16</code> (the yard is 32 × 32 m). The GameManager looks for coins only <b>inside</b> this object. In the Scene view a yellow square shows the play area.</p>
+<figure class="shot"><img src="images/phase-05/check-01.png" alt="" loading="lazy"><figcaption>Level Scene on the level root, Arena Half 16.</figcaption></figure>
+
+<h3 id="check-2">3.2 The six coin spots</h3>
+<p>Open <code>Level 1 - Training Yard/Gameplay/Coins</code>. There are six markers, <code>CoinSpot 1</code> to <code>CoinSpot 6</code>. They have <b>no children</b>: there is no coin in the scene yet.</p>
+<figure class="shot"><img src="images/phase-05/check-02.png" alt="" loading="lazy"><figcaption>Six CoinSpots, no coins inside.</figcaption></figure>
+
+<h3 id="check-3">3.3 One coin spot</h3>
+<p>Select <code>CoinSpot 1</code>. It has only a Transform and <b>Coin Spot</b> (no fields). Its Position is about <code>5.1, 0.08, 11.3</code>: on the floor. In the Scene view you see a gold ball 1 m above it: that is where the coin will float.</p>
+<div class="table-wrap"><table>
+  <tr><th>Marker</th><th>Position (about)</th><th>Marker</th><th>Position (about)</th></tr>
+  <tr><td><code>CoinSpot 1</code></td><td><code>5.1, 0.08, 11.3</code></td><td><code>CoinSpot 4</code></td><td><code>-7.4, 0.08, 0</code></td></tr>
+  <tr><td><code>CoinSpot 2</code></td><td><code>-6.5, 0.08, -12.5</code></td><td><code>CoinSpot 5</code></td><td><code>-14.4, 0.08, 12.7</code></td></tr>
+  <tr><td><code>CoinSpot 3</code></td><td><code>14.3, 0.08, -7.4</code></td><td><code>CoinSpot 6</code></td><td><code>4.9, 0.08, -1.9</code></td></tr>
+</table></div>
+<figure class="shot"><img src="images/phase-05/check-03.png" alt="" loading="lazy"><figcaption>A CoinSpot is only a Transform and the Coin Spot script.</figcaption></figure>
+
+<h3 id="check-4">3.4 The sounds in GoldRushAssets</h3>
+<p>Select <code>Assets/GoldRush/Resources/GoldRushAssets</code>. Open <b>Sounds</b>: 16 clips from <code>Art/Audio</code>. The file name is the sound id: <code>AudioFX.Play("coin")</code> plays <code>coin.wav</code>. This phase uses <code>coin</code>; <code>gate</code> comes in Phase 6.</p>
+<figure class="shot" data-shot="phase-05/check-04" data-window="inspector" data-select="Assets/GoldRush/Resources/GoldRushAssets.asset"><img src="images/phase-05/step-09.png" alt="GoldRushAssets in the Inspector" loading="lazy"><figcaption>GoldRushAssets: the characters, the base materials and 16 sounds.</figcaption></figure>
+
+<h3 id="check-5">3.5 Play mode: the coins</h3>
+<p>Press <b>▶ Play</b>. Look at the Hierarchy while the game runs: a new object <code>Dynamic (runtime)</code> holds six <code>Coin</code> objects. Each has a child <code>Visual</code> (the gold disc and star). Only <code>Visual</code> moves, so the pickup point stays still.</p>
+<figure class="shot"><img src="images/phase-05/coins-collect.jpg" alt="" loading="lazy"><figcaption>Play mode only: the coins are made by code at Play, under Dynamic (runtime).</figcaption></figure>
+
+<h3 id="check-6">3.6 Play mode: the coin counter</h3>
+<p>At the top of the Game view, the HUD shows the coin counter: <code>0 / 6</code>. It is made by code for now (the scene HUD comes in Phase 9).</p>
+<figure class="shot"><img src="images/phase-05/hud-start.jpg" alt="" loading="lazy"><figcaption>Play mode only: the counter shows 0 / 6.</figcaption></figure>
 
 <!-- ======================================================= 4 -->
-<h2 id="step-4"><span class="step">4</span>Script: LevelScene</h2>
-<p>This marker goes on the root of the level. The GameManager only looks for coins (and later monsters and power-ups) inside it.</p>
-<ol><li>In <code>Assets/GoldRush/Scripts/Level/</code>, create the script <code>LevelScene</code> and type this code:</li></ol>
-<p><code>Assets/GoldRush/Scripts/Level/LevelScene.cs</code></p>
-<pre class="long"><code>using UnityEngine;
-
-namespace GoldRush
+<h2 id="step-4"><span class="step">4</span>How it works</h2>
+<p>When the level starts, the GameManager reads the markers and makes the coins (<code>Scripts/Gameplay/GameManager.cs</code>):</p>
+<pre><code>foreach (var c in scene.GetComponentsInChildren&lt;CoinSpot&gt;())
 {
-    /// &lt;summary&gt;
-    /// Put this on the root of a hand-made level. The GameManager finds it and uses the marker objects
-    /// below it (PlayerSpawn, CoinSpot, MonsterSpawn, PowerUpSpot, ExitGate) instead of generating a level.
-    /// &lt;/summary&gt;
-    public class LevelScene : MonoBehaviour
-    {
-        [Tooltip("Half the width of the playable square (monsters wander inside ±this).")]
-        public float arenaHalf = 16f;
-
-        void OnDrawGizmos()
-        {
-            Gizmos.color = new Color(1f, 0.8f, 0.2f, 0.6f);
-            Gizmos.DrawWireCube(transform.position + Vector3.up * 0.05f, new Vector3(arenaHalf * 2, 0.1f, arenaHalf * 2));
-        }
-    }
+    var placed = c.GetComponentInChildren&lt;Coin&gt;();
+    if (placed) coins.Add(placed);               // a Coin placed by hand
+    else l.coinPoints.Add(c.transform.position); // an empty marker
+}
+// later, in Build():
+foreach (var p in layout.coinPoints) coins.Add(Coin.Create(layout.dynamicRoot, p));</code></pre>
+<p>Every frame, <code>Update()</code> checks the distance from the hero to each coin:</p>
+<pre><code>Vector3 pp = Player.transform.position + Vector3.up * 1f;
+for (int i = coins.Count - 1; i &gt;= 0; i--)
+{
+    Vector3 d = coins[i].transform.position - pp;
+    if (d.sqrMagnitude &lt; 1.45f * 1.45f) { var c = coins[i]; coins.RemoveAt(i); CollectCoin(c); }
 }</code></pre>
 <ul>
-  <li><code>arenaHalf</code> is half the width of the play area. Level 1 is 32 × 32 m, so <code>16</code>. The monsters use it in phase 7.</li>
-  <li><code>[Tooltip]</code> shows a help text when you hold the mouse over the field in the Inspector.</li>
-  <li>The yellow square in the Scene view shows the play area.</li>
+  <li><b>No colliders, no triggers.</b> Closer than <b>1.45 m</b> = taken. This is simple, fast, and never misses.</li>
+  <li>The hero's position is at his feet. <code>+ Vector3.up * 1f</code> compares at coin height.</li>
+  <li>The loop goes <b>backwards</b>, because it removes coins from the list while it loops.</li>
+  <li><code>sqrMagnitude &lt; 1.45 * 1.45</code> is the same as "distance &lt; 1.45", but without a square root.</li>
+  <li><code>CollectCoin()</code> adds 1, plays <code>"coin"</code> (a little higher each time), shows "+1", flies a coin to the counter. After the last coin it calls <code>AllCollected()</code>.</li>
 </ul>
+<p>The coin moves itself in <code>Coin.Update()</code> (<code>Scripts/World/Coin.cs</code>):</p>
+<pre><code>visual.localPosition = new Vector3(0f, Mathf.Sin(t * 2.2f + phase) * 0.12f, 0f); // bob 12 cm
+visual.rotation = Quaternion.Euler(0f, t * 140f + phase * 57.3f, 0f);           // spin 140°/s</code></pre>
+<p><code>phase</code> is random for each coin, so they do not all move together.</p>
 
 <!-- ======================================================= 5 -->
-<h2 id="step-5"><span class="step">5</span>Script: Coin</h2>
-<p>The coin floats up and down and spins. Only its child <code>Visual</code> moves, so the pickup point never changes.</p>
-<ol><li>In <code>Assets/GoldRush/Scripts/World/</code>, create the script <code>Coin</code> and type this code:</li></ol>
-<p><code>Assets/GoldRush/Scripts/World/Coin.cs</code></p>
-<pre class="long"><code>using UnityEngine;
-
-namespace GoldRush
-{
-    /// &lt;summary&gt;Floating, spinning gold coin. Pickup is distance-based elsewhere (no colliders).&lt;/summary&gt;
-    public class Coin : MonoBehaviour
-    {
-        public bool Collected { get; private set; }
-
-        [SerializeField] Transform visual;
-        [SerializeField] float phase;
-
-        void Start()
-        {
-            // a coin placed by hand gets its own random start, so the coins don't all bob together
-            if (phase == 0f) phase = Random.Range(0.01f, Mathf.PI * 2f);
-            if (!visual &amp;&amp; transform.childCount &gt; 0) visual = transform.GetChild(0);
-        }
-
-        void Update()
-        {
-            if (!visual) return;
-            float t = Time.time;
-            visual.localPosition = new Vector3(0f, Mathf.Sin(t * 2.2f + phase) * 0.12f, 0f);
-            visual.rotation = Quaternion.Euler(0f, t * 140f + phase * 57.3f, 0f);
-        }
-
-        public void Collect()
-        {
-            if (Collected) return;
-            Collected = true;
-            Destroy(gameObject);
-        }
-    }
-}</code></pre>
+<h2 id="step-5"><span class="step">5</span>▶ Press Play</h2>
+<div class="check">
+<p><b>You should see:</b></p>
 <ul>
-  <li><code>[SerializeField]</code> shows a private field in the Inspector. You will drag the <code>Visual</code> child into it.</li>
-  <li><code>Start()</code>: if <code>phase</code> is 0, it picks a random start, so the coins do not all move together. If <code>visual</code> is empty, it uses the first child.</li>
-  <li>Bob: <code>Mathf.Sin(t * 2.2f + phase) * 0.12f</code> moves the visual up and down by 12 cm.</li>
-  <li>Spin: <code>t * 140f</code> turns it 140 degrees per second around the Y axis.</li>
-  <li><code>Collect()</code> marks the coin as collected and destroys it. <code>Collected</code> stops a second pickup.</li>
-</ul>
-<div class="tip">This is the phase 5 version of <code>Coin.cs</code>. The full game file also has a <code>Create()</code> function that builds a coin in code. You get it in a later phase, when the level builder arrives.</div>
-
-<!-- ======================================================= 6 -->
-<h2 id="step-6"><span class="step">6</span>Update the PlayerMotor</h2>
-<p>The hero must now obey the GameManager: he waits while the camera flies in, he stops when you pause, and later he waves when you win (phase 6) or gets pushed when a monster hits him (phase 7).</p>
-<ol><li>Open <code>Assets/GoldRush/Scripts/Gameplay/PlayerMotor.cs</code> and <b>replace the whole file</b> with this phase 5 version:</li></ol>
-<p><code>Assets/GoldRush/Scripts/Gameplay/PlayerMotor.cs</code></p>
-<pre class="long"><code>using System.Collections;
-using UnityEngine;
-
-namespace GoldRush
-{
-    /// &lt;summary&gt;Third-person player: CharacterController movement (collides with props), sprint/stamina,
-    /// hit knockback + invulnerability blink, footsteps, win/lose poses.
-    /// Phase 5 version: the power-up effects, dust and lantern come in phase 8.&lt;/summary&gt;
-    [RequireComponent(typeof(CharacterController))]
-    public class PlayerMotor : MonoBehaviour
-    {
-        public float walkSpeed = 5f;
-        public float sprintSpeed = 8.2f;
-        public float acceleration = 20f;
-        public float turnSpeed = 560f;
-
-        public VirtualJoystick joystick;
-        public ThirdPersonCamera cam;
-
-        public float Stamina { get; private set; } = 1f;
-        public bool Exhausted { get; private set; }
-        public bool Sprinting { get; private set; }
-        public bool Frozen { get; set; }
-        public bool Invulnerable =&gt; Time.time &lt; invulnUntil;
-        public Vector3 Velocity =&gt; velocity;
-        public Animator Anim =&gt; anim;
-
-        CharacterController cc;
-        float animSpeed = 1f;
-        Animator anim;
-        Transform model;
-        Vector3 velocity, knock;
-        float vy, invulnUntil, stepTimer, blinkTimer;
-        Renderer[] renderers;
-
-        void Awake()
-        {
-            cc = GetComponent&lt;CharacterController&gt;();
-            // a Player placed in the scene by hand: find its model (the child with the Animator)
-            if (!anim) anim = GetComponentInChildren&lt;Animator&gt;();
-            if (anim &amp;&amp; !model) model = anim.transform;
-        }
-
-        /// &lt;summary&gt;Finishes the Player that is placed in the scene. The GameManager calls it when the level starts.&lt;/summary&gt;
-        public void SetupPlaced()
-        {
-            gameObject.layer = 2; // Ignore Raycast: camera/enemy line-of-sight rays pass through the player
-            foreach (var t in GetComponentsInChildren&lt;Transform&gt;(true)) t.gameObject.layer = 2;
-            if (anim)
-            {
-                anim.applyRootMotion = false;
-                anim.cullingMode = AnimatorCullingMode.AlwaysAnimate;
-            }
-            renderers = GetComponentsInChildren&lt;Renderer&gt;();
-        }
-
-        /// &lt;summary&gt;Moves the player (a CharacterController ignores teleports while it is enabled).&lt;/summary&gt;
-        public void Teleport(Vector3 pos, float yaw)
-        {
-            if (!cc) cc = GetComponent&lt;CharacterController&gt;();
-            if (cc) cc.enabled = false;
-            transform.SetPositionAndRotation(pos, Quaternion.Euler(0, yaw, 0));
-            if (cc) cc.enabled = true;
-        }
-
-        /// &lt;summary&gt;Editor tooling (trailer recorder): when set, replaces keyboard / joystick input.&lt;/summary&gt;
-        public static Vector2? ScriptedInput;
-        public static bool ScriptedSprint;
-
-        Vector2 ReadInput()
-        {
-            if (ScriptedInput.HasValue) return Vector2.ClampMagnitude(ScriptedInput.Value, 1f);
-            Vector2 v = joystick ? joystick.Value : Vector2.zero;
-            float kx = (Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.RightArrow) ? 1 : 0) - (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.LeftArrow) ? 1 : 0);
-            float ky = (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.UpArrow) ? 1 : 0) - (Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.DownArrow) ? 1 : 0);
-            if (kx != 0 || ky != 0) v = new Vector2(kx, ky).normalized;
-            return Vector2.ClampMagnitude(v, 1f);
-        }
-
-        void Update()
-        {
-            float dt = Time.deltaTime;
-            if (dt &lt;= 0f) return;
-            var gm = GameManager.I;
-            bool canMove = !Frozen &amp;&amp; gm != null &amp;&amp; gm.State == GameState.Playing;
-
-            Vector2 input = canMove ? ReadInput() : Vector2.zero;
-            float yaw = cam ? cam.Yaw : 0f;
-            Vector3 dir = Quaternion.Euler(0, yaw, 0) * new Vector3(input.x, 0, input.y);
-            float mag = Mathf.Clamp01(dir.magnitude);
-
-            bool wantSprint = canMove &amp;&amp; mag &gt; 0.2f &amp;&amp; (ScriptedSprint || (joystick &amp;&amp; joystick.Held &amp;&amp; joystick.Value.magnitude &gt; 0.9f) || Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift));
-            if (Exhausted &amp;&amp; Stamina &gt; 0.35f) Exhausted = false;
-            Sprinting = wantSprint &amp;&amp; !Exhausted &amp;&amp; Stamina &gt; 0f;
-            if (Sprinting)
-            {
-                Stamina = Mathf.Max(0f, Stamina - dt * 0.3f);
-                if (Stamina &lt;= 0f) Exhausted = true;
-            }
-            else Stamina = Mathf.Min(1f, Stamina + dt * (mag &gt; 0.1f ? 0.18f : 0.32f));
-
-            float speed = Sprinting ? sprintSpeed : walkSpeed;   // phase 8: x the SPEED power-up
-            Vector3 targetVel = mag &gt; 0.01f ? dir.normalized * (mag * speed) : Vector3.zero;
-            velocity = Vector3.MoveTowards(velocity, targetVel, acceleration * dt);
-
-            if (velocity.sqrMagnitude &gt; 0.05f &amp;&amp; !Frozen)
-            {
-                var targetRot = Quaternion.LookRotation(new Vector3(velocity.x, 0, velocity.z));
-                transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRot, turnSpeed * dt);
-            }
-
-            if (cc.isGrounded &amp;&amp; vy &lt; 0) vy = -2f; else vy -= 25f * dt;
-            knock = Vector3.Lerp(knock, Vector3.zero, 1f - Mathf.Exp(-5f * dt));
-            if (cc.enabled) cc.Move((velocity + knock + Vector3.up * vy) * dt);
-
-            // animation (0 idle, 0.5 walk, 1 run)
-            float horiz = new Vector3(velocity.x, 0, velocity.z).magnitude;
-            float blend = horiz &lt; 0.1f ? 0f : Mathf.Lerp(0.45f, 1f, Mathf.InverseLerp(2.5f, sprintSpeed, horiz));
-            if (anim &amp;&amp; anim.runtimeAnimatorController) anim.SetFloat(AnimParams.Speed, blend, 0.15f, dt);
-            // play the walk/run cycle exactly as fast as the hero moves, so the feet don't slide
-            if (anim &amp;&amp; !Frozen)
-            {
-                float target = GameAssets.I.hero.PlaybackSpeed(blend, horiz);
-                animSpeed = Mathf.Lerp(animSpeed, target, 1f - Mathf.Exp(-5f * dt)); // ease, never jump
-                anim.speed = animSpeed;
-            }
-
-            // footsteps
-            if (horiz &gt; 1f &amp;&amp; cc.isGrounded)
-            {
-                stepTimer -= dt * horiz / 5f;
-                if (stepTimer &lt;= 0f)
-                {
-                    stepTimer = 0.36f;
-                    AudioFX.Play("step", Sprinting ? 0.55f : 0.35f, Random.Range(0.9f, 1.1f));
-                }
-            }
-
-            // invulnerability blink
-            if (Invulnerable)
-            {
-                blinkTimer -= dt;
-                if (blinkTimer &lt;= 0f) { blinkTimer = 0.09f; SetVisible(!renderers[0].enabled); }
-            }
-            else if (renderers != null &amp;&amp; renderers.Length &gt; 0 &amp;&amp; !renderers[0].enabled) SetVisible(true);
-        }
-
-        void SetVisible(bool v)
-        {
-            if (renderers == null) return;
-            foreach (var r in renderers) if (r &amp;&amp; !(r is ParticleSystemRenderer)) r.enabled = v;
-        }
-
-        public void Hit(Vector3 from, float invulnSeconds)
-        {
-            Vector3 d = transform.position - from; d.y = 0;
-            if (d.sqrMagnitude &lt; 0.01f) d = -transform.forward;
-            knock = d.normalized * 13f;
-            invulnUntil = Time.time + invulnSeconds;
-            if (anim) anim.SetTrigger(AnimParams.Hit);
-        }
-
-        public void PlayVictory()
-        {
-            Frozen = true;
-            velocity = Vector3.zero;
-            StartCoroutine(VictoryCo());
-        }
-
-        IEnumerator VictoryCo()
-        {
-            if (anim) anim.SetFloat(AnimParams.Speed, 0f);
-            // turn to face the camera, then wave (the "Win" clip)
-            Quaternion start = transform.rotation;
-            Vector3 toCam = cam ? cam.transform.position - transform.position : -transform.forward;
-            toCam.y = 0;
-            Quaternion face = toCam.sqrMagnitude &gt; 0.01f ? Quaternion.LookRotation(toCam) : start;
-            for (float t = 0; t &lt; 1f; t += Time.deltaTime / 0.35f)
-            {
-                transform.rotation = Quaternion.Slerp(start, face, t);
-                yield return null;
-            }
-            if (anim) { anim.speed = 1f; anim.SetTrigger(AnimParams.Win); }
-        }
-
-        public void PlayCaught()
-        {
-            Frozen = true;
-            velocity = Vector3.zero;
-            StartCoroutine(CaughtCo());
-        }
-
-        IEnumerator CaughtCo()
-        {
-            SetVisible(true);
-            if (anim) { anim.speed = 1f; anim.SetFloat(AnimParams.Speed, 0f); anim.SetTrigger(AnimParams.Die); }
-            yield return new WaitForSeconds(0.5f);   // phase 8: a dust cloud here
-        }
-    }
-}</code></pre>
-<ul>
-  <li><code>canMove</code> is true only while <code>GameManager.I.State == GameState.Playing</code>. In the intro and in pause the hero stands still.</li>
-  <li><code>SetupPlaced()</code> and <code>Teleport()</code> are called by the GameManager when the level starts. <code>Teleport</code> turns the CharacterController off for a moment, because a CharacterController ignores a normal position change.</li>
-  <li><code>SetupPlaced()</code> puts the Player and all its children on layer 2, <b>Ignore Raycast</b>. The camera (and the monsters in phase 7) look "through" the hero.</li>
-  <li><code>GameAssets.I.hero.PlaybackSpeed()</code> plays the walk and run clips as fast as the hero moves, so the feet do not slide. It reads the hero values in <b>GoldRushAssets</b> (step 9).</li>
-  <li><code>Hit()</code>, <code>PlayVictory()</code> and <code>PlayCaught()</code> are ready for phases 6 and 7. <code>ScriptedInput</code> is only for our trailer tool. You can ignore it.</li>
-</ul>
-<div class="note">Now the Console shows red errors, for example <code>The name 'GameManager' does not exist</code>. That is normal. They go away when you finish step 8.</div>
-
-<!-- ======================================================= 7 -->
-<h2 id="step-7"><span class="step">7</span>Update the camera</h2>
-<p>The phase 4 camera locked the mouse cursor itself. From now on the GameManager does that (it frees the cursor when you pause). The full camera also has the <b>intro swoop</b>.</p>
-<ol><li>Open <code>Assets/GoldRush/Scripts/Gameplay/ThirdPersonCamera.cs</code> and <b>replace the whole file</b> with the final version:</li></ol>
-<p><code>Assets/GoldRush/Scripts/Gameplay/ThirdPersonCamera.cs</code></p>
-<pre class="long"><code>using UnityEngine;
-
-namespace GoldRush
-{
-    /// &lt;summary&gt;Smooth orbit camera: touch-drag / right-mouse / Q-E to rotate, wall collision, shake, intro swoop.
-    /// Rotation is frame-rate independent (fixes the old per-frame joystick rotation).&lt;/summary&gt;
-    public class ThirdPersonCamera : MonoBehaviour
-    {
-        public Transform target;
-        public float distance = 6.2f;
-        public float height = 1.15f;
-        public float minPitch = 4f, maxPitch = 62f;
-        public float touchSensitivity = 0.16f; // degrees per reference pixel (1920 wide)
-        [Tooltip("Mouse look speed on computers (cursor is locked while playing).")]
-        public float mouseSensitivity = 2.4f;
-        public float yaw, pitch = 20f;
-        /// &lt;summary&gt;Editor tooling (trailer recorder): ignore mouse / touch / key look input.&lt;/summary&gt;
-        public static bool ScriptedLook;
-
-        /// &lt;summary&gt;Smoothed yaw the camera is actually using (movement is relative to this).&lt;/summary&gt;
-        public float Yaw =&gt; curYaw;
-
-        Vector3 focus, focusVel;
-        float curDist, distVel, targetDist;
-        float curYaw, curPitch, yawVel, pitchVel;
-        float shakeAmp, shakeTime, shakeDur;
-        bool intro;
-        float introT, introDur;
-
-        public static ThirdPersonCamera Create(Transform target, float yaw)
-        {
-            var go = new GameObject("Main Camera");
-            go.tag = "MainCamera";
-            var cam = go.AddComponent&lt;Camera&gt;();
-            cam.fieldOfView = 55f;
-            cam.nearClipPlane = 0.1f;
-            cam.farClipPlane = 400f;
-            go.AddComponent&lt;AudioListener&gt;();
-            var c = go.AddComponent&lt;ThirdPersonCamera&gt;();
-            c.Init(target, yaw);
-            return c;
-        }
-
-        /// &lt;summary&gt;Starts following a target from behind (also used for a camera placed in the scene).&lt;/summary&gt;
-        public void Init(Transform newTarget, float startYaw)
-        {
-            target = newTarget;
-            yaw = startYaw;
-            focus = target.position + Vector3.up * height;
-            curDist = targetDist = distance;
-            curYaw = yaw;
-            curPitch = pitch;
-            Snap();
-        }
-
-        void Start()
-        {
-            // a camera placed in the scene with a Target set, that nobody initialised yet
-            if (target &amp;&amp; curDist &lt;= 0f) Init(target, target.eulerAngles.y);
-        }
-
-        public void PlayIntro(float duration)
-        {
-            intro = true;
-            introT = 0;
-            introDur = duration;
-            curDist = distance * 4f;
-        }
-
-        public void Shake(float amplitude, float duration)
-        {
-            shakeAmp = Mathf.Max(shakeAmp * (shakeTime / Mathf.Max(0.01f, shakeDur)), amplitude);
-            shakeDur = shakeTime = duration;
-        }
-
-        void Snap()
-        {
-            var rot = Quaternion.Euler(curPitch, curYaw, 0);
-            transform.SetPositionAndRotation(focus + rot * Vector3.back * curDist, rot);
-        }
-
-        void LateUpdate()
-        {
-            if (!target) return;
-            float dt = Time.deltaTime;
-
-            // ---- input changes the TARGET angles (yaw / pitch); the camera eases toward them
-            if (ScriptedLook) TouchLookArea.Consume();
-            else if (Time.timeScale &gt; 0f)
-            {
-                Vector2 look = TouchLookArea.Consume() * (1920f / Mathf.Max(1, Screen.width));
-                yaw += look.x * touchSensitivity;
-                pitch -= look.y * touchSensitivity * 0.8f;
-                // computer: mouse look while the cursor is locked (like a PC 3D game);
-                // right-drag still works when the cursor is free
-                if (Cursor.lockState == CursorLockMode.Locked || Input.GetMouseButton(1))
-                {
-                    yaw += Input.GetAxis("Mouse X") * mouseSensitivity;
-                    pitch -= Input.GetAxis("Mouse Y") * mouseSensitivity * 0.8f;
-                }
-                if (Input.GetKey(KeyCode.Q)) yaw -= 110f * dt;
-                if (Input.GetKey(KeyCode.E)) yaw += 110f * dt;
-                distance = Mathf.Clamp(distance - Input.mouseScrollDelta.y * 0.5f, 4f, 11f);
-            }
-            else TouchLookArea.Consume();
-            pitch = Mathf.Clamp(pitch, minPitch, maxPitch);
-            if (dt &gt; 0f)
-            {
-                curYaw = Mathf.SmoothDampAngle(curYaw, yaw, ref yawVel, 0.09f, Mathf.Infinity, dt);
-                curPitch = Mathf.SmoothDamp(curPitch, pitch, ref pitchVel, 0.09f, Mathf.Infinity, dt);
-            }
-
-            // ---- follow point: slightly behind the hero, leading a little in the running direction
-            Vector3 lead = Vector3.zero;
-            var motor = target.GetComponent&lt;PlayerMotor&gt;();
-            if (motor) { lead = motor.Velocity * 0.12f; lead.y = 0f; }
-            Vector3 want = target.position + Vector3.up * height + lead;
-            if (dt &gt; 0f) focus = Vector3.SmoothDamp(focus, want, ref focusVel, 0.12f, Mathf.Infinity, dt);
-
-            float p = curPitch, d = distance;
-            if (intro)
-            {
-                introT += dt;
-                float k = Tween.InOutSine(Mathf.Clamp01(introT / introDur));
-                p = Mathf.Lerp(58f, curPitch, k);
-                d = Mathf.Lerp(distance * 4f, distance, k);
-                curDist = targetDist = d;
-                if (introT &gt;= introDur) intro = false;
-            }
-
-            Quaternion rot = Quaternion.Euler(p, curYaw, 0);
-            Vector3 dir = rot * Vector3.back;
-
-            // ---- wall avoidance: several rays (centre + 4 corners of the view), take the nearest hit.
-            // Small changes are ignored (no flicker) and the camera glides in/out instead of snapping.
-            if (!intro)
-            {
-                float allowed = d;
-                Vector3 right = rot * Vector3.right, up = rot * Vector3.up;
-                if (Physics.SphereCast(focus, 0.22f, dir, out var hit, d, Physics.DefaultRaycastLayers, QueryTriggerInteraction.Ignore))
-                    allowed = Mathf.Min(allowed, hit.distance);
-                for (int i = 0; i &lt; 4; i++)
-                {
-                    Vector3 off = (i &lt; 2 ? right : up) * (i % 2 == 0 ? 0.35f : -0.35f);
-                    if (Physics.Raycast(focus + off, dir, out var h2, d, Physics.DefaultRaycastLayers, QueryTriggerInteraction.Ignore))
-                        allowed = Mathf.Min(allowed, h2.distance);
-                }
-                // also make sure nothing hides the hero's body (low walls between hero and camera)
-                Vector3 camGuess = focus + dir * d;
-                Vector3 body = target.position + Vector3.up * 0.6f;
-                Vector3 toCam = camGuess - body;
-                if (Physics.Raycast(body, toCam.normalized, out var h3, toCam.magnitude, Physics.DefaultRaycastLayers, QueryTriggerInteraction.Ignore))
-                {
-                    // distance along the camera ray that corresponds to the blocking point
-                    float frac = h3.distance / Mathf.Max(0.01f, toCam.magnitude);
-                    allowed = Mathf.Min(allowed, d * frac);
-                }
-                allowed = Mathf.Max(1.4f, allowed - 0.25f);
-                if (allowed &lt; targetDist - 0.05f || allowed &gt; targetDist + 0.35f) targetDist = allowed; // hysteresis
-                bool pullingIn = targetDist &lt; curDist;
-                if (dt &gt; 0f) curDist = Mathf.SmoothDamp(curDist, targetDist, ref distVel, pullingIn ? 0.1f : 0.45f, Mathf.Infinity, dt);
-                curDist = Mathf.Min(curDist, allowed + 0.6f); // never sink deep inside a wall
-            }
-
-            Vector3 pos = focus + dir * curDist;
-            if (shakeTime &gt; 0f)
-            {
-                shakeTime -= Time.unscaledDeltaTime;
-                float k = Mathf.Clamp01(shakeTime / shakeDur);
-                float t = Time.unscaledTime * 40f;
-                pos += (transform.right * (Mathf.PerlinNoise(t, 0.3f) - 0.5f) + transform.up * (Mathf.PerlinNoise(0.7f, t) - 0.5f)) * (2f * shakeAmp * k);
-            }
-            transform.SetPositionAndRotation(pos, rot);
-        }
-    }
-}</code></pre>
-<ul>
-  <li>New: <code>PlayIntro(duration)</code> starts far away (4 × the distance) and swoops down behind the hero. <code>Tween.InOutSine</code> (phase 1) makes it start and end slowly.</li>
-  <li>Removed: the <code>PHASE 4 ONLY</code> cursor part. The GameManager locks and frees the cursor now.</li>
-  <li><code>Create()</code> makes a camera in code, only for a level without a camera. Your scene has one. <code>ScriptedLook</code> is for our trailer tool.</li>
-</ul>
-
-<!-- ======================================================= 8 -->
-<h2 id="step-8"><span class="step">8</span>Script: GameManager</h2>
-<p>The GameManager is the boss of the level. This is the phase 5 version. Phases 6, 7 and 8 make it bigger, and phase 9 adds the HUD.</p>
-<ol><li>In <code>Assets/GoldRush/Scripts/Gameplay/</code>, create the script <code>GameManager</code> and type this code:</li></ol>
-<p><code>Assets/GoldRush/Scripts/Gameplay/GameManager.cs</code></p>
-<pre class="long"><code>using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
-namespace GoldRush
-{
-    public enum GameState { Intro, Playing, Paused, Won, Lost }
-
-    /// &lt;summary&gt;Gameplay scene root: finds the level, owns game state, rules, scoring and saving.
-    /// Phase 5 version: coins only. No HUD yet (phase 9), so it reports to the Console.&lt;/summary&gt;
-    public class GameManager : MonoBehaviour
-    {
-        public static GameManager I { get; private set; }
-
-        public LevelDef Def { get; private set; }
-        public GameState State { get; private set; } = GameState.Intro;
-        public float Elapsed { get; private set; }
-        public int Collected { get; private set; }
-        public int TotalCoins { get; private set; }
-
-        public PlayerMotor Player { get; private set; }
-        public ThirdPersonCamera Cam { get; private set; }
-
-        readonly List&lt;Coin&gt; coins = new List&lt;Coin&gt;();
-        Vector3 spawn;
-        float spawnYaw;
-
-        void Awake()
-        {
-            I = this;
-            Application.targetFrameRate = 60;
-            Time.timeScale = 1f;
-            // pressing Play directly in Level2.unity etc. should play that level
-            string active = UnityEngine.SceneManagement.SceneManager.GetActiveScene().name;
-            for (int i = 0; i &lt; Levels.All.Length; i++)
-                if (Levels.All[i].scene == active) GameSession.LevelIndex = i;
-            Def = GameSession.Current;
-        }
-
-        // ---------------------------------------------------------------- mouse cursor (computer only)
-
-        /// &lt;summary&gt;True on computers: hide + lock the cursor while playing so the mouse turns the camera.&lt;/summary&gt;
-        static bool UseMouseLook =&gt; !Application.isMobilePlatform &amp;&amp; !Input.touchSupported;
-
-        static void LockCursor(bool locked)
-        {
-            if (!UseMouseLook) return;
-            Cursor.lockState = locked ? CursorLockMode.Locked : CursorLockMode.None;
-            Cursor.visible = !locked;
-        }
-
-        void OnApplicationFocus(bool focus)
-        {
-            if (focus &amp;&amp; State == GameState.Playing) LockCursor(true);
-        }
-
-        void OnDestroy()
-        {
-            LockCursor(false);
-            if (I == this) I = null;
-            Time.timeScale = 1f;
-        }
-
-        void Start()
-        {
-            Build();
-            if (Player &amp;&amp; Cam) StartCoroutine(IntroCo());
-        }
-
-        void Build()
-        {
-            AudioFX.StartMusic();
-
-            // the hand-made level: the object with the LevelScene component
-            var handMade = FindAnyObjectByType&lt;LevelScene&gt;();
-            if (!handMade) { Debug.LogError("[GoldRush] No LevelScene in this scene. Add it to the level root."); return; }
-            LevelFromScene(handMade);
-            // the Player and the camera are placed in the scene
-            Player = FindAnyObjectByType&lt;PlayerMotor&gt;();
-            if (!Player) { Debug.LogError("[GoldRush] No Player (PlayerMotor) in this scene."); return; }
-            Player.Teleport(spawn, spawnYaw);
-            Player.SetupPlaced();
-            Cam = FindAnyObjectByType&lt;ThirdPersonCamera&gt;();
-            if (!Cam) { Debug.LogError("[GoldRush] No camera with ThirdPersonCamera in this scene."); return; }
-            Cam.Init(Player.transform, spawnYaw);
-            EnvironmentSetup.Apply(Cam.GetComponent&lt;Camera&gt;(), false, Def.night);
-            Player.cam = Cam;
-
-            TotalCoins = coins.Count;
-            Debug.Log($"[GoldRush] {Def.title}: collect {TotalCoins} coins. (The HUD comes in phase 9.)");
-            Fader.FadeIn();
-        }
-
-        /// &lt;summary&gt;Reads a hand-made level: marker objects placed in the Hierarchy (see Scripts/Level/).&lt;/summary&gt;
-        void LevelFromScene(LevelScene scene)
-        {
-            var start = scene.GetComponentInChildren&lt;PlayerSpawn&gt;();
-            spawn = start ? start.transform.position : Vector3.zero;
-            spawnYaw = start ? start.transform.eulerAngles.y : 0f;
-            foreach (var c in scene.GetComponentsInChildren&lt;CoinSpot&gt;())
-            {
-                var placed = c.GetComponentInChildren&lt;Coin&gt;();
-                if (placed) coins.Add(placed);               // a Coin prefab placed by hand
-                else Debug.LogWarning("[GoldRush] " + c.name + " has no Coin inside.");
-            }
-            if (coins.Count == 0) Debug.LogWarning("[GoldRush] This level has no coins. Put a Coin inside each CoinSpot.");
-        }
-
-        IEnumerator IntroCo()
-        {
-            State = GameState.Intro;
-            Cam.PlayIntro(2.8f);                     // the camera swoops down behind the hero
-            yield return new WaitForSeconds(2.8f);   // phase 9: the 3-2-1-GO countdown
-            Debug.Log("[GoldRush] GO!");
-            State = GameState.Playing;
-            LockCursor(true);
-        }
-
-        void Update()
-        {
-            if (Input.GetKeyDown(KeyCode.Escape) || Input.GetKeyDown(KeyCode.P))
-            {
-                if (State == GameState.Playing) Pause();
-                else if (State == GameState.Paused) Resume();
-            }
-            if (State != GameState.Playing || !Player) return;
-            // clicked back into the game window after the cursor was freed (e.g. alt-tab)
-            if (UseMouseLook &amp;&amp; Cursor.lockState != CursorLockMode.Locked &amp;&amp; Input.GetMouseButtonDown(0)) LockCursor(true);
-
-            float dt = Time.deltaTime;
-            Elapsed += dt;
-
-            Vector3 pp = Player.transform.position + Vector3.up * 1f;
-
-            for (int i = coins.Count - 1; i &gt;= 0; i--)
-            {
-                var c = coins[i];
-                if (c == null || c.Collected) { coins.RemoveAt(i); continue; }
-                Vector3 d = c.transform.position - pp;
-                float sq = d.sqrMagnitude;
-                if (sq &lt; 1.45f * 1.45f) { coins.RemoveAt(i); CollectCoin(c); }
-            }
-        }
-
-        void OnApplicationPause(bool paused)
-        {
-            if (paused &amp;&amp; State == GameState.Playing) Pause();
-        }
-
-        // ---------------------------------------------------------------- pickups
-
-        void CollectCoin(Coin c)
-        {
-            c.Collect();
-            Collected++;
-            AudioFX.Play("coin", 1f, 1f + 0.05f * (Collected % 5));
-            Debug.Log($"[GoldRush] Coin {Collected} / {TotalCoins}");
-            if (Collected &gt;= TotalCoins) AllCollected();
-        }
-
-        void AllCollected()
-        {
-            Debug.Log("[GoldRush] ALL GOLD COLLECTED! (The exit gate comes in phase 6.)");
-        }
-
-        // ---------------------------------------------------------------- navigation
-
-        public void Pause()
-        {
-            if (State != GameState.Playing) return;
-            State = GameState.Paused;
-            LockCursor(false);
-            Time.timeScale = 0f;
-            Debug.Log("[GoldRush] Paused. Press Esc or P to play on.");   // phase 9: the pause dialog
-        }
-
-        public void Resume()
-        {
-            if (State != GameState.Paused) return;
-            State = GameState.Playing;
-            Time.timeScale = 1f;
-            LockCursor(true);
-        }
-    }
-}</code></pre>
-<ul>
-  <li><code>public static GameManager I</code>: any script can reach the manager with <code>GameManager.I</code>. This is a <b>singleton</b> (only one exists).</li>
-  <li><code>Awake</code> finds the level settings by the scene name: <code>Level1</code> → <code>Def</code> = Training Yard (6 coins, par time 40 s). They come from <code>Levels.All</code> in <code>Data.cs</code> (phase 2).</li>
-  <li><code>Build</code> finds the <code>LevelScene</code>, moves the hero to the <code>PlayerSpawn</code>, puts the camera behind him (<code>Cam.Init</code>) and sets the sky, sun and fog (<code>EnvironmentSetup.Apply</code>). It uses your day/night choice from the menu (<code>Save.Data.night</code>).</li>
-  <li><code>IntroCo</code> is a <b>coroutine</b>: a function that can wait. The camera swoops down for 2.8 s (<code>Cam.PlayIntro</code>), then the state becomes <code>Playing</code> and the mouse cursor is locked.</li>
-  <li><code>Update</code> runs every frame. It goes through the coin list <b>backwards</b>, because it removes items while it loops. <code>sq &lt; 1.45f * 1.45f</code> means "distance &lt; 1.45 m", but it is faster (no square root).</li>
-  <li><code>CollectCoin</code>: destroy the coin, add 1, play <code>"coin"</code> (the pitch rises a little each time) and write <code>Coin 1 / 6</code> in the Console.</li>
-  <li><b>Esc</b> or <b>P</b> pauses: <code>Time.timeScale = 0</code> stops all movement. The cursor is free again, so you can click in the editor.</li>
-</ul>
-<div class="check">Save. Wait for Unity to compile. The Console must have <b>no red errors</b> now.</div>
-
-<!-- ======================================================= 9 -->
-<h2 id="step-9"><span class="step">9</span>Check GoldRushAssets: hero and sounds</h2>
-<p><b>GoldRushAssets</b> tells the scripts where the models, materials and sounds are. You made it in phase 1. The new PlayerMotor reads the hero values, and the GameManager plays sounds from it.</p>
-<ol>
-  <li>In the Project window, select <code>Assets/GoldRush/Resources/GoldRushAssets</code>.</li>
-  <li>Open <b>Hero</b>. Check <b>Model</b> and <b>Controller</b>, and type the numbers from the table.</li>
-  <li>Check that <b>Sounds</b> has 16 elements (from phase 1). The list must have <code>coin</code>, <code>step</code> and <code>gate</code>.</li>
-</ol>
-<div class="table-wrap"><table>
-  <tr><th>Hero field</th><th>Value</th><th>Why</th></tr>
-  <tr><td>Model</td><td><code>Hero</code> (<code>Art/Characters/Hero/Hero.fbx</code>)</td><td>The hero model (phase 1).</td></tr>
-  <tr><td>Controller</td><td><code>Hero</code> (<code>Animations/Hero.controller</code>)</td><td>The hero animations (phases 1 and 4).</td></tr>
-  <tr><td>Height</td><td><code>1.35</code></td><td>The hero is 1.35 m tall.</td></tr>
-  <tr><td>Hat Scale / Hat Height</td><td><code>1.9</code> / <code>0.74</code></td><td>For the shop hats (used from phase 8).</td></tr>
-  <tr><td>Walk Speed / Run Speed</td><td><code>0.59</code> / <code>0.84</code></td><td>How fast the walk and run clips move. The same numbers as in your phase 4 PlayerMotor: they stop foot sliding.</td></tr>
-</table></div>
-<div class="tip">The name of each clip is its sound id. <code>AudioFX.Play("coin")</code> plays <code>coin.wav</code>. The Slime, Ghost and Mushroom King fields are for phase 7.</div>
-<figure class="shot"><img src="images/phase-05/step-09.png" alt="" loading="lazy"><figcaption>Hero values and 16 sounds.</figcaption></figure>
-
-<!-- ======================================================= 10 -->
-<h2 id="step-10"><span class="step">10</span>Make the Coin prefab work</h2>
-<p>The starter package gives you the coin model as a ready prefab. It is only the look: a gold rim, a dark face and a star. You add the script.</p>
-<ol>
-  <li>In the Project window, double-click <code>Assets/GoldRush/Prefabs/Gameplay/Coin</code>. It opens in <b>prefab mode</b> (blue background).</li>
-  <li>Look at the Hierarchy: <code>Coin › Visual › Rim, Face, Star</code>.</li>
-  <li>Select the root <code>Coin</code>. Click <b>Add Component</b> and choose <b>Coin</b>.</li>
-  <li>Drag the <code>Visual</code> child into the <b>Visual</b> field. Leave <b>Phase</b> at <code>0</code>.</li>
-  <li>Check that there is no collider on the coin.</li>
-  <li>Click the <b>&lt;</b> arrow at the top of the Hierarchy to leave prefab mode. Unity saves the prefab.</li>
-</ol>
-
-<!-- ======================================================= 11 -->
-<h2 id="step-11"><span class="step">11</span>Mark the level root</h2>
-<ol>
-  <li>In the Hierarchy, select your level root <code>Level 1 - Training Yard</code>.</li>
-  <li>Click <b>Add Component</b> and choose <b>Level Scene</b>.</li>
-  <li>Check <b>Arena Half</b> = <code>16</code>.</li>
-</ol>
-<p>A yellow square appears around the yard in the Scene view.</p>
-
-<!-- ======================================================= 12 -->
-<h2 id="step-12"><span class="step">12</span>Mark the coin spots</h2>
-<ol>
-  <li>In the Hierarchy, open <code>Level 1 - Training Yard › Gameplay › Coins</code>. These are the 6 empty markers from phase 3.</li>
-  <li>Select all 6: click <code>CoinSpot 1</code>, then Shift-click <code>CoinSpot 6</code>.</li>
-  <li>Click <b>Add Component</b> and choose <b>Coin Spot</b>. All 6 get it at once.</li>
-</ol>
-<p>Gold balls appear in the Scene view, 1 m above each marker.</p>
-
-<!-- ======================================================= 13 -->
-<h2 id="step-13"><span class="step">13</span>Put a coin in each spot</h2>
-<ol>
-  <li>Drag the <code>Coin</code> prefab from the Project window onto <code>CoinSpot 1</code> in the Hierarchy. It becomes a child.</li>
-  <li>Select the new <code>Coin</code>. Set its <b>Position</b> to <code>0, 1, 0</code>. Now it sits inside the gold ball.</li>
-  <li>Do the same for the other 5 markers.</li>
-  <li>Save the scene (<b>Ctrl+S</b>).</li>
-</ol>
-<p>The marker positions from phase 3:</p>
-<div class="table-wrap"><table>
-  <tr><th>Marker</th><th>Position X, Y, Z</th><th>Marker</th><th>Position X, Y, Z</th></tr>
-  <tr><td><code>CoinSpot 1</code></td><td><code>5, 0, 11.5</code></td><td><code>CoinSpot 4</code></td><td><code>-7.5, 0, 0</code></td></tr>
-  <tr><td><code>CoinSpot 2</code></td><td><code>-6.5, 0, -12.5</code></td><td><code>CoinSpot 5</code></td><td><code>-14.5, 0, 12.5</code></td></tr>
-  <tr><td><code>CoinSpot 3</code></td><td><code>14.5, 0, -7.5</code></td><td><code>CoinSpot 6</code></td><td><code>5, 0, -2</code></td></tr>
-</table></div>
-<div class="tip">Move a marker and its coin moves with it. You decide where the gold is. Keep coins away from walls and blocks, so the hero can reach them.</div>
-<figure class="shot"><img src="images/phase-05/step-13-a.png" alt="" loading="lazy"><figcaption>Every CoinSpot has one Coin inside.</figcaption></figure>
-
-<!-- ======================================================= 14 -->
-<h2 id="step-14"><span class="step">14</span>Check the start point, hero and camera</h2>
-<p>The GameManager needs three things that you made in phases 3 and 4. Check them:</p>
-<ol>
-  <li>Select <code>Level 1 - Training Yard › Gameplay › PlayerSpawn</code>. It has the <b>Player Spawn</b> component. Position <code>0, 0, -9</code>, Rotation <code>0, 0, 0</code> (the blue arrow points north, to the gate).</li>
-  <li>There is one <code>Player</code> in the scene with <b>Player Motor</b> and <b>Character Controller</b>.</li>
-  <li>There is one <code>Main Camera</code> with <b>Third Person Camera</b>.</li>
-</ol>
-<div class="tip">The Player can stand anywhere in the Scene view. When you press Play, the GameManager moves him to the PlayerSpawn.</div>
-
-<!-- ======================================================= 15 -->
-<h2 id="step-15"><span class="step">15</span>Add the GameManager to the scene</h2>
-<ol>
-  <li><b>GameObject → Create Empty</b>. Name it <code>GameManager</code>.</li>
-  <li>Keep it at the top level of the Hierarchy (not inside the level). Transform <b>⋮ → Reset</b>.</li>
-  <li>Click <b>Add Component</b> and choose <b>Game Manager</b>. It has no fields: it finds everything when you press Play.</li>
-  <li>Save the scene (<b>Ctrl+S</b>).</li>
-</ol>
-<div class="note">The scene must be called exactly <code>Level1</code>. The GameManager uses the name to find the level settings.</div>
-
-<!-- ======================================================= 16 -->
-<h2 id="step-16"><span class="step">16</span>▶ Press Play</h2>
-<p>Open the <b>Console</b> next to the Game view. Press Play.</p>
-<p>You should see:</p>
-<ul>
-  <li>The screen fades in. The camera swoops down from high up and stops behind the hero.</li>
-  <li>The Console shows <code>[GoldRush] Training Yard: collect 6 coins.</code> and, after 2.8 s, <code>GO!</code>. Now you can run.</li>
-  <li>The mouse turns the camera. The cursor is hidden while you play.</li>
-  <li>The sky, sun and fog look like the menu: night or day, whatever you picked with the day/night chip in the menu.</li>
-  <li>The coins float and spin, each at its own speed.</li>
-  <li>Run into a coin: it disappears, you hear the coin sound, and the Console shows <code>Coin 1 / 6</code>.</li>
-  <li>After the 6th coin: <code>ALL GOLD COLLECTED!</code></li>
-  <li><b>Esc</b> pauses (everything stops, the cursor comes back). Press <b>Esc</b> again to play on.</li>
+  <li>The intro says <i>Collect all 6 gold</i>, then 3, 2, 1, GO!</li>
+  <li>Six coins float and spin, each at its own rhythm. The HUD shows <code>0 / 6</code>.</li>
+  <li>Run into a coin: it is gone, you hear the coin sound, "+1" pops up and the counter goes up.</li>
+  <li>After the 6th coin: the toast <i>ALL GOLD COLLECTED!</i>, the gate sound, and the gate opens. (The gate is Phase 6.)</li>
   <li>No red errors in the Console.</li>
 </ul>
-<figure class="shot"><img src="images/phase-05/coins-collect.jpg" alt="" loading="lazy"><figcaption>Collecting gold. The counter is in the Console for now.</figcaption></figure>
-<div class="tip">To stop playing, press <b>Esc</b> first (the cursor comes back), then click the Play button.</div>
+</div>
+<figure class="shot"><img src="images/phase-05/coins-collect.jpg" alt="The hero collects gold coins" loading="lazy"><figcaption>Collecting gold.</figcaption></figure>
+<figure class="shot"><img src="images/phase-05/all-gold.jpg" alt="All gold collected" loading="lazy"><figcaption>All gold collected: the gate opens.</figcaption></figure>
 
-<!-- ======================================================= 17 -->
-<h2 id="step-17"><span class="step">17</span>Common problems</h2>
+<!-- ======================================================= 6 -->
+<h2 id="step-6"><span class="step">6</span>Try it</h2>
+<ol>
+  <li><b>A seventh coin.</b> Select <code>CoinSpot 6</code>, press <b>Ctrl+D</b> (<b>Cmd+D</b>) and move the copy to a free place (Y stays about <code>0</code>). Press Play: the counter shows <code>0 / 7</code>. Delete the copy afterwards.</li>
+  <li><b>A crazy spin.</b> In <code>Scripts/World/Coin.cs</code>, change <code>t * 140f</code> to <code>t * 600f</code>, and <code>* 0.12f</code> to <code>* 0.5f</code>. The coins spin fast and jump high.</li>
+  <li><b>A bigger reach.</b> In <code>Scripts/Gameplay/GameManager.cs</code>, change <code>1.45f * 1.45f</code> to <code>3f * 3f</code>. You take coins from 3 m away.</li>
+</ol>
+<p>Change the numbers back when you are done.</p>
+
+<!-- ======================================================= 7 -->
+<h2 id="step-7"><span class="step">7</span>Common problems</h2>
 <div class="table-wrap"><table>
   <tr><th>Problem</th><th>Fix</th></tr>
-  <tr><td>Console: <code>No LevelScene in this scene.</code></td><td>Add the <b>Level Scene</b> component to <code>Level 1 - Training Yard</code> (step 11).</td></tr>
-  <tr><td>Console: <code>CoinSpot 3 has no Coin inside.</code></td><td>Drag the Coin prefab onto that marker (step 13).</td></tr>
-  <tr><td>Console: <code>collect 0 coins</code></td><td>The CoinSpots need the <b>Coin Spot</b> component, and they must be inside the level root.</td></tr>
-  <tr><td>The coins do not move.</td><td>The Coin prefab has no <b>Coin</b> component, or no <code>Visual</code> child. Do step 10 again.</td></tr>
-  <tr><td>I run through a coin and nothing happens.</td><td>The Coin must be at local position <code>0, 1, 0</code>, and the marker on the floor (Y = 0).</td></tr>
-  <tr><td>No sound; Console: <code>[AudioFX] Unknown sound id: coin</code></td><td>The Sounds list in GoldRushAssets is empty, or the file is not called <code>coin.wav</code> (step 9, phase 1).</td></tr>
-  <tr><td>Console: <code>GoldRushAssets missing</code></td><td>The asset must be called <code>GoldRushAssets</code> and be in <code>Assets/GoldRush/Resources</code>.</td></tr>
-  <tr><td>The hero does not move after GO.</td><td>Replace <code>PlayerMotor.cs</code> with the phase 5 version (step 6). There must be exactly one GameManager.</td></tr>
-  <tr><td>The hero's feet slide, or he runs in slow motion.</td><td>Check the Hero values in GoldRushAssets (step 9): Height 1.35, Walk Speed 0.59, Run Speed 0.84.</td></tr>
-  <tr><td><code>NullReferenceException</code> in <code>GameManager.Build</code></td><td>No Player (Player Motor) or no camera (Third Person Camera) in the scene (step 14).</td></tr>
-  <tr><td>The level looks very different in Play mode.</td><td>That is normal: <code>EnvironmentSetup</code> sets the game's own sky, fog and glow. If it looks too bright, delete an extra <b>Global Volume</b> from your scene.</td></tr>
-  <tr><td><code>The namespace 'GoldRush' already contains a definition for …</code></td><td>A script exists twice. Search the Project window for the name and delete the extra copy.</td></tr>
+  <tr><td>I do not see any Coin in the Hierarchy.</td><td>Normal. The coins exist only in Play mode, under <code>Dynamic (runtime)</code>.</td></tr>
+  <tr><td>Warning: <i>"This level has no CoinSpot objects"</i>.</td><td>The CoinSpots must have the <b>Coin Spot</b> component and be inside <code>Level 1 - Training Yard</code>.</td></tr>
+  <tr><td>A coin floats inside a block, or I cannot reach it.</td><td>Move its CoinSpot to a free place on the floor.</td></tr>
+  <tr><td>No coin sound.</td><td>Sound is off in the menu Settings, or the <b>Sounds</b> list in GoldRushAssets is empty. Console: <i>"[AudioFX] Unknown sound id: coin"</i> means <code>coin.wav</code> is missing.</td></tr>
+  <tr><td>The counter says <code>0 / 7</code> but you wanted 6.</td><td>A CoinSpot copy is left over. Delete it.</td></tr>
 </table></div>
-<p><b>Checkpoint package:</b> <code>GoldRush_Phase05_Coins.unitypackage</code> – the project at the end of this phase.</p>
+<p>More fixes are on the <a href="troubleshooting.html">Troubleshooting</a> page.</p>
+<p><b>Checkpoint package:</b> <code>GoldRush_Phase05_Coins.unitypackage</code></p>
 
 <nav class="pager" aria-label="Previous and next page">
 <a class="prev" href="phase-04.html"><small>← Previous</small>Phase 4: Player and camera</a>

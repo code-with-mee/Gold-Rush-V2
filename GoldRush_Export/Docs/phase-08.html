@@ -51,959 +51,143 @@
 <div class="content">
 <p class="eyebrow">GOLD RUSH · Phase 8</p>
 <h1>Power-ups and effects</h1>
-<p class="lead">You add three glowing power-ups: <b>SPEED</b> (run faster), <b>GHOST</b> (monsters can't see you) and <b>MAGNET</b> (gold flies to you). You also add particle effects: sparkles when you take gold, dust behind your feet, a cloud when you get hit and confetti when you win. The PlayerMotor gets its final version.</p>
-<div class="meta"><span><b>Checkpoint package</b><code>GoldRush_Phase08_PowerUps.unitypackage</code></span><span><b>Scene</b><code>Assets/GoldRush/Scenes/Level1.unity</code></span><a class="btn secondary" href="phase-08.pdf">Download PDF</a></div>
+<p class="lead">Level 1 now has a glowing power-up. There are three kinds: <b>SPEED</b> (run faster), <b>GHOST</b> (monsters can't see you) and <b>MAGNET</b> (gold flies to you). You also get particle effects: sparkles when you take gold, dust behind your feet, a cloud when you get hit and confetti when you win. You import the package, check what is new and learn how it works.</p>
+<div class="meta"><span><b>Package</b><code>GoldRush_Phase08_PowerUps.unitypackage</code></span><span><b>Scene</b><code>Assets/GoldRush/Scenes/Level1.unity</code></span><span><b>New</b><code>Gameplay/PowerUps</code></span><a class="btn secondary" href="phase-08.pdf">Download PDF</a></div>
 
 <nav class="toc" aria-label="Steps on this page"><strong>Steps on this page</strong><ol>
-  <li><a href="#step-1">What you need</a></li>
-  <li><a href="#step-2">How power-ups work</a></li>
-  <li><a href="#step-3">Import the FX script (particles)</a></li>
-  <li><a href="#step-4">Script: PowerUpSpot</a></li>
-  <li><a href="#step-5">Script: PowerUp</a></li>
-  <li><a href="#step-6">Make the power-up prefabs work</a></li>
-  <li><a href="#step-7">Place the MAGNET in Level 1</a></li>
-  <li><a href="#step-8">Add test power-ups</a></li>
-  <li><a href="#step-9">Update the PlayerMotor (final)</a></li>
-  <li><a href="#step-10">Update the GameManager</a></li>
-  <li><a href="#step-11">▶ Press Play</a></li>
-  <li><a href="#step-12">Common problems</a></li>
+  <li><a href="#step-1">Import the package</a></li>
+  <li><a href="#step-2">Check what is new</a></li>
+  <li><a href="#step-3">How it works</a></li>
+  <li><a href="#step-4">▶ Press Play</a></li>
+  <li><a href="#step-5">Try it</a></li>
+  <li><a href="#step-6">Common problems</a></li>
 </ol></nav>
 
 <!-- ======================================================= 1 -->
-<h2 id="step-1"><span class="step">1</span>What you need</h2>
-<ul>
-  <li>Phase 7 is finished: the Slimes patrol and chase you, and you lose hearts.
-    If you start here, import <code>GoldRush_Phase07_Monsters.unitypackage</code>.</li>
-  <li>The power-up models from the starter package: <code>Assets/GoldRush/Prefabs/Gameplay/PowerUp_Speed</code>, <code>PowerUp_Ghost</code>, <code>PowerUp_Magnet</code>.</li>
-  <li>The helper script <code>Scripts/Helpers/Gameplay/FX.cs</code> from the Resources pack. No new Unity package: particles are built into Unity.</li>
-  <li>Open the scene <code>Assets/GoldRush/Scenes/Level1.unity</code>.</li>
-</ul>
-<p>New or changed files in this phase:</p>
-<div class="table-wrap"><table>
-  <tr><th>File</th><th>Type or import?</th><th>What it does</th></tr>
-  <tr><td><code>Gameplay/FX.cs</code></td><td>Import</td><td>All particle effects: sparkles, dust, confetti.</td></tr>
-  <tr><td><code>Level/PowerUpSpot.cs</code></td><td>Type</td><td>Marks a place for a power-up.</td></tr>
-  <tr><td><code>World/PowerUp.cs</code></td><td>Type</td><td>Makes the orb float and spin; knows its type and colour.</td></tr>
-  <tr><td><code>Gameplay/PlayerMotor.cs</code></td><td>Type (replace)</td><td>The final file: speed boost, ghost look, dust, lantern, shop colours.</td></tr>
-  <tr><td><code>Gameplay/GameManager.cs</code></td><td>Type (replace)</td><td>Power-up pickup, timers, magnet, effects.</td></tr>
-</table></div>
+<h2 id="step-1"><span class="step">1</span>Import the package</h2>
+<ol>
+  <li>Make a <b>new, empty Universal 3D project</b>, set up as in <a href="phase-00.html">Phase 0</a> (AI Navigation, Input System, <b>Active Input Handling = Both</b>). Or use your old project and delete the folder <code>Assets/GoldRush</code> first.</li>
+  <li><b>Assets → Import Package → Custom Package…</b> Pick <code>GoldRush_Phase08_PowerUps.unitypackage</code> from <code>GoldRush_Export/Packages/</code>.</li>
+  <li>Keep everything ticked and click <b>Import</b>. Wait until Unity has compiled the scripts. The Console must show no red errors.</li>
+  <li><b>File → Build Profiles → Scene List</b>. Drag in <code>MainMenu</code> first, then <code>Level1</code> (from <code>Assets/GoldRush/Scenes</code>).</li>
+  <li>Open <code>Assets/GoldRush/Scenes/Level1.unity</code>.</li>
+</ol>
+<div class="tip">New in this package: the marker <code>Gameplay/PowerUps/PowerUp Magnet</code>. All scripts were already there since phase 1 (every package has all final scripts), so nothing else changes.</div>
 
 <!-- ======================================================= 2 -->
-<h2 id="step-2"><span class="step">2</span>How power-ups work</h2>
-<p>A power-up is a glowing orb that floats above a ring. Walk into it (closer than 1.6 m) and its effect starts for a few seconds.</p>
+<h2 id="step-2"><span class="step">2</span>Check what is new</h2>
+
+<h3>Check 1: the PowerUps group</h3>
+<p>In the Hierarchy, open <code>Level 1 - Training Yard › Gameplay › PowerUps</code>. It has one child: <code>PowerUp Magnet</code>. Like the coins, a power-up is a marker inside the level root.</p>
+<figure class="shot" data-shot="phase-08/check-1" data-window="hierarchy" data-select="Level 1 - Training Yard/Gameplay/PowerUps/PowerUp Magnet"><img src="images/phase-08/step-07-b.png" alt="Hierarchy of Level1 with Gameplay, PowerUps and PowerUp Magnet selected" loading="lazy"><figcaption>PowerUp Magnet sits in Gameplay › PowerUps, next to Coins and Monsters.</figcaption></figure>
+
+<h3>Check 2: the Power Up Spot component</h3>
+<p>Select <code>PowerUp Magnet</code>. In the Inspector you see a <b>Power Up Spot</b> component with <b>Type</b> = <code>Magnet</code>. The marker stands on the floor, at Position about <code>-14.4, 0.08, -8.6</code>.</p>
+<figure class="shot"><img src="images/phase-08/check-2.png" alt="" loading="lazy"><figcaption>Type = Magnet. The type decides the colour and the effect.</figcaption></figure>
+
+<h3>Check 3: the marker in the Scene view</h3>
+<p>Press <kbd>F</kbd> with the marker selected. A <b>red wire ball</b> floats 1.1 m above the floor. That is the gizmo: you only see it in the editor. Cyan = SPEED, purple = GHOST, red = MAGNET.</p>
+<figure class="shot"><img src="images/phase-08/check-3.png" alt="" loading="lazy"><figcaption>The red ball shows where the MAGNET orb will float.</figcaption></figure>
+
+<h3>Check 4: the power-up models</h3>
+<p>In the Project window, select <code>Assets/GoldRush/Prefabs/Gameplay/PowerUp_Magnet</code>. It is only the <b>model</b>: a glass ball (<code>Visual</code> with <code>Sphere</code> and <code>Inner</code>) and a <code>Ring</code> on the ground. It has no script. The marker in Level 1 has no model inside: the game makes the orb in code when the level starts.</p>
+<figure class="shot" data-shot="phase-08/check-4" data-window="inspector" data-select="Assets/GoldRush/Prefabs/Gameplay/PowerUp_Magnet.prefab"><img src="images/phase-08/step-06.png" alt="Inspector of the PowerUp_Magnet prefab with a red glass ball and a ring in the preview" loading="lazy"><figcaption>PowerUp_Magnet: a red glass ball with a magnet inside, and a dashed ring.</figcaption></figure>
+
+<h3>Check 5: the scripts</h3>
+<p>Find the three scripts of this phase in the Project window:</p>
+<div class="table-wrap"><table>
+  <tr><th>File</th><th>What it does</th></tr>
+  <tr><td><code>Scripts/Level/PowerUpSpot.cs</code></td><td>The marker. Stores the type and draws the wire ball.</td></tr>
+  <tr><td><code>Scripts/World/PowerUp.cs</code></td><td>The orb. Floats, spins, knows its colour and name. <code>Create()</code> builds an orb in code.</td></tr>
+  <tr><td><code>Scripts/Gameplay/FX.cs</code></td><td>All particle effects, made in code.</td></tr>
+</table></div>
+<figure class="shot"><img src="images/phase-08/check-5.png" alt="" loading="lazy"><figcaption>PowerUp.cs is in Scripts/World, next to Coin.cs and ExitGate.cs.</figcaption></figure>
+
+<h3>Check 6: the particle material</h3>
+<p>Select <code>Assets/GoldRush/Resources/GoldRushAssets</code>. Its <b>Particle</b> field is <code>GR_Particle</code>. Every effect in <code>FX.cs</code> uses a copy of this material.</p>
+<figure class="shot"><img src="images/phase-08/check-6.png" alt="" loading="lazy"><figcaption>Particle = GR_Particle. If it is empty, particles show as pink squares.</figcaption></figure>
+
+<!-- ======================================================= 3 -->
+<h2 id="step-3"><span class="step">3</span>How it works</h2>
+<p>A power-up is a glowing orb that floats above a ring. Walk into it and its effect starts for a few seconds.</p>
 <div class="table-wrap"><table>
   <tr><th>Power-up</th><th>Colour</th><th>Time</th><th>Effect</th></tr>
   <tr><td>SPEED</td><td>cyan</td><td>6 s</td><td>You move 1.55 × faster. A trail of cyan stars follows you.</td></tr>
-  <tr><td>GHOST</td><td>purple</td><td>6 s</td><td>You turn see-through. Monsters can not see you, and a chasing monster gives up and searches.</td></tr>
+  <tr><td>GHOST</td><td>purple</td><td>6 s</td><td>You turn see-through. Monsters can't see you, and a chasing monster gives up and searches.</td></tr>
   <tr><td>MAGNET</td><td>red</td><td>8 s</td><td>Every coin closer than 11 m flies to you.</td></tr>
 </table></div>
-<p>Like the coins, a power-up sits inside a marker: a <code>PowerUpSpot</code> with a <code>PowerUp</code> prefab as its child. The GameManager finds them when the level starts, and checks the distance every frame. No colliders.</p>
+<p>The <code>GameManager</code> does the work. These are the key lines (shortened):</p>
+<p><code>Assets/GoldRush/Scripts/Gameplay/GameManager.cs</code></p>
+<pre class="long"><code>public const float SpeedDuration = 6f, GhostDuration = 6f, MagnetDuration = 8f;
+public float SpeedMultiplier =&gt; SpeedActive ? 1.55f : 1f;
 
-<!-- ======================================================= 3 -->
-<h2 id="step-3"><span class="step">3</span>Import the FX script (particles)</h2>
-<p>A <b>particle system</b> shoots many tiny pictures (sparkles, dust, confetti) that move and fade out. <code>FX.cs</code> makes all of them in code.</p>
-<ol>
-  <li>In Finder or Explorer, open the Resources pack folder <code>Scripts/Helpers/Gameplay/</code>.</li>
-  <li>Drag <code>FX.cs</code> into <code>Assets/GoldRush/Scripts/Gameplay/</code> in Unity. It is a new file. (If <code>FX.cs</code> is already there, do not drag it in again: Unity would add a second file <code>FX 1.cs</code>. Open your file and paste the new text into it instead.)</li>
-</ol>
-<p>You don't need to read the whole file. These are the functions the game calls:</p>
+// level start: look at every PowerUpSpot in the level
+foreach (var pu in scene.GetComponentsInChildren&lt;PowerUpSpot&gt;())
+{
+    var placed = pu.GetComponentInChildren&lt;PowerUp&gt;();
+    if (placed) { powerUps.Add(placed); continue; } // a PowerUp placed by hand
+    l.powerUpPoints.Add(pu.transform.position);      // else: build one here in code
+    powerTypes.Add(pu.type);
+}
+
+// every frame: is the player close enough? (no colliders)
+if ((p.transform.position + Vector3.up - pp).sqrMagnitude &lt; 1.6f * 1.6f) { powerUps.RemoveAt(i); CollectPowerUp(p); }
+
+// CollectPowerUp: effect, sound, timer, message
+FX.Burst(pos, col, Color.white, 30, 2f, 6f, 0.4f, 0.8f, 0.2f, true);
+AudioFX.Play("power");
+case PowerType.Speed: SpeedLeft = SpeedDuration; desc = "Super speed!"; break;</code></pre>
+<ul>
+  <li><b>Markers first.</b> When the level starts, the GameManager finds every <code>PowerUpSpot</code>. If there is no <code>PowerUp</code> inside, it calls <code>PowerUp.Create()</code>, which builds the orb from spheres and cubes at the marker.</li>
+  <li><b>Distance, not colliders.</b> Every frame it checks the distance from the player to each orb. Closer than 1.6 m = picked up.</li>
+  <li><b>Timers.</b> A pickup sets <code>SpeedLeft</code>, <code>GhostLeft</code> or <code>MagnetLeft</code>. Every frame they count down to 0. While one is above 0, the power is on.</li>
+  <li><b>Other scripts read it.</b> <code>PlayerMotor</code> multiplies its speed by <code>gm.SpeedMultiplier</code>. <code>EnemyAI.Vision()</code> starts with <code>if (gm.GhostActive) return false;</code>. With MAGNET on, the coin loop moves coins closer than 11 m towards you.</li>
+  <li><b>The orb moves itself.</b> <code>PowerUp.Update()</code> moves it up and down with <code>Mathf.Sin</code> (14 cm), spins it 50° per second and makes the ring "breathe".</li>
+</ul>
+<h3>The effects (FX.cs)</h3>
+<p>A <b>particle system</b> shoots many tiny pictures (sparkles, dust, confetti) that move and fade out. <code>FX.cs</code> makes them all in code. You only need to know these functions:</p>
 <div class="table-wrap"><table>
   <tr><th>Function</th><th>What it does</th><th>Used by</th></tr>
   <tr><td><code>FX.Burst(pos, colorA, colorB, count, …)</code></td><td>One explosion of sparkles in two colours. Then it deletes itself.</td><td>power-up pickup</td></tr>
   <tr><td><code>FX.CoinBurst(pos)</code></td><td>A golden burst plus a soft glow.</td><td>coin pickup</td></tr>
   <tr><td><code>FX.Puff(pos, color)</code></td><td>A small soft cloud.</td><td>getting hit, falling down</td></tr>
-  <tr><td><code>FX.Trail(parent, localPos, color, size, life)</code></td><td>A particle system that follows an object. You turn it on and off with <code>emission.rateOverTime</code>.</td><td>dust, speed trail</td></tr>
-  <tr><td><code>FX.Confetti(pos)</code></td><td>140 colourful paper bits shoot up.</td><td>winning</td></tr>
+  <tr><td><code>FX.Trail(parent, localPos, color, size, life)</code></td><td>Particles that follow an object. Turned on and off with <code>emission.rateOverTime</code>.</td><td>dust, speed trail</td></tr>
+  <tr><td><code>FX.Confetti(pos)</code></td><td>Colourful paper bits shoot up.</td><td>winning</td></tr>
 </table></div>
-<div class="tip">The particles copy the <code>GR_Particle</code> material from the <b>Particle</b> field of GoldRushAssets. If particles show as pink squares, check that field.</div>
 
 <!-- ======================================================= 4 -->
-<h2 id="step-4"><span class="step">4</span>Script: PowerUpSpot</h2>
-<p>The marker. It stores the type and draws a coloured ball in the Scene view.</p>
-<ol><li>In <code>Assets/GoldRush/Scripts/Level/</code>, create the script <code>PowerUpSpot</code> and type this code:</li></ol>
-<p><code>Assets/GoldRush/Scripts/Level/PowerUpSpot.cs</code></p>
-<pre class="long"><code>using UnityEngine;
-
-namespace GoldRush
-{
-    /// &lt;summary&gt;A power-up appears here: SPEED (faster), GHOST (monsters can't see you) or MAGNET (pulls coins).&lt;/summary&gt;
-    public class PowerUpSpot : MonoBehaviour
-    {
-        public PowerType type = PowerType.Speed;
-
-        void OnDrawGizmos()
-        {
-            Color c = type == PowerType.Speed ? new Color(0.3f, 0.9f, 1f) : type == PowerType.Ghost ? new Color(0.7f, 0.55f, 1f) : new Color(1f, 0.3f, 0.3f);
-            Gizmos.color = c;
-            Gizmos.DrawWireSphere(transform.position + Vector3.up * 1.1f, 0.45f);
-            Gizmos.DrawLine(transform.position, transform.position + Vector3.up * 0.65f);
-        }
-    }
-}</code></pre>
+<h2 id="step-4"><span class="step">4</span>▶ Press Play</h2>
+<p>Start in <code>MainMenu</code> and click PLAY, or press Play in <code>Level1</code>.</p>
 <ul>
-  <li><code>PowerType</code> is an enum from <code>Data.cs</code>: <code>Speed</code>, <code>Ghost</code>, <code>Magnet</code>.</li>
-  <li><code>OnDrawGizmos()</code> draws a wire ball 1.1 m above the ground (where the orb floats). Cyan = Speed, purple = Ghost, red = Magnet.</li>
+  <li>The red MAGNET orb floats and spins. Its ring slowly turns. A <b>MAGNET</b> label hangs over it.</li>
+  <li>Walk: a little dust comes out behind your feet.</li>
+  <li>Take the MAGNET: sparkles, a sound and the message <b>MAGNET – Gold flies to you!</b>. For 8 s, coins up to 11 m away fly to you.</li>
+  <li>Take a coin: golden sparkles. Get hit by a Slime: a small cloud.</li>
+  <li>Take all gold and run through the gate: confetti!</li>
+  <li>At night a warm lantern light follows the hero.</li>
 </ul>
+<figure class="shot"><img src="images/05_level1_play.jpg" alt="The hero in Level 1 with the HUD, coins and the exit gate" loading="lazy"><figcaption>Level 1 in Play mode. The HUD is made by code for now; in phase 9 it is a scene object.</figcaption></figure>
 
 <!-- ======================================================= 5 -->
-<h2 id="step-5"><span class="step">5</span>Script: PowerUp</h2>
-<p>This script animates the orb and knows its type.</p>
-<ol><li>In <code>Assets/GoldRush/Scripts/World/</code>, create the script <code>PowerUp</code> and type this code:</li></ol>
-<p><code>Assets/GoldRush/Scripts/World/PowerUp.cs</code></p>
-<pre class="long"><code>using UnityEngine;
-
-namespace GoldRush
-{
-    /// &lt;summary&gt;Hovering glowing power-up orb with a ground ring. Pickup is distance-based elsewhere (no colliders).
-    /// The model is a PowerUp_* prefab.&lt;/summary&gt;
-    public class PowerUp : MonoBehaviour
-    {
-        [Tooltip("SPEED, GHOST or MAGNET.")]
-        [SerializeField] PowerType type;
-        public PowerType Type { get =&gt; type; private set =&gt; type = value; }
-        public bool Collected { get; private set; }
-
-        [SerializeField] Transform visual, inner, ring;
-        float phase;
-
-        void Start()
-        {
-            // a power-up placed by hand: find its parts by name and give it its own bob timing
-            if (!visual) visual = transform.Find("Visual");
-            if (!inner &amp;&amp; visual) inner = visual.Find("Inner");
-            if (!ring) ring = transform.Find("Ring");
-            if (phase == 0f) phase = Random.Range(0.01f, Mathf.PI * 2f);
-        }
-
-        public static Color ColorOf(PowerType t)
-        {
-            switch (t)
-            {
-                case PowerType.Speed: return new Color(0.2f, 0.9f, 1f);
-                case PowerType.Ghost: return new Color(0.76f, 0.56f, 1f);
-                default: return new Color(1f, 0.26f, 0.24f);
-            }
-        }
-
-        public static string NameOf(PowerType t)
-        {
-            switch (t)
-            {
-                case PowerType.Speed: return "SPEED";
-                case PowerType.Ghost: return "GHOST";
-                default: return "MAGNET";
-            }
-        }
-
-        void Update()
-        {
-            float t = Time.time;
-            if (visual)
-            {
-                visual.localPosition = new Vector3(0f, 1.1f + Mathf.Sin(t * 2f + phase) * 0.14f, 0f);
-                visual.localRotation = Quaternion.Euler(0f, t * 50f, 0f);
-            }
-            if (inner)
-            {
-                if (Type == PowerType.Ghost) inner.localRotation = Quaternion.Euler(0f, t * 160f, 0f);
-                else inner.localRotation = Quaternion.Euler(0f, t * 90f, Type == PowerType.Magnet ? Mathf.Sin(t * 1.5f) * 12f : 0f);
-            }
-            if (ring)
-            {
-                float s = 1f + Mathf.Sin(t * 3f + phase) * 0.06f;
-                ring.localScale = new Vector3(s, 1f, s);
-                ring.localRotation = Quaternion.Euler(0f, -t * 30f, 0f);
-            }
-        }
-
-        public void Collect()
-        {
-            if (Collected) return;
-            Collected = true;
-            Destroy(gameObject);
-        }
-    }
-}</code></pre>
-<ul>
-  <li><code>type</code> is a private field that you set in the Inspector (<code>[Tooltip]</code> shows a hint when you point at it). <code>Type</code> lets other scripts read it; only the orb itself can change it (<code>private set</code>).</li>
-  <li><code>Start()</code>: if a field is empty, <code>transform.Find("Visual")</code> finds the child by its name. Then it picks a random <code>phase</code>, so two orbs never move the same.</li>
-  <li><code>ColorOf()</code> and <code>NameOf()</code> give the colour and the name of each type. They are <code>static</code>: you call them on the class, <code>PowerUp.ColorOf(PowerType.Ghost)</code>.</li>
-  <li><code>Update()</code> moves the orb up and down with <code>Mathf.Sin</code> (14 cm), spins it 50° per second and makes the ring "breathe".</li>
-  <li><code>Collect()</code> deletes the orb. <code>Collected</code> stops a second pickup.</li>
-</ul>
-<div class="tip">This is the phase 8 version. The full game file also has <code>Create()</code> and <code>Build()</code>, which build an orb in code for the level builder.</div>
+<h2 id="step-5"><span class="step">5</span>Try it</h2>
+<ol>
+  <li><b>Change the type.</b> Select <code>PowerUp Magnet</code>. Set <b>Power Up Spot → Type</b> = <code>Speed</code>. Press Play: the orb is cyan, and you run 1.55 × faster with a star trail for 6 s.</li>
+  <li><b>Add a GHOST.</b> Select the marker and press <kbd>Ctrl</kbd>+<kbd>D</kbd> (Mac: <kbd>Cmd</kbd>+<kbd>D</kbd>). Rename the copy <code>PowerUp Ghost</code>, set <b>Type</b> = <code>Ghost</code> and <b>Position</b> = <code>10, 0, -6</code> (near Slime 2). Press Play, take it and walk in front of the Slime: it does not see you.</li>
+  <li><b>Make it stronger.</b> Open <code>GameManager.cs</code>. In the line <code>public const float SpeedDuration = 6f, GhostDuration = 6f, MagnetDuration = 8f;</code> change <code>MagnetDuration</code> to <code>15f</code>. Or in <code>SpeedMultiplier =&gt; SpeedActive ? 1.55f : 1f;</code> change <code>1.55f</code> to <code>2f</code>. Save and play.</li>
+</ol>
+<div class="tip">You build levels with power-ups yourself in the <a href="practicals.html">Practicals</a>. Undo your changes (or import the package again) before you go on.</div>
 
 <!-- ======================================================= 6 -->
-<h2 id="step-6"><span class="step">6</span>Make the power-up prefabs work</h2>
-<ol>
-  <li>In the Project window, double-click <code>Assets/GoldRush/Prefabs/Gameplay/PowerUp_Magnet</code>. It opens in prefab mode.</li>
-  <li>Look at the Hierarchy: <code>PowerUp_Magnet › Visual › Sphere, Inner</code> and <code>Ring</code>.</li>
-  <li>Select the root <code>PowerUp_Magnet</code>. Click <b>Add Component</b> and choose <b>Power Up</b>.</li>
-  <li>Set <b>Type</b> = <code>Magnet</code>.</li>
-  <li>Drag <code>Visual</code> into <b>Visual</b>, <code>Visual › Inner</code> into <b>Inner</b> and <code>Ring</code> into <b>Ring</b>.</li>
-  <li>Leave prefab mode (the <b>&lt;</b> arrow).</li>
-  <li>Do the same for <code>PowerUp_Speed</code> (Type <code>Speed</code>) and <code>PowerUp_Ghost</code> (Type <code>Ghost</code>).</li>
-</ol>
-<figure class="shot"><img src="images/phase-08/step-06.png" alt="" loading="lazy"><figcaption>The Power Up component on PowerUp_Magnet.</figcaption></figure>
-
-<!-- ======================================================= 7 -->
-<h2 id="step-7"><span class="step">7</span>Place the MAGNET in Level 1</h2>
-<p>Level 1 has one power-up: a MAGNET. In phase 3 you made an empty marker for it.</p>
-<ol>
-  <li>Select <code>Level 1 - Training Yard › Gameplay › PowerUps › PowerUp Magnet</code>. Check its <b>Position</b>: <code>-14.5, 0, -8.5</code>.</li>
-  <li>Click <b>Add Component</b> and choose <b>Power Up Spot</b>. Set <b>Type</b> = <code>Magnet</code>. A red wire ball appears in the Scene view.</li>
-  <li>Drag the <code>PowerUp_Magnet</code> prefab from the Project window onto the marker. It becomes a child.</li>
-  <li>Select the child and set its <b>Position</b> to <code>0, 0, 0</code>.</li>
-  <li>Save the scene.</li>
-</ol>
-<div class="note">Use the same type on the marker and on the prefab inside it. The marker must be inside the level root, like the coins.</div>
-
-<figure class="shot"><img src="images/phase-08/step-07-b.png" alt="" loading="lazy"><figcaption>The orb is inside the marker.</figcaption></figure>
-
-<!-- ======================================================= 8 -->
-<h2 id="step-8"><span class="step">8</span>Add test power-ups</h2>
-<p>To test SPEED and GHOST, add one of each for now.</p>
-<ol>
-  <li>Right-click <code>Level 1 - Training Yard › Gameplay › PowerUps</code> → <b>Create Empty</b>. Name it <code>PowerUp Speed</code>. Set its <b>Position</b> to <code>2.5, 0, -6</code> (on free floor, in front of the start).</li>
-  <li>Click <b>Add Component</b> → <b>Power Up Spot</b>. Set <b>Type</b> = <code>Speed</code>.</li>
-  <li>Drag the <code>PowerUp_Speed</code> prefab onto it. Set the child's <b>Position</b> to <code>0, 0, 0</code>.</li>
-  <li>Do the same for <code>PowerUp Ghost</code> at <code>10, 0, -6</code> (near Slime 2), with Type <code>Ghost</code> and the <code>PowerUp_Ghost</code> prefab.</li>
-  <li>Save the scene.</li>
-</ol>
-<div class="tip">When you are done testing, delete <code>PowerUp Speed</code> and <code>PowerUp Ghost</code>, so Level 1 matches the real game. Or keep them – it's your level!</div>
-
-<!-- ======================================================= 9 -->
-<h2 id="step-9"><span class="step">9</span>Update the PlayerMotor (final)</h2>
-<p>This is the <b>final</b> PlayerMotor: the same file as in the finished game.</p>
-<ol><li>Open <code>Assets/GoldRush/Scripts/Gameplay/PlayerMotor.cs</code> and <b>replace the whole file</b> with this version:</li></ol>
-<p><code>Assets/GoldRush/Scripts/Gameplay/PlayerMotor.cs</code></p>
-<pre class="long"><code>using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
-namespace GoldRush
-{
-    /// &lt;summary&gt;Third-person player: CharacterController movement (collides with props), sprint/stamina,
-    /// power-up effects, hit knockback + invulnerability blink, dust, footsteps, win/lose poses.&lt;/summary&gt;
-    [RequireComponent(typeof(CharacterController))]
-    public class PlayerMotor : MonoBehaviour
-    {
-        public float walkSpeed = 5f;
-        public float sprintSpeed = 8.2f;
-        public float acceleration = 20f;
-        public float turnSpeed = 560f;
-
-        public VirtualJoystick joystick;
-        public ThirdPersonCamera cam;
-
-        public float Stamina { get; private set; } = 1f;
-        public bool Exhausted { get; private set; }
-        public bool Sprinting { get; private set; }
-        public bool Frozen { get; set; }
-        public bool Invulnerable =&gt; Time.time &lt; invulnUntil;
-        public Vector3 Velocity =&gt; velocity;
-        public Animator Anim =&gt; anim;
-
-        CharacterController cc;
-        float animSpeed = 1f;
-        Animator anim;
-        Transform model;
-        Vector3 velocity, knock;
-        float vy, invulnUntil, stepTimer, blinkTimer;
-        ParticleSystem dust, boostTrail;
-        Renderer[] renderers;
-        readonly Dictionary&lt;Renderer, Material[]&gt; originalMats = new Dictionary&lt;Renderer, Material[]&gt;();
-        bool ghostVisual;
-
-        public static PlayerMotor Create(Vector3 pos, float yaw)
-        {
-            var go = new GameObject("Player");
-            go.layer = 2; // Ignore Raycast: camera/enemy line-of-sight rays pass through the player
-            go.transform.SetPositionAndRotation(pos, Quaternion.Euler(0, yaw, 0));
-            var cc = go.AddComponent&lt;CharacterController&gt;();
-            var def = GameAssets.I.hero;
-            cc.height = Mathf.Max(1f, def.height);
-            cc.radius = 0.36f;
-            cc.center = new Vector3(0, cc.height * 0.5f + 0.02f, 0);
-            cc.skinWidth = 0.05f;
-            cc.stepOffset = 0.35f;
-            cc.slopeLimit = 50f;
-            var p = go.AddComponent&lt;PlayerMotor&gt;();
-            p.anim = CharacterFactory.BuildModel(def, go.transform);
-            p.model = p.anim.transform;
-            foreach (var t in go.GetComponentsInChildren&lt;Transform&gt;(true)) t.gameObject.layer = 2;
-            Cosmetics.Apply(p.anim, def, Save.Data.color, Save.Data.hat, true);
-            p.renderers = go.GetComponentsInChildren&lt;Renderer&gt;();
-            p.dust = FX.Trail(go.transform, new Vector3(0, 0.1f, -0.2f), new Color(0.9f, 0.78f, 0.6f, 0.55f), 0.7f, 0.7f);
-            p.boostTrail = FX.Trail(go.transform, new Vector3(0, 0.9f, -0.2f), new Color(0.4f, 0.95f, 1f, 0.8f), 0.35f, 0.5f, true);
-            return p;
-        }
-
-        void Awake()
-        {
-            cc = GetComponent&lt;CharacterController&gt;();
-            // a Player placed in the scene by hand: find its model (the child with the Animator)
-            if (!anim) anim = GetComponentInChildren&lt;Animator&gt;();
-            if (anim &amp;&amp; !model) model = anim.transform;
-        }
-
-        /// &lt;summary&gt;Finishes a Player that was placed in the scene (Create() does all of this for a code-made one).&lt;/summary&gt;
-        public void SetupPlaced()
-        {
-            gameObject.layer = 2; // Ignore Raycast: camera/enemy line-of-sight rays pass through the player
-            foreach (var t in GetComponentsInChildren&lt;Transform&gt;(true)) t.gameObject.layer = 2;
-            if (anim)
-            {
-                anim.applyRootMotion = false;
-                anim.cullingMode = AnimatorCullingMode.AlwaysAnimate;
-                Cosmetics.Apply(anim, GameAssets.I.hero, Save.Data.color, Save.Data.hat, true);
-            }
-            renderers = GetComponentsInChildren&lt;Renderer&gt;();
-            if (!dust) dust = FX.Trail(transform, new Vector3(0, 0.1f, -0.2f), new Color(0.9f, 0.78f, 0.6f, 0.55f), 0.7f, 0.7f);
-            if (!boostTrail) boostTrail = FX.Trail(transform, new Vector3(0, 0.9f, -0.2f), new Color(0.4f, 0.95f, 1f, 0.8f), 0.35f, 0.5f, true);
-        }
-
-        /// &lt;summary&gt;Moves the player (a CharacterController ignores teleports while it is enabled).&lt;/summary&gt;
-        public void Teleport(Vector3 pos, float yaw)
-        {
-            if (!cc) cc = GetComponent&lt;CharacterController&gt;();
-            if (cc) cc.enabled = false;
-            transform.SetPositionAndRotation(pos, Quaternion.Euler(0, yaw, 0));
-            if (cc) cc.enabled = true;
-        }
-
-        /// &lt;summary&gt;Editor tooling (trailer recorder): when set, replaces keyboard / joystick input.&lt;/summary&gt;
-        public static Vector2? ScriptedInput;
-        public static bool ScriptedSprint;
-
-        Vector2 ReadInput()
-        {
-            if (ScriptedInput.HasValue) return Vector2.ClampMagnitude(ScriptedInput.Value, 1f);
-            Vector2 v = joystick ? joystick.Value : Vector2.zero;
-            float kx = (Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.RightArrow) ? 1 : 0) - (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.LeftArrow) ? 1 : 0);
-            float ky = (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.UpArrow) ? 1 : 0) - (Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.DownArrow) ? 1 : 0);
-            if (kx != 0 || ky != 0) v = new Vector2(kx, ky).normalized;
-            return Vector2.ClampMagnitude(v, 1f);
-        }
-
-        void Update()
-        {
-            float dt = Time.deltaTime;
-            if (dt &lt;= 0f) return;
-            var gm = GameManager.I;
-            bool canMove = !Frozen &amp;&amp; gm != null &amp;&amp; gm.State == GameState.Playing;
-
-            Vector2 input = canMove ? ReadInput() : Vector2.zero;
-            float yaw = cam ? cam.Yaw : 0f;
-            Vector3 dir = Quaternion.Euler(0, yaw, 0) * new Vector3(input.x, 0, input.y);
-            float mag = Mathf.Clamp01(dir.magnitude);
-
-            bool wantSprint = canMove &amp;&amp; mag &gt; 0.2f &amp;&amp; (ScriptedSprint || (joystick &amp;&amp; joystick.Held &amp;&amp; joystick.Value.magnitude &gt; 0.9f) || Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift));
-            if (Exhausted &amp;&amp; Stamina &gt; 0.35f) Exhausted = false;
-            Sprinting = wantSprint &amp;&amp; !Exhausted &amp;&amp; Stamina &gt; 0f;
-            if (Sprinting)
-            {
-                Stamina = Mathf.Max(0f, Stamina - dt * 0.3f);
-                if (Stamina &lt;= 0f) Exhausted = true;
-            }
-            else Stamina = Mathf.Min(1f, Stamina + dt * (mag &gt; 0.1f ? 0.18f : 0.32f));
-
-            float mul = gm ? gm.SpeedMultiplier : 1f;
-            float speed = (Sprinting ? sprintSpeed : walkSpeed) * mul;
-            Vector3 targetVel = mag &gt; 0.01f ? dir.normalized * (mag * speed) : Vector3.zero;
-            velocity = Vector3.MoveTowards(velocity, targetVel, acceleration * dt);
-
-            if (velocity.sqrMagnitude &gt; 0.05f &amp;&amp; !Frozen)
-            {
-                var targetRot = Quaternion.LookRotation(new Vector3(velocity.x, 0, velocity.z));
-                transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRot, turnSpeed * dt);
-            }
-
-            if (cc.isGrounded &amp;&amp; vy &lt; 0) vy = -2f; else vy -= 25f * dt;
-            knock = Vector3.Lerp(knock, Vector3.zero, 1f - Mathf.Exp(-5f * dt));
-            if (cc.enabled) cc.Move((velocity + knock + Vector3.up * vy) * dt);
-
-            // animation (0 idle, 0.5 walk, 1 run)
-            float horiz = new Vector3(velocity.x, 0, velocity.z).magnitude;
-            float blend = horiz &lt; 0.1f ? 0f : Mathf.Lerp(0.45f, 1f, Mathf.InverseLerp(2.5f, sprintSpeed, horiz));
-            if (anim &amp;&amp; anim.runtimeAnimatorController) anim.SetFloat(AnimParams.Speed, blend, 0.15f, dt);
-            // play the walk/run cycle exactly as fast as the hero moves, so the feet don't slide
-            if (anim &amp;&amp; !Frozen)
-            {
-                float target = GameAssets.I.hero.PlaybackSpeed(blend, horiz);
-                animSpeed = Mathf.Lerp(animSpeed, target, 1f - Mathf.Exp(-5f * dt)); // ease, never jump
-                anim.speed = animSpeed;
-            }
-
-            // footsteps
-            if (horiz &gt; 1f &amp;&amp; cc.isGrounded)
-            {
-                stepTimer -= dt * horiz / 5f;
-                if (stepTimer &lt;= 0f)
-                {
-                    stepTimer = 0.36f;
-                    AudioFX.Play("step", Sprinting ? 0.55f : 0.35f, Random.Range(0.9f, 1.1f));
-                }
-            }
-
-            // dust + boost trail
-            if (dust) { var em = dust.emission; em.rateOverTime = horiz &gt; 1f ? (Sprinting ? 28f : 9f) : 0f; }
-            if (boostTrail) { var em = boostTrail.emission; em.rateOverTime = gm &amp;&amp; gm.SpeedActive &amp;&amp; horiz &gt; 0.5f ? 35f : 0f; }
-
-            // invulnerability blink
-            if (Invulnerable)
-            {
-                blinkTimer -= dt;
-                if (blinkTimer &lt;= 0f) { blinkTimer = 0.09f; SetVisible(!renderers[0].enabled); }
-            }
-            else if (renderers != null &amp;&amp; renderers.Length &gt; 0 &amp;&amp; !renderers[0].enabled) SetVisible(true);
-
-            bool ghost = gm &amp;&amp; gm.GhostActive;
-            if (ghost != ghostVisual) SetGhost(ghost);
-        }
-
-        void SetVisible(bool v)
-        {
-            if (renderers == null) return;
-            foreach (var r in renderers) if (r &amp;&amp; !(r is ParticleSystemRenderer)) r.enabled = v;
-        }
-
-        void SetGhost(bool on)
-        {
-            ghostVisual = on;
-            var ghostMat = Mats.Transparent(new Color(0.65f, 0.6f, 1f, 0.32f), 0.9f);
-            foreach (var r in GetComponentsInChildren&lt;Renderer&gt;(true))
-            {
-                if (r is ParticleSystemRenderer) continue;
-                if (on)
-                {
-                    if (!originalMats.ContainsKey(r)) originalMats[r] = r.sharedMaterials;
-                    var arr = new Material[r.sharedMaterials.Length];
-                    for (int i = 0; i &lt; arr.Length; i++) arr[i] = ghostMat;
-                    r.sharedMaterials = arr;
-                }
-                else if (originalMats.TryGetValue(r, out var orig)) r.sharedMaterials = orig;
-            }
-            if (!on) originalMats.Clear();
-        }
-
-        public void Hit(Vector3 from, float invulnSeconds)
-        {
-            Vector3 d = transform.position - from; d.y = 0;
-            if (d.sqrMagnitude &lt; 0.01f) d = -transform.forward;
-            knock = d.normalized * 13f;
-            invulnUntil = Time.time + invulnSeconds;
-            if (anim) anim.SetTrigger(AnimParams.Hit);
-            FX.Puff(transform.position + Vector3.up * 1f, new Color(1f, 0.9f, 0.8f, 0.8f), 14, 0.9f);
-        }
-
-        public void PlayVictory()
-        {
-            Frozen = true;
-            velocity = Vector3.zero;
-            StartCoroutine(VictoryCo());
-        }
-
-        IEnumerator VictoryCo()
-        {
-            if (anim) anim.SetFloat(AnimParams.Speed, 0f);
-            // turn to face the camera, then wave (the "Win" clip)
-            Quaternion start = transform.rotation;
-            Vector3 toCam = cam ? cam.transform.position - transform.position : -transform.forward;
-            toCam.y = 0;
-            Quaternion face = toCam.sqrMagnitude &gt; 0.01f ? Quaternion.LookRotation(toCam) : start;
-            for (float t = 0; t &lt; 1f; t += Time.deltaTime / 0.35f)
-            {
-                transform.rotation = Quaternion.Slerp(start, face, t);
-                yield return null;
-            }
-            if (anim) { anim.speed = 1f; anim.SetTrigger(AnimParams.Win); }
-        }
-
-        public void PlayCaught()
-        {
-            Frozen = true;
-            velocity = Vector3.zero;
-            StartCoroutine(CaughtCo());
-        }
-
-        IEnumerator CaughtCo()
-        {
-            SetVisible(true);
-            if (anim) { anim.speed = 1f; anim.SetFloat(AnimParams.Speed, 0f); anim.SetTrigger(AnimParams.Die); }
-            yield return new WaitForSeconds(0.5f);
-            FX.Puff(transform.position + Vector3.up * 0.2f, new Color(0.9f, 0.78f, 0.6f, 0.8f), 18, 1.1f);
-        }
-
-        /// &lt;summary&gt;A warm lantern spotlight follows the hero (and a soft fill light). Both fade in at night.&lt;/summary&gt;
-        public void AddLantern()
-        {
-            var spot = new GameObject("Lantern").AddComponent&lt;Light&gt;();
-            spot.transform.SetParent(transform, false);
-            spot.transform.localPosition = new Vector3(0f, 5.5f, -1.5f);
-            spot.transform.LookAt(transform.position + transform.forward * 1.8f);
-            spot.type = LightType.Spot;
-            spot.color = new Color(1f, 0.8f, 0.5f);
-            spot.intensity = 22f;
-            spot.range = 14f;
-            spot.spotAngle = 62f;
-            spot.innerSpotAngle = 30f;
-            spot.shadows = LightShadows.Soft;
-            DayNight.RegisterNightLight(spot);
-            var fill = CharacterFactory.AddGlow(transform, new Color(1f, 0.85f, 0.6f), 1.35f, 0.5f);
-            fill.transform.localPosition = new Vector3(0f, 2.4f, -1.2f); // above &amp; behind: soft rim light, not a face flash
-            fill.range = 4f;
-            DayNight.RegisterNightLight(fill);
-        }
-    }
-}</code></pre>
-<p>What is new:</p>
-<ul>
-  <li><code>gm.SpeedMultiplier</code> is 1.55 during SPEED, else 1. It multiplies your walk and sprint speed.</li>
-  <li><code>dust</code> and <code>boostTrail</code> are two <code>FX.Trail</code> particle systems on the player, made in <code>SetupPlaced()</code>. Dust comes out when you move (28 per second when sprinting, 9 when walking). The cyan stars come out only during SPEED.</li>
-  <li><code>SetGhost()</code> swaps all your materials for one see-through purple material during GHOST, and puts the old ones back after. The <code>Dictionary originalMats</code> remembers them.</li>
-  <li><code>FX.Puff</code> makes a little cloud when you get hit and when you fall down.</li>
-  <li><code>AddLantern()</code>: a warm spotlight above the hero. It shines only at night (<code>DayNight.RegisterNightLight</code>).</li>
-  <li><code>Cosmetics.Apply</code> puts your shop colour and hat on the hero. Now the colour you bought in the shop shows in the level too.</li>
-  <li><code>Create()</code> makes a whole Player in code. Your scene has a Player, so the game does not use it.</li>
-</ul>
-<div class="note">Red errors now (for example <code>'GameManager' does not contain a definition for 'SpeedMultiplier'</code>) are normal. They go away after step 10.</div>
-
-<!-- ======================================================= 10 -->
-<h2 id="step-10"><span class="step">10</span>Update the GameManager</h2>
-<ol><li>Open <code>Assets/GoldRush/Scripts/Gameplay/GameManager.cs</code> and <b>replace the whole file</b> with this phase 8 version:</li></ol>
-<p><code>Assets/GoldRush/Scripts/Gameplay/GameManager.cs</code></p>
-<pre class="long"><code>using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
-namespace GoldRush
-{
-    public enum GameState { Intro, Playing, Paused, Won, Lost }
-
-    public struct RunResult
-    {
-        public bool won;
-        public int stars;
-        public bool parBeaten, noHits;
-        public float time, best, par;
-        public bool newBest;
-        public int collected, total;
-        public int goldEarned, bonus;
-        public bool hasNext;
-    }
-
-    /// &lt;summary&gt;Gameplay scene root: finds the level, owns game state, rules, scoring and saving.
-    /// Phase 8 version: no HUD yet (phase 9), so it reports to the Console.&lt;/summary&gt;
-    public class GameManager : MonoBehaviour
-    {
-        public static GameManager I { get; private set; }
-
-        public const float SpeedDuration = 6f, GhostDuration = 6f, MagnetDuration = 8f;
-
-        public LevelDef Def { get; private set; }
-        public GameState State { get; private set; } = GameState.Intro;
-        public float Elapsed { get; private set; }
-        public int Collected { get; private set; }
-        public int TotalCoins { get; private set; }
-        public int Lives { get; private set; }
-        public int MaxLives { get; private set; }
-        public int Hits { get; private set; }
-
-        public PlayerMotor Player { get; private set; }
-        public ThirdPersonCamera Cam { get; private set; }
-        public ExitGate Gate { get; private set; }
-
-        public float SpeedLeft { get; private set; }
-        public float GhostLeft { get; private set; }
-        public float MagnetLeft { get; private set; }
-        public bool SpeedActive =&gt; SpeedLeft &gt; 0f;
-        public bool GhostActive =&gt; GhostLeft &gt; 0f;
-        public bool MagnetActive =&gt; MagnetLeft &gt; 0f;
-        public float SpeedMultiplier =&gt; SpeedActive ? 1.55f : 1f;
-
-        readonly List&lt;Coin&gt; coins = new List&lt;Coin&gt;();
-        readonly List&lt;PowerUp&gt; powerUps = new List&lt;PowerUp&gt;();
-        readonly List&lt;EnemyAI&gt; enemies = new List&lt;EnemyAI&gt;();
-        Vector3 spawn;
-        float spawnYaw, arenaHalf;
-        bool chasedLastFrame;
-
-        void Awake()
-        {
-            I = this;
-            Application.targetFrameRate = 60;
-            Time.timeScale = 1f;
-            // pressing Play directly in Level2.unity etc. should play that level
-            string active = UnityEngine.SceneManagement.SceneManager.GetActiveScene().name;
-            for (int i = 0; i &lt; Levels.All.Length; i++)
-                if (Levels.All[i].scene == active) GameSession.LevelIndex = i;
-            Def = GameSession.Current;
-        }
-
-        // ---------------------------------------------------------------- mouse cursor (computer only)
-
-        /// &lt;summary&gt;True on computers: hide + lock the cursor while playing so the mouse turns the camera.&lt;/summary&gt;
-        static bool UseMouseLook =&gt; !Application.isMobilePlatform &amp;&amp; !Input.touchSupported;
-
-        static void LockCursor(bool locked)
-        {
-            if (!UseMouseLook) return;
-            Cursor.lockState = locked ? CursorLockMode.Locked : CursorLockMode.None;
-            Cursor.visible = !locked;
-        }
-
-        void OnApplicationFocus(bool focus)
-        {
-            if (focus &amp;&amp; State == GameState.Playing) LockCursor(true);
-        }
-
-        void OnDestroy()
-        {
-            LockCursor(false);
-            if (I == this) I = null;
-            Time.timeScale = 1f;
-            AudioFX.SetTension(false);
-        }
-
-        void Start()
-        {
-            Build();
-            if (Player &amp;&amp; Cam) StartCoroutine(IntroCo());
-        }
-
-        void Build()
-        {
-            AudioFX.StartMusic();
-
-            // the hand-made level: the object with the LevelScene component
-            var handMade = FindAnyObjectByType&lt;LevelScene&gt;();
-            if (!handMade) { Debug.LogError("[GoldRush] No LevelScene in this scene. Add it to the level root."); return; }
-            LevelFromScene(handMade);
-            // the Player and the camera are placed in the scene
-            Player = FindAnyObjectByType&lt;PlayerMotor&gt;();
-            if (!Player) { Debug.LogError("[GoldRush] No Player (PlayerMotor) in this scene."); return; }
-            Player.Teleport(spawn, spawnYaw);
-            Player.SetupPlaced();
-            Cam = FindAnyObjectByType&lt;ThirdPersonCamera&gt;();
-            if (!Cam) { Debug.LogError("[GoldRush] No camera with ThirdPersonCamera in this scene."); return; }
-            Cam.Init(Player.transform, spawnYaw);
-            EnvironmentSetup.Apply(Cam.GetComponent&lt;Camera&gt;(), false, Def.night);
-            Player.AddLantern(); // only visible at night (DayNight fades it)
-            Player.cam = Cam;
-
-            // monster prefabs placed in the scene by hand
-            foreach (var e in FindObjectsByType&lt;EnemyAI&gt;())
-            {
-                if (enemies.Contains(e)) continue;
-                e.SetupPlaced(Def.enemySpeed, arenaHalf, null); // phase 9: the "!" bubbles
-                enemies.Add(e);
-            }
-
-            TotalCoins = coins.Count;
-            MaxLives = Lives = Mathf.Max(1, Def.lives);
-            Debug.Log($"[GoldRush] {Def.title}: collect {TotalCoins} coins. Lives: {Lives}. Par time: {Def.parTime:0} s. (The HUD comes in phase 9.)");
-            Fader.FadeIn();
-        }
-
-        /// &lt;summary&gt;Reads a hand-made level: marker objects placed in the Hierarchy (see Scripts/Level/).&lt;/summary&gt;
-        void LevelFromScene(LevelScene scene)
-        {
-            // rebuild the NavMesh so students can move walls around freely
-            foreach (var surface in scene.GetComponentsInChildren&lt;Unity.AI.Navigation.NavMeshSurface&gt;()) surface.BuildNavMesh();
-
-            arenaHalf = scene.arenaHalf;
-            Gate = scene.GetComponentInChildren&lt;ExitGate&gt;();
-            var start = scene.GetComponentInChildren&lt;PlayerSpawn&gt;();
-            spawn = start ? start.transform.position : Vector3.zero;
-            spawnYaw = start ? start.transform.eulerAngles.y : 0f;
-            foreach (var c in scene.GetComponentsInChildren&lt;CoinSpot&gt;())
-            {
-                var placed = c.GetComponentInChildren&lt;Coin&gt;();
-                if (placed) coins.Add(placed);               // a Coin prefab placed by hand
-                else Debug.LogWarning("[GoldRush] " + c.name + " has no Coin inside.");
-            }
-            foreach (var pu in scene.GetComponentsInChildren&lt;PowerUpSpot&gt;())
-            {
-                var placed = pu.GetComponentInChildren&lt;PowerUp&gt;();
-                if (placed) powerUps.Add(placed);            // a PowerUp prefab placed by hand
-                else Debug.LogWarning("[GoldRush] " + pu.name + " has no PowerUp inside.");
-            }
-            if (coins.Count == 0) Debug.LogWarning("[GoldRush] This level has no coins. Put a Coin inside each CoinSpot.");
-        }
-
-        IEnumerator IntroCo()
-        {
-            State = GameState.Intro;
-            Cam.PlayIntro(2.8f);                     // the camera swoops down behind the hero
-            yield return new WaitForSeconds(2.8f);   // phase 9: the 3-2-1-GO countdown
-            Debug.Log("[GoldRush] GO!");
-            State = GameState.Playing;
-            LockCursor(true);
-        }
-
-        void Update()
-        {
-            if (Input.GetKeyDown(KeyCode.Escape) || Input.GetKeyDown(KeyCode.P))
-            {
-                if (State == GameState.Playing) Pause();
-                else if (State == GameState.Paused) Resume();
-            }
-            if (State != GameState.Playing || !Player) return;
-            // clicked back into the game window after the cursor was freed (e.g. alt-tab)
-            if (UseMouseLook &amp;&amp; Cursor.lockState != CursorLockMode.Locked &amp;&amp; Input.GetMouseButtonDown(0)) LockCursor(true);
-
-            float dt = Time.deltaTime;
-            Elapsed += dt;
-            SpeedLeft = Mathf.Max(0, SpeedLeft - dt);
-            GhostLeft = Mathf.Max(0, GhostLeft - dt);
-            MagnetLeft = Mathf.Max(0, MagnetLeft - dt);
-
-            Vector3 pp = Player.transform.position + Vector3.up * 1f;
-
-            for (int i = coins.Count - 1; i &gt;= 0; i--)
-            {
-                var c = coins[i];
-                if (c == null || c.Collected) { coins.RemoveAt(i); continue; }
-                Vector3 d = c.transform.position - pp;
-                float sq = d.sqrMagnitude;
-                if (MagnetActive &amp;&amp; sq &lt; 11f * 11f)
-                {
-                    float dist = Mathf.Sqrt(sq);
-                    c.transform.position = Vector3.MoveTowards(c.transform.position, pp, (7f + (11f - dist) * 2.2f) * dt);
-                    sq = (c.transform.position - pp).sqrMagnitude;
-                }
-                if (sq &lt; 1.45f * 1.45f) { coins.RemoveAt(i); CollectCoin(c); }
-            }
-
-            for (int i = powerUps.Count - 1; i &gt;= 0; i--)
-            {
-                var p = powerUps[i];
-                if (p == null || p.Collected) { powerUps.RemoveAt(i); continue; }
-                if ((p.transform.position + Vector3.up - pp).sqrMagnitude &lt; 1.6f * 1.6f) { powerUps.RemoveAt(i); CollectPowerUp(p); }
-            }
-
-            if (Gate &amp;&amp; Gate.IsOpen)
-            {
-                Vector3 d = Gate.WinPoint - Player.transform.position; d.y = 0;
-                if (d.sqrMagnitude &lt; 2.4f * 2.4f) Win();
-            }
-
-            bool chased = false;
-            foreach (var e in enemies) if (e &amp;&amp; e.IsChasing) { chased = true; break; }
-            if (chased != chasedLastFrame) { chasedLastFrame = chased; AudioFX.SetTension(chased); }
-        }
-
-        void OnApplicationPause(bool paused)
-        {
-            if (paused &amp;&amp; State == GameState.Playing) Pause();
-        }
-
-        // ---------------------------------------------------------------- pickups
-
-        void CollectCoin(Coin c)
-        {
-            Vector3 pos = c.transform.position;
-            c.Collect();
-            Collected++;
-            FX.CoinBurst(pos);
-            AudioFX.Play("coin", 1f, 1f + 0.05f * (Collected % 5));
-            Debug.Log($"[GoldRush] Coin {Collected} / {TotalCoins}");
-            if (Collected &gt;= TotalCoins) AllCollected();
-        }
-
-        void AllCollected()
-        {
-            if (Gate) Gate.Open();
-            AudioFX.Play("gate");
-            Cam.Shake(0.12f, 0.8f);
-            Debug.Log("[GoldRush] ALL GOLD COLLECTED! The gate is open - run to the EXIT!");
-            foreach (var e in enemies) if (e) e.Enrage(1.1f);
-        }
-
-        void CollectPowerUp(PowerUp p)
-        {
-            var type = p.Type;
-            Vector3 pos = p.transform.position + Vector3.up;
-            p.Collect();
-            Color col = PowerUp.ColorOf(type);
-            FX.Burst(pos, col, Color.white, 30, 2f, 6f, 0.4f, 0.8f, 0.2f, true);
-            AudioFX.Play("power");
-            string desc;
-            switch (type)
-            {
-                case PowerType.Speed: SpeedLeft = SpeedDuration; desc = "Super speed!"; break;
-                case PowerType.Ghost: GhostLeft = GhostDuration; desc = "Monsters can't see you!"; break;
-                default: MagnetLeft = MagnetDuration; desc = "Gold flies to you!"; break;
-            }
-            Debug.Log("[GoldRush] " + PowerUp.NameOf(type) + ": " + desc);
-        }
-
-        // ---------------------------------------------------------------- hits
-
-        public void OnPlayerCaught(EnemyAI enemy)
-        {
-            if (State != GameState.Playing || !Player || Player.Invulnerable) return;
-            Hits++;
-            Lives--;
-            AudioFX.Play("hit");
-            Cam.Shake(0.45f, 0.45f);
-            if (Lives &lt;= 0) { Lose(); return; }
-            Player.Hit(enemy.transform.position, 2.2f);
-            enemy.Stun(2.6f);
-            Debug.Log("[GoldRush] OUCH! " + (Lives == 1 ? "Last life - be careful!" : "Lives left: " + Lives));
-        }
-
-        // ---------------------------------------------------------------- end states
-
-        void Lose()
-        {
-            State = GameState.Lost;
-            LockCursor(false);
-            Player.PlayCaught();
-            AudioFX.SetTension(false);
-            var d = Save.Data;
-            d.gold += Collected;
-            Save.Persist();
-            var r = new RunResult
-            {
-                won = false, collected = Collected, total = TotalCoins, time = Elapsed, par = Def.parTime,
-                goldEarned = Collected, hasNext = false,
-            };
-            StartCoroutine(LoseCo(r));
-        }
-
-        IEnumerator LoseCo(RunResult r)
-        {
-            Time.timeScale = 0.3f;
-            yield return new WaitForSecondsRealtime(1.1f);
-            Time.timeScale = 1f;
-            AudioFX.Duck(0.7f, 2f);
-            AudioFX.Play("lose");
-            Debug.Log($"[GoldRush] CAUGHT! Gold: {r.collected} / {r.total}, +{r.goldEarned} gold. Trying again...");
-            yield return new WaitForSeconds(2f);     // phase 9: the lose dialog with RETRY and MENU
-            Restart();
-        }
-
-        void Win()
-        {
-            State = GameState.Won;
-            LockCursor(false);
-            AudioFX.SetTension(false);
-            Player.PlayVictory();
-            FX.Confetti(Player.transform.position + Vector3.up * 0.5f);
-            Cam.Shake(0.1f, 0.4f);
-            AudioFX.Duck(0.7f, 2.5f);
-            AudioFX.Play("win");
-
-            var d = Save.Data;
-            var r = new RunResult
-            {
-                won = true, collected = Collected, total = TotalCoins, time = Elapsed, par = Def.parTime,
-                parBeaten = Elapsed &lt;= Def.parTime, noHits = Hits == 0,
-            };
-            r.stars = 1 + (r.parBeaten ? 1 : 0) + (r.noHits ? 1 : 0);
-            r.goldEarned = Collected + r.stars * 5;
-
-            if (Def.daily)
-            {
-                if (!d.dailyCleared) { r.bonus = 50; d.dailyCleared = true; }
-                r.newBest = d.dailyBest &lt; 0 || Elapsed &lt; d.dailyBest;
-                if (r.newBest) d.dailyBest = Elapsed;
-                r.best = d.dailyBest;
-                r.hasNext = false;
-            }
-            else
-            {
-                int idx = GameSession.LevelIndex;
-                var lp = d.levels[idx];
-                r.newBest = lp.bestTime &lt; 0 || Elapsed &lt; lp.bestTime;
-                if (r.newBest) lp.bestTime = Elapsed;
-                lp.stars = Mathf.Max(lp.stars, r.stars);
-                r.best = lp.bestTime;
-                d.unlocked = Mathf.Clamp(Mathf.Max(d.unlocked, idx + 2), 1, Levels.All.Length);
-                r.hasNext = GameSession.HasNext;
-            }
-            d.gold += r.goldEarned + r.bonus;
-            Save.Persist();
-            StartCoroutine(WinCo(r));
-        }
-
-        IEnumerator WinCo(RunResult r)
-        {
-            yield return new WaitForSeconds(1.5f);
-            Debug.Log($"[GoldRush] LEVEL COMPLETE! Stars: {r.stars}, time {r.time:0.0} s (par {r.par:0} s), best {r.best:0.0} s, +{r.goldEarned + r.bonus} gold.");
-            yield return new WaitForSeconds(2.5f);   // phase 9: the win dialog with NEXT, RETRY and MENU
-            BackToMenu();
-        }
-
-        // ---------------------------------------------------------------- navigation
-
-        public void Pause()
-        {
-            if (State != GameState.Playing) return;
-            State = GameState.Paused;
-            LockCursor(false);
-            Time.timeScale = 0f;
-            Debug.Log("[GoldRush] Paused. Press Esc or P to play on.");   // phase 9: the pause dialog
-        }
-
-        public void Resume()
-        {
-            if (State != GameState.Paused) return;
-            State = GameState.Playing;
-            Time.timeScale = 1f;
-            LockCursor(true);
-        }
-
-        public void Restart() { Time.timeScale = 1f; Fader.Load(UnityEngine.SceneManagement.SceneManager.GetActiveScene().name); }
-        public void BackToMenu() { Time.timeScale = 1f; Fader.Load(Scenes.Menu); }
-    }
-}</code></pre>
-<p>What is new:</p>
-<ul>
-  <li><b>Find</b>: <code>LevelFromScene()</code> finds every <code>PowerUpSpot</code> and the <code>PowerUp</code> inside it.</li>
-  <li><b>Pickup</b>: in <code>Update()</code>, if you are closer than 1.6 m to an orb, <code>CollectPowerUp()</code> runs. It sets the timer (<code>SpeedLeft = 6</code>, <code>GhostLeft = 6</code> or <code>MagnetLeft = 8</code>), plays <code>"power"</code> and makes a burst in the orb's colour.</li>
-  <li><b>Timers</b>: every frame, the three timers go down by <code>Time.deltaTime</code>. <code>Mathf.Max(0, …)</code> stops them at 0. <code>GhostActive</code> is simply <code>GhostLeft &gt; 0</code>.</li>
-  <li><b>Magnet</b>: coins closer than 11 m move to you with <code>Vector3.MoveTowards</code>. The closer they are, the faster they fly: 7 + (11 − distance) × 2.2 m/s.</li>
-  <li><b>Ghost</b>: there is no ghost code here. EnemyAI reads <code>gm.GhostActive</code>: then <code>Vision()</code> returns false, and a chasing monster starts to search.</li>
-  <li><b>Effects</b>: <code>FX.CoinBurst</code> when you take a coin, <code>FX.Confetti</code> when you win, and <code>Player.AddLantern()</code> in <code>Build()</code>.</li>
-</ul>
-<div class="check">Save. Wait for Unity to compile. The Console must have <b>no red errors</b> now.</div>
-
-<!-- ======================================================= 11 -->
-<h2 id="step-11"><span class="step">11</span>▶ Press Play</h2>
-<p>Press Play. Keep the Console open.</p>
-<ul>
-  <li>The orbs float and spin. Each ring slowly turns.</li>
-  <li>Walk: a little dust comes out behind your feet.</li>
-  <li>Take SPEED: sparkles, a sound, the Console says <code>SPEED: Super speed!</code>, and you are much faster with a star trail for 6 s.</li>
-  <li>Take GHOST and walk in front of a Slime: you are see-through, and it does not see you.</li>
-  <li>Take MAGNET: coins up to 11 m away fly to you.</li>
-  <li>Take a coin: golden sparkles. Get hit: a small cloud.</li>
-  <li>Take all gold and win: confetti!</li>
-  <li>At night a warm lantern light follows the hero. Switch day/night in the main menu to compare.</li>
-</ul>
-<figure class="shot"><img src="images/05_level1_play.jpg" alt="" loading="lazy"><figcaption>SPEED is active: stars behind the hero.</figcaption></figure>
-<div class="tip">The power-up bars, labels and the arrow to the next coin are part of the HUD in phase 9.</div>
-
-<!-- ======================================================= 12 -->
-<h2 id="step-12"><span class="step">12</span>Common problems</h2>
+<h2 id="step-6"><span class="step">6</span>Common problems</h2>
 <div class="table-wrap"><table>
   <tr><th>Problem</th><th>Fix</th></tr>
-  <tr><td>Error: <code>The name 'FX' does not exist</code></td><td>Import <code>FX.cs</code> (step 3).</td></tr>
-  <tr><td>Error: <code>'GameManager' does not contain a definition for 'SpeedMultiplier'</code></td><td>Replace the GameManager (step 10).</td></tr>
-  <tr><td>Error: <code>'PlayerMotor' does not contain a definition for 'AddLantern'</code></td><td>Replace the PlayerMotor (step 9).</td></tr>
-  <tr><td>Error: <code>The type 'PowerUp' already contains a definition…</code></td><td>You have two <code>PowerUp.cs</code> files. Search the Project window for PowerUp and delete the extra one.</td></tr>
-  <tr><td>Console: <code>PowerUp Magnet has no PowerUp inside.</code></td><td>Drag the PowerUp prefab onto the marker (step 7).</td></tr>
-  <tr><td>The orb does not float or spin.</td><td>The prefab has no <b>Power Up</b> component, or its Visual and Ring fields are empty (step 6).</td></tr>
-  <tr><td>I walk into the orb and nothing happens.</td><td>The orb must be at local position <code>0, 0, 0</code> in a marker on the floor. Walk right through it.</td></tr>
-  <tr><td>SPEED gives the wrong effect (for example MAGNET).</td><td>The <b>Type</b> on the PowerUp prefab is wrong (step 6).</td></tr>
-  <tr><td>Monsters still see me in GHOST mode.</td><td>Check that <code>EnemyAI.cs</code> is the helper from phase 7: <code>Vision()</code> starts with <code>if (gm.GhostActive) return false;</code>.</td></tr>
-  <tr><td>Particles are pink squares.</td><td>Open GoldRushAssets and set <b>Particle</b> = <code>GR_Particle</code>.</td></tr>
-  <tr><td>No dust behind the player.</td><td>Move faster than 1 m/s. Check that you replaced the PlayerMotor (step 9).</td></tr>
+  <tr><td>Red errors such as <code>already contains a definition</code> after the import.</td><td>You imported into a project that already had the scripts (now there are files like <code>FX 1.cs</code>). Import into a new, empty project, or delete <code>Assets/GoldRush</code> first.</td></tr>
+  <tr><td>Particles are pink squares.</td><td>Select <code>Resources/GoldRushAssets</code> and set <b>Particle</b> = <code>GR_Particle</code>.</td></tr>
+  <tr><td>There is no orb in Play mode.</td><td>The marker must be inside the level root (<code>Level 1 - Training Yard › Gameplay › PowerUps</code>) and have a <b>Power Up Spot</b> component.</td></tr>
+  <tr><td>I walk into the orb and nothing happens.</td><td>Walk right through the middle (closer than 1.6 m). The marker must stand on the floor (Y about 0).</td></tr>
+  <tr><td>Two orbs at one place, or an orb that does not spin.</td><td>You dragged a <code>Prefabs/Gameplay/PowerUp_*</code> model into the marker. The model has no <b>Power Up</b> script. Delete it, or add a <b>Power Up</b> component with the same Type.</td></tr>
+  <tr><td>Monsters still see me in GHOST mode.</td><td>GHOST lasts only 6 s. Look at the power-up bar in the HUD: when it is empty, the power is off.</td></tr>
 </table></div>
-<p><b>Checkpoint package:</b> <code>GoldRush_Phase08_PowerUps.unitypackage</code> – the project at the end of this phase.</p>
 
 <nav class="pager" aria-label="Previous and next page">
 <a class="prev" href="phase-07.html"><small>← Previous</small>Phase 7: Monsters</a>

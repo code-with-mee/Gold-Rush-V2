@@ -118,3 +118,36 @@ Phase06_Gate, Phase07_Monsters, Phase08_PowerUps, Phase09_GameUI, Phase10_Final 
 
 ## Reference course (style only)
 `/Users/kingly/Desktop/M14/MillionQuiz_Export/Docs/part-2-guide.html`. Copy its tone and structure, not its content.
+
+## VERSION 3 (current, user decision): package-driven phases + hands-on practicals
+Phases 0–10 keep their titles and order (UI first). Students no longer build or type each phase by hand:
+each phase starts by IMPORTING its checkpoint package; the guide then tells them what to CHECK and UNDERSTAND.
+The hands-on building happens in the Practicals (P1, P2 fully step by step with screenshots; P3, P4 challenges).
+
+All packages are built from the finished game with the SAME script files (same GUIDs), so they never clash.
+Every package contains: the starter resources (characters, sounds, icons, fonts, UI sprites, kit prefabs, materials)
++ ALL final scripts (Assets/GoldRush/Scripts, no Dev) + Resources assets (GoldRushAssets, DayNightPalette) +
+Animator Controllers + the scenes listed below. No editor tools. Students import into a NEW empty project each time
+(or delete Assets/GoldRush first), then add the scenes to File → Build Profiles → Scene List (MainMenu first).
+
+| # | Package | Scenes / what is new | Notes for the guide |
+|---|---|---|---|
+| 0 | Phase00_Project | starter resources only, Sandbox scene | create project, packages, input = Both, import |
+| 1 | Phase01_MainMenu | MainMenu (full menu: stage + Title/Levels/Shop/Settings) | focus: stage, Canvas, title screen, LogoTitle, buttons + MenuAction, GoldRushMenu fields |
+| 2 | Phase02_MenuScreens | same scenes as phase 1 | focus: Levels / Shop / Settings screens, Save data (Data.cs), shop items, gold |
+| 3 | Phase03_Level | + Level1 with ONLY the level (Static, Decor, Scenery, gate) + an overview Main Camera; no GameManager / gameplay | focus: kit prefabs, layout groups, lights/sky/fog, Build Profiles; PLAY from menu opens Level1 |
+| 4 | Phase04_Player | Level1 + GameManager + Gameplay/PlayerSpawn (player + camera are made by code at Play) | focus: PlayerSpawn, PlayerMotor, CharacterController, Hero controller, ThirdPersonCamera; HUD appears (made by code; scene UI comes in phase 9) |
+| 5 | Phase05_Coins | + Gameplay/Coins (CoinSpots with Coin) | focus: Coin, CoinSpot, GameManager pickup, GoldRushAssets sounds |
+| 6 | Phase06_Gate | same as phase 5 | focus: ExitGate script/fields, win/lose rules, stars, save |
+| 7 | Phase07_Monsters | + Gameplay/Monsters (MonsterSpawn markers), NavMeshSurface on Static | focus: NavMesh, EnemyAI states, monster controllers, ITSTEP badge, hearts |
+| 8 | Phase08_PowerUps | + Gameplay/PowerUps | focus: PowerUp, PowerUpSpot, FX |
+| 9 | Phase09_GameUI | + GameUI scene object (HUD, intro, pause/win/lose dialogs) + EventSystem | focus: GameUI fields, GameAction buttons, dialogs |
+| 10 | Phase10_Final | + Level2–4 + Game (daily) = the complete game | focus: day/night, touch controls, music, build PC/Android |
+
+Phase page format (short!): 1 What you get (lead + package line) · 2 Import (numbered) · 3 Check (4–8 numbered checks,
+each with ONE screenshot placeholder in the SPEC markup, data-select = an object that EXISTS in that package's scene,
+e.g. "Level 1 - Training Yard/Gameplay/Coins/CoinSpot 1", "GoldRushMenu/MenuUI/Title", "GameUI", or an Assets/ path) ·
+4 How it works (short read-only code tour: the 5–15 key lines of the main script in a code block, bullets) ·
+5 ▶ Press Play (what you should see; reuse a game image from images/ if one fits) · 6 Try it (1–3 small edits with the
+exact field/line to change and what happens) · Common problems (3–6 rows) · pager.
+Screenshots: the code owner captures them from the finished game with the tool, using data-window + data-select.

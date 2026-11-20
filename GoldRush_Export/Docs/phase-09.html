@@ -51,628 +51,155 @@
 <div class="content">
 <p class="eyebrow">GOLD RUSH · Phase 9</p>
 <h1>Gameplay UI</h1>
-<p class="lead">Until now the game talked to you in the Console. In this phase you build the in-game UI as normal GameObjects in <code>Level1</code>, just like the menu: the HUD (gold, hearts, timer, day/night and pause buttons, power-up bars, arrow, messages), the level intro with the 3-2-1-GO countdown, and the PAUSE, LEVEL COMPLETE and CAUGHT dialogs. You also switch to the final GameManager, which fills in all the numbers.</p>
-<div class="meta"><span><b>Checkpoint package</b><code>GoldRush_Phase09_GameUI.unitypackage</code></span><span><b>Scene</b><code>Assets/GoldRush/Scenes/Level1.unity</code></span><a class="btn secondary" href="phase-09.pdf">Download PDF</a></div>
+<p class="lead">Until now the game made its HUD in code. In this package the game UI is a real object in the scene: <code>GameUI</code>. It holds the HUD (gold, hearts, timer, day/night and pause buttons, power-up bars, arrow, messages), the level intro with the 3-2-1-GO countdown, and the PAUSED, LEVEL COMPLETE and CAUGHT dialogs. They are built from GameObjects, just like the menu, so you can see and change every part.</p>
+<div class="meta"><span><b>Package</b><code>GoldRush_Phase09_GameUI.unitypackage</code></span><span><b>Scene</b><code>Assets/GoldRush/Scenes/Level1.unity</code></span><span><b>New</b><code>GameUI</code>, <code>EventSystem</code></span><a class="btn secondary" href="phase-09.pdf">Download PDF</a></div>
 
-<nav class="toc" aria-label="Steps on this page"><strong>Steps on this page</strong><ol>
-  <li><a href="#step-1">What you need</a></li>
-  <li><a href="#step-2">Copy the new and final scripts</a></li>
-  <li><a href="#step-3">Script: GameAction</a></li>
-  <li><a href="#step-4">What the final GameManager adds</a></li>
-  <li><a href="#step-5">The GameUI canvas and its layers</a></li>
-  <li><a href="#step-6">HUD: the gold counter (and a CoinIcon prefab)</a></li>
-  <li><a href="#step-7">HUD: hearts and the stamina bar</a></li>
-  <li><a href="#step-8">HUD: the timer</a></li>
-  <li><a href="#step-9">HUD: day/night and pause buttons</a></li>
-  <li><a href="#step-10">HUD: power-up bars</a></li>
-  <li><a href="#step-11">HUD: arrow, message and hint</a></li>
-  <li><a href="#step-12">The level intro and the countdown</a></li>
-  <li><a href="#step-13">PAUSE dialog: panel and header</a></li>
-  <li><a href="#step-14">PAUSE dialog: stat cards (StatCard prefab)</a></li>
-  <li><a href="#step-15">PAUSE dialog: toggles and buttons</a></li>
-  <li><a href="#step-16">The CAUGHT dialog</a></li>
-  <li><a href="#step-17">The LEVEL COMPLETE dialog</a></li>
-  <li><a href="#step-18">Connect everything to GameUI</a></li>
-  <li><a href="#step-19">▶ Press Play</a></li>
-  <li><a href="#step-20">Common problems</a></li>
-</ol></nav>
-
-<!-- ======================================================= 1 -->
-<h2 id="step-1"><span class="step">1</span>What you need</h2>
-<ul>
-  <li>Phase 8 is finished: coins, the exit gate, monsters and power-ups work, and the Console tells you what happens.
-    If you start here, import <code>GoldRush_Phase08_PowerUps.unitypackage</code> (and add <code>MainMenu</code> and <code>Level1</code> to <b>File → Build Profiles → Scene List</b> again).</li>
-  <li>The glass prefabs you made in phases 1 and 2: <code>Prefabs/UI/GlassPill</code>, <code>GlassCircle</code> and <code>ChipButton</code>. You use them a lot on this page.</li>
-  <li>The Resources pack folders <code>Scripts/Helpers/</code> and <code>Scripts/Final/</code>.</li>
-  <li>Open the scene <code>Assets/GoldRush/Scenes/Level1.unity</code>. In the Game view, pick the aspect <b>Full HD (1920x1080)</b>.</li>
-</ul>
-<p>This is what you build. Every picture is the real game:</p>
 <div class="shots">
   <figure><img src="images/04_level1_start.jpg" alt="HUD at the start of Level 1: gold counter, hearts, timer, day/night and pause buttons, hint at the bottom" loading="lazy">HUD</figure>
-  <figure><img src="images/09_pause.jpg" alt="PAUSED dialog with GOLD, TIME, LIVES cards, MUSIC and SOUND toggles, MENU RETRY RESUME" loading="lazy">PAUSE</figure>
+  <figure><img src="images/09_pause.jpg" alt="PAUSED dialog with GOLD, TIME, LIVES cards, MUSIC and SOUND toggles, MENU RETRY RESUME" loading="lazy">PAUSED</figure>
   <figure><img src="images/07_win.jpg" alt="LEVEL COMPLETE dialog with three stars, criteria, TIME BEST GOLD EARNED cards" loading="lazy">LEVEL COMPLETE</figure>
   <figure><img src="images/10_lose.jpg" alt="CAUGHT dialog with COLLECTED BANKED TIME cards and a tip" loading="lazy">CAUGHT</figure>
 </div>
-<p>New or changed files in this phase:</p>
-<div class="table-wrap"><table>
-  <tr><th>File (in <code>Assets/GoldRush/Scripts/</code>)</th><th>Type or import?</th><th>What it does</th></tr>
-  <tr><td><code>UI/GameUI.cs</code></td><td>Import (new)</td><td>Fills the HUD and the dialogs with numbers and plays their animations.</td></tr>
-  <tr><td><code>UI/GameAction.cs</code></td><td>Type (new)</td><td>Put it on a dialog button: MENU, RETRY, RESUME, NEXT.</td></tr>
-  <tr><td><code>UI/VirtualJoystick.cs</code>, <code>UI/TouchLookArea.cs</code></td><td>Import (replace the short phase-4 files)</td><td>Touch controls. GameUI needs the real files. You place them in phase 10.</td></tr>
-  <tr><td><code>World/LevelBuilder.cs</code>, <code>World/Props.cs</code></td><td>Import (new)</td><td>Build a level from code (the Daily Rush in phase 10).</td></tr>
-  <tr><td><code>World/DayNightTint.cs</code>, <code>World/DayNightPalette.cs</code></td><td>Import (new)</td><td>Day and night colours for materials (used in phase 10).</td></tr>
-  <tr><td><code>World/Coin.cs</code>, <code>World/ExitGate.cs</code>, <code>World/PowerUp.cs</code></td><td>Import (replace)</td><td>The final files. They can also build themselves from code.</td></tr>
-  <tr><td><code>Gameplay/GameManager.cs</code></td><td>Import (replace)</td><td>The final GameManager: it talks to the GameUI.</td></tr>
-</table></div>
+
+<nav class="toc" aria-label="Steps on this page"><strong>Steps on this page</strong><ol>
+  <li><a href="#step-1">Import the package</a></li>
+  <li><a href="#step-2">Check what is new</a></li>
+  <li><a href="#step-3">How it works</a></li>
+  <li><a href="#step-4">▶ Press Play</a></li>
+  <li><a href="#step-5">Try it</a></li>
+  <li><a href="#step-6">Common problems</a></li>
+</ol></nav>
+
+<!-- ======================================================= 1 -->
+<h2 id="step-1"><span class="step">1</span>Import the package</h2>
+<ol>
+  <li>Make a <b>new, empty Universal 3D project</b>, set up as in <a href="phase-00.html">Phase 0</a> (AI Navigation, Input System, <b>Active Input Handling = Both</b>). Or delete the folder <code>Assets/GoldRush</code> in your project first.</li>
+  <li><b>Assets → Import Package → Custom Package…</b> Pick <code>GoldRush_Phase09_GameUI.unitypackage</code> from <code>GoldRush_Export/Packages/</code>.</li>
+  <li>Keep everything ticked and click <b>Import</b>. Wait for the compile. The Console must show no red errors.</li>
+  <li><b>File → Build Profiles → Scene List</b>. Drag in <code>MainMenu</code> first, then <code>Level1</code>.</li>
+  <li>Open <code>Assets/GoldRush/Scenes/Level1.unity</code>. In the Game view, pick the aspect <b>Full HD (1920x1080)</b>.</li>
+</ol>
 
 <!-- ======================================================= 2 -->
-<h2 id="step-2"><span class="step">2</span>Copy the new and final scripts</h2>
-<p>These files are long, so you copy them. Their code is the real code of the finished game.</p>
-<ol>
-  <li>In Finder or Explorer, open the Resources pack and your project folder side by side.</li>
-  <li>Copy each file in the table into the folder in the last column. Copy the <b>files</b>, not whole folders.</li>
-  <li>When the computer asks, click <b>Replace</b>.</li>
-</ol>
+<h2 id="step-2"><span class="step">2</span>Check what is new</h2>
+
+<h3>Check 1: GameUI and EventSystem in the Hierarchy</h3>
+<p>Two new root objects: <code>GameUI</code> (a Canvas) and <code>EventSystem</code> (it sends clicks and touches to the UI). Open <code>GameUI</code>. Its children are layers. Lower in the list = drawn on top:</p>
 <div class="table-wrap"><table>
-  <tr><th>File</th><th>Copy from (Resources pack)</th><th>To (your project)</th></tr>
-  <tr><td><code>GameUI.cs</code>, <code>VirtualJoystick.cs</code>, <code>TouchLookArea.cs</code></td><td><code>Scripts/Helpers/UI/</code></td><td><code>Assets/GoldRush/Scripts/UI/</code></td></tr>
-  <tr><td><code>LevelBuilder.cs</code>, <code>Props.cs</code>, <code>DayNightTint.cs</code>, <code>DayNightPalette.cs</code>, <code>Coin.cs</code>, <code>ExitGate.cs</code></td><td><code>Scripts/Helpers/World/</code></td><td><code>Assets/GoldRush/Scripts/World/</code></td></tr>
-  <tr><td><code>PowerUp.cs</code></td><td><code>Scripts/Final/World/</code></td><td><code>Assets/GoldRush/Scripts/World/</code></td></tr>
-  <tr><td><code>GameManager.cs</code></td><td><code>Scripts/Final/Gameplay/</code></td><td><code>Assets/GoldRush/Scripts/Gameplay/</code></td></tr>
+  <tr><th>Child of GameUI</th><th>What it is</th></tr>
+  <tr><td><code>LookArea (right half)</code>, <code>MoveArea (left half)</code></td><td>Invisible touch areas for phones (phase 10).</td></tr>
+  <tr><td><code>WorldMarkers</code></td><td>UI pieces that follow 3D objects: the "!" over a monster, the SPEED label, the EXIT label, the "+1".</td></tr>
+  <tr><td><code>HUD</code></td><td>The corner chips: <code>CoinPill</code>, <code>Hearts</code>, <code>Timer</code>, <code>DayNight</code>, <code>Pause</code>, <code>Power0–2</code>, <code>Stamina</code>, <code>Arrow</code>, <code>Toast</code>, <code>Hint</code>.</td></tr>
+  <tr><td><code>Flash</code></td><td>A red full-screen image, invisible until you get hit.</td></tr>
+  <tr><td><code>Modal</code></td><td>The intro, the countdown and the three dialogs. Drawn over everything.</td></tr>
 </table></div>
-<div class="warn">Never replace a whole folder (on a Mac, Finder deletes the <code>.meta</code> files in it). Without its <code>.meta</code> file, every script in your scenes and prefabs goes missing. Copy only the <code>.cs</code> files.</div>
-<p>Go back to Unity. You see one red error: <code>The type or namespace name 'GameAction' could not be found</code>. That is fine: you type GameAction in the next step.</p>
-<p>The replaced Coin, ExitGate and PowerUp have the same Inspector fields as your phase versions, so your prefabs keep their values. The new files add a <code>Create()</code> function: with it, the game can also build a coin, gate or power-up from code.</p>
+<figure class="shot" data-shot="phase-09/check-1" data-window="hierarchy" data-select="GameUI"><img src="images/phase-09/step-05-a.png" alt="Hierarchy of Level1 with GameUI and EventSystem at the root" loading="lazy"><figcaption>GameUI and EventSystem sit at the root, next to the level.</figcaption></figure>
+
+<h3>Check 2: the GameUI component</h3>
+<p>Select <code>GameUI</code>. Check the <b>Canvas</b> (Screen Space - Overlay, <b>Sort Order 10</b>), the <b>Canvas Scaler</b> (Scale With Screen Size, <b>1920 × 1080</b>, <b>Match 0.5</b>) and the <b>Game UI</b> script. Game UI has one field for every part it fills in: Coin Text, Hearts, Timer Text, Pause Dialog, Win Dialog, Lose Dialog… All fields are filled.</p>
+<figure class="shot" data-shot="phase-09/check-2" data-window="inspector" data-select="GameUI"><img src="images/phase-09/step-05-b.png" alt="Inspector of GameUI: Canvas Sort Order 10, Canvas Scaler 1920 x 1080 Match 0.5, Game UI script" loading="lazy"><figcaption>Sort Order 10, 1920 × 1080, Match 0.5, and the Game UI fields start with Canvas Rt and Hud.</figcaption></figure>
+
+<h3>Check 3: the HUD</h3>
+<p>Look at the Game view (no Play yet). You see the HUD as it is saved: the gold counter and hearts at the top left, the timer, the sun/moon button and the pause button at the top right. Some parts (power-up bars, arrow, hint) are unticked: the game shows them when it needs them.</p>
+<figure class="shot"><img src="images/04_level1_start.jpg" alt="" loading="lazy"><figcaption>The HUD chips sit in the corners, so the middle of the screen stays free.</figcaption></figure>
+
+<h3>Check 4: the dialogs</h3>
+<p>Open <code>GameUI › Modal</code>. It has <code>Countdown</code>, <code>Intro</code>, <code>Lose</code>, <code>Pause</code> and <code>Win</code>. They are greyed out (unticked): GameUI turns them on when needed. Each dialog has the same shape: <code>Dim</code> (a dark layer that blocks clicks) and <code>Panel › Glass</code> with a Badge, Title, Subtitle, stat cards and buttons.</p>
+<figure class="shot"><img src="images/phase-09/check-4.png" alt="" loading="lazy"><figcaption>All five children of Modal are unticked in edit mode.</figcaption></figure>
+
+<h3>Check 5: a dialog button with Game Action</h3>
+<p>Select <code>GameUI › Modal › Pause › Panel › Glass › RESUME</code>. It has a <b>Button</b>, a <b>Button FX</b> (the press animation) and a <b>Game Action</b> with <b>Action</b> = <code>resume</code>. Every dialog button works like this:</p>
+<div class="table-wrap"><table>
+  <tr><th>Dialog</th><th>Buttons (action)</th></tr>
+  <tr><td>Pause</td><td>MENU (<code>menu</code>), RETRY (<code>retry</code>), RESUME (<code>resume</code>)</td></tr>
+  <tr><td>Win</td><td>MENU (<code>menu</code>), RETRY (<code>retry</code>), NEXT (<code>next</code>)</td></tr>
+  <tr><td>Lose</td><td>MENU (<code>menu</code>), RETRY (<code>retry</code>)</td></tr>
+</table></div>
+<figure class="shot"><img src="images/phase-09/check-5.png" alt="" loading="lazy"><figcaption>Game Action → Action = resume. The spelling must be exact.</figcaption></figure>
+
+<h3>Check 6: the pause and day/night buttons in the HUD</h3>
+<p>Select <code>GameUI › HUD › DayNight</code>. It has a <b>Day Night Button</b> with a <b>Sun</b> and a <b>Moon</b> icon. The <code>HUD › Pause</code> button has no Game Action: GameUI connects it in code (in <code>Bind()</code>).</p>
+<figure class="shot"><img src="images/phase-09/check-6.png" alt="" loading="lazy"><figcaption>Sun and Moon are filled. The button also listens to the N key.</figcaption></figure>
+
+<h3>Check 7: World Markers</h3>
+<p>Select <code>GameUI › WorldMarkers</code>. Its <b>World Markers</b> component has <b>Root</b> = WorldMarkers itself. It is empty now: the labels over monsters, power-ups and the gate are added in Play mode.</p>
+<figure class="shot"><img src="images/phase-09/check-7.png" alt="" loading="lazy"><figcaption>Root = WorldMarkers. The markers are made at Play.</figcaption></figure>
 
 <!-- ======================================================= 3 -->
-<h2 id="step-3"><span class="step">3</span>Script: GameAction</h2>
-<p>A dialog button needs to tell the GameManager what to do. <code>GameAction</code> works like <code>MenuAction</code> in the menu: you type the action name in the Inspector.</p>
-<ol><li>In <code>Assets/GoldRush/Scripts/UI/</code>, create the script <code>GameAction</code> and type this code:</li></ol>
-<p><code>Assets/GoldRush/Scripts/UI/GameAction.cs</code></p>
-<pre class="long"><code>using UnityEngine;
-using UnityEngine.UI;
+<h2 id="step-3"><span class="step">3</span>How it works</h2>
+<p>A dialog button must tell the GameManager what to do. <code>GameAction</code> works like <code>MenuAction</code> in the menu: you type the action name in the Inspector.</p>
+<p><code>Assets/GoldRush/Scripts/UI/GameAction.cs</code> and <code>Gameplay/GameManager.cs</code> (key lines)</p>
+<pre class="long"><code>// GameAction.cs
+public string action = "resume";
 
-namespace GoldRush
+void Awake()
 {
-    /// &lt;summary&gt;
-    /// Put this on a Button in the game UI and type its action: "pause", "resume", "retry", "menu" or "next".
-    /// When clicked it plays the click sound and calls GameManager.Run(action).
-    /// (Like MenuAction for the main menu.)
-    /// &lt;/summary&gt;
-    [RequireComponent(typeof(Button))]
-    public class GameAction : MonoBehaviour
+    GetComponent&lt;Button&gt;().onClick.AddListener(() =&gt;
     {
-        public string action = "resume";
+        AudioFX.Play("click");
+        if (GameManager.I) GameManager.I.Run(action);
+    });
+}
 
-        void Awake()
-        {
-            GetComponent&lt;Button&gt;().onClick.AddListener(() =&gt;
-            {
-                AudioFX.Play("click");
-                if (GameManager.I) GameManager.I.Run(action);
-            });
-        }
+// GameManager.cs
+UI = FindAnyObjectByType&lt;GameUI&gt;();
+if (UI) UI.Bind(this);           // the GameUI saved in the scene
+else UI = GameUI.Create(this);   // no GameUI: build one in code
+
+public void Run(string action)
+{
+    switch (action)
+    {
+        case "pause": Pause(); break;
+        case "resume": Resume(); break;
+        case "retry": Restart(); break;
+        case "menu": BackToMenu(); break;
+        case "next": NextLevel(); break;
     }
 }</code></pre>
 <ul>
-  <li><code>[RequireComponent(typeof(Button))]</code>: Unity adds a Button if the object has none.</li>
-  <li><code>onClick.AddListener(...)</code> connects the click in code, so you don't set up On Click () in the Inspector.</li>
-  <li><code>GameManager.I.Run(action)</code> is in the final GameManager: <code>"resume"</code> plays on, <code>"retry"</code> loads the level again, <code>"menu"</code> goes back to the main menu, <code>"next"</code> loads the next level.</li>
+  <li><code>onClick.AddListener(...)</code> connects the click in code, so the button needs nothing in <b>On Click ()</b>.</li>
+  <li>When the level starts, the GameManager looks for a <code>GameUI</code>. In phases 4–8 there was none, so <code>GameUI.Create()</code> built the same UI in code. Now it uses yours.</li>
+  <li><code>Bind()</code> hides the dialogs, the intro and the hint, connects the pause button and the MUSIC / SOUND toggles, and lets the HUD drop in from the top.</li>
+  <li>The GameManager then calls GameUI for everything you see: <code>SetCoins</code>, <code>SetLives</code>, <code>FlyCoin</code>, <code>Toast</code> (a message at the top), <code>Flash</code> (red when hit), <code>Intro</code>, <code>ShowPause</code>, <code>ShowWin</code>, <code>ShowLose</code>.</li>
+  <li><code>Pause()</code> sets <code>Time.timeScale = 0</code>: the game stops. <code>Resume()</code>, <code>Restart()</code> and <code>BackToMenu()</code> set it back to 1.</li>
 </ul>
-<p>Save. The Console must now show <b>no red errors</b>.</p>
+<div class="tip">The stars rule: ★ 1 for winning, +1 for beating the par time, +1 for no hits. The LEVEL COMPLETE dialog shows the three rules as <code>Crit0–2</code>, and GameUI makes each star gold or grey.</div>
 
 <!-- ======================================================= 4 -->
-<h2 id="step-4"><span class="step">4</span>What the final GameManager adds</h2>
-<p>The new GameManager does the same as your phase 8 version, but it shows everything on screen instead of in the Console. You don't need to change it. When the level starts, it looks for a <b>GameUI</b> in the scene and calls <code>UI.Bind(this)</code>. These are the calls it makes:</p>
-<div class="table-wrap"><table>
-  <tr><th>When</th><th>GameManager calls</th><th>You see</th></tr>
-  <tr><td>Level start</td><td><code>UI.Bind(this)</code>, <code>UI.SetCoins</code>, <code>UI.SetLives</code></td><td>The HUD drops in from the top. <code>0 / 6</code> and two hearts.</td></tr>
-  <tr><td>Intro</td><td><code>UI.Intro(Def, 1)</code>, then <code>UI.ShowControlsHint()</code></td><td>LEVEL 1 · TRAINING YARD, then 3 – 2 – 1 – GO!, then the controls hint.</td></tr>
-  <tr><td>Coin</td><td><code>UI.FlyCoin</code>, <code>UI.Markers.FloatText("+1")</code></td><td>A coin flies to the counter, a "+1" rises.</td></tr>
-  <tr><td>Power-up, last coin, hit</td><td><code>UI.Toast(title, text, colour)</code>, <code>UI.Flash</code></td><td>A message at the top, a red flash when you get hit.</td></tr>
-  <tr><td>Power-ups, monsters, gate</td><td><code>UI.AddPowerUpLabel</code>, <code>UI.Markers</code>, <code>UI.AddGateLabel</code></td><td>SPEED / GHOST / MAGNET labels, the "!" bubbles over monsters, the green EXIT label.</td></tr>
-  <tr><td>Esc / P or the pause button</td><td><code>Pause()</code> → <code>UI.ShowPause()</code></td><td>The PAUSED dialog. The game stops (<code>Time.timeScale = 0</code>).</td></tr>
-  <tr><td>Win / lose</td><td><code>UI.ShowWin(result)</code>, <code>UI.ShowLose(result)</code></td><td>LEVEL COMPLETE with stars, or CAUGHT with a tip.</td></tr>
-  <tr><td>Dialog button</td><td><code>Run("menu" | "retry" | "resume" | "next")</code></td><td>Main menu, the level again, play on, the next level.</td></tr>
-</table></div>
-<p>The Console messages are gone. If there is no GameUI in the scene, the GameManager builds one from code (<code>GameUI.Create</code>). You build your own now, so you can see and change every part.</p>
-<div class="note"><b>How GameUI works.</b> GameUI has one field for every part it fills in: the coin text, the hearts, the timer text, the dialogs… You build the parts in this phase, and in step 18 you drag each part into its field. In <code>Bind()</code>, GameUI hides the dialogs and connects the pause button and the MUSIC/SOUND toggles. If its <b>Hud</b> field is empty, it builds a whole new UI from code instead.</div>
+<h2 id="step-4"><span class="step">4</span>▶ Press Play</h2>
+<p>Start in <code>MainMenu</code> and click PLAY (or press Play in <code>Level1</code>).</p>
+<ul>
+  <li>A dark band shows <b>LEVEL 1 · TRAINING YARD</b>, then <b>3 – 2 – 1 – GO!</b> while the camera swoops behind the hero.</li>
+  <li>The HUD drops in: <b>0 / 6</b> with a spinning coin, two hearts, the timer with <b>★ PAR 0:40</b>, the sun and pause buttons. The controls hint shows at the bottom.</li>
+  <li>Take a coin: it flies into the counter and a "+1" rises. A gold arrow at the screen edge points to the next coin.</li>
+  <li>Monsters show a "!" when they see you. Take the MAGNET: a message flips in and a red bar counts down.</li>
+  <li>Get hit: a red flash and a heart goes dark.</li>
+  <li>Press <kbd>Esc</kbd> or click pause: the PAUSED dialog with your gold, time and lives. MUSIC and SOUND switch ON / OFF. RESUME, RETRY and MENU work.</li>
+  <li>Take all gold and run through the gate: confetti and LEVEL COMPLETE with your stars. Get caught twice: CAUGHT with a tip.</li>
+</ul>
+<figure class="shot"><img src="images/09_pause.jpg" alt="The PAUSED dialog in Level 1" loading="lazy"><figcaption>The PAUSED dialog with real numbers.</figcaption></figure>
+<div class="note">Don't click NEXT yet. Level 2 is not in this package (it comes in phase 10), so Unity shows an error. Use MENU or RETRY.</div>
 
 <!-- ======================================================= 5 -->
-<h2 id="step-5"><span class="step">5</span>The GameUI canvas and its layers</h2>
-<div class="note"><b>How to read the UI tables</b> (the same as in phases 1 and 2)
-<ul>
-  <li><b>Create</b>: Empty = right-click the parent → <b>Create Empty</b>. Image = right-click → <b>UI → Image</b>. Text = right-click → <b>UI → Legacy → Text</b>. Rename it at once.</li>
-  <li><b>stretch 0</b>: hold Alt and click the bottom-right anchor preset; Left, Bottom, Right, Top = 0. <b>stretch L B R T = 76, 0, 8, 0</b>: type Left 76, Bottom 0, Right 8, Top 0.</li>
-  <li><b>top left, pivot 0, 1</b>: click that anchor preset with Shift held. If the pivot is different, type it.</li>
-  <li><b>Colour F2F7FF · 230</b>: Hexadecimal F2F7FF, A (alpha) 230. No number = 255.</li>
-  <li><b>Images</b>: sprites from <code>Resources/UISprites</code> and <code>Resources/Icons</code>. Untick Raycast Target unless the table says <b>raycast</b>. <code>pill</code>, <code>pillo</code>, <code>rr</code> and <code>rro2</code> are <b>Sliced</b>: then type the <b>PPU</b> (Pixels Per Unit Multiplier). Icon Glyphs: tick <b>Preserve Aspect</b>.</li>
-  <li><b>Texts</b>: fonts from <code>Resources/Fonts</code>. Untick Raycast Target. Horizontal and Vertical Overflow = <b>Overflow</b>, unless the table says <b>Best Fit</b>. <b>Outline</b> or <b>Shadow</b> = Add Component → UI → Effects, colour <code>050A1F · 115</code>.</li>
-</ul></div>
+<h2 id="step-5"><span class="step">5</span>Try it</h2>
 <ol>
-  <li><b>GameObject → UI → Canvas</b>. Name it <code>GameUI</code>. (Unity also adds an <code>EventSystem</code>. Keep it.)</li>
-  <li><b>Canvas</b>: Render Mode <b>Screen Space - Overlay</b>, Sort Order <b>10</b>.</li>
-  <li><b>Canvas Scaler</b>: UI Scale Mode <b>Scale With Screen Size</b>, Reference Resolution <b>1920 × 1080</b>, Match <b>0.5</b>.</li>
-  <li><b>Add Component → Game UI</b>. Leave all its fields empty for now.</li>
-  <li>Add four children to <code>GameUI</code>, in this order:</li>
+  <li><b>Swap a button.</b> Select <code>GameUI › Modal › Pause › Panel › Glass › RETRY</code>. Set <b>Game Action → Action</b> = <code>menu</code>. Press Play, pause and click RETRY: you go back to the menu. Set it back to <code>retry</code>.</li>
+  <li><b>Change a text.</b> Tick <code>Modal › Pause</code> so you can see it. Select <code>Pause › Panel › Glass › Title</code> and change the text <code>PAUSED</code> to <code>BREAK TIME</code>. Untick <code>Pause</code> again and press Play. (The subtitle is written by code: it always shows the level name.)</li>
+  <li><b>Change the hit flash.</b> Open <code>GameManager.cs</code> and find <code>UI.Flash(new Color(0.9f, 0.1f, 0.1f, 0.45f));</code>. Change it to <code>new Color(0.1f, 0.4f, 1f, 0.45f)</code>. Get hit: the screen flashes blue.</li>
 </ol>
-<div class="table-wrap"><table>
-  <tr><th>Object (parent)</th><th>Create</th><th>Rect</th><th>Look</th><th>Other</th></tr>
-  <tr><td><code>WorldMarkers</code> (GameUI)</td><td>Empty</td><td>stretch 0</td><td>–</td><td>Add Component → <b>World Markers</b>. Drag <code>WorldMarkers</code> itself into its <b>Root</b> field.</td></tr>
-  <tr><td><code>HUD</code> (GameUI)</td><td>Empty</td><td>stretch 0</td><td>–</td><td>all the corner chips go in here</td></tr>
-  <tr><td><code>Flash</code> (GameUI)</td><td>Image</td><td>stretch 0</td><td>no sprite, <code>FF0000 · 0</code></td><td>the red flash when you get hit</td></tr>
-  <tr><td><code>Modal</code> (GameUI)</td><td>Empty</td><td>stretch 0</td><td>–</td><td>the intro and the dialogs go in here</td></tr>
-</table></div>
-<p><b>WorldMarkers</b> moves small UI pieces so they follow 3D objects: the "!" over a monster, the SPEED label over a power-up, the EXIT label, the "+1". The order matters: lower in the list = drawn on top. The dialogs in Modal are drawn over the HUD.</p>
-<figure class="shot"><img src="images/phase-09/step-05-a.png" alt="" loading="lazy"><figcaption>Check the order: WorldMarkers, HUD, Flash, Modal.</figcaption></figure>
-<figure class="shot"><img src="images/phase-09/step-05-b.png" alt="" loading="lazy"><figcaption>Sort Order 10 and Match 0.5.</figcaption></figure>
 
 <!-- ======================================================= 6 -->
-<h2 id="step-6"><span class="step">6</span>HUD: the gold counter (and a CoinIcon prefab)</h2>
-<p>All HUD chips are made of the same frosted glass as the menu chips: your <code>GlassPill</code> and <code>GlassCircle</code> prefabs. The HUD glass is a bit darker (Tint alpha 128) so it reads well over a bright level.</p>
-<ol>
-  <li>Drag the <code>Prefabs/UI/GlassPill</code> prefab onto <code>HUD</code>. Rename it <code>CoinPill</code>.</li>
-  <li>Anchor <b>top left</b>, pivot <b>0, 1</b>. Pos <b>32, -28</b>. Size <b>214 × 70</b>.</li>
-  <li>Select <code>Shadow</code>, <code>Tint</code>, <code>Glass</code> and <code>Glass/Edge</code> together (Ctrl-click, Mac: Cmd-click). Type PPU <b>1.829</b> once. (That is 128 ÷ 70: the round ends fit the height.)</li>
-  <li>Select <code>Tint</code> only. Colour <code>080D1F · 128</code>.</li>
-</ol>
-<p>Now the coin. It is four circles. You need the same coin five times on this page, so you make a prefab:</p>
-<div class="table-wrap"><table>
-  <tr><th>Object (parent)</th><th>Create</th><th>Rect</th><th>Look</th></tr>
-  <tr><td><code>CoinIcon</code> (CoinPill)</td><td>Empty</td><td>middle left, pivot 0.5, 0.5 · Pos 38, 0 · 54 × 54</td><td>–</td></tr>
-  <tr><td><code>Rim</code> (CoinIcon)</td><td>Image</td><td>stretch 0</td><td><code>circle</code>, <code>C78014</code></td></tr>
-  <tr><td><code>Body</code> (CoinIcon)</td><td>Image</td><td>stretch L B R T = 4.32, 5.4, 4.32, 3.24</td><td><code>circle</code>, <code>FFC233</code></td></tr>
-  <tr><td><code>Inner</code> (CoinIcon)</td><td>Image</td><td>stretch L B R T = 11.88, 11.88, 11.88, 10.8</td><td><code>ring</code>, <code>D98C1A · 230</code></td></tr>
-  <tr><td><code>Shine</code> (CoinIcon)</td><td>Image</td><td>Anchors Min and Max <b>0.32, 0.7</b>, pivot 0.5, 0.5 · Pos 0, 0 · 9.72 × 9.72</td><td><code>circle</code>, <code>FFFFFF · 166</code></td></tr>
-</table></div>
-<ol start="5">
-  <li>Drag <code>CoinIcon</code> into <code>Assets/GoldRush/Prefabs/UI</code>. Pick <b>Original Prefab</b>.</li>
-  <li>Rename the object in the Hierarchy to <code>Coin</code>. (The prefab file keeps the name CoinIcon.)</li>
-  <li>On <code>Coin</code> only: <b>Add Component → Coin Flip</b>. Keep Interval <b>2.6</b> and Flip Time <b>0.55</b>. (The coin spins now and then, like in the menu.)</li>
-  <li>Add the number:</li>
-</ol>
-<div class="table-wrap"><table>
-  <tr><th>Object (parent)</th><th>Create</th><th>Rect</th><th>Text</th></tr>
-  <tr><td><code>Label</code> (CoinPill)</td><td>Text</td><td>stretch L B R T = 76, 0, 8, 0</td><td><code>0 / 0</code>, Poppins-Bold <b>38</b>, Middle Left, <code>F2F7FF</code>, Rich Text on, Outline (1, -1)</td></tr>
-</table></div>
-<p>GameUI writes <code>3 &lt;size=40&gt;&lt;color=#BFD3F2&gt;/ 6&lt;/color&gt;&lt;/size&gt;</code> into this Label: the "/ 6" comes out light blue. That is why Rich Text must be on.</p>
-
-<!-- ======================================================= 7 -->
-<h2 id="step-7"><span class="step">7</span>HUD: hearts and the stamina bar</h2>
-<p><b>Hearts</b> sit under the gold counter. Level 1 gives you 2 lives, so GameUI hides the third heart. An empty heart turns dark, and the last heart beats.</p>
-<div class="table-wrap"><table>
-  <tr><th>Object (parent)</th><th>Create</th><th>Rect</th><th>Look</th></tr>
-  <tr><td><code>Hearts</code> (HUD)</td><td>Empty</td><td>top left, pivot 0, 1 · Pos 40, -108 · 200 × 44</td><td>–</td></tr>
-  <tr><td><code>Heart0</code> (Hearts)</td><td>Image</td><td>middle left, pivot 0, 0.5 · Pos 0, 0 · 40 × 40</td><td><code>heart</code>, <code>ED4C57</code></td></tr>
-  <tr><td><code>Heart1</code> (Hearts)</td><td>Image</td><td>the same, Pos <b>48</b>, 0</td><td>the same</td></tr>
-  <tr><td><code>Heart2</code> (Hearts)</td><td>Image</td><td>the same, Pos <b>96</b>, 0</td><td>the same</td></tr>
-</table></div>
-<p>Tip: make <code>Heart0</code>, then press <b>Ctrl+D</b> (Mac: Cmd+D) twice and only change the name and Pos X.</p>
-<p>The <b>stamina bar</b> shows under the hearts only while you sprint (Shift) or get your breath back. Its Canvas Group starts at alpha 0, and GameUI fades it in.</p>
-<ol>
-  <li>Drag the <code>GlassPill</code> prefab onto <code>HUD</code>. Rename it <code>Stamina</code>. Top left, pivot 0, 1. Pos <b>40, -158</b>. Size <b>150 × 24</b>.</li>
-  <li>Select <code>Shadow</code>, <code>Tint</code>, <code>Glass</code>, <code>Glass/Edge</code>: PPU <b>5.333</b> (128 ÷ 24). Keep the Tint alpha 97.</li>
-  <li>Select <code>Stamina</code>: <b>Add Component → Canvas Group</b>. Alpha <b>0</b>.</li>
-  <li>Add two children:</li>
-</ol>
-<div class="table-wrap"><table>
-  <tr><th>Object (parent)</th><th>Create</th><th>Rect</th><th>Look / Text</th></tr>
-  <tr><td><code>Fill</code> (Stamina)</td><td>Image</td><td>stretch L B R T = 4, 4, 4, 4</td><td><code>pill</code>, <code>FFC233</code>, Sliced, PPU <b>8</b></td></tr>
-  <tr><td><code>Label</code> (Stamina)</td><td>Text</td><td>stretch 0</td><td><code>RUN</code>, Poppins-SemiBold <b>16</b>, Middle Center, <code>F2F7FF</code>, Outline (1, -1)</td></tr>
-</table></div>
-<p>GameUI changes the Fill's <b>Anchor Max X</b> from 1 (full) down to 0.04 (empty), and its colour: gold, orange when low, red and <code>TIRED</code> when you are out of breath.</p>
-
-<!-- ======================================================= 8 -->
-<h2 id="step-8"><span class="step">8</span>HUD: the timer</h2>
-<p>The timer is at the top right. Under the time it shows the <b>par time</b>: finish faster than par for a star. In the last 10 seconds before par, the time blinks orange.</p>
-<ol>
-  <li>Drag the <code>GlassPill</code> prefab onto <code>HUD</code>. Rename it <code>Timer</code>.</li>
-  <li>Anchor <b>top right</b>, pivot <b>1, 1</b>. Pos <b>-200, -28</b>. Size <b>188 × 70</b>.</li>
-  <li><code>Shadow</code>, <code>Tint</code>, <code>Glass</code>, <code>Glass/Edge</code>: PPU <b>1.829</b>. <code>Tint</code> colour <code>080D1F · 128</code>.</li>
-  <li>Add three children:</li>
-</ol>
-<div class="table-wrap"><table>
-  <tr><th>Object (parent)</th><th>Create</th><th>Rect</th><th>Look / Text</th></tr>
-  <tr><td><code>Label</code> (Timer)</td><td>Text</td><td>stretch L B R T = 0, 20, 0, 2</td><td><code>0:00.0</code>, Poppins-Bold <b>36</b>, Middle Center, <code>F2F7FF</code>, Outline (1, -1)</td></tr>
-  <tr><td><code>Star</code> (Timer)</td><td>Image</td><td>bottom centre, pivot 0.5, 0.5 · Pos -44, 16 · 18 × 18</td><td><code>star</code>, <code>FFC233</code></td></tr>
-  <tr><td><code>ParLabel</code> (Timer)</td><td>Text</td><td>bottom centre, pivot <b>0, 0.5</b> · Pos -32, 16 · 120 × 22</td><td><code>PAR 0:40</code>, Poppins-SemiBold <b>18</b>, Middle Left, <code>FFC233</code>, no effect</td></tr>
-</table></div>
-<p>When you pass the par time, the star and PAR turn grey: that star is gone.</p>
-
-<!-- ======================================================= 9 -->
-<h2 id="step-9"><span class="step">9</span>HUD: day/night and pause buttons</h2>
-<p>Two round glass buttons sit right of the timer. They are like the gear and day/night buttons of the menu, only a little smaller (70).</p>
-<h3>The day/night button</h3>
-<ol>
-  <li>Drag the <code>Prefabs/UI/GlassCircle</code> prefab onto <code>HUD</code>. Rename it <code>DayNight</code>.</li>
-  <li>Anchor <b>top right</b>, pivot <b>1, 1</b>. Pos <b>-116, -28</b>. Size <b>70 × 70</b>. (Keep the Tint alpha 97.)</li>
-  <li>Add the two icons. Both are children of <code>DayNight/Glass</code>:</li>
-</ol>
-<div class="table-wrap"><table>
-  <tr><th>Object (parent)</th><th>Create</th><th>Rect</th><th>Look</th></tr>
-  <tr><td><code>Icon_Sun</code> (DayNight/Glass)</td><td>Empty</td><td>middle centre · 39.2 × 39.2</td><td>–</td></tr>
-  <tr><td><code>Glyph</code> (Icon_Sun)</td><td>Image</td><td>stretch 0</td><td><code>ic_light_mode</code>, <code>FFC233</code>, Preserve Aspect</td></tr>
-  <tr><td><code>Icon_Moon</code> (DayNight/Glass)</td><td>Empty</td><td>middle centre · 39.2 × 39.2</td><td>untick it (top of the Inspector)</td></tr>
-  <tr><td><code>Glyph</code> (Icon_Moon)</td><td>Image</td><td>stretch 0</td><td><code>ic_dark_mode</code>, <code>F2F7FF</code>, Preserve Aspect</td></tr>
-</table></div>
-<ol start="4">
-  <li>Select <code>DayNight</code>. <b>Add Component → Button</b>. Target Graphic = <code>DayNight/Glass</code>.</li>
-  <li><b>Add Component → Day Night Button</b>. Drag <code>Icon_Sun</code> into <b>Sun</b> and <code>Icon_Moon</code> into <b>Moon</b>.</li>
-</ol>
-<p>Day Night Button connects its own click, and it also listens to the <b>N</b> key. From now on, N switches day and night in the level too.</p>
-<h3>The pause button</h3>
-<ol>
-  <li>Drag the <code>GlassCircle</code> prefab onto <code>HUD</code>. Rename it <code>Pause</code>.</li>
-  <li>Anchor <b>top right</b>, pivot <b>1, 1</b>. Pos <b>-32, -28</b>. Size <b>70 × 70</b>.</li>
-  <li><code>Tint</code> colour <code>080D1F · 128</code>.</li>
-  <li>Add the icon. Here it is a child of <code>Pause</code> (not of Glass):</li>
-</ol>
-<div class="table-wrap"><table>
-  <tr><th>Object (parent)</th><th>Create</th><th>Rect</th><th>Look</th></tr>
-  <tr><td><code>Icon_Pause</code> (Pause)</td><td>Empty</td><td>middle centre · 40 × 40</td><td>–</td></tr>
-  <tr><td><code>Glyph</code> (Icon_Pause)</td><td>Image</td><td>stretch 0</td><td><code>ic_pause</code>, <code>F2F7FF</code>, Preserve Aspect</td></tr>
-</table></div>
-<ol start="5">
-  <li>Select <code>Pause</code>. <b>Add Component → Button</b>. Target Graphic = <code>Pause/Glass</code>.</li>
-</ol>
-<div class="tip">Do not add a Game Action to this button. GameUI connects it in <code>Bind()</code> (click sound + <code>gm.Pause()</code>), because you drag it into the <b>Pause Button</b> field in step 18.</div>
-<p>Check the order in HUD: <code>CoinPill</code>, <code>Hearts</code>, <code>Stamina</code>, <code>Timer</code>, <code>DayNight</code>, <code>Pause</code>. (Any order works for these, they don't overlap.)</p>
-
-<!-- ======================================================= 10 -->
-<h2 id="step-10"><span class="step">10</span>HUD: power-up bars</h2>
-<p>When you take a power-up, a coloured bar under the hearts shows how much time is left. There are three bars, one for each power-up you might have at the same time. GameUI sets the colour and the name (SPEED, GHOST, MAGNET) and makes the bar blink before it ends.</p>
-<ol>
-  <li>Drag the <code>GlassPill</code> prefab onto <code>HUD</code>. Rename it <code>Power0</code>.</li>
-  <li>Top left, pivot 0, 1. Pos <b>32, -196</b>. Size <b>214 × 40</b>.</li>
-  <li><code>Shadow</code>, <code>Tint</code>, <code>Glass</code>, <code>Glass/Edge</code>: PPU <b>3.2</b> (128 ÷ 40). Keep the Tint alpha 97.</li>
-  <li>Add two children:</li>
-</ol>
-<div class="table-wrap"><table>
-  <tr><th>Object (parent)</th><th>Create</th><th>Rect</th><th>Look / Text</th></tr>
-  <tr><td><code>Fill</code> (Power0)</td><td>Image</td><td>stretch L B R T = 5, 5, 5, 5, pivot <b>0, 0.5</b></td><td><code>pill</code>, <code>FFFFFF</code>, Sliced, PPU <b>4.267</b></td></tr>
-  <tr><td><code>Name</code> (Power0)</td><td>Text</td><td>stretch 0</td><td>empty text, Poppins-SemiBold <b>22</b>, Middle Center, <code>F2F7FF</code>, Outline (1, -1)</td></tr>
-</table></div>
-<ol start="5">
-  <li>Select <code>Power0</code> and press <b>Ctrl+D</b> twice. Rename the copies <code>Power1</code> (Pos Y <b>-246</b>) and <code>Power2</code> (Pos Y <b>-296</b>).</li>
-  <li>Untick <code>Power0</code>, <code>Power1</code> and <code>Power2</code>. GameUI turns a bar on when you need it.</li>
-</ol>
-
-<!-- ======================================================= 11 -->
-<h2 id="step-11"><span class="step">11</span>HUD: arrow, message and hint</h2>
-<h3>The arrow</h3>
-<p>When the nearest coin is off screen, a small gold arrow at the edge of the screen points to it. When the gate is open, it points to the gate and turns green. GameUI moves and turns it every frame.</p>
-<div class="table-wrap"><table>
-  <tr><th>Object (parent)</th><th>Create</th><th>Rect</th><th>Look</th></tr>
-  <tr><td><code>Arrow</code> (HUD)</td><td>Empty</td><td><b>bottom left</b>, pivot 0.5, 0.5 · Pos 0, 0 · 70 × 70</td><td>untick it at the end</td></tr>
-  <tr><td><code>Tri</code> (Arrow)</td><td>Empty</td><td>stretch 0</td><td>the part that turns</td></tr>
-  <tr><td><code>Shape</code> (Tri)</td><td>Image</td><td>top centre, pivot 0.5, 0.5 · Pos 0, 18 · 38 × 38</td><td><code>tri</code>, <code>FFC233</code></td></tr>
-  <tr><td><code>Bg</code> (Arrow)</td><td>Image</td><td>stretch L B R T = 8, 8, 8, 8</td><td><code>circle</code>, <code>121A33 · 153</code></td></tr>
-  <tr><td><code>CoinIcon</code> (Arrow)</td><td>drag the <b>CoinIcon</b> prefab</td><td>middle centre, pivot 0.5, 0.5 · Pos 0, 0 · Scale <b>0.74</b></td><td>a 40 px coin (54 × 0.74)</td></tr>
-</table></div>
-<h3>The message (toast)</h3>
-<p>A <b>toast</b> is a short message that pops up and fades away by itself: "SPEED – Super speed!", "OUCH!", "ALL GOLD COLLECTED!". It flips in at the top of the screen.</p>
-<ol>
-  <li>Right-click <code>HUD</code> → <b>Create Empty</b>. Name it <code>Toast</code>. Anchors Min and Max <b>0.5, 0.78</b>, pivot 0.5, 0.5. Pos <b>0, 0</b>. Size <b>640 × 96</b>.</li>
-  <li><b>Add Component → Canvas Group</b>. Alpha <b>0</b>. Untick <b>Blocks Raycasts</b>.</li>
-  <li>Add a soft drop shadow first: Image <code>DropShadow</code> (Toast), stretch L B R T = <b>2, -6, 2, 4</b>, <code>pill</code>, <code>000000 · 46</code>, Sliced, PPU <b>1.333</b>.</li>
-  <li>Drag the <code>GlassPill</code> prefab onto <code>Toast</code>. Right-click it → <b>Prefab → Unpack Completely</b>. Drag its four layers (<code>Shadow</code>, <code>Tint</code>, <code>Glass</code> with <code>Edge</code>) out onto <code>Toast</code>, under DropShadow. Delete the empty GlassPill.</li>
-  <li><code>Shadow</code>, <code>Tint</code>, <code>Glass</code>, <code>Glass/Edge</code>: stretch 0 (Shadow: L B R T = 0, -4, 0, 2), PPU <b>1.333</b> (128 ÷ 96). <code>Tint</code> colour <code>080D1F · 140</code>.</li>
-  <li>Add the two texts:</li>
-</ol>
-<div class="table-wrap"><table>
-  <tr><th>Object (parent)</th><th>Create</th><th>Rect</th><th>Text</th></tr>
-  <tr><td><code>Title</code> (Toast)</td><td>Text</td><td>stretch L B R T = 0, 34, 0, 0</td><td>empty, Poppins-Bold <b>38</b>, Middle Center, <code>F2F7FF</code>, Outline (1, -1)</td></tr>
-  <tr><td><code>Sub</code> (Toast)</td><td>Text</td><td>stretch L B R T = 0, 8, 0, 60</td><td>empty, Poppins-SemiBold <b>22</b>, Middle Center, <code>F2F7FF</code>, Outline (1, -1)</td></tr>
-</table></div>
-<h3>The controls hint</h3>
-<p>At the start of Level 1 (and the first time you play), a pill at the bottom shows the controls for 7 seconds.</p>
-<ol>
-  <li>Drag the <code>GlassPill</code> prefab onto <code>HUD</code>. Rename it <code>Hint</code>. Anchor <b>bottom centre</b>, pivot <b>0.5, 0</b>. Pos <b>0, 28</b>. Size <b>1000 × 56</b>.</li>
-  <li>The four layers: PPU <b>2.286</b> (128 ÷ 56). Keep the Tint alpha 97.</li>
-  <li><b>Add Component → Canvas Group</b>. Untick <b>Blocks Raycasts</b> (Alpha stays 1).</li>
-  <li>Add a Text <code>Label</code> (Hint): stretch 0, Poppins-SemiBold <b>24</b>, Middle Center, <code>F2F7FF</code>, Rich Text on, Outline (1, -1). Text:<br>
-  <code>&lt;color=#FFC233&gt;WASD&lt;/color&gt; move  •  &lt;color=#FFC233&gt;Mouse&lt;/color&gt; look  •  &lt;color=#FFC233&gt;Shift&lt;/color&gt; sprint  •  &lt;color=#FFC233&gt;Esc&lt;/color&gt; pause / free mouse</code></li>
-  <li>Untick <code>Arrow</code> and <code>Hint</code>.</li>
-</ol>
-<p>On a phone, GameUI writes the touch controls into the Label instead.</p>
-
-<!-- ======================================================= 12 -->
-<h2 id="step-12"><span class="step">12</span>The level intro and the countdown</h2>
-<p>When the level starts, a dark band shows the level name. Then big numbers count down: 3, 2, 1, GO! The camera swoops behind the hero at the same time. Both parts go in <code>Modal</code>.</p>
-<div class="table-wrap"><table>
-  <tr><th>Object (parent)</th><th>Create</th><th>Rect</th><th>Look / Text</th><th>Other</th></tr>
-  <tr><td><code>Intro</code> (Modal)</td><td>Empty</td><td>stretch 0</td><td>–</td><td>Canvas Group, untick <b>Blocks Raycasts</b></td></tr>
-  <tr><td><code>Band</code> (Intro)</td><td>Image</td><td>Anchors Min and Max <b>0.5, 0.62</b>, pivot 0.5, 0.5 · Pos 0, 0 · <b>4000 × 300</b></td><td>no sprite, <code>080D1F · 140</code></td><td>wider than any screen</td></tr>
-  <tr><td><code>Level</code> (Band)</td><td>Text</td><td>middle centre · Pos 0, 95 · 1200 × 60</td><td><code>LEVEL 1</code>, Poppins-Bold <b>44</b>, Middle Center, <code>FFC233</code></td><td>Outline (1, -1)</td></tr>
-  <tr><td><code>Title</code> (Band)</td><td>Text</td><td>middle centre · Pos 0, 10 · 1600 × 140</td><td><code>TRAINING YARD</code>, Poppins-ExtraBold <b>120</b>, Middle Center, <code>F2F7FF</code></td><td>Outline (2.727, -2.727)</td></tr>
-  <tr><td><code>Goal</code> (Band)</td><td>Text</td><td>middle centre · Pos 0, -95 · 1600 × 50</td><td><code>Collect all gold, then escape through the EXIT!</code>, Poppins-Bold <b>38</b>, Middle Center, <code>F2F7FF</code>, Rich Text</td><td>Outline (1, -1)</td></tr>
-  <tr><td><code>Countdown</code> (Modal)</td><td>Text</td><td>middle centre · Pos 0, 0 · 800 × 260</td><td><code>3</code>, Poppins-ExtraBold <b>220</b>, Middle Center, <code>FFC233</code></td><td>Outline (5, -5)</td></tr>
-</table></div>
-<ol>
-  <li>Build the table above.</li>
-  <li>Untick <code>Intro</code> and <code>Countdown</code>.</li>
-</ol>
-<p>GameUI writes the real level into the texts, for example <code>Collect all &lt;color=#FFC233&gt;6 gold&lt;/color&gt;, then escape through the &lt;color=#6BE08F&gt;EXIT&lt;/color&gt;!</code>. The band opens from a thin line, then fades after 1.4 s. "GO!" is green.</p>
-
-<!-- ======================================================= 13 -->
-<h2 id="step-13"><span class="step">13</span>PAUSE dialog: panel and header</h2>
-<p>All three dialogs have the same shape: a dark layer over the screen, and a glass panel with a <b>header</b> (round badge, title, subtitle), a <b>body</b> and a <b>footer</b> with buttons. You build PAUSE completely. Then you copy it for the other two.</p>
-<div class="tip"><b>Short on time?</b> Import <code>GoldRush_GameUIDialogs.unitypackage</code> from the Packages folder. Then click <b>Gold Rush → Fix Script Links</b> (it reconnects the scripts on the imported objects to your own scripts). Drag <code>Prefabs/UI/Dialog_Pause</code>, <code>Dialog_Win</code> and <code>Dialog_Lose</code> onto <code>Modal</code>, unpack them (<b>Prefab → Unpack Completely</b>) and rename them <code>Pause</code>, <code>Win</code> and <code>Lose</code>. Untick all three and go on with step 18.</div>
-<div class="table-wrap"><table>
-  <tr><th>Object (parent)</th><th>Create</th><th>Rect</th><th>Look</th><th>Other</th></tr>
-  <tr><td><code>Pause</code> (Modal)</td><td>Empty</td><td>stretch 0</td><td>–</td><td><b>Canvas Group</b> (keep the defaults)</td></tr>
-  <tr><td><code>Dim</code> (Pause)</td><td>Image</td><td>stretch 0</td><td>no sprite, <code>080D1F · 166</code></td><td><b>raycast</b>: it blocks clicks on the HUD</td></tr>
-  <tr><td><code>Panel</code> (Pause)</td><td>Empty</td><td>middle centre, pivot 0.5, 0.5 · Pos 0, 0 · <b>780 × 520</b></td><td>–</td><td>the part that flips in</td></tr>
-  <tr><td><code>Shadow</code> (Panel)</td><td>Image</td><td>stretch L B R T = 0, -4, 0, 2</td><td><code>rr</code>, <code>000000 · 36</code></td><td>Sliced, PPU <b>0.8</b></td></tr>
-  <tr><td><code>Tint</code> (Panel)</td><td>Image</td><td>stretch 0</td><td><code>rr</code>, <code>080D1F · 184</code></td><td>Sliced, PPU 0.8</td></tr>
-  <tr><td><code>Glass</code> (Panel)</td><td>Image</td><td>stretch 0</td><td><code>rr</code>, <code>FFFFFF · 20</code></td><td>Sliced, PPU 0.8, <b>raycast</b></td></tr>
-  <tr><td><code>Edge</code> (Glass)</td><td>Image</td><td>stretch 0</td><td><code>rro2</code>, <code>FFFFFF · 179</code></td><td>Sliced, PPU 0.8</td></tr>
-</table></div>
-<p>Everything else in the dialog is a child of <code>Pause/Panel/Glass</code>. Now the header:</p>
-<div class="table-wrap"><table>
-  <tr><th>Object (parent)</th><th>Create</th><th>Rect</th><th>Look / Text</th></tr>
-  <tr><td><code>Badge</code> (Glass)</td><td>Image</td><td>top left, pivot 0, 1 · Pos 40, -24 · 84 × 84</td><td><code>circle</code>, <code>33C7E6 · 230</code> (cyan)</td></tr>
-  <tr><td><code>Ring</code> (Badge)</td><td>Image</td><td>stretch 0</td><td><code>ring2</code>, <code>FFFFFF · 153</code></td></tr>
-  <tr><td><code>Icon_Pause</code> (Badge)</td><td>Empty</td><td>middle centre · 40 × 40</td><td>–</td></tr>
-  <tr><td><code>Glyph</code> (Icon_Pause)</td><td>Image</td><td>stretch 0</td><td><code>ic_pause</code>, <code>F2F7FF</code>, Preserve Aspect</td></tr>
-  <tr><td><code>Title</code> (Glass)</td><td>Text</td><td>top left, pivot 0, 1 · Pos 148, -18 · <b>592 × 60</b></td><td><code>PAUSED</code>, Poppins-Bold <b>50</b>, <b>Lower Left</b>, <code>F2F7FF</code>, Shadow (0, -2.083)</td></tr>
-  <tr><td><code>Subtitle</code> (Glass)</td><td>Text</td><td>top left, pivot 0, 1 · Pos 150, -80 · <b>590 × 32</b></td><td><code>LEVEL NAME</code>, Poppins-SemiBold <b>24</b>, <b>Upper Left</b>, <code>F2F7FF · 166</code>, no effect</td></tr>
-  <tr><td><code>Divider</code> (Glass)</td><td>Image</td><td><b>top stretch</b>, pivot 0.5, 0.5 · Left 40, Right 40, Pos Y <b>-124</b>, Height 2</td><td>no sprite, <code>FFFFFF · 26</code></td></tr>
-  <tr><td><code>Divider</code> (Glass)</td><td>Image</td><td>the same, Pos Y <b>-388</b></td><td>the same</td></tr>
-</table></div>
-<p>The header is 124 high and the footer is 132 high: the two thin lines are at -124 and at -(520 − 132) = -388. GameUI writes the level name into the Subtitle.</p>
-
-<!-- ======================================================= 14 -->
-<h2 id="step-14"><span class="step">14</span>PAUSE dialog: stat cards (StatCard prefab)</h2>
-<p>A <b>stat card</b> is a small glass box with an icon, a caption and a big value. The dialogs need nine of them, so you make a prefab first. The prefab has no icon: you add the icon to each card.</p>
-<div class="table-wrap"><table>
-  <tr><th>Object (parent)</th><th>Create</th><th>Rect</th><th>Look / Text</th></tr>
-  <tr><td><code>Stat_GOLD</code> (Pause/Panel/Glass)</td><td>Empty</td><td>top left, pivot 0, 1 · Pos 40, -148 · <b>222.667 × 116</b></td><td>–</td></tr>
-  <tr><td><code>Bg</code> (Stat_GOLD)</td><td>Image</td><td>stretch 0</td><td><code>rr</code>, <code>FFFFFF · 15</code>, Sliced, PPU <b>1.6</b></td></tr>
-  <tr><td><code>Edge</code> (Stat_GOLD)</td><td>Image</td><td>stretch 0</td><td><code>rro2</code>, <code>FFFFFF · 115</code>, Sliced, PPU 1.6</td></tr>
-  <tr><td><code>Caption</code> (Stat_GOLD)</td><td>Text</td><td><b>top stretch</b>, pivot 0, 1 · Left 68, Right 12, Pos Y -18, Height 36</td><td><code>GOLD</code>, Poppins-SemiBold <b>20</b>, Middle Left, <code>F2F7FF · 153</code>, Best Fit 12–20</td></tr>
-  <tr><td><code>Value</code> (Stat_GOLD)</td><td>Text</td><td><b>bottom stretch</b>, pivot 0, 0 · Left 20, Right 10, Pos Y 12, Height 56</td><td><code>0 / 0</code>, Poppins-Bold <b>40</b>, Middle Left, <code>FFC233</code>, Best Fit 20–40, Shadow (0, -1.667)</td></tr>
-</table></div>
-<ol>
-  <li>Build the table. Drag <code>Stat_GOLD</code> into <code>Prefabs/UI</code> (<b>Original Prefab</b>). Rename the prefab file to <code>StatCard</code>.</li>
-  <li>Add the coin to this card: drag the <b>CoinIcon</b> prefab onto <code>Stat_GOLD</code>. Anchor top left, pivot <b>0, 1</b>. Pos <b>18, -16</b>. Scale <b>0.74</b>.</li>
-  <li>Drag the <b>StatCard</b> prefab onto <code>Pause/Panel/Glass</code> twice. Rename the two copies <code>Stat_TIME</code> and <code>Stat_LIVES</code> and change them like this:</li>
-</ol>
-<div class="table-wrap"><table>
-  <tr><th>Card</th><th>Pos</th><th>Caption</th><th>Value (colour)</th><th>Icon child</th></tr>
-  <tr><td><code>Stat_GOLD</code></td><td>40, -148</td><td>GOLD</td><td><code>0 / 0</code> (<code>FFC233</code>)</td><td>CoinIcon (done)</td></tr>
-  <tr><td><code>Stat_TIME</code></td><td>278.667, -148</td><td>TIME</td><td><code>0:00.0</code> (<code>F2F7FF</code>)</td><td><code>Icon_Clock</code></td></tr>
-  <tr><td><code>Stat_LIVES</code></td><td>517.333, -148</td><td>LIVES</td><td><code>2 / 2</code> (<code>F2F7FF</code>)</td><td><code>Icon_Heart</code></td></tr>
-</table></div>
-<p>The two icon children are built the same way:</p>
-<div class="table-wrap"><table>
-  <tr><th>Object (parent)</th><th>Create</th><th>Rect</th><th>Look</th></tr>
-  <tr><td><code>Icon_Clock</code> (Stat_TIME)</td><td>Empty</td><td>top left, pivot 0, 1 · Pos 20, -19 · 34 × 34</td><td>–</td></tr>
-  <tr><td><code>Glyph</code> (Icon_Clock)</td><td>Image</td><td>stretch 0</td><td><code>ic_schedule</code>, <code>FFC233</code>, Preserve Aspect</td></tr>
-  <tr><td><code>Icon_Heart</code> (Stat_LIVES)</td><td>Empty</td><td>top left, pivot 0, 1 · Pos 20, -19 · 34 × 34</td><td>–</td></tr>
-  <tr><td><code>Glyph</code> (Icon_Heart)</td><td>Image</td><td>stretch 0</td><td><code>ic_favorite</code>, <code>FFC233</code>, Preserve Aspect</td></tr>
-</table></div>
-<p>Each card is (780 − 2 × 40 − 2 × 16) ÷ 3 = 222.667 wide, with a 16 gap. Caption and Value stretch with the card, so the same prefab also fits the wider cards of the LEVEL COMPLETE dialog.</p>
-
-<!-- ======================================================= 15 -->
-<h2 id="step-15"><span class="step">15</span>PAUSE dialog: toggles and buttons</h2>
-<h3>MUSIC and SOUND</h3>
-<p>These are the same green chip buttons as in the menu Settings (phase 2). GameUI connects them in <code>Bind()</code>: a click switches the setting and the label shows ON or OFF.</p>
-<ol>
-  <li>Drag the <code>Prefabs/UI/ChipButton</code> prefab onto <code>Pause/Panel/Glass</code>. Rename it <code>MUSIC  ONBtn</code> (two spaces).</li>
-  <li>Change it like the menu toggle, but with a new anchor and position:</li>
-</ol>
-<div class="table-wrap"><table>
-  <tr><th>Object</th><th>Change</th></tr>
-  <tr><td><code>MUSIC  ONBtn</code></td><td>Anchor <b>top centre</b>, pivot <b>0.5, 1</b>, Pos <b>-150, -286</b>, Size <b>260 × 76</b>. Button FX → Base Color <code>42CC80</code>.</td></tr>
-  <tr><td><code>Halo</code></td><td>Colour <code>42CC80 · 0</code></td></tr>
-  <tr><td><code>Shadow</code>, <code>Tint</code>, <code>Glass</code>, <code>Glass/Edge</code></td><td>PPU <b>1.389</b> (96 ÷ 76 × 1.1)</td></tr>
-  <tr><td><code>Glass/IconDisc</code></td><td>Colour <code>42CC80 · 217</code>, Pos 14.44, 0, Size 47.12 × 47.12</td></tr>
-  <tr><td><code>Glass/IconDisc/Icon_Back</code></td><td>Rename to <code>Icon_Music</code>, Size 28.27 × 28.27. Its Glyph: <code>ic_music_note</code>.</td></tr>
-  <tr><td><code>Glass/Content</code></td><td>Left <b>76</b>, Right <b>14.44</b> (Bottom and Top stay 6)</td></tr>
-  <tr><td><code>Glass/Content/Label</code></td><td>Text <code>MUSIC  ON</code>, Font Poppins-SemiBold, Size <b>28</b>, Best Fit Max 28</td></tr>
-</table></div>
-<ol start="3">
-  <li>Press <b>Ctrl+D</b>. Rename the copy <code>SOUND  ONBtn</code>. Pos <b>150, -286</b>.</li>
-  <li>In the copy: rename <code>Icon_Music</code> to <code>Icon_Sound</code>, Glyph <code>ic_volume_up</code>. Label <code>SOUND  ON</code>.</li>
-</ol>
-<div class="tip">Faster: open <code>MainMenu</code>, select <code>Settings/Panel/Face/MUSIC  ONBtn</code> and <code>SOUND  ONBtn</code>, press Ctrl+C. Open <code>Level1</code>, select <code>Pause/Panel/Glass</code>, press Ctrl+V. Then only change the anchor (top centre, pivot 0.5, 1) and the Pos.</div>
-<h3>MENU, RETRY and RESUME</h3>
-<p>The footer buttons are chip buttons too, 92 high. The main button (RESUME) is wider (weight 1.3), a little darker, and has a light green edge.</p>
-<ol>
-  <li>Drag the <code>ChipButton</code> prefab onto <code>Pause/Panel/Glass</code>. Rename it <code>MENU</code>. Change it:</li>
-</ol>
-<div class="table-wrap"><table>
-  <tr><th>Object</th><th>Change</th></tr>
-  <tr><td><code>MENU</code></td><td>Anchor top left, pivot <b>0, 1</b>, Pos <b>40, -408</b>, Size <b>202.424 × 92</b>. Button FX → Base Color <code>616B85</code> (stays). <b>Add Component → Game Action</b>, Action <code>menu</code>.</td></tr>
-  <tr><td><code>Shadow</code>, <code>Tint</code>, <code>Glass</code>, <code>Glass/Edge</code></td><td>PPU <b>1.148</b> (96 ÷ 92 × 1.1)</td></tr>
-  <tr><td><code>Glass/IconDisc</code></td><td>Colour <code>616B85 · 217</code> (stays), Pos <b>17.48</b>, 0, Size <b>57.04 × 57.04</b></td></tr>
-  <tr><td><code>Glass/IconDisc/Icon_Back</code></td><td>Rename to <code>Icon_Home</code>, Size <b>34.22 × 34.22</b>. Its Glyph: <code>ic_home</code>.</td></tr>
-  <tr><td><code>Glass/Content</code></td><td>Left <b>92</b>, Right <b>17.48</b> (Bottom and Top stay 6)</td></tr>
-  <tr><td><code>Glass/Content/Label</code></td><td>Text <code>MENU</code> (Poppins-Bold 30, Best Fit 16–30 stay)</td></tr>
-</table></div>
-<ol start="2">
-  <li>Select <code>MENU</code>, press <b>Ctrl+D</b> twice. Change the copies:</li>
-</ol>
-<div class="table-wrap"><table>
-  <tr><th>Copy</th><th>Pos</th><th>Size</th><th>Colours (Base Color, Halo, IconDisc)</th><th>Icon</th><th>Label</th><th>Game Action</th></tr>
-  <tr><td><code>RETRY</code></td><td>258.424, -408</td><td>202.424 × 92</td><td><code>408CF2</code> (blue)</td><td><code>Icon_Retry</code>, <code>ic_replay</code></td><td>RETRY</td><td><code>retry</code></td></tr>
-  <tr><td><code>RESUME</code></td><td>476.849, -408</td><td><b>263.152</b> × 92</td><td><code>42CC80</code> (green)</td><td><code>Icon_Play</code>, <code>ic_play_arrow</code></td><td>RESUME</td><td><code>resume</code></td></tr>
-</table></div>
-<ol start="3">
-  <li>On <code>RESUME</code> only (the main button): <code>Tint</code> colour <code>080D1F · 115</code>, <code>Glass/Edge</code> colour <code>97E3B9 · 242</code>.</li>
-  <li>When the PAUSE dialog is done, untick <code>Pause</code>.</li>
-</ol>
-<p>The widths come from the footer: 780 − 2 × 40 − 2 × 16 = 668 px are shared 1 : 1 : 1.3. Halo and IconDisc keep their alpha (0 and 217): only change the hex value.</p>
-
-<!-- ======================================================= 16 -->
-<h2 id="step-16"><span class="step">16</span>The CAUGHT dialog</h2>
-<p>CAUGHT has the same size as PAUSE. It has other cards, a tip box instead of the toggles, and two buttons.</p>
-<ol>
-  <li>Tick <code>Pause</code>, select it and press <b>Ctrl+D</b>. Rename the copy <code>Lose</code>. Untick <code>Pause</code> again.</li>
-  <li>Change these values in <code>Lose</code> (all paths start at <code>Lose/Panel/Glass</code>):</li>
-</ol>
-<div class="table-wrap"><table>
-  <tr><th>Object</th><th>Change</th></tr>
-  <tr><td><code>Badge</code></td><td>Colour <code>ED4C57 · 230</code> (red). Rename <code>Icon_Pause</code> to <code>Icon_Close</code>, Glyph <code>ic_close</code>.</td></tr>
-  <tr><td><code>Title</code></td><td><code>CAUGHT!</code></td></tr>
-  <tr><td><code>Subtitle</code></td><td><code>The monsters got you...</code></td></tr>
-  <tr><td><code>Stat_GOLD</code></td><td>Rename to <code>Stat_COLLECTED</code>. Caption <code>COLLECTED</code>.</td></tr>
-  <tr><td><code>Stat_COLLECTED</code> → Ctrl+D</td><td>Rename the copy <code>Stat_BANKED</code>. Pos <b>278.667, -148</b>. Caption <code>BANKED</code>, Value <code>+0</code>.</td></tr>
-  <tr><td><code>Stat_TIME</code></td><td>Pos <b>517.333, -148</b>.</td></tr>
-  <tr><td><code>Stat_LIVES</code>, <code>MUSIC  ONBtn</code>, <code>SOUND  ONBtn</code>, <code>RETRY</code> (the blue one)</td><td>Delete.</td></tr>
-  <tr><td><code>MENU</code></td><td>Size <b>297.391</b> × 92.</td></tr>
-  <tr><td><code>RESUME</code></td><td>Rename to <code>RETRY</code>. Pos <b>353.391, -408</b>, Size <b>386.609</b> × 92. Game Action <code>retry</code>. Rename <code>Icon_Play</code> to <code>Icon_Retry</code>, Glyph <code>ic_replay</code>. Label <code>RETRY</code>. (It stays green.)</td></tr>
-</table></div>
-<p>Now the tip box. It goes where the toggles were:</p>
-<div class="table-wrap"><table>
-  <tr><th>Object (parent)</th><th>Create</th><th>Rect</th><th>Look / Text</th></tr>
-  <tr><td><code>Tip</code> (Lose/Panel/Glass)</td><td>Empty</td><td>top left, pivot 0, 1 · Pos 40, -284 · 700 × 80</td><td>–</td></tr>
-  <tr><td><code>Bg</code> (Tip)</td><td>Image</td><td>stretch 0</td><td><code>rr</code>, <code>33C7E6 · 26</code>, Sliced, PPU <b>1.8</b></td></tr>
-  <tr><td><code>Edge</code> (Tip)</td><td>Image</td><td>stretch 0</td><td><code>rro2</code>, <code>33C7E6 · 89</code>, Sliced, PPU 1.8</td></tr>
-  <tr><td><code>Icon</code> (Tip)</td><td>Image</td><td>middle left, pivot 0, 0.5 · Pos 18, 0 · 44 × 44</td><td><code>circle</code>, <code>33C7E6 · 204</code></td></tr>
-  <tr><td><code>Icon_Info</code> (Icon)</td><td>Empty</td><td>middle centre · 24 × 24</td><td>–</td></tr>
-  <tr><td><code>Glyph</code> (Icon_Info)</td><td>Image</td><td>stretch 0</td><td><code>ic_info</code>, <code>F2F7FF</code>, Preserve Aspect</td></tr>
-  <tr><td><code>TipText</code> (Tip)</td><td>Text</td><td>stretch L B R T = 80, 6, 20, 6</td><td><code>&lt;b&gt;TIP&lt;/b&gt;  Push the stick to the edge to sprint past slow slimes.</code>, Poppins-SemiBold <b>24</b>, Middle Left, <code>F2F7FF · 230</code>, Rich Text, Horizontal Overflow <b>Wrap</b>, Vertical Overflow <b>Overflow</b></td></tr>
-</table></div>
-<p>Each time you lose, GameUI picks one of six tips at random. <b>BANKED</b> is the gold you keep: the coins you took before you were caught.</p>
-<p>Untick <code>Lose</code> when it is done.</p>
-
-<!-- ======================================================= 17 -->
-<h2 id="step-17"><span class="step">17</span>The LEVEL COMPLETE dialog</h2>
-<p>LEVEL COMPLETE is bigger (860 × 740). It shows up to three stars, the three star rules, and three cards. Start from PAUSE again, because it has the right three buttons.</p>
-<ol>
-  <li>Tick <code>Pause</code>, press <b>Ctrl+D</b>, rename the copy <code>Win</code>. Untick <code>Pause</code>. (Modal now has Intro, Countdown, Pause, Win, Lose.)</li>
-  <li>Change these values (paths start at <code>Win/Panel</code>):</li>
-</ol>
-<div class="table-wrap"><table>
-  <tr><th>Object</th><th>Change</th></tr>
-  <tr><td><code>Panel</code></td><td>Size <b>860 × 740</b></td></tr>
-  <tr><td><code>Glass/Badge</code></td><td>Colour <code>42CC80 · 230</code> (green). Rename <code>Icon_Pause</code> to <code>Icon_Star</code>, Glyph <code>ic_star</code>.</td></tr>
-  <tr><td><code>Glass/Title</code></td><td><code>LEVEL COMPLETE!</code>, Size <b>672</b> × 60</td></tr>
-  <tr><td><code>Glass/Subtitle</code></td><td>Size <b>670</b> × 32</td></tr>
-  <tr><td>second <code>Glass/Divider</code></td><td>Pos Y <b>-608</b> (= -(740 − 132))</td></tr>
-  <tr><td><code>MUSIC  ONBtn</code>, <code>SOUND  ONBtn</code></td><td>Delete.</td></tr>
-  <tr><td><code>Glass/Stat_TIME</code></td><td>Pos <b>40, -458</b>, Size <b>249.333</b> × 116</td></tr>
-  <tr><td><code>Glass/Stat_LIVES</code></td><td>Rename to <code>Stat_BEST</code>. Pos <b>305.333, -458</b>, Size 249.333 × 116. Caption <code>BEST</code>, Value <code>0:00.0</code>. Rename <code>Icon_Heart</code> to <code>Icon_Star</code>, Glyph <code>ic_star</code>.</td></tr>
-  <tr><td><code>Glass/Stat_GOLD</code></td><td>Rename to <code>Stat_GOLD EARNED</code>. Pos <b>570.667, -458</b>, Size 249.333 × 116. Caption <code>GOLD EARNED</code>, Value <code>+0</code>.</td></tr>
-  <tr><td><code>Glass/MENU</code>, <code>Glass/RETRY</code></td><td>Pos <b>40, -628</b> and <b>282.667, -628</b>. Size <b>226.667</b> × 92.</td></tr>
-  <tr><td><code>Glass/RESUME</code></td><td>Rename to <code>NEXT</code>. Pos <b>525.333, -628</b>, Size <b>294.667</b> × 92. Game Action <code>next</code>. Label <code>NEXT</code>. (Icon_Play stays.)</td></tr>
-</table></div>
-<p>Now the stars. Each star has a faint "back" star behind it, so you see the empty places too. The side stars are smaller and tilted.</p>
-<div class="table-wrap"><table>
-  <tr><th>Object (parent)</th><th>Create</th><th>Rect</th><th>Look</th></tr>
-  <tr><td><code>Stars</code> (Win/Panel/Glass)</td><td>Empty</td><td>top centre, pivot 0.5, 0.5 · Pos 0, -224 · 560 × 170</td><td>–</td></tr>
-  <tr><td><code>Back0</code> (Stars)</td><td>Image</td><td>middle centre · Pos -160, -6 · 118 × 118 · Rotation Z <b>12</b></td><td><code>star</code>, <code>FFFFFF · 26</code></td></tr>
-  <tr><td><code>Star0</code> (Stars)</td><td>Image</td><td>the same as Back0</td><td><code>star</code>, <code>FFC233</code></td></tr>
-  <tr><td><code>Back1</code> (Stars)</td><td>Image</td><td>middle centre · Pos 0, 18 · <b>150 × 150</b> · Rotation Z 0</td><td><code>star</code>, <code>FFFFFF · 26</code></td></tr>
-  <tr><td><code>Star1</code> (Stars)</td><td>Image</td><td>the same as Back1</td><td><code>star</code>, <code>FFC233</code></td></tr>
-  <tr><td><code>Back2</code> (Stars)</td><td>Image</td><td>middle centre · Pos 160, -6 · 118 × 118 · Rotation Z <b>-12</b></td><td><code>star</code>, <code>FFFFFF · 26</code></td></tr>
-  <tr><td><code>Star2</code> (Stars)</td><td>Image</td><td>the same as Back2</td><td><code>star</code>, <code>FFC233</code></td></tr>
-</table></div>
-<p>And the three rules. Each rule is a small star and a text. GameUI makes the star gold when you got it, and grey when you did not.</p>
-<div class="table-wrap"><table>
-  <tr><th>Object (parent)</th><th>Create</th><th>Rect</th><th>Look / Text</th></tr>
-  <tr><td><code>Crit0</code> (Win/Panel/Glass)</td><td>Empty</td><td>top centre, pivot <b>0, 1</b> · Pos -200, -320 · 460 × 36</td><td>–</td></tr>
-  <tr><td><code>Star</code> (Crit0)</td><td>Image</td><td>middle left, pivot 0, 0.5 · Pos 0, 0 · 28 × 28</td><td><code>star</code>, <code>FFC233</code></td></tr>
-  <tr><td><code>Label</code> (Crit0)</td><td>Text</td><td>stretch L B R T = 42, 0, 0, 0</td><td><code>Collect all gold &amp; escape</code>, Poppins-SemiBold <b>26</b>, Middle Left, <code>F2F7FF</code>, no effect</td></tr>
-  <tr><td><code>Crit1</code> (Ctrl+D of Crit0)</td><td>–</td><td>Pos -200, <b>-360</b></td><td>Label <code>Beat par time</code></td></tr>
-  <tr><td><code>Crit2</code> (Ctrl+D of Crit0)</td><td>–</td><td>Pos -200, <b>-400</b></td><td>Label <code>Don't get caught</code></td></tr>
-</table></div>
-<p>The three rules are the three stars: 1 star for winning, +1 for beating par time, +1 for no hits. GameUI adds the par time to the second rule, for example "Beat par time 0:40". Untick <code>Win</code> when it is done.</p>
-
-<!-- ======================================================= 18 -->
-<h2 id="step-18"><span class="step">18</span>Connect everything to GameUI</h2>
-<p>Now tell GameUI where each part is. Select <code>GameUI</code> and click the <b>lock</b> icon at the top of the Inspector, so the Inspector stays on GameUI while you drag objects from the Hierarchy. Drag each object into its field. (For a Text, Image or Canvas Group field, drag the object: Unity takes the right component.)</p>
-<h3>Layers and HUD</h3>
-<div class="table-wrap"><table>
-  <tr><th>Field</th><th>Drag in</th><th>Field</th><th>Drag in</th></tr>
-  <tr><td>Canvas Rt</td><td><code>GameUI</code></td><td>Arrow Root</td><td><code>HUD/Arrow</code></td></tr>
-  <tr><td>Hud</td><td><code>HUD</code></td><td>Arrow Tri</td><td><code>HUD/Arrow/Tri</code></td></tr>
-  <tr><td>Modal</td><td><code>Modal</code></td><td>Arrow Icon Bg</td><td><code>HUD/Arrow/Bg</code></td></tr>
-  <tr><td>Joystick</td><td>leave empty (phase 10)</td><td>Arrow Coin</td><td><code>HUD/Arrow/CoinIcon</code></td></tr>
-  <tr><td>Markers</td><td><code>WorldMarkers</code></td><td>Toast Group, Toast Rt</td><td><code>HUD/Toast</code> (both)</td></tr>
-  <tr><td>Coin Text</td><td><code>HUD/CoinPill/Label</code></td><td>Toast Title</td><td><code>HUD/Toast/Title</code></td></tr>
-  <tr><td>Coin Pill</td><td><code>HUD/CoinPill</code></td><td>Toast Sub</td><td><code>HUD/Toast/Sub</code></td></tr>
-  <tr><td>Coin Icon</td><td><code>HUD/CoinPill/Coin</code></td><td>Hearts Root</td><td><code>HUD/Hearts</code></td></tr>
-  <tr><td>Hearts (size 3)</td><td><code>Heart0</code>, <code>Heart1</code>, <code>Heart2</code></td><td>Timer Root</td><td><code>HUD/Timer</code></td></tr>
-  <tr><td>Timer Text</td><td><code>HUD/Timer/Label</code></td><td>Pause Button</td><td><code>HUD/Pause</code></td></tr>
-  <tr><td>Par Text</td><td><code>HUD/Timer/ParLabel</code></td><td>Day Night Root</td><td><code>HUD/DayNight</code></td></tr>
-  <tr><td>Par Star</td><td><code>HUD/Timer/Star</code></td><td>Flash</td><td><code>Flash</code></td></tr>
-  <tr><td>Stamina Fill</td><td><code>HUD/Stamina/Fill</code></td><td>Hint Group</td><td><code>HUD/Hint</code></td></tr>
-  <tr><td>Sprint Text</td><td><code>HUD/Stamina/Label</code></td><td>Hint Text</td><td><code>HUD/Hint/Label</code></td></tr>
-  <tr><td>Stamina Root, Stamina Group</td><td><code>HUD/Stamina</code> (both)</td><td>Power Rows (size 3)</td><td>Element N: Root <code>PowerN</code>, Fill <code>PowerN/Fill</code>, Name <code>PowerN/Name</code></td></tr>
-</table></div>
-<h3>Dialogs and intro</h3>
-<p>Open <b>Pause Dialog</b>, <b>Win Dialog</b> and <b>Lose Dialog</b> (click the little arrows). Paths start at <code>Modal/</code>; <code>…/Glass</code> means <code>Panel/Glass</code>.</p>
-<div class="table-wrap"><table>
-  <tr><th>Field</th><th>Pause Dialog</th><th>Win Dialog</th><th>Lose Dialog</th></tr>
-  <tr><td>Root</td><td><code>Pause</code></td><td><code>Win</code></td><td><code>Lose</code></td></tr>
-  <tr><td>Panel</td><td><code>Pause/Panel</code></td><td><code>Win/Panel</code></td><td><code>Lose/Panel</code></td></tr>
-  <tr><td>Badge, Title, Subtitle</td><td colspan="3">the <code>Badge</code>, <code>Title</code> and <code>Subtitle</code> in that dialog's <code>…/Glass</code></td></tr>
-  <tr><td>Values (size 3)</td><td>the <b>Value</b> of GOLD, TIME, LIVES</td><td>the Value of TIME, BEST, GOLD EARNED</td><td>the Value of COLLECTED, BANKED, TIME</td></tr>
-  <tr><td>Captions</td><td>size 0</td><td>size 3: the <b>Caption</b> of TIME, BEST, GOLD EARNED</td><td>size 0</td></tr>
-  <tr><td>Stars</td><td>size 0</td><td>size 3: <code>Stars/Star0</code>, <code>Star1</code>, <code>Star2</code></td><td>size 0</td></tr>
-  <tr><td>Crit Stars</td><td>size 0</td><td>size 3: <code>Crit0/Star</code>, <code>Crit1/Star</code>, <code>Crit2/Star</code></td><td>size 0</td></tr>
-  <tr><td>Crit Texts</td><td>size 0</td><td>size 3: <code>Crit0/Label</code>, <code>Crit1/Label</code>, <code>Crit2/Label</code></td><td>size 0</td></tr>
-  <tr><td>Buttons</td><td>size 3: MENU, RETRY, RESUME</td><td>size 3: MENU, RETRY, NEXT</td><td>size 2: MENU, RETRY</td></tr>
-  <tr><td>Weights</td><td>1, 1, 1.3</td><td>1, 1, 1.3</td><td>1, 1.3</td></tr>
-  <tr><td>Tip</td><td>none</td><td>none</td><td><code>Tip/TipText</code></td></tr>
-  <tr><td>Music, Sound</td><td><code>MUSIC  ONBtn</code>, <code>SOUND  ONBtn</code></td><td>none</td><td>none</td></tr>
-  <tr><td>Width, Height</td><td>780, 520</td><td>860, 740</td><td>780, 520</td></tr>
-</table></div>
-<div class="table-wrap"><table>
-  <tr><th>Field</th><th>Drag in</th></tr>
-  <tr><td>Intro Root</td><td><code>Modal/Intro</code></td></tr>
-  <tr><td>Intro Band</td><td><code>Modal/Intro/Band</code></td></tr>
-  <tr><td>Intro Level, Intro Title, Intro Goal</td><td><code>Band/Level</code>, <code>Band/Title</code>, <code>Band/Goal</code></td></tr>
-  <tr><td>Count Text</td><td><code>Modal/Countdown</code></td></tr>
-</table></div>
-<p>Click the lock icon again to unlock the Inspector. Save the scene (<b>Ctrl+S</b>).</p>
-<div class="note"><b>Why Width, Height and Weights?</b> After the last level there is no NEXT. Then GameUI hides NEXT and shares the footer between MENU and RETRY again. It needs the panel width and the weights for that.</div>
-
-<!-- ======================================================= 19 -->
-<h2 id="step-19"><span class="step">19</span>▶ Press Play</h2>
-<p>Start in <code>MainMenu</code> and click <b>PLAY</b> (or press Play in Level1).</p>
-<ul>
-  <li>The band shows <b>LEVEL 1 · TRAINING YARD</b>, then <b>3 – 2 – 1 – GO!</b> while the camera swoops behind the hero.</li>
-  <li>The HUD drops in from the top: <code>0 / 6</code> with a spinning coin, two hearts, the timer with ★ PAR 0:40, the sun and pause buttons. The controls hint shows at the bottom for 7 seconds.</li>
-  <li>Take a coin: it flies into the counter, "+1" rises, the counter jumps. A gold arrow at the edge points to the next coin.</li>
-  <li>Monsters show a "!" bubble when they see you. Power-ups have a SPEED / GHOST / MAGNET label. Take one: a message flips in and a coloured bar counts down.</li>
-  <li>Sprint (Shift): the stamina bar appears. Get hit: red flash, a heart goes dark, "OUCH!".</li>
-  <li>Press <b>N</b> or click the sun: day turns to night (sky, sun, fog). The icon turns into a moon.</li>
-  <li>Press <b>Esc</b> or click pause: the PAUSED dialog with your gold, time and lives. MUSIC and SOUND switch ON/OFF. <b>RESUME</b> plays on, <b>RETRY</b> starts again, <b>MENU</b> goes back to the main menu.</li>
-  <li>Take all gold: "ALL GOLD COLLECTED!" and a green EXIT label over the gate. Run through: confetti and LEVEL COMPLETE with your stars.</li>
-  <li>Let the monsters catch you twice: slow motion, then CAUGHT with a tip.</li>
-</ul>
-
-<figure class="shot"><img src="images/07_win.jpg" alt="" loading="lazy"><figcaption>The pause dialog with real numbers.</figcaption></figure>
-<div class="warn">Don't click <b>NEXT</b> yet. Level 2 is not in your project until phase 10, so Unity shows an error. For now use MENU or RETRY.</div>
-<p><b>You should see:</b> the full game in Level 1, with the HUD, the countdown and all three dialogs, just like the pictures in step 1.</p>
-
-<!-- ======================================================= 20 -->
-<h2 id="step-20"><span class="step">20</span>Common problems</h2>
+<h2 id="step-6"><span class="step">6</span>Common problems</h2>
 <div class="table-wrap"><table>
   <tr><th>Problem</th><th>Fix</th></tr>
-  <tr><td>Error: <code>'GameManager' does not contain a definition for 'ArrowTarget'</code> (or <code>Run</code>)</td><td>The GameManager is still the phase 8 version. Copy <code>Final/Gameplay/GameManager.cs</code> (step 2).</td></tr>
-  <tr><td>Error: <code>'VirtualJoystick' does not contain a definition for 'Release'</code></td><td>The short phase 4 file is still there. Copy the real <code>VirtualJoystick.cs</code> and <code>TouchLookArea.cs</code> (step 2).</td></tr>
-  <tr><td>Error: <code>GameAction could not be found</code></td><td>Type GameAction (step 3). The file name must be <code>GameAction.cs</code>.</td></tr>
-  <tr><td>Scripts in my scenes say "Missing (Mono Script)".</td><td>A <code>.meta</code> file was deleted (a whole folder was replaced). Undo with your backup, or drag the right script into each empty Script field. Next time copy only the <code>.cs</code> files.</td></tr>
-  <tr><td>In Play mode a second HUD appears over mine (everything twice).</td><td>The <b>Hud</b> field of GameUI is empty, so it builds a new UI from code. Fill it (step 18).</td></tr>
-  <tr><td><code>NullReferenceException</code> in <code>GameUI.Update</code></td><td>A HUD field is empty: Timer Text, Par Text, Par Star, Stamina Fill, Sprint Text, Stamina Group, Arrow Root, Arrow Tri or Arrow Icon Bg (step 18).</td></tr>
-  <tr><td><code>NullReferenceException</code> in <code>ShowPause</code>, <code>ShowWin</code> or <code>ShowLose</code></td><td>A list of that dialog is too short or empty (Values 3, Win: Captions, Stars, Crit Stars, Crit Texts 3, Buttons 3). Each dialog Root needs a <b>Canvas Group</b>.</td></tr>
-  <tr><td><code>NullReferenceException</code> in <code>Intro</code> and no countdown</td><td>Fill Intro Root (with a Canvas Group), Intro Band, Intro Level, Intro Title, Intro Goal and Count Text.</td></tr>
-  <tr><td>The pause button does nothing.</td><td>It needs a <b>Button</b> with Target Graphic <code>Pause/Glass</code> (raycast on), and the <b>Pause Button</b> field. Is there an EventSystem in the scene?</td></tr>
-  <tr><td>A dialog button does nothing.</td><td>It needs a <b>Game Action</b> with the action spelled exactly: <code>menu</code>, <code>retry</code>, <code>resume</code>, <code>next</code>.</td></tr>
-  <tr><td>MUSIC / SOUND always say ON, or the click does nothing.</td><td>Drag them into <b>Music</b> and <b>Sound</b> of the Pause Dialog. The icon disc must be at <code>Glass/IconDisc</code>.</td></tr>
-  <tr><td>The pill ends look flat or too round.</td><td>Wrong PPU, or one layer was missed. All four layers (Shadow, Tint, Glass, Edge) need the same PPU = 128 ÷ height.</td></tr>
-  <tr><td>A text does not show.</td><td>Font missing (pick Poppins), Overflow set to Wrap/Truncate on a small box, or the colour alpha is 0.</td></tr>
-  <tr><td>The coin counter shows <code>&lt;size=40&gt;</code> as text.</td><td>Tick <b>Rich Text</b> on <code>CoinPill/Label</code>.</td></tr>
-  <tr><td>The dialog is visible when the level starts.</td><td>Normal in edit mode if you left it ticked: <code>Bind()</code> hides it. If it stays, the Root field of that dialog is empty.</td></tr>
-  <tr><td>I click on the HUD but the camera turns instead.</td><td>Press Esc first to free the mouse. While you play, the mouse is locked to turn the camera.</td></tr>
-  <tr><td>NEXT gives the error <code>Scene 'Level2' couldn't be loaded</code>.</td><td>Normal in this phase. Level 2 comes in phase 10.</td></tr>
+  <tr><td>A dialog button does nothing.</td><td>It needs a <b>Game Action</b> with the action spelled exactly: <code>menu</code>, <code>retry</code>, <code>resume</code>, <code>next</code>. And the scene needs an <code>EventSystem</code>.</td></tr>
+  <tr><td>Everything appears twice in Play mode.</td><td>The <b>Hud</b> field of Game UI is empty, so it builds a second UI in code. Import the package again, or drag <code>GameUI/HUD</code> into <b>Hud</b>.</td></tr>
+  <tr><td><code>NullReferenceException</code> in <code>ShowPause</code>, <code>ShowWin</code> or <code>ShowLose</code>.</td><td>You deleted or renamed a part that a Game UI field points to. Import the package again.</td></tr>
+  <tr><td>A dialog is visible when the level starts.</td><td>Normal in edit mode if you ticked it: <code>Bind()</code> hides it at Play.</td></tr>
+  <tr><td>I click on the HUD, but the camera turns.</td><td>While you play, the mouse is locked. Press <kbd>Esc</kbd> first to free it.</td></tr>
+  <tr><td>NEXT gives <code>Scene 'Level2' couldn't be loaded</code>.</td><td>Normal in this phase. Level 2 comes in phase 10.</td></tr>
 </table></div>
-<p><b>Checkpoint package:</b> <code>GoldRush_Phase09_GameUI.unitypackage</code> – the project at the end of this phase.</p>
 
 <nav class="pager" aria-label="Previous and next page">
 <a class="prev" href="phase-08.html"><small>← Previous</small>Phase 8: Power-ups and effects</a>
