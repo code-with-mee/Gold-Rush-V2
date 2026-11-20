@@ -406,6 +406,92 @@ namespace GoldRush.EditorTools
             Debug.Log($"[GoldRush] Level materials: {map.Count} merged into the kit, {olds.Count - map.Count} renamed");
         }
 
+        /// <summary>Replaces materials in every scene (renderers + day/night lists + palette), then deletes the old ones.</summary>
+        static void SwapEverywhere(Dictionary<Material, Material> map)
+        {
+            if (map.Count == 0) return;
+            foreach (var sn in SceneNames)
+            {
+                string sp = "Assets/GoldRush/Scenes/" + sn + ".unity";
+                if (!File.Exists(sp)) continue;
+                var sc = EditorSceneManager.OpenScene(sp, OpenSceneMode.Single);
+                bool dirty = false;
+                foreach (var r in sc.GetRootGameObjects().SelectMany(g => g.GetComponentsInChildren<Renderer>(true)))
+                {
+                    var mats = r.sharedMaterials; bool ch = false;
+                    for (int j = 0; j < mats.Length; j++) if (mats[j] && map.TryGetValue(mats[j], out var to)) { mats[j] = to; ch = true; }
+                    if (ch) { r.sharedMaterials = mats; dirty = true; }
+                }
+                foreach (var t in sc.GetRootGameObjects().SelectMany(g => g.GetComponentsInChildren<DayNightTint>(true)))
+                {
+                    foreach (var e in t.entries) if (e.material && map.TryGetValue(e.material, out var to)) { e.material = to; dirty = true; }
+                    t.entries = t.entries.GroupBy(e => e.material).Select(g => g.First()).ToList();
+                    EditorUtility.SetDirty(t);
+                }
+                if (dirty) EditorSceneManager.SaveScene(sc);
+            }
+            var pal = AssetDatabase.LoadAssetAtPath<DayNightPalette>("Assets/GoldRush/Resources/DayNightPalette.asset");
+            if (pal)
+            {
+                foreach (var e in pal.entries) if (e.material && map.TryGetValue(e.material, out var to)) e.material = to;
+                pal.entries = pal.entries.GroupBy(e => e.material).Select(g => g.First()).ToList();
+                EditorUtility.SetDirty(pal);
+            }
+            foreach (var m in map.Keys) AssetDatabase.DeleteAsset(AssetDatabase.GetAssetPath(m));
+            AssetDatabase.SaveAssets();
+        }
+
+        /// <summary>Second pass: materials that are exactly the same become one, with a clean name (no "_2", "_Tile1").</summary>
+        [MenuItem("Gold Rush/Course/Merge Duplicate Materials", priority = 85)]
+        public static void MergeDuplicates()
+        {
+            var all = Directory.GetFiles(MatDir, "M_*.mat").Select(AssetDatabase.LoadAssetAtPath<Material>).Where(x => x).ToList();
+            string Key(Material m)
+            {
+                var tex = m.HasProperty("_BaseMap") ? m.GetTexture("_BaseMap") : null;
+                Vector2 sc = m.HasProperty("_BaseMap") ? m.GetTextureScale("_BaseMap") : Vector2.one;
+                Color c = m.HasProperty("_BaseColor") ? m.GetColor("_BaseColor") : Color.white;
+                Color e = m.HasProperty("_EmissionColor") ? m.GetColor("_EmissionColor") : Color.black;
+                return $"{m.shader.name}|{m.renderQueue}|{m.IsKeywordEnabled("_EMISSION")}|{(tex ? AssetDatabase.GetAssetPath(tex) : "")}|{sc.x:F1}|" +
+                       $"{c.r:F2},{c.g:F2},{c.b:F2},{c.a:F2}|{e.r:F1},{e.g:F1},{e.b:F1}";
+            }
+            string Clean(string n)
+            {
+                n = System.Text.RegularExpressions.Regex.Replace(n, "_[0-9]+$", "");
+                return System.Text.RegularExpressions.Regex.Replace(n, "_Tile1$", "");
+            }
+            var map = new Dictionary<Material, Material>();
+            foreach (var g in all.GroupBy(Key))
+            {
+                var keep = g.OrderBy(m => m.name.Length).First();
+                foreach (var m in g) if (m != keep) map[m] = keep;
+            }
+            SwapEverywhere(map);
+            // tidy names of what is left
+            foreach (var m in Directory.GetFiles(MatDir, "M_*.mat").Select(AssetDatabase.LoadAssetAtPath<Material>).Where(x => x))
+            {
+                string n = Clean(m.name);
+                if (n == m.name) continue;
+                string target = MatDir + n + ".mat";
+                if (!File.Exists(target)) AssetDatabase.MoveAsset(AssetDatabase.GetAssetPath(m), target);
+            }
+            AssetDatabase.SaveAssets();
+            Debug.Log($"[GoldRush] Merged {map.Count} duplicate materials");
+        }
+
+        /// <summary>Renames materials listed in Temp/gr_rename.txt ("OldName NewName" per line).</summary>
+        public static void RenameFromList()
+        {
+            foreach (var line in File.ReadAllLines("Temp/gr_rename.txt"))
+            {
+                var p = line.Split(' ');
+                if (p.Length != 2) continue;
+                string err = AssetDatabase.RenameAsset(MatDir + p[0] + ".mat", p[1]);
+                if (!string.IsNullOrEmpty(err)) Debug.LogWarning("[GoldRush] rename " + line + ": " + err);
+            }
+            AssetDatabase.SaveAssets();
+        }
+
         static bool SameTiling(Material a, Material b)
         {
             if (!a.HasProperty("_BaseMap") || !b.HasProperty("_BaseMap")) return true;

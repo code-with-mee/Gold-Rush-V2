@@ -18,7 +18,7 @@ namespace GoldRush.EditorTools
     {
         public const string SceneDir = "Assets/GoldRush/Scenes/";
         public const string MaterialDir = "Assets/GoldRush/Materials/Level/";
-        public const string PrefabDir = "Assets/GoldRush/Prefabs/Level/";
+        public const string PrefabDir = "Assets/GoldRush/Prefabs/Markers/"; // level-design markers (the building kit: KitBuilder)
         const string PalettePath = "Assets/GoldRush/Resources/DayNightPalette.asset";
 
         // day/night colours of every material used by the levels + prefabs (written to the palette asset)
@@ -125,7 +125,7 @@ namespace GoldRush.EditorTools
 
         // ------------------------------------------------------------------ prefab palette
 
-        [MenuItem("Gold Rush/Level Design/Rebuild Prefab Palette", priority = 61)]
+        [MenuItem("Gold Rush/Level Design/Rebuild Marker Prefabs", priority = 61)]
         public static void BuildPrefabsMenu()
         {
             collected.Clear();
@@ -138,8 +138,7 @@ namespace GoldRush.EditorTools
         /// <summary>Drag-and-drop building pieces for designing levels by hand.</summary>
         static void BuildPrefabs()
         {
-            Directory.CreateDirectory(PrefabDir + "Blocks");
-            Directory.CreateDirectory(PrefabDir + "Gameplay");
+            Directory.CreateDirectory(PrefabDir);
             var previous = SceneManager.GetActiveScene();
             var scene = EditorSceneManager.NewScene(NewSceneSetup.EmptyScene, NewSceneMode.Additive);
             SceneManager.SetActiveScene(scene);
@@ -148,28 +147,14 @@ namespace GoldRush.EditorTools
                 var holder = new GameObject("Holder").transform;
                 var pieces = new List<(string path, GameObject go)>
                 {
-                    ("Blocks/Block_1x1x1", Props.Block(holder, Vector3.zero, new Vector3(1, 1, 1))),
-                    ("Blocks/Block_2x2x2", Props.Block(holder, Vector3.zero, new Vector3(2, 2, 2))),
-                    ("Blocks/Block_4x1x2", Props.Block(holder, Vector3.zero, new Vector3(4, 1, 2))),
-                    ("Blocks/Wall_8m", Props.Wall(holder, new Vector3(-4, 0, 0), new Vector3(4, 0, 0), 2.3f, 1f)),
-                    ("Blocks/Wall_4m", Props.Wall(holder, new Vector3(-2, 0, 0), new Vector3(2, 0, 0), 2.3f, 1f)),
-                    ("Blocks/Pillar", Props.Pillar(holder, Vector3.zero, 3f)),
-                    ("Blocks/Barrier_Orange", Props.Barrier(holder, Vector3.zero, 3f, 0f, Accent.Orange)),
-                    ("Blocks/AccentBlock_Red", Props.AccentBlock(holder, Vector3.zero, new Vector3(1.5f, 1.5f, 1.5f), Accent.Red)),
-                    ("Blocks/AccentBlock_Orange", Props.AccentBlock(holder, Vector3.zero, new Vector3(1.5f, 1.5f, 1.5f), Accent.Orange)),
-                    ("Blocks/AccentBlock_Teal", Props.AccentBlock(holder, Vector3.zero, new Vector3(1.5f, 1.5f, 1.5f), Accent.Teal)),
-                    ("Blocks/LampPost", TopUnder(holder, Props.LampPost(holder, Vector3.zero).transform)),
-                    ("Blocks/Terminal", Props.Terminal(holder, Vector3.zero, 0f, Props.GlowCyan)),
-                    ("Blocks/FloorPad_Cyan", Props.FloorPad(holder, Vector3.zero, 3f, Props.Glow(Props.GlowCyan))),
-                    ("Gameplay/ExitGate", ExitGate.Create(holder, Vector3.zero).gameObject),
-                    ("Gameplay/PlayerSpawn", new GameObject("PlayerSpawn", typeof(PlayerSpawn))),
-                    ("Gameplay/CoinSpot", new GameObject("CoinSpot", typeof(CoinSpot))),
-                    ("Gameplay/Monster_Slime", MonsterMarker("Slime", EnemyType.Patroller)),
-                    ("Gameplay/Monster_Ghost", MonsterMarker("Ghost", EnemyType.Chaser)),
-                    ("Gameplay/Monster_MushroomKing", MonsterMarker("MushroomKing", EnemyType.Guard)),
-                    ("Gameplay/PowerUp_Speed", PowerMarker(PowerType.Speed)),
-                    ("Gameplay/PowerUp_Ghost", PowerMarker(PowerType.Ghost)),
-                    ("Gameplay/PowerUp_Magnet", PowerMarker(PowerType.Magnet)),
+                    ("PlayerSpawn", new GameObject("PlayerSpawn", typeof(PlayerSpawn))),
+                    ("CoinSpot", new GameObject("CoinSpot", typeof(CoinSpot))),
+                    ("Monster_Slime", MonsterMarker("Slime", EnemyType.Patroller)),
+                    ("Monster_Ghost", MonsterMarker("Ghost", EnemyType.Chaser)),
+                    ("Monster_MushroomKing", MonsterMarker("MushroomKing", EnemyType.Guard)),
+                    ("PowerUp_Speed", PowerMarker(PowerType.Speed)),
+                    ("PowerUp_Ghost", PowerMarker(PowerType.Ghost)),
+                    ("PowerUp_Magnet", PowerMarker(PowerType.Magnet)),
                 };
                 var tint = holder.gameObject.AddComponent<DayNightTint>();
                 Props.ApplyTints(tint);
