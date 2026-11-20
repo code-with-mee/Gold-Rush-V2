@@ -138,6 +138,8 @@
 
 <p><b>Other ways to start:</b> copy <code>Level2</code>, <code>Level3</code> or <code>Level4</code> the same way (bigger arenas, more monsters). Or make your own <b>template</b> once: a copy of Level1 with all obstacles, coins and monsters deleted, saved as <code>LevelTemplate</code>. Then each new level is <b>Save As</b> from the template. (Do not add the template to the build.)</p>
 
+<figure class="shot"><img src="images/practicals/step-03.png" alt="" loading="lazy"><figcaption>After <b>Save As</b>: the Hierarchy (and the title bar) show the new scene <b>Level5</b>.</figcaption></figure>
+
 <!-- ======================================================= 4 -->
 <h2 id="step-4"><span class="step">4</span>Rename the root, set Arena Half</h2>
 
@@ -147,6 +149,8 @@
 <li>Save (<b>Ctrl+S</b> / <b>Cmd+S</b>).</li>
 </ol>
 <p>The yellow square in the Scene view shows the arena. Monsters only wander inside it. Keep it the same size as the inside of your walls.</p>
+
+<figure class="shot"><img src="images/practicals/step-04.png" alt="" loading="lazy"><figcaption>The renamed root with its <b>Level Scene</b> component: Arena Half = 12 for a 24 × 24 m level.</figcaption></figure>
 
 <!-- ======================================================= 5 -->
 <h2 id="step-5"><span class="step">5</span>Clear out what you do not need</h2>
@@ -161,6 +165,8 @@
 </table></div>
 
 <div class="tip">Do not delete a <code>CoinSpot</code> you want to use again: move it. A CoinSpot with its <code>Coin</code> inside is easy to copy with <b>Ctrl+D</b> / <b>Cmd+D</b>.</div>
+
+<figure class="shot"><img src="images/practicals/step-05.png" alt="" loading="lazy"><figcaption>A cleared copy: <code>Obstacles</code> is empty. GameManager, Player, camera, UI, floor, walls, gate and PlayerSpawn stay.</figcaption></figure>
 
 <!-- ======================================================= 6 -->
 <h2 id="step-6"><span class="step">6</span>Add a LevelDef in Data.cs</h2>
@@ -200,6 +206,8 @@
 <li>Check: <code>MainMenu</code> is number 0, and your scene is ticked.</li>
 </ol>
 
+<figure class="shot"><img src="images/practicals/step-07.png" alt="" loading="lazy"><figcaption><b>File → Build Profiles</b>: the new scene under <code>Level4</code>, ticked. <code>MainMenu</code> is number 0.</figcaption></figure>
+
 <!-- ======================================================= 8 -->
 <h2 id="step-8"><span class="step">8</span>Find your card in Level Select</h2>
 
@@ -209,6 +217,7 @@
 <li><b>5 to 9 levels</b> (with your practicals): the cards go into <b>two rows</b> of up to 5 and get a little smaller. Levels 1–5 are in the top row. Level 6 and later and DAILY RUSH (always last) are in the bottom row.</li>
 <li>Your new card shows a <b>lock</b> and "Clear level 4". That is normal: a level opens when you win the level before it.</li>
 </ul>
+<figure class="shot"><img src="images/practicals/step-08.png" alt="" loading="lazy"><figcaption>Level Select with 6 levels (the updated menu): Levels 1–5 in the top row, Level 6 and DAILY RUSH in the bottom row. New levels are locked.</figcaption></figure>
 
 <div class="note"><b>Old menu script?</b> The first version of <code>GoldRushMenu.cs</code> has room for exactly 5 cards. Then your Level 5 card hides <b>under</b> the DAILY RUSH card, and Level 6 and later are off the screen. Ask your teacher for the updated <code>GoldRushMenu.cs</code> (two rows of cards). Until then, test your level by pressing Play in its own scene (step 9).</div>
 
@@ -221,6 +230,8 @@
 <li><b>Real test:</b> open <code>MainMenu</code>, press Play, click <b>LEVELS</b> and your card. Win Level 4 first to unlock it.</li>
 </ol>
 <div class="tip">To see the "new player" view again (all levels locked, 0 gold), use <b>Edit → Clear All PlayerPrefs</b> while Unity is not in Play mode. Careful: it also deletes your stars and gold.</div>
+
+<figure class="shot"><img src="images/practicals/step-09.png" alt="" loading="lazy"><figcaption>Fast test: press Play in your own scene. The intro shows the title and the coin number from your LevelDef.</figcaption></figure>
 
 <!-- ======================================================= 10 -->
 <h2 id="step-10"><span class="step">10</span>Placing and snapping</h2>

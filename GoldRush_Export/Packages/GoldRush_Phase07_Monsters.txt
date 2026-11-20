@@ -80,6 +80,10 @@ Assets/GoldRush/Materials/M_TowerTop.mat
 Assets/GoldRush/Materials/M_Trim.mat
 Assets/GoldRush/Prefabs/Gameplay/Coin.prefab
 Assets/GoldRush/Prefabs/Gameplay/ExitGate.prefab
+Assets/GoldRush/Prefabs/Gameplay/Monster_Ghost.prefab
+Assets/GoldRush/Prefabs/Gameplay/Monster_MushroomKing.prefab
+Assets/GoldRush/Prefabs/Gameplay/Monster_Slime.prefab
+Assets/GoldRush/Prefabs/Gameplay/Player.prefab
 Assets/GoldRush/Prefabs/Gameplay/PowerUp_Ghost.prefab
 Assets/GoldRush/Prefabs/Gameplay/PowerUp_Magnet.prefab
 Assets/GoldRush/Prefabs/Gameplay/PowerUp_Speed.prefab

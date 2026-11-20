@@ -23,7 +23,6 @@ How to use one: make a new empty Unity 6 project (Universal 3D) — or delete `A
 | GoldRush_Phase10_Final | 10 Polish and build | + Levels 2–4 and the Daily level = the complete game (the teacher's version) |
 | GoldRush_Levels2to4 | (extra) | our Level 2–4 + Daily scenes only, with the Fix Script Links tool |
 | GoldRush_GameUIDialogs | (extra) | the Pause / Win / Lose dialogs as prefabs |
-| GoldRush_Practicals_Solution | after the Practicals | the finished Practical 1 and 2 levels |
 
 Each package is tested by importing it into a brand-new empty project: it must compile with 0 errors and the
 phase's "Press Play" result must work. The `.txt` file next to each package lists every file inside it.

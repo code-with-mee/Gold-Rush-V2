@@ -192,8 +192,8 @@
 <text x="90.0" y="129.0" font-size="8" font-weight="800" fill="#78350f" text-anchor="middle">7</text>
 <circle cx="450.0" cy="126.0" r="6.5" fill="#fbbf24" stroke="#b45309" stroke-width="1.5"/>
 <text x="450.0" y="129.0" font-size="8" font-weight="800" fill="#78350f" text-anchor="middle">8</text>
-<circle cx="324.0" cy="216.0" r="9.5" fill="#16a34a" stroke="#fff" stroke-width="1.5"/>
-<text x="324.0" y="220.0" font-size="11" font-weight="800" fill="#fff" text-anchor="middle">S</text>
+<circle cx="396.0" cy="126.0" r="9.5" fill="#16a34a" stroke="#fff" stroke-width="1.5"/>
+<text x="396.0" y="130.0" font-size="11" font-weight="800" fill="#fff" text-anchor="middle">S</text>
 <rect x="10.0" y="551.0" width="14" height="8" fill="#334155"/>
 <text x="30.0" y="559.5" font-size="10.5" fill="#374151">Wall / Pillar</text>
 <rect x="184.66666666666666" y="550.0" width="11" height="11" fill="#94a3b8" stroke="#475569"/>
@@ -222,7 +222,7 @@
 <text x="30.0" y="639.5" font-size="10.5" fill="#374151">Power-up</text>
 </svg>
 <figcaption>Coin Garden: 24 × 24 m, 8 coins, 1 Slime. Start south, exit north.</figcaption></figure>
-<p>The player sees coin 5 straight ahead. The beds make a square; the last coins wait at the gate. The Slime walks in the middle, so the player must look before running.</p>
+<p>The player sees coin 5 straight ahead. The beds make a square; the last coins wait at the gate. The Slime waits near the gate, far from the start, so the player has time to look around first.</p>
 
 <!-- ======================================================= 3 -->
 <h2 id="step-3"><span class="step">3</span>Make the scene</h2>
@@ -234,15 +234,20 @@
 <li>Save.</li>
 </ol>
 
+<figure class="shot"><img src="images/practical-1/step-03-a.png" alt="" loading="lazy"><figcaption>After <b>Save As</b>: the Hierarchy shows the scene <b>Level5</b> at the top. You work in the copy.</figcaption></figure>
+<figure class="shot"><img src="images/practical-1/step-03-b.png" alt="" loading="lazy"><figcaption>The renamed root <code>Level 5 - Coin Garden</code> with <b>Arena Half</b> = 12.</figcaption></figure>
+
 <!-- ======================================================= 4 -->
 <h2 id="step-4"><span class="step">4</span>Clear out</h2>
 <p>Delete these (select, then <b>Delete</b>):</p>
 <ol>
 <li>All 17 children of <code>Static/Obstacles</code>. (Click the first, <b>Shift</b>-click the last.) Keep the <code>Obstacles</code> group itself.</li>
 <li><code>Gameplay/Monsters/Slime 2</code>. Keep <code>Slime 1</code>.</li>
-<li><code>Gameplay/PowerUps/PowerUp Magnet</code>. This level has no power-ups.</li>
+<li><code>Gameplay/PowerUps/PowerUp Magnet</code> (and <code>PowerUp Speed</code> / <code>PowerUp Ghost</code> if you kept the test power-ups of Phase 8). This level has no power-ups.</li>
 </ol>
 <p>Keep the 6 CoinSpots, the walls, the lamps, <code>PlayerSpawn</code>, <code>ExitGate</code>, <code>GameManager</code>, <code>Player</code>, the camera and the UI.</p>
+
+<figure class="shot"><img src="images/practical-1/step-04.png" alt="" loading="lazy"><figcaption>Cleared: <code>Obstacles</code> is empty, <code>Monsters</code> has only <code>Slime 1</code>, <code>PowerUps</code> is empty. Walls, lamps, gate and the 6 CoinSpots are still there.</figcaption></figure>
 
 <!-- ======================================================= 5 -->
 <h2 id="step-5"><span class="step">5</span>Shrink the walls</h2>
@@ -260,10 +265,13 @@
 <tr><td><code>WallEast</code></td><td><code>12.5, 0, 0</code></td><td><code>0, 90, 0</code></td><td>Wall_8m at X <code>-8</code> · Wall_8m at X <code>0</code> · Wall_8m at X <code>8</code></td></tr>
 <tr><td><code>WallWest</code></td><td><code>-12.5, 0, 0</code></td><td><code>0, 90, 0</code></td><td>Wall_8m at X <code>-8</code> · Wall_8m at X <code>0</code> · Wall_8m at X <code>8</code></td></tr>
 <tr><td><code>Corners</code></td><td>4 × <code>Pillar</code></td><td>–</td><td><code>-12.5, 0, -12.5</code> · <code>12.5, 0, -12.5</code> · <code>-12.5, 0, 12.5</code> · <code>12.5, 0, 12.5</code></td></tr>
-<tr><td><code>GateBlocker</code></td><td><code>0, 2.5, 13.25</code></td><td>–</td><td>Box Collider, Size <code>8, 5, 1</code></td></tr>
-<tr><td><code>ExitGate</code></td><td><code>0, 0, 12</code></td><td><code>0, 0, 0</code></td><td>In the middle of the gap. Not static.</td></tr>
+<tr><td><code>GateBlocker</code></td><td><code>0, 2.5, 13.25</code></td><td>–</td><td>Box Collider, Size <code>8, 5, 1</code>. You move it in step 10.</td></tr>
+<tr><td><code>ExitGate</code></td><td><code>0, 0, 12</code></td><td><code>0, 0, 0</code></td><td>In the middle of the gap. Not static. You move it in step 10.</td></tr>
 </table></div>
 <div class="tip">Select a wall child and press <b>V</b>, then drag a corner onto the next wall: they snap together without a gap.</div>
+
+<figure class="shot"><img src="images/practical-1/step-05-a.png" alt="" loading="lazy"><figcaption>The wall groups now have 3 + 2 + 3 + 3 <code>Wall_8m</code> and 4 pillars.</figcaption></figure>
+<figure class="shot"><img src="images/practical-1/step-05-b.png" alt="" loading="lazy"><figcaption>Top view: a 24 × 24 m square with the 8 m gap in the north wall. The lamps, coins and the gate are still at the old places (you move them next).</figcaption></figure>
 
 <!-- ======================================================= 6 -->
 <h2 id="step-6"><span class="step">6</span>Lamps</h2>
@@ -274,6 +282,8 @@
 <tr><td>5–6</td><td><code>-10.5, 0, 0</code> · <code>10.5, 0, 0</code></td><td>West and east, middle</td></tr>
 <tr><td>7–8</td><td><code>-4.5, 0, -10.5</code> · <code>4.5, 0, -10.5</code></td><td>Left and right of the start</td></tr>
 </table></div>
+
+<figure class="shot"><img src="images/practical-1/step-06.png" alt="" loading="lazy"><figcaption>The 8 lamps stand inside the smaller walls, 1.5 m from them.</figcaption></figure>
 
 <!-- ======================================================= 7 -->
 <h2 id="step-7"><span class="step">7</span>Garden pieces</h2>
@@ -294,6 +304,9 @@
 </table></div>
 <div class="tip"><b>Snap practice:</b> place the first <code>FloorPad_Cyan</code> by typing <code>-6, 0, -3</code>. For the other three, press <b>Ctrl+D</b> and drag with <b>Ctrl</b> / <b>Cmd</b> held (snap 0.5). Check the numbers in the Inspector afterwards.</div>
 
+<figure class="shot"><img src="images/practical-1/step-07-a.png" alt="" loading="lazy"><figcaption>Hierarchy: 4 <code>FloorPad_Cyan</code> in <code>Static/Floor</code>, 7 pieces in <code>Static/Obstacles</code>.</figcaption></figure>
+<figure class="shot"><img src="images/practical-1/step-07-b.png" alt="" loading="lazy"><figcaption>The garden: orange centre block, two grey blocks at the gate, two low orange hedges, teal and red blocks at the start, four cyan flower beds.</figcaption></figure>
+
 <!-- ======================================================= 8 -->
 <h2 id="step-8"><span class="step">8</span>Coins</h2>
 <p>The 6 CoinSpots from Level1 are still there. Move them and add 2 more.</p><p>You need <b>8</b> CoinSpots, each with a <code>Coin</code> inside (local position <code>0, 1, 0</code>).</p>
@@ -310,17 +323,22 @@
 <tr><td><code>CoinSpot 4</code></td><td><code>6, 0, 5</code></td><td>On a flower bed</td></tr>
 <tr><td><code>CoinSpot 5</code></td><td><code>0, 0, -2</code></td><td>First coin: you see it from the start</td></tr>
 <tr><td><code>CoinSpot 6</code></td><td><code>0, 0, 5</code></td><td>Between the beds, on the way to the gate</td></tr>
-<tr><td><code>CoinSpot 7</code></td><td><code>-10, 0, 8</code></td><td>Corner reward, behind the left block</td></tr>
-<tr><td><code>CoinSpot 8</code></td><td><code>10, 0, 8</code></td><td>Corner reward, behind the right block</td></tr>
+<tr><td><code>CoinSpot 7</code></td><td><code>-10, 0, 8</code></td><td>Corner reward, left of the gate</td></tr>
+<tr><td><code>CoinSpot 8</code></td><td><code>10, 0, 8</code></td><td>Corner reward, right of the gate, close to the Slime</td></tr>
 </table></div>
+
+<figure class="shot"><img src="images/practical-1/step-08-a.png" alt="" loading="lazy"><figcaption>8 CoinSpots, each with a <code>Coin</code> inside.</figcaption></figure>
+<figure class="shot"><img src="images/practical-1/step-08-b.png" alt="" loading="lazy"><figcaption>Top view: one coin on each flower bed, coins 5 and 6 in the middle, 7 and 8 left and right of the gate.</figcaption></figure>
 
 <!-- ======================================================= 9 -->
 <h2 id="step-9"><span class="step">9</span>Monsters</h2>
-<p>One Slime is enough. It is slow (1.5 m/s) and only sees 8.5 m in front of it.</p><p>Monsters go into <code>Gameplay/Monsters</code>. Drag the prefab from <code>Prefabs/Gameplay</code> onto the group, type the position, and rename it. Delete the old Slimes you do not need.</p>
+<p>One Slime is enough. It is slow (1.5 m/s) and only sees 8.5 m in front of it. But it wanders around the whole time, also during the intro, so it starts far away from the player: in a 24 m garden, 10 m is not enough (in our test a Slime at <code>3, 0, 3</code> caught the player 2 seconds after the start).</p><p>Monsters go into <code>Gameplay/Monsters</code>. Drag the prefab from <code>Prefabs/Gameplay</code> onto the group, type the position, and rename it. Delete the old Slimes you do not need.</p>
 <div class="table-wrap"><table>
 <tr><th>Name</th><th>Prefab</th><th>Position</th><th>Note</th></tr>
-<tr><td><code>Slime 1</code></td><td><code>Monster_Slime</code></td><td><code>3, 0, 3</code></td><td>Keep <code>Slime 1</code>, move it. Delete <code>Slime 2</code>. 12 m from the start.</td></tr>
+<tr><td><code>Slime 1</code></td><td><code>Monster_Slime</code></td><td><code>7, 0, 8</code></td><td>Keep <code>Slime 1</code>, move it (you deleted <code>Slime 2</code> in step 4). 18 m from the start, near coin 8.</td></tr>
 </table></div>
+
+<figure class="shot"><img src="images/practical-1/step-09.png" alt="" loading="lazy"><figcaption><code>Slime 1</code> at <code>7, 0, 8</code>: Monster Spawn (Patroller), Nav Mesh Agent and Enemy AI.</figcaption></figure>
 
 <!-- ======================================================= 10 -->
 <h2 id="step-10"><span class="step">10</span>Start, gate and NavMesh</h2>
@@ -328,10 +346,13 @@
 <li>Select <code>Gameplay/PlayerSpawn</code>. Position <code>0, 0, -9</code>, Rotation <code>0, 0, 0</code> (looks north, to the gate).</li>
 <li>Select <code>Static/ExitGate</code>. Position <code>0, 0, 12</code>, Rotation <code>0, 0, 0</code>.</li>
 <li>Select <code>Static/Walls/GateBlocker</code>. Position <code>0, 2.5, 13.25</code>. Box Collider Size <code>8, 5, 1</code>.</li>
-<li>Select <code>Static</code>. In <b>NavMesh Surface</b>, click <b>Bake</b>. Look at the blue area: it must reach every coin and the gate.</li>
+<li>Select <code>Static</code>. In <b>NavMesh Surface</b>, click <b>Bake</b>. Look at the blue area: it must reach every coin and the gate. (The blue strip outside the walls is the rest of <code>Floor_40m</code>. Nobody can get there, so it does not matter.)</li>
 <li>Save.</li>
 </ol>
 <p>The start and the gate are the same as in Level1, only the gate and blocker move 4 m south.</p>
+
+<figure class="shot"><img src="images/practical-1/step-10-a.png" alt="" loading="lazy"><figcaption><code>GateBlocker</code> at <code>0, 2.5, 13.25</code> with a Box Collider of <code>8, 5, 1</code>.</figcaption></figure>
+<figure class="shot"><img src="images/practical-1/step-10-b.png" alt="" loading="lazy"><figcaption>After <b>Bake</b>: the blue NavMesh covers the whole garden and goes around every block.</figcaption></figure>
 
 <!-- ======================================================= 11 -->
 <h2 id="step-11"><span class="step">11</span>LevelDef and Build Profiles</h2>
@@ -342,9 +363,11 @@
 <pre class="long"><code>new LevelDef { title = &quot;Coin Garden&quot;, subtitle = &quot;Pick the golden flowers&quot;, seed = 505, scene = &quot;Level5&quot;, size = 24, coins = 8, patrollers = 1, enemySpeed = 0.9f, parTime = 35, lives = 3 },</code></pre>
 <ol start="3">
 <li>Save the file. Wait for Unity to compile. No red errors.</li>
-<li><b>File → Build Profiles → Scene List</b>: drag in <code>Scenes/Level5</code>. Check it is ticked.</li>
+<li><b>File → Build Profiles → Scene List</b>: drag in <code>Scenes/Level5</code>, under <code>Level4</code>. Check it is ticked.</li>
 </ol>
 <p>Not sure? Read <a href="practicals.html#step-6">Practicals, step 6 and 7</a>.</p>
+
+<figure class="shot"><img src="images/practical-1/step-11.png" alt="" loading="lazy"><figcaption>Build Profiles: <code>Level5</code> is in the Scene List, under <code>Level4</code>, and ticked.</figcaption></figure>
 
 <!-- ======================================================= 12 -->
 <h2 id="step-12"><span class="step">12</span>▶ Play test</h2>
@@ -353,6 +376,11 @@
 <li>Play the level to the end. Then play it 2 more times and write down your times.</li>
 <li>Open <code>MainMenu</code> → Play → <b>LEVELS</b>. Find the <b>COIN GARDEN</b> card.</li>
 </ol>
+<figure class="shot"><img src="images/practical-1/step-12-a.png" alt="" loading="lazy"><figcaption>The intro: LEVEL 5, COIN GARDEN, "Collect all 8 gold", 3 hearts.</figcaption></figure>
+<figure class="shot"><img src="images/practical-1/step-12-b.png" alt="" loading="lazy"><figcaption>The view from the start: coin 5 in front of the orange block, the gate behind it. The Slime is far away at the gate.</figcaption></figure>
+<figure class="shot"><img src="images/practical-1/step-12-f.png" alt="" loading="lazy"><figcaption>Too close: the Slime sees you (the red <b>!</b>) and chases you.</figcaption></figure>
+<figure class="shot"><img src="images/practical-1/step-12-c.png" alt="" loading="lazy"><figcaption>All 8 coins: the door slides down and the gate glows green.</figcaption></figure>
+<figure class="shot"><img src="images/practical-1/step-12-d.png" alt="" loading="lazy"><figcaption>Run through the gate: LEVEL COMPLETE.</figcaption></figure>
 <div class="check">
 <p><b>▶ Play test: check these</b></p>
 <ul>
@@ -362,7 +390,8 @@
 <li>No red errors in the Console.</li>
 </ul>
 </div>
-<p><b>The card:</b> it shows <b>COIN GARDEN</b>, "Pick the golden flowers" and "8 GOLD TO FIND". It is locked until you win the level before it. With the updated menu the cards are in two rows; with the old menu it hides under DAILY RUSH (see <a href="practicals.html#step-8">Practicals, step 8</a>).</p>
+<p><b>The card:</b> while it is locked, it shows <b>5</b>, <b>COIN GARDEN</b>, a lock and "Clear level 4". You unlock it when you win Level 4. Then it shows "Pick the golden flowers" and "8 GOLD TO FIND" (after a win: your best time). With the updated menu the cards are in two rows; with the old menu it hides under DAILY RUSH (see <a href="practicals.html#step-8">Practicals, step 8</a>).</p>
+<figure class="shot"><img src="images/practical-1/step-12-e.png" alt="" loading="lazy"><figcaption>Level Select: the COIN GARDEN card is number 5. It is locked ("Clear level 4") until you win Level 4.</figcaption></figure>
 <p><b>Tune the par time:</b> best time + 25 %, rounded to 5 s. Change <code>parTime</code> in <code>Data.cs</code>.</p>
 
 <!-- ======================================================= 13 -->

@@ -3353,6 +3353,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4397779005146217959}
+  - component: {fileID: 715277902120445960}
   m_Layer: 0
   m_Name: ExitGate
   m_TagString: Untagged
@@ -3397,6 +3398,29 @@ Transform:
   - {fileID: 4931642753814880683}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &715277902120445960
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7926038268112127684}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f284b891c51b94c3a818dd8bebbad219, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::GoldRush.ExitGate
+  door: {fileID: 4093768720623037020}
+  glow: {fileID: 9149658255965182405}
+  glowRing: {fileID: 434238916980382108}
+  markerAnchor: {fileID: 4931642753814880683}
+  glowLight: {fileID: 2122699641424540877}
+  text: {fileID: 6816476439310602526}
+  strips:
+  - {fileID: 7554838493200714256}
+  - {fileID: 5941272625333785581}
+  - {fileID: 5568456590955257341}
+  greenStrip: {fileID: 2100000, guid: 9307cd5c684954ef2a21976b77f5b1a0, type: 2}
 --- !u!1 &8773563447683249445
 GameObject:
   m_ObjectHideFlags: 0

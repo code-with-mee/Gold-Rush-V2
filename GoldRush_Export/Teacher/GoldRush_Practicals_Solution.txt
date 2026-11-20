@@ -1,0 +1,2 @@
+Assets/GoldRush/Scenes/Level5.unity
+Assets/GoldRush/Scenes/Level6.unity

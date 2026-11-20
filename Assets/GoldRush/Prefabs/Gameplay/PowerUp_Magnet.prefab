@@ -765,6 +765,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7246329687144251678}
+  - component: {fileID: 2618305083832486616}
   m_Layer: 0
   m_Name: PowerUp_Magnet
   m_TagString: Untagged
@@ -789,6 +790,22 @@ Transform:
   - {fileID: 4564377499301842081}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2618305083832486616
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3530197267465503163}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c1a07b06cd11c4d3bb1c65f5aead1046, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::GoldRush.PowerUp
+  type: 2
+  visual: {fileID: 2776731871008541202}
+  inner: {fileID: 7073065572802754836}
+  ring: {fileID: 4564377499301842081}
 --- !u!1 &3530886043571463631
 GameObject:
   m_ObjectHideFlags: 0
