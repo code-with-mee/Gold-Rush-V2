@@ -1,0 +1,241 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>GOLD RUSH – Part 3: Gold and monsters</title>
+<meta name="description" content="GOLD RUSH Unity tutorial: Part 3: Gold and monsters.">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+<header class="site-header">
+  <a class="brand" href="index.html"><span class="brand-mark">GR</span>GOLD RUSH <small>Unity tutorial</small></a>
+  <nav class="header-links" aria-label="Quick links">
+    <a class="hide-sm" href="index.html">Course</a>
+    <a href="troubleshooting.html">Help</a>
+    <a href="glossary.html">Glossary</a>
+  </nav>
+</header>
+<div class="layout">
+<aside class="sidebar" aria-label="Site navigation">
+<h2>Start</h2><ul>
+<li><a href="index.html"><span class="num">★</span><span class="label">Overview</span></a></li>
+</ul>
+<h2>Course</h2><ul>
+<li><a href="part-1-guide.html"><span class="num">1</span><span class="label">Arena and hero</span></a></li>
+<li><a href="part-2-guide.html"><span class="num">2</span><span class="label">Characters</span></a></li>
+<li><a href="part-3-guide.html" aria-current="page"><span class="num">3</span><span class="label">Gold and monsters</span></a></li>
+<li><a href="part-4-guide.html"><span class="num">4</span><span class="label">Rules, menu, win/lose</span></a></li>
+<li><a href="part-5-guide.html"><span class="num">5</span><span class="label">Mobile controls</span></a></li>
+<li><a href="part-6-guide.html"><span class="num">6</span><span class="label">Polish</span></a></li>
+</ul>
+<h2>Practice</h2><ul>
+<li><a href="exercises.html"><span class="num">✎</span><span class="label">Exercises</span></a></li>
+</ul>
+<h2>Help</h2><ul>
+<li><a href="troubleshooting.html"><span class="num">?</span><span class="label">Troubleshooting</span></a></li>
+<li><a href="glossary.html"><span class="num">A–Z</span><span class="label">Glossary</span></a></li>
+</ul>
+</aside>
+<main>
+<div class="content">
+<p class="eyebrow">GOLD RUSH · Part 3</p>
+<h1>Gold and monsters</h1>
+<p class="lead">The arena now gets things to collect and things to run from. You will see how coins and power-ups are picked up, how the exit gate opens, and how the three monsters think, using a <b>state machine</b> and Unity's <b>NavMesh</b>.</p>
+<div class="meta"><span><b>Scene</b><code>Level1.unity</code>, <code>Level2.unity</code></span><span><b>Main scripts</b><code>EnemyAI.cs</code> · <code>GameManager.cs</code> · <code>Coin.cs</code> · <code>PowerUp.cs</code> · <code>ExitGate.cs</code></span><a class="btn secondary" href="part-3-guide.pdf">Download PDF</a></div>
+
+<nav class="toc" aria-label="Steps on this page"><strong>Steps on this page</strong><ol>
+  <li><a href="#step-1">Where the gold and monsters come from</a></li>
+  <li><a href="#step-2">Picking things up without triggers</a></li>
+  <li><a href="#step-3">The three power-ups</a></li>
+  <li><a href="#step-4">The exit gate</a></li>
+  <li><a href="#step-5">NavMesh: how monsters find their way</a></li>
+  <li><a href="#step-6">The monster brain: a state machine</a></li>
+  <li><a href="#step-7">How a monster sees you</a></li>
+  <li><a href="#step-8">Try it</a></li>
+</ol></nav>
+
+<figure class="shot"><img src="images/08_level2.jpg" alt="Level 2, Ghost Alley, with coins and monsters"><figcaption>Level 2 “Ghost Alley”: slimes patrol, a ghost hunts you.</figcaption></figure>
+
+<h2 id="step-1"><span class="step">1</span>Where the gold and monsters come from</h2>
+<p>Open <code>Assets/GoldRush/Scenes/Level1.unity</code>. In the Hierarchy, open the level root (<code>Level 1 - Training Yard</code>) and then <code>Gameplay</code>. You will find small <b>marker</b> objects:</p>
+<div class="table-wrap"><table>
+  <tr><th>Marker (component)</th><th>Prefab in <code>Prefabs/Level/Gameplay/</code></th><th>What appears there in Play mode</th></tr>
+  <tr><td><code>CoinSpot</code></td><td><code>CoinSpot</code></td><td>A spinning gold coin</td></tr>
+  <tr><td><code>MonsterSpawn</code></td><td><code>Monster_Slime</code>, <code>Monster_Ghost</code>, <code>Monster_MushroomKing</code></td><td>A monster. Its <b>Type</b> field picks which one.</td></tr>
+  <tr><td><code>PowerUpSpot</code></td><td><code>PowerUp_Speed</code>, <code>PowerUp_Ghost</code>, <code>PowerUp_Magnet</code></td><td>A power-up orb. Its <b>Type</b> field picks which one.</td></tr>
+  <tr><td><code>PlayerSpawn</code></td><td><code>PlayerSpawn</code></td><td>The hero's start point</td></tr>
+  <tr><td><code>ExitGate</code></td><td><code>ExitGate</code></td><td>The EXIT gate</td></tr>
+</table></div>
+<p>When the level starts, <code>GameManager</code> walks over these markers and creates the real objects from code:</p>
+<span class="file">Scripts/Gameplay/GameManager.cs</span>
+<pre><code>foreach (var c in scene.GetComponentsInChildren&lt;CoinSpot&gt;()) l.coinPoints.Add(c.transform.position);
+foreach (var m in scene.GetComponentsInChildren&lt;MonsterSpawn&gt;())
+{
+    Vector3 p = m.transform.position;
+    if (UnityEngine.AI.NavMesh.SamplePosition(p, out var hit, 3f, UnityEngine.AI.NavMesh.AllAreas)) p = hit.position;
+    l.enemyPoints.Add(p);
+    l.enemyTypes.Add(m.type);
+    if (m.type == EnemyType.Guard) l.guardHomes.Add(m.HomePosition);
+}</code></pre>
+<div class="note">For Levels 1–4 the number of coins and monsters comes from the <b>markers in the scene</b>, not from the numbers in <code>Data.cs</code>. Changing <code>coins = 6</code> in <code>Data.cs</code> only changes the text on the level card. To add gold, add a <code>CoinSpot</code> to the scene.</div>
+
+<h2 id="step-2"><span class="step">2</span>Picking things up without triggers</h2>
+<p>Many Unity tutorials use <code>OnTriggerEnter</code> for pickups. Gold Rush does something simpler: every frame, <code>GameManager.Update()</code> measures the distance from the hero to each coin. Close enough means collected.</p>
+<span class="file">Scripts/Gameplay/GameManager.cs</span>
+<pre><code>for (int i = coins.Count - 1; i &gt;= 0; i--)
+{
+    var c = coins[i];
+    if (c == null || c.Collected) { coins.RemoveAt(i); continue; }
+    Vector3 d = c.transform.position - pp;
+    float sq = d.sqrMagnitude;
+    if (MagnetActive &amp;&amp; sq &lt; 11f * 11f)
+    {
+        float dist = Mathf.Sqrt(sq);
+        c.transform.position = Vector3.MoveTowards(c.transform.position, pp, (7f + (11f - dist) * 2.2f) * dt);
+        sq = (c.transform.position - pp).sqrMagnitude;
+    }
+    if (sq &lt; 1.45f * 1.45f) { coins.RemoveAt(i); CollectCoin(c); }
+}</code></pre>
+<ul>
+  <li><code>pp</code> is the hero's position, 1 m above the feet.</li>
+  <li><code>sqrMagnitude</code> is the distance <b>squared</b>. Comparing <code>sq &lt; 1.45f * 1.45f</code> is the same as “distance &lt; 1.45 m”, but it skips a square root.</li>
+  <li>The loop runs <b>backwards</b> so that <code>RemoveAt(i)</code> does not skip the next coin.</li>
+</ul>
+<div class="table-wrap"><table>
+  <tr><th>Check</th><th>Distance</th></tr>
+  <tr><td>Collect a coin</td><td>1.45 m</td></tr>
+  <tr><td>Collect a power-up</td><td>1.6 m</td></tr>
+  <tr><td>Magnet pulls coins</td><td>11 m</td></tr>
+  <tr><td>Win at the open gate</td><td>2.4 m</td></tr>
+  <tr><td>A monster catches you</td><td>1.05 m (Mushroom King: 1.6 m)</td></tr>
+</table></div>
+<p>When the last coin is collected, <code>AllCollected()</code> opens the gate, shows “ALL GOLD COLLECTED!”, and makes every monster 10% faster (<code>e.Enrage(1.1f)</code>). That speed-up is on purpose: it makes the run to the exit exciting.</p>
+
+<h2 id="step-3"><span class="step">3</span>The three power-ups</h2>
+<div class="table-wrap"><table>
+  <tr><th>Power-up</th><th>Lasts</th><th>What the code does</th></tr>
+  <tr><td><b>SPEED</b> (cyan)</td><td>6 s</td><td><code>SpeedMultiplier</code> becomes 1.55. <code>PlayerMotor</code> multiplies the walk and sprint speed by it.</td></tr>
+  <tr><td><b>GHOST</b> (purple)</td><td>6 s</td><td><code>EnemyAI.Vision()</code> returns <code>false</code>, so monsters cannot see you. The hero turns see-through.</td></tr>
+  <tr><td><b>MAGNET</b> (red)</td><td>8 s</td><td>Coins within 11 m fly to you (the code in step 2).</td></tr>
+</table></div>
+<span class="file">Scripts/Gameplay/GameManager.cs – CollectPowerUp()</span>
+<pre><code>switch (type)
+{
+    case PowerType.Speed: SpeedLeft = SpeedDuration; desc = "Super speed!"; break;
+    case PowerType.Ghost: GhostLeft = GhostDuration; desc = "Monsters can't see you!"; break;
+    default: MagnetLeft = MagnetDuration; desc = "Gold flies to you!"; break;
+}</code></pre>
+<p>Each power-up is just a <b>countdown</b>: <code>SpeedLeft</code>, <code>GhostLeft</code> and <code>MagnetLeft</code> go down by <code>Time.deltaTime</code> every frame. While a countdown is above zero, the power is active (<code>SpeedActive</code>, <code>GhostActive</code>, <code>MagnetActive</code>).</p>
+<div class="note">GHOST hides you, but it does not make you safe. A monster that walks into you still catches you.</div>
+
+<h2 id="step-4"><span class="step">4</span>The exit gate</h2>
+<p><code>ExitGate.Create()</code> builds the gate from simple shapes. It starts closed. <code>Open()</code> slides the door down into the floor over 1.2 seconds with a smooth curve, then hides it. After that, standing within 2.4 m of the gate's <code>WinPoint</code> calls <code>Win()</code> (you will meet <code>Win()</code> in Part 4).</p>
+<figure class="shot"><img src="images/06_gate_open.jpg" alt="The exit gate opening after all gold is collected"><figcaption>All gold collected: the gate opens and an arrow points to it.</figcaption></figure>
+
+<h2 id="step-5"><span class="step">5</span>NavMesh: how monsters find their way</h2>
+<p>A <b>NavMesh</b> is a map of where a character can walk. A <code>NavMeshAgent</code> uses it to find a path around walls. Gold Rush uses the <b>AI Navigation</b> package (<code>com.unity.ai.navigation</code>).</p>
+<ol>
+  <li>The level has a <code>NavMeshSurface</code> component. It is set to collect <b>Physics Colliders</b> from its children.</li>
+  <li>The NavMesh is <b>not saved</b> in the scene. <code>GameManager</code> rebuilds it every time the level starts:
+<pre><code>// rebuild the NavMesh so students can move walls around freely
+foreach (var surface in scene.GetComponentsInChildren&lt;Unity.AI.Navigation.NavMeshSurface&gt;()) surface.BuildNavMesh();</code></pre></li>
+  <li>Each monster gets a <code>NavMeshAgent</code> in <code>EnemyAI.Create()</code>. To move, the code calls <code>agent.SetDestination(...)</code>.</li>
+</ol>
+<div class="tip">Because the NavMesh is rebuilt at Start, you can move, add or delete walls in the Scene view and the monsters will still find their way. Just make sure each wall has a <b>Collider</b>. A wall without a collider is invisible to the NavMesh, so monsters walk straight through it.</div>
+
+<h2 id="step-6"><span class="step">6</span>The monster brain: a state machine</h2>
+<p>A <b>state machine</b> means: the monster is always in exactly <b>one</b> state, and each state has rules for when to switch to another. <code>EnemyAI.cs</code> has six states:</p>
+<pre><code>enum S { Patrol, Alert, Chase, Search, Return, Stunned }</code></pre>
+<div class="table-wrap"><table>
+  <tr><th>State</th><th>What the monster does</th><th>It switches when…</th></tr>
+  <tr><td><b>Patrol</b></td><td>Walks to random points, waits 0.8–2.4 s, picks a new point.</td><td>It sees you → <b>Alert</b></td></tr>
+  <tr><td><b>Alert</b></td><td>Stops, shows a red <b>!</b>, plays the “alert” sound, turns toward you.</td><td>After 0.45 s → <b>Chase</b></td></tr>
+  <tr><td><b>Chase</b></td><td>Runs at you. Updates its path every 0.12 s.</td><td>You are hidden for 2.2 s, or GHOST is on → <b>Search</b>. A guard too far from home → <b>Return</b></td></tr>
+  <tr><td><b>Search</b></td><td>Walks to where it last saw you, shows a gold <b>?</b>, looks around.</td><td>It sees you → <b>Alert</b>. Gives up → <b>Patrol</b> (guard: <b>Return</b>)</td></tr>
+  <tr><td><b>Return</b></td><td>Mushroom King only: walks back home.</td><td>Home → <b>Patrol</b>. Sees you near home → <b>Alert</b></td></tr>
+  <tr><td><b>Stunned</b></td><td>After catching you: spins with a blue <b>z</b>.</td><td>After 2.6 s → <b>Search</b></td></tr>
+</table></div>
+<p>In code, the state machine is a <code>switch</code> inside <code>Update()</code>. Here are the first two states:</p>
+<span class="file">Scripts/Gameplay/EnemyAI.cs – Update()</span>
+<pre><code>switch (state)
+{
+    case S.Patrol:
+        Wander();
+        if (canSee) Go(S.Alert);
+        break;
+
+    case S.Alert:
+        FaceTowards(lastSeen, dt);
+        if (stateTime &gt; 0.45f) Go(S.Chase);
+        break;
+    // ... Chase, Search, Return, Stunned
+}</code></pre>
+<p><code>Go(newState)</code> does the “on enter” work for a state: it changes the agent speed, stops or starts the agent, and shows the right bubble.</p>
+<h3>The three monsters are one script</h3>
+<p>Slime, Ghost and Mushroom King all use <code>EnemyAI</code>. Only their numbers are different, set in <code>Configure()</code>:</p>
+<div class="table-wrap"><table>
+  <tr><th>Monster</th><th>Patrol speed</th><th>Chase speed</th><th>Sees up to</th><th>View angle</th><th>Special</th></tr>
+  <tr><td>🟢 Slime (<code>Patroller</code>)</td><td>1.5</td><td>3.6</td><td>8.5 m</td><td>130° in front</td><td>Easy to sneak past</td></tr>
+  <tr><td>🩷 Ghost (<code>Chaser</code>)</td><td>2.1</td><td>4.6</td><td>12 m</td><td>all around</td><td>Fast, hard to lose</td></tr>
+  <tr><td>🟡 Mushroom King (<code>Guard</code>)</td><td>1.2</td><td>4.2</td><td>9.5 m</td><td>200°</td><td>Stays within 13 m of home</td></tr>
+</table></div>
+<p>All speeds are then multiplied by the level's <code>enemySpeed</code> (0.9 in Level 1 up to 1.12 in Level 4). For comparison, the hero walks at 5 and sprints at 8.2.</p>
+
+<h2 id="step-7"><span class="step">7</span>How a monster sees you</h2>
+<span class="file">Scripts/Gameplay/EnemyAI.cs</span>
+<pre><code>bool Vision(PlayerMotor p, GameManager gm)
+{
+    if (gm.GhostActive) return false;
+    Vector3 eye = transform.position + Vector3.up * 1.6f;
+    Vector3 target = p.transform.position + Vector3.up * 1.1f;
+    Vector3 to = target - eye;
+    float dist = to.magnitude;
+    float range = state == S.Chase || state == S.Search ? loseRange : detectRange;
+    if (dist &gt; range) return false;
+    Vector3 flat = new Vector3(to.x, 0, to.z).normalized;
+    bool close = dist &lt; 3.2f;
+    if (!close &amp;&amp; state != S.Chase &amp;&amp; Vector3.Dot(transform.forward, flat) &lt; fovCos) return false;
+    if (Physics.Raycast(eye, to / dist, dist - 0.3f, Physics.DefaultRaycastLayers, QueryTriggerInteraction.Ignore)) return false;
+    return true;
+}</code></pre>
+<p>Read it as four questions, in order:</p>
+<ol>
+  <li><b>Is GHOST on?</b> Then no.</li>
+  <li><b>Are you too far?</b> Then no. (A monster that is already chasing can see farther: <code>loseRange</code>.)</li>
+  <li><b>Are you outside its view cone?</b> Then no. <code>Vector3.Dot</code> of two directions is 1 straight ahead, 0 to the side and −1 behind. <code>fovCos</code> is the cut-off. Closer than 3.2 m it always notices you.</li>
+  <li><b>Is a wall in the way?</b> <code>Physics.Raycast</code> shoots an invisible line from the eye to you. If it hits something, the monster cannot see you.</li>
+</ol>
+<p>The monster asks this question every 0.15 s, not every frame, to save work.</p>
+
+<h2 id="step-8"><span class="step">8</span>Try it</h2>
+<p>Stop Play mode before you change code. After each change, press Play again and watch what happens.</p>
+<div class="try"><h3>Move the gold (no code)</h3>
+<p>Open <code>Level1.unity</code>. Drag <code>Prefabs/Level/Gameplay/CoinSpot</code> onto <code>Level 1 - Training Yard/Gameplay/Coins</code> in the Hierarchy. (It must be somewhere under the level root, or it is ignored.) Place it somewhere in the arena and press <b>Play</b> in this scene. The coin counter now shows <b>0 / 7</b>.</p></div>
+<div class="try"><h3>Add a ghost to Level 1 (no code)</h3>
+<p>The same way, drag <code>Monster_Ghost</code> onto <code>Gameplay/Monsters</code>. Level 1 suddenly has a fast hunter. Move a wall too: the NavMesh is rebuilt, so the monsters walk around it.</p></div>
+<div class="try"><h3>Blind slimes</h3>
+<p>In <code>EnemyAI.cs</code>, in <code>Configure()</code>, on the <code>Patroller</code> line, change <code>Mathf.Cos(65f * Mathf.Deg2Rad)</code> to <code>Mathf.Cos(30f * Mathf.Deg2Rad)</code> and <code>detectRange = 8.5f</code> to <code>5f</code>. In Level 1 you can now walk right past the side of a slime.</p></div>
+<div class="try"><h3>Faster ghosts</h3>
+<p>On the <code>Chaser</code> line, change <code>chaseSpeed = 4.6f</code> to <code>6.5f</code>. In Level 2 the ghost now catches you if you only walk (5). You have to sprint (8.2).</p></div>
+<div class="try"><h3>Super magnet</h3>
+<p>In <code>GameManager.cs</code>, set <code>MagnetDuration = 15f</code>. In the coin loop, replace the three <code>11f</code> values with <code>20f</code>. Coins now fly in from much farther away, and the MAGNET bar in the HUD lasts longer.</p></div>
+<div class="try"><h3>Longer stun</h3>
+<p>In <code>GameManager.OnPlayerCaught()</code>, change <code>enemy.Stun(2.6f)</code> to <code>enemy.Stun(6f)</code>. After it hits you, the monster spins for 6 seconds, which gives you time to escape.</p></div>
+
+<div class="check"><b>Checklist</b><ul>
+  <li>I can explain why pickups use distance instead of triggers.</li>
+  <li>I can name the six monster states and what makes each one change.</li>
+  <li>I know that the NavMesh is rebuilt when the level starts, and that walls need colliders.</li>
+</ul></div>
+
+<nav class="pager" aria-label="Previous and next page">
+<a class="prev" href="part-2-guide.html"><small>← Previous</small>Part 2: Characters and animation</a>
+<a class="next" href="part-4-guide.html"><small>Next →</small>Part 4: Rules, menu, win and lose</a>
+</nav>
+<footer class="site-footer">GOLD RUSH – a Unity 6 tutorial project. Characters: Quaternius (CC0). Font: Poppins (SIL Open Font License). Icons: Material Icons by Google (Apache 2.0). Code, levels, UI, sound and music: made for this project.</footer>
+</div>
+</main>
+</div>
+</body>
+</html>

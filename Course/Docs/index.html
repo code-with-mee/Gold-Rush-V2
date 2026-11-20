@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>GOLD RUSH – Overview</title>
+<meta name="description" content="GOLD RUSH Unity tutorial: Overview.">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+<header class="site-header">
+  <a class="brand" href="index.html"><span class="brand-mark">GR</span>GOLD RUSH <small>Unity tutorial</small></a>
+  <nav class="header-links" aria-label="Quick links">
+    <a class="hide-sm" href="index.html">Course</a>
+    <a href="troubleshooting.html">Help</a>
+    <a href="glossary.html">Glossary</a>
+  </nav>
+</header>
+<div class="layout">
+<aside class="sidebar" aria-label="Site navigation">
+<h2>Start</h2><ul>
+<li><a href="index.html" aria-current="page"><span class="num">★</span><span class="label">Overview</span></a></li>
+</ul>
+<h2>Course</h2><ul>
+<li><a href="part-1-guide.html"><span class="num">1</span><span class="label">Arena and hero</span></a></li>
+<li><a href="part-2-guide.html"><span class="num">2</span><span class="label">Characters</span></a></li>
+<li><a href="part-3-guide.html"><span class="num">3</span><span class="label">Gold and monsters</span></a></li>
+<li><a href="part-4-guide.html"><span class="num">4</span><span class="label">Rules, menu, win/lose</span></a></li>
+<li><a href="part-5-guide.html"><span class="num">5</span><span class="label">Mobile controls</span></a></li>
+<li><a href="part-6-guide.html"><span class="num">6</span><span class="label">Polish</span></a></li>
+</ul>
+<h2>Practice</h2><ul>
+<li><a href="exercises.html"><span class="num">✎</span><span class="label">Exercises</span></a></li>
+</ul>
+<h2>Help</h2><ul>
+<li><a href="troubleshooting.html"><span class="num">?</span><span class="label">Troubleshooting</span></a></li>
+<li><a href="glossary.html"><span class="num">A–Z</span><span class="label">Glossary</span></a></li>
+</ul>
+</aside>
+<main>
+<div class="content">
+<section class="hero">
+  <div>
+    <p class="eyebrow">Unity 6 tutorial · 3D · for beginners</p>
+    <h1><span class="gold">GOLD</span> <span class="rush">RUSH</span></h1>
+    <p class="lead">A complete third-person 3D game for phones and computers. Grab every gold coin, dodge the monsters, and escape through the exit gate. You will take the finished game apart, one system at a time, and change it.</p>
+    <div class="actions">
+      <a class="btn" href="part-1-guide.html">Start with Part 1 →</a>
+      <a class="btn secondary" href="#map">See the course map</a>
+    </div>
+  </div>
+  <img src="images/01_title.jpg" alt="The Gold Rush title screen">
+</section>
+
+<h2 id="learn">What you will learn</h2>
+<ul class="learn">
+  <li>How a level is made: hand-built scenes and levels generated from a seed</li>
+  <li>Move a hero with a <code>CharacterController</code> and follow it with an orbit camera</li>
+  <li>Import 3D characters and build an Animator Controller with a blend tree from code</li>
+  <li>Monster AI with a <b>state machine</b>, vision cones and the <b>NavMesh</b></li>
+  <li>Game rules: timer, hearts, stars, pause, win and lose</li>
+  <li>Save progress with <code>PlayerPrefs</code> and JSON, and run a shop</li>
+  <li>Build the whole UI from C#: canvases, anchors, buttons, dialogs</li>
+  <li>Touch controls: a virtual joystick and drag-to-look</li>
+  <li>Day/night lighting, post-processing, particles and tweens</li>
+  <li>Make sound effects and music from maths, with no audio files</li>
+</ul>
+
+<h2 id="start">How to start</h2>
+<ol class="steps-start">
+  <li>Install <b>Unity 6000.6.10f1</b> or newer with Unity Hub. For phone builds, also add <b>Android Build Support</b> and/or <b>iOS Build Support</b>.</li>
+  <li>Unity Hub → <b>Add → Add project from disk</b> → choose the <code>GoldRushDemo</code> folder.</li>
+  <li>In the top menu, choose <b>Gold Rush → Play</b>. If anything looks pink or broken, run <b>Gold Rush → Setup Project</b> first.</li>
+</ol>
+<div class="tip">This course works on the <b>finished</b> game. Each part explains one system, shows the real code, and ends with “Try it” changes you make yourself. Commit or copy the project before you start, so you can always go back.</div>
+
+<h2 id="map">Course map</h2>
+<p>Do the parts in order. The topics follow the order in which the game was first built: a map and a walking character, then characters, then gold and enemies, then the menu and win/lose rules, then the joystick, then polish.</p>
+<div class="cards">
+  <div class="card"><span class="tag">PART 1</span><h3><a href="part-1-guide.html">The arena and a walking hero</a></h3><p>Scenes, hand-made and generated levels, the CharacterController, sprint and stamina, the third-person camera.</p><div class="links"><a href="part-1-guide.html">Read guide</a><a href="part-1-guide.pdf">PDF</a></div></div>
+  <div class="card"><span class="tag">PART 2</span><h3><a href="part-2-guide.html">Characters and animation</a></h3><p>Importing models, an Animator Controller and blend tree made from code, colours, hats and the name badge.</p><div class="links"><a href="part-2-guide.html">Read guide</a><a href="part-2-guide.pdf">PDF</a></div></div>
+  <div class="card"><span class="tag">PART 3</span><h3><a href="part-3-guide.html">Gold and monsters</a></h3><p>Coins, power-ups and the exit gate. Monster AI: the NavMesh, a 6-state machine, and vision.</p><div class="links"><a href="part-3-guide.html">Read guide</a><a href="part-3-guide.pdf">PDF</a></div></div>
+  <div class="card"><span class="tag">PART 4</span><h3><a href="part-4-guide.html">Rules, menu, win and lose</a></h3><p>Game states, hearts and stars, pause, the save file, the menu and shop, and UI built from code.</p><div class="links"><a href="part-4-guide.html">Read guide</a><a href="part-4-guide.pdf">PDF</a></div></div>
+  <div class="card"><span class="tag">PART 5</span><h3><a href="part-5-guide.html">Mobile controls</a></h3><p>The virtual joystick, drag-to-look, testing touch in the Simulator, and building for Android and iOS.</p><div class="links"><a href="part-5-guide.html">Read guide</a><a href="part-5-guide.pdf">PDF</a></div></div>
+  <div class="card"><span class="tag">PART 6</span><h3><a href="part-6-guide.html">Day, night, sound and effects</a></h3><p>Blending day and night, sound and music made from maths, particles, and UI tweens.</p><div class="links"><a href="part-6-guide.html">Read guide</a><a href="part-6-guide.pdf">PDF</a></div></div>
+  <div class="card"><span class="tag">PRACTICE</span><h3><a href="exercises.html">Exercises</a></h3><p>Eight projects, from tuning a level to monsters that call each other for help.</p><div class="links"><a href="exercises.html">Read</a><a href="exercises.pdf">PDF</a></div></div>
+  <div class="card"><span class="tag">HELP</span><h3><a href="troubleshooting.html">Troubleshooting &amp; glossary</a></h3><p>Something does not work? Start with <a href="troubleshooting.html">Troubleshooting</a>. A new word? See the <a href="glossary.html">Glossary</a>.</p></div>
+</div>
+
+<h2 id="game">The game</h2>
+<div class="table-wrap"><table>
+  <tr><th>Level</th><th>Name</th><th>Gold</th><th>Monsters</th><th>Par</th><th>Time of day</th></tr>
+  <tr><td>1</td><td>Training Yard</td><td>6</td><td>2 slimes</td><td>0:40</td><td>Day</td></tr>
+  <tr><td>2</td><td>Ghost Alley</td><td>8</td><td>2 slimes, 1 ghost</td><td>1:00</td><td>Day</td></tr>
+  <tr><td>3</td><td>King's Vault</td><td>10</td><td>2 slimes, 2 ghosts, 2 Mushroom Kings</td><td>1:25</td><td>Night</td></tr>
+  <tr><td>4</td><td>Gold Fever</td><td>13</td><td>3 slimes, 3 ghosts, 2 Mushroom Kings</td><td>1:55</td><td>Night</td></tr>
+  <tr><td>★</td><td>Daily Rush</td><td>7–12</td><td>A new mix every day</td><td>varies</td><td>Night</td></tr>
+</table></div>
+<ul>
+  <li>Collect <b>all the gold</b> to open the <b>EXIT</b> gate, then run through it.</li>
+  <li>You have <b>2 hearts</b>. A monster touch costs one.</li>
+  <li><b>Stars:</b> ① finish ② beat the par time ③ do not get hit.</li>
+  <li>Your gold is saved. Spend it in the <b>Shop</b> on colours and hats.</li>
+  <li>Power-ups: <b>SPEED</b> (faster), <b>GHOST</b> (monsters cannot see you), <b>MAGNET</b> (coins fly to you).</li>
+</ul>
+<div class="shots wide">
+  <figure><img src="images/04_level1_start.jpg" alt="Level 1 start"><figcaption>Level 1</figcaption></figure>
+  <figure><img src="images/11_level4.jpg" alt="Level 4 at night"><figcaption>Level 4 at night</figcaption></figure>
+  <figure><img src="images/03_shop.jpg" alt="The shop"><figcaption>Shop</figcaption></figure>
+  <figure><img src="images/07_win.jpg" alt="Level complete"><figcaption>Win</figcaption></figure>
+</div>
+
+<h2 id="teachers">For teachers</h2>
+<p>The <b>Gold Rush</b> menu in the Unity menu bar has tools for preparing and checking lessons:</p>
+<div class="table-wrap"><table>
+  <tr><th>Menu</th><th>What it does</th></tr>
+  <tr><td>Gold Rush → Setup Project</td><td>Creates the materials, animator controllers, missing scenes and build settings, and sets landscape orientation. Safe to run again.</td></tr>
+  <tr><td>Gold Rush → Play</td><td>Starts from the main menu, whatever scene is open.</td></tr>
+  <tr><td>Gold Rush → Run Smoke Test</td><td>Plays through the game by itself and saves screenshots to <code>Temp/gr_smoke/</code>. Good for checking a student's project still works.</td></tr>
+  <tr><td>Gold Rush → Render Character Preview</td><td>Saves pictures of the characters to <code>Temp/gr_preview/</code>.</td></tr>
+  <tr><td>Gold Rush → Reset Save Data</td><td>Deletes the save: no gold, only Level 1 unlocked.</td></tr>
+  <tr><td>Gold Rush → Give 500 Gold (debug)</td><td>For testing the shop.</td></tr>
+  <tr><td>Gold Rush → Level Design → Rebuild Level Scenes (overwrites!)</td><td>Regenerates <code>Level1</code>–<code>Level4.unity</code> from the generator. <b>Overwrites hand edits.</b></td></tr>
+  <tr><td>Gold Rush → Level Design → Rebuild Prefab Palette</td><td>Rebuilds the drag-and-drop prefabs in <code>Prefabs/Level/</code> and the day/night palette.</td></tr>
+</table></div>
+<p>Every guide is also a printable PDF (link at the top of each page). This site works offline: share the whole <code>Docs</code> folder and open <code>index.html</code>.</p>
+<p>Credits: characters by <b>Quaternius</b> (CC0). Font <b>Poppins</b> (SIL Open Font License). Icons: <b>Material Icons</b> by Google (Apache License 2.0). Code, levels, UI, sound effects and music: made for this project.</p>
+
+<nav class="pager" aria-label="Previous and next page">
+<a class="next" href="part-1-guide.html"><small>Next →</small>Part 1: The arena and a walking hero</a>
+</nav>
+<footer class="site-footer">GOLD RUSH – a Unity 6 tutorial project. Characters: Quaternius (CC0). Font: Poppins (SIL Open Font License). Icons: Material Icons by Google (Apache 2.0). Code, levels, UI, sound and music: made for this project.</footer>
+</div>
+</main>
+</div>
+</body>
+</html>

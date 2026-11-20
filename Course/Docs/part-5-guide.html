@@ -1,0 +1,203 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>GOLD RUSH – Part 5: Mobile controls</title>
+<meta name="description" content="GOLD RUSH Unity tutorial: Part 5: Mobile controls.">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+<header class="site-header">
+  <a class="brand" href="index.html"><span class="brand-mark">GR</span>GOLD RUSH <small>Unity tutorial</small></a>
+  <nav class="header-links" aria-label="Quick links">
+    <a class="hide-sm" href="index.html">Course</a>
+    <a href="troubleshooting.html">Help</a>
+    <a href="glossary.html">Glossary</a>
+  </nav>
+</header>
+<div class="layout">
+<aside class="sidebar" aria-label="Site navigation">
+<h2>Start</h2><ul>
+<li><a href="index.html"><span class="num">★</span><span class="label">Overview</span></a></li>
+</ul>
+<h2>Course</h2><ul>
+<li><a href="part-1-guide.html"><span class="num">1</span><span class="label">Arena and hero</span></a></li>
+<li><a href="part-2-guide.html"><span class="num">2</span><span class="label">Characters</span></a></li>
+<li><a href="part-3-guide.html"><span class="num">3</span><span class="label">Gold and monsters</span></a></li>
+<li><a href="part-4-guide.html"><span class="num">4</span><span class="label">Rules, menu, win/lose</span></a></li>
+<li><a href="part-5-guide.html" aria-current="page"><span class="num">5</span><span class="label">Mobile controls</span></a></li>
+<li><a href="part-6-guide.html"><span class="num">6</span><span class="label">Polish</span></a></li>
+</ul>
+<h2>Practice</h2><ul>
+<li><a href="exercises.html"><span class="num">✎</span><span class="label">Exercises</span></a></li>
+</ul>
+<h2>Help</h2><ul>
+<li><a href="troubleshooting.html"><span class="num">?</span><span class="label">Troubleshooting</span></a></li>
+<li><a href="glossary.html"><span class="num">A–Z</span><span class="label">Glossary</span></a></li>
+</ul>
+</aside>
+<main>
+<div class="content">
+<p class="eyebrow">GOLD RUSH · Part 5</p>
+<h1>Mobile controls</h1>
+<p class="lead">Gold Rush is made for phones. Here you will see how the on-screen joystick and the drag-to-look area work, how they share the code with the keyboard and mouse, how to test touch in the Editor, and how to build the game for Android or iOS.</p>
+<div class="meta"><span><b>Scene</b><code>Level1.unity</code></span><span><b>Main scripts</b><code>VirtualJoystick.cs</code> · <code>TouchLookArea.cs</code> · <code>ButtonFX.cs</code> · <code>DayNightButton.cs</code></span><a class="btn secondary" href="part-5-guide.pdf">Download PDF</a></div>
+
+<nav class="toc" aria-label="Steps on this page"><strong>Steps on this page</strong><ol>
+  <li><a href="#step-1">The screen is split in two</a></li>
+  <li><a href="#step-2">The virtual joystick</a></li>
+  <li><a href="#step-3">Sprint by pushing to the edge</a></li>
+  <li><a href="#step-4">Look by dragging</a></li>
+  <li><a href="#step-5">Mouse lock: computer only</a></li>
+  <li><a href="#step-6">Buttons that feel good</a></li>
+  <li><a href="#step-7">Test touch in the Editor</a></li>
+  <li><a href="#step-8">Build for a phone</a></li>
+  <li><a href="#step-9">Try it</a></li>
+</ol></nav>
+
+<h2 id="step-1"><span class="step">1</span>The screen is split in two</h2>
+<div class="table-wrap"><table>
+  <tr><th>Area</th><th>Script</th><th>What a finger does there</th></tr>
+  <tr><td>Left half</td><td><code>VirtualJoystick</code></td><td>A stick appears under the thumb. Push it to walk, push to the edge to sprint.</td></tr>
+  <tr><td>Right half</td><td><code>TouchLookArea</code></td><td>Drag to turn the camera.</td></tr>
+  <tr><td>Buttons</td><td><code>ButtonFX</code>, <code>DayNightButton</code></td><td>Pause and the sun/moon button, drawn on top.</td></tr>
+</table></div>
+<p>Both areas are invisible full-height UI images. <code>GameUI.Build()</code> creates them <b>first</b>, so they are drawn under everything else, and buttons on top still get their taps:</p>
+<span class="file">Scripts/UI/GameUI.cs – Build()</span>
+<pre><code>TouchLookArea.Create(canvasRt);            // right half
+Joystick = VirtualJoystick.Create(canvasRt); // left half</code></pre>
+<p>Because each area remembers only one finger (<code>pointerId</code>), you can move with your left thumb and look with your right thumb at the same time.</p>
+<p>All UI sizes are in <b>reference pixels</b> on a 1920 × 1080 canvas (the <code>CanvasScaler</code> stretches them to the real screen). So a stick radius of 120 looks the same on every phone.</p>
+
+<h2 id="step-2"><span class="step">2</span>The virtual joystick</h2>
+<p><code>VirtualJoystick</code> uses three uGUI event interfaces: <code>IPointerDownHandler</code>, <code>IDragHandler</code> and <code>IPointerUpHandler</code>. Unity calls the matching method when a finger (or the mouse) goes down, moves and goes up.</p>
+<ol>
+  <li><b>OnPointerDown</b>: remember this finger, and move the stick base to where the thumb is. The stick fades in.</li>
+  <li><b>OnDrag</b>: work out how far the thumb is from the base, and turn that into <code>Value</code>:</li>
+</ol>
+<span class="file">Scripts/UI/VirtualJoystick.cs</span>
+<pre><code>public void OnDrag(PointerEventData e)
+{
+    if (e.pointerId != pointer) return;
+    Vector2 d = Local(e) - stickBase.anchoredPosition;
+    // the stick follows the thumb if it drags far away
+    if (d.magnitude &gt; radius * 1.6f)
+    {
+        stickBase.anchoredPosition += d.normalized * (d.magnitude - radius * 1.6f);
+        d = Local(e) - stickBase.anchoredPosition;
+    }
+    Vector2 c = Vector2.ClampMagnitude(d, radius);
+    knob.anchoredPosition = c;
+    Vector2 v = c / radius;
+    Value = v.magnitude &lt; 0.12f ? Vector2.zero : v;
+}</code></pre>
+<ul>
+  <li><code>ClampMagnitude(d, radius)</code> keeps the knob inside the ring (radius 120).</li>
+  <li><code>c / radius</code> turns pixels into a value from 0 to 1. Half-way pushed means half speed.</li>
+  <li><b>Dead zone:</b> under 0.12 counts as zero, so a resting thumb does not make the hero creep.</li>
+  <li><b>Follow the thumb:</b> if your thumb slides far away (more than 1.6 × the radius), the base slides after it. You never “lose” the stick.</li>
+</ul>
+<ol start="3">
+  <li><b>OnPointerUp</b>: <code>Release()</code> sets <code>Value</code> to zero and the stick fades out.</li>
+</ol>
+<p><code>PlayerMotor.ReadInput()</code> (Part 1) reads <code>joystick.Value</code>. If a <kbd>W</kbd><kbd>A</kbd><kbd>S</kbd><kbd>D</kbd> or arrow key is held, the keyboard wins. So the same movement code works on a computer and on a phone.</p>
+
+<h2 id="step-3"><span class="step">3</span>Sprint by pushing to the edge</h2>
+<span class="file">Scripts/Gameplay/PlayerMotor.cs</span>
+<pre><code>bool wantSprint = canMove &amp;&amp; mag &gt; 0.2f &amp;&amp; ((joystick &amp;&amp; joystick.Held &amp;&amp; joystick.Value.magnitude &gt; 0.9f) || Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift));</code></pre>
+<p>Phones have no Shift key, so the stick doubles as the sprint button: past 90% of the radius you sprint. The ring turns <b>orange</b> at the same point (in <code>VirtualJoystick.Update()</code>), so the player can see it.</p>
+
+<h2 id="step-4"><span class="step">4</span>Look by dragging</h2>
+<p><code>TouchLookArea</code> does not turn the camera itself. It only collects how far the finger moved, like a mailbox:</p>
+<span class="file">Scripts/UI/TouchLookArea.cs</span>
+<pre><code>public static Vector2 Consume()
+{
+    var a = accumulated;
+    accumulated = Vector2.zero;
+    return a;
+}
+public void OnDrag(PointerEventData e)
+{
+    if (e.pointerId != pointer) return;
+    accumulated += e.delta;
+    Place(e);
+}</code></pre>
+<p>Every frame, the camera empties the mailbox and turns:</p>
+<span class="file">Scripts/Gameplay/ThirdPersonCamera.cs</span>
+<pre><code>Vector2 look = TouchLookArea.Consume() * (1920f / Mathf.Max(1, Screen.width));
+yaw += look.x * touchSensitivity;
+pitch -= look.y * touchSensitivity * 0.8f;</code></pre>
+<p>The <code>1920f / Screen.width</code> part makes a swipe across half the screen turn the camera the same amount on a small phone and on a big tablet. <code>touchSensitivity</code> is 0.16 degrees per reference pixel.</p>
+
+<h2 id="step-5"><span class="step">5</span>Mouse lock: computer only</h2>
+<span class="file">Scripts/Gameplay/GameManager.cs</span>
+<pre><code>/// &lt;summary&gt;True on computers: hide + lock the cursor while playing so the mouse turns the camera.&lt;/summary&gt;
+static bool UseMouseLook =&gt; !Application.isMobilePlatform &amp;&amp; !Input.touchSupported;</code></pre>
+<p>On a computer the cursor is hidden and locked after the countdown, like most PC 3D games, so moving the mouse turns the camera. <kbd>Esc</kbd> pauses and frees it. On a phone none of that happens. When the app goes into the background, the game pauses itself (<code>OnApplicationPause</code>).</p>
+
+<h2 id="step-6"><span class="step">6</span>Buttons that feel good</h2>
+<p>Every button made by <code>UIKit</code> gets a <code>ButtonFX</code> component. It makes the button react: it grows a little on hover, shrinks or sinks when pressed, and plays the <code>"click"</code> sound. On touch screens this small feedback matters a lot, because there is no mouse pointer.</p>
+<p><code>DayNightButton</code> is a good example of an <b>event</b>: it subscribes to <code>DayNight.Changed</code> and swaps the sun and moon icon whenever the time of day changes, whether you tapped it or pressed <kbd>N</kbd>.</p>
+<pre><code>void OnEnable() { DayNight.Changed += OnChanged; }
+void OnDisable() { DayNight.Changed -= OnChanged; }</code></pre>
+
+<h2 id="step-7"><span class="step">7</span>Test touch in the Editor</h2>
+<div class="note">In the normal Game view the cursor is locked after the countdown, so you cannot drag the joystick with the mouse. Use the keyboard there, or use the <b>Simulator</b>.</div>
+<ol>
+  <li>At the top of the <b>Game</b> view, change the <b>Game</b> dropdown to <b>Simulator</b>.</li>
+  <li>Choose a phone from the device list and rotate it to <b>landscape</b> (the game is landscape only).</li>
+  <li>Press <b>Play</b>. A mouse click now acts like a finger. Drag on the left half to move and on the right half to look.</li>
+</ol>
+<p>In the Simulator the game should also show the touch version of the controls hint. If it still hides the cursor, the Simulator is not reporting a mobile device: check that a phone (not a desktop) is selected.</p>
+<p>The best test is still a real phone (step 8).</p>
+
+<h2 id="step-8"><span class="step">8</span>Build for a phone</h2>
+<p>Most settings are already done: landscape only (left and right), and for Android the package name <code>com.itstep.goldrush</code>, minimum Android 8.0 (API 26), IL2CPP and ARM64.</p>
+<h3>Android</h3>
+<ol>
+  <li>In Unity Hub, add the <b>Android Build Support</b> module (with OpenJDK and the Android SDK &amp; NDK) to Unity 6000.6.10f1.</li>
+  <li><b>File → Build Profiles</b> → <b>Android</b> → <b>Switch Platform</b>.</li>
+  <li>Check the scene list: <code>MainMenu</code>, <code>Level1</code>–<code>Level4</code>, <code>Game</code>. (Running <b>Gold Rush → Setup Project</b> writes this list for you.)</li>
+  <li>On the phone, turn on <b>Developer options</b> and <b>USB debugging</b>, then connect it with a cable.</li>
+  <li><b>Build And Run</b>.</li>
+</ol>
+<div class="tip">If several students install on the same phone, give each build its own package name in <b>Player Settings → Other Settings</b>, for example <code>com.itstep.goldrush.anna</code>. Otherwise each install replaces the last one.</div>
+<h3>iOS (needs a Mac with Xcode)</h3>
+<ol>
+  <li>Add the <b>iOS Build Support</b> module and switch the platform to iOS.</li>
+  <li>In <b>Player Settings → Other Settings</b>, <b>change the Bundle Identifier</b>. It is still the URP template default. Also set your <b>Signing Team ID</b>.</li>
+  <li><b>Build</b>. Unity makes an Xcode project. Open it in Xcode, choose your device, and press Run.</li>
+</ol>
+<div class="note"><b>Setup Project</b> sets the orientation back to landscape every time it runs. If you want a portrait version, change <code>GoldRushSetup.cs</code> too.</div>
+
+<h2 id="step-9"><span class="step">9</span>Try it</h2>
+<div class="try"><h3>A smaller stick</h3>
+<p>In <code>VirtualJoystick.cs</code>, change <code>public float radius = 120f;</code> to <code>80f</code>. A shorter thumb push now gives full speed and sprint.</p></div>
+<div class="try"><h3>A bigger dead zone</h3>
+<p>In <code>OnDrag</code>, change <code>0.12f</code> to <code>0.35f</code>. Small wiggles no longer move the hero.</p></div>
+<div class="try"><h3>Easier sprint</h3>
+<p>Change <code>joystick.Value.magnitude &gt; 0.9f</code> in <code>PlayerMotor.cs</code> to <code>&gt; 0.7f</code>. Make the same change in <code>VirtualJoystick.Update()</code>, so the orange ring still matches.</p></div>
+<div class="try"><h3>Faster look</h3>
+<p>In <code>ThirdPersonCamera.cs</code>, change <code>touchSensitivity = 0.16f</code> to <code>0.3f</code>, and test in the Simulator. For the computer, change <code>mouseSensitivity</code>.</p></div>
+<div class="try"><h3>Inverted look</h3>
+<p>Change <code>pitch -= look.y * ...</code> to <code>pitch += look.y * ...</code>. Some players like dragging up to look down.</p></div>
+<div class="try"><h3>A red sprint ring</h3>
+<p>In <code>VirtualJoystick.Update()</code>, change <code>UIKit.Orange</code> to <code>UIKit.Red</code>.</p></div>
+
+<div class="check"><b>Checklist</b><ul>
+  <li>I can explain how the joystick turns a thumb position into a 0–1 <code>Value</code>, including the dead zone.</li>
+  <li>I know why the keyboard and the joystick can share one movement function.</li>
+  <li>I can test touch with the Simulator, and I know what to change before building for iOS.</li>
+</ul></div>
+
+<nav class="pager" aria-label="Previous and next page">
+<a class="prev" href="part-4-guide.html"><small>← Previous</small>Part 4: Rules, menu, win and lose</a>
+<a class="next" href="part-6-guide.html"><small>Next →</small>Part 6: Day, night, sound and effects</a>
+</nav>
+<footer class="site-footer">GOLD RUSH – a Unity 6 tutorial project. Characters: Quaternius (CC0). Font: Poppins (SIL Open Font License). Icons: Material Icons by Google (Apache 2.0). Code, levels, UI, sound and music: made for this project.</footer>
+</div>
+</main>
+</div>
+</body>
+</html>

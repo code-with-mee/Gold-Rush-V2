@@ -1,0 +1,236 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>GOLD RUSH – Part 6: Day, night, sound and effects</title>
+<meta name="description" content="GOLD RUSH Unity tutorial: Part 6: Day, night, sound and effects.">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+<header class="site-header">
+  <a class="brand" href="index.html"><span class="brand-mark">GR</span>GOLD RUSH <small>Unity tutorial</small></a>
+  <nav class="header-links" aria-label="Quick links">
+    <a class="hide-sm" href="index.html">Course</a>
+    <a href="troubleshooting.html">Help</a>
+    <a href="glossary.html">Glossary</a>
+  </nav>
+</header>
+<div class="layout">
+<aside class="sidebar" aria-label="Site navigation">
+<h2>Start</h2><ul>
+<li><a href="index.html"><span class="num">★</span><span class="label">Overview</span></a></li>
+</ul>
+<h2>Course</h2><ul>
+<li><a href="part-1-guide.html"><span class="num">1</span><span class="label">Arena and hero</span></a></li>
+<li><a href="part-2-guide.html"><span class="num">2</span><span class="label">Characters</span></a></li>
+<li><a href="part-3-guide.html"><span class="num">3</span><span class="label">Gold and monsters</span></a></li>
+<li><a href="part-4-guide.html"><span class="num">4</span><span class="label">Rules, menu, win/lose</span></a></li>
+<li><a href="part-5-guide.html"><span class="num">5</span><span class="label">Mobile controls</span></a></li>
+<li><a href="part-6-guide.html" aria-current="page"><span class="num">6</span><span class="label">Polish</span></a></li>
+</ul>
+<h2>Practice</h2><ul>
+<li><a href="exercises.html"><span class="num">✎</span><span class="label">Exercises</span></a></li>
+</ul>
+<h2>Help</h2><ul>
+<li><a href="troubleshooting.html"><span class="num">?</span><span class="label">Troubleshooting</span></a></li>
+<li><a href="glossary.html"><span class="num">A–Z</span><span class="label">Glossary</span></a></li>
+</ul>
+</aside>
+<main>
+<div class="content">
+<p class="eyebrow">GOLD RUSH · Part 6</p>
+<h1>Day, night, sound and effects</h1>
+<p class="lead">The last 10% of polish is what makes a game feel finished. In this part: a day/night switch that blends lights, fog, sky and colours; sound effects and music made from maths with no audio files; particles; and small UI animations.</p>
+<div class="meta"><span><b>Scenes</b><code>Level1.unity</code> · <code>Level3.unity</code></span><span><b>Main scripts</b><code>DayNight.cs</code> · <code>DayNightTint.cs</code> · <code>Synth.cs</code> · <code>AudioFX.cs</code> · <code>FX.cs</code> · <code>Tween.cs</code></span><a class="btn secondary" href="part-6-guide.pdf">Download PDF</a></div>
+
+<nav class="toc" aria-label="Steps on this page"><strong>Steps on this page</strong><ol>
+  <li><a href="#step-1">Day and night</a></li>
+  <li><a href="#step-2">Blending between two looks</a></li>
+  <li><a href="#step-3">Materials and lamps</a></li>
+  <li><a href="#step-4">Sound from maths</a></li>
+  <li><a href="#step-5">Playing sounds and music</a></li>
+  <li><a href="#step-6">Particles</a></li>
+  <li><a href="#step-7">UI animation with tweens</a></li>
+  <li><a href="#step-8">Try it</a></li>
+</ol></nav>
+
+<div class="shots wide">
+  <figure><img src="images/05_level1_play.jpg" alt="Level 1 by day"><figcaption>Day</figcaption></figure>
+  <figure><img src="images/05b_level1_night.jpg" alt="Level 1 at night"><figcaption>Night: same level, one tap later</figcaption></figure>
+</div>
+
+<h2 id="step-1"><span class="step">1</span>Day and night</h2>
+<p>Press <kbd>N</kbd> or the sun/moon button. In 1.5 seconds the level changes from a bright afternoon to a blue night with glowing lamps and a lantern on the hero. Levels 3 and 4 and the Daily Rush start at night (<code>night = true</code> in <code>Data.cs</code>), and the menu always starts at night.</p>
+<p>Three scripts work together:</p>
+<div class="table-wrap"><table>
+  <tr><th>Script</th><th>Job</th></tr>
+  <tr><td><code>EnvironmentSetup</code></td><td>Runs once at the start. Creates the sun, the skybox, and a post-processing <b>Volume</b> with bloom, vignette and tonemapping, then creates <code>DayNight</code>.</td></tr>
+  <tr><td><code>DayNight</code></td><td>Holds one number, <code>Value</code>: 0 = day, 1 = night. Each frame it moves it toward the target and updates everything.</td></tr>
+  <tr><td><code>DayNightTint</code>, <code>NightLight</code></td><td>Components in the level scene: which materials change colour, and which lights turn on at night.</td></tr>
+</table></div>
+
+<h2 id="step-2"><span class="step">2</span>Blending between two looks</h2>
+<span class="file">Scripts/World/DayNight.cs</span>
+<pre><code>static float Smooth(float t) =&gt; t * t * (3f - 2f * t);
+
+void Update()
+{
+    if (Mathf.Approximately(value, target)) return;
+    value = Mathf.MoveTowards(value, target, Time.unscaledDeltaTime / Mathf.Max(0.05f, transitionTime));
+    ApplyNow();
+}</code></pre>
+<ul>
+  <li><code>MoveTowards</code> walks <code>value</code> toward 0 or 1. Dividing by <code>transitionTime</code> (1.5) means a full change takes 1.5 s.</li>
+  <li><b>Unscaled</b> time means it still works while the game is paused.</li>
+  <li><code>Smooth</code> is the <b>smoothstep</b> curve: it starts slow, speeds up, and ends slow.</li>
+</ul>
+<p>Then <code>ApplyNow()</code> uses <code>Color.Lerp</code> and <code>Mathf.Lerp</code> to mix two complete looks:</p>
+<pre><code>float t = Smooth(value);
+RenderSettings.ambientSkyColor = Color.Lerp(DaySky, NightSky, t);
+RenderSettings.fogColor = Color.Lerp(DayFog, NightFog, t);
+RenderSettings.fogStartDistance = Mathf.Lerp(40f, 18f, t);
+RenderSettings.fogEndDistance = Mathf.Lerp(140f, 75f, t);</code></pre>
+<div class="table-wrap"><table>
+  <tr><th>What changes</th><th>Day</th><th>Night</th></tr>
+  <tr><td>Sun intensity</td><td>1.35, warm white</td><td>0.45, blue</td></tr>
+  <tr><td>Fog</td><td>light blue-grey, from 40 m to 140 m</td><td>dark navy, from 18 m to 75 m</td></tr>
+  <tr><td>Sky exposure</td><td>1.1</td><td>0.06</td></tr>
+  <tr><td>Bloom</td><td>0.6</td><td>1.1 (lamps glow more)</td></tr>
+  <tr><td>Vignette</td><td>0.25</td><td>0.38 (darker corners)</td></tr>
+</table></div>
+<p><code>Lerp(a, b, t)</code> means “go <code>t</code> of the way from <code>a</code> to <code>b</code>”. With <code>t = 0.5</code> you get exactly half way. This one idea animates the whole scene.</p>
+
+<h2 id="step-3"><span class="step">3</span>Materials and lamps</h2>
+<p>Open <code>Level1.unity</code> and select the root <code>Level 1 - Training Yard</code>. Its <b>Day Night Tint</b> component has a list: each entry is a <b>Material</b> with a <b>Day</b> colour and a <b>Night</b> colour. When the level starts, it makes a <b>copy</b> of each material and gives the copy to <code>DayNight</code> to recolour.</p>
+<div class="tip">Why a copy? Changing a material <i>asset</i> from a script in Play mode would save the change into your project for good. Working on copies keeps the project clean.</div>
+<p>Extra colours for prefabs you drag in come from <code>Resources/DayNightPalette.asset</code>. If both list the same material, the scene's <b>Day Night Tint</b> wins.</p>
+<p>Lamp posts have a <code>NightLight</code> component, with one field, <b>Night Intensity</b>. The light fades in at night and is switched off by day. Add a <code>NightLight</code> to any new light that should only shine at night.</p>
+
+<h2 id="step-4"><span class="step">4</span>Sound from maths</h2>
+<p>There are <b>no audio files</b> in this project. <code>Synth.cs</code> computes every sound sample by sample, 22,050 samples per second, when the game starts.</p>
+<p>A sound is made from <b>waves</b>. One cycle of each wave shape:</p>
+<span class="file">Scripts/Audio/Synth.cs</span>
+<pre><code>static double Osc(W w, double p)
+{
+    switch (w)
+    {
+        case W.Sine: return Math.Sin(TwoPi * p);
+        case W.Square: return p &lt; 0.5 ? 0.6 : -0.6;
+        case W.SoftSq:
+        {
+            double x = TwoPi * p;
+            return (Math.Sin(x) + Math.Sin(3.0 * x) / 3.0 + Math.Sin(5.0 * x) / 5.0) * 0.8;
+        }
+        case W.Tri: return 4.0 * Math.Abs(p - 0.5) - 1.0;
+        case W.Saw: return (2.0 * p - 1.0) * 0.7;
+    }
+    return 0.0;
+}</code></pre>
+<p><code>p</code> goes from 0 to 1 once per cycle. A 440 Hz note repeats this 440 times a second. <code>Hz(midi)</code> turns a piano key number into a frequency (69 is A = 440 Hz).</p>
+<p><code>Tone(...)</code> plays a wave with an <b>envelope</b>: a quick fade-in (attack), a fade-out over time (decay), and a short release at the end. Without an envelope every sound would start and stop with a click. <code>Noise(...)</code> makes hiss for footsteps, hits and whooshes.</p>
+<p>Here is the whole coin sound: a short B note, then a longer E above it, each made of a few waves stacked together:</p>
+<pre><code>static float[] Coin()
+{
+    var b = Buf(0.36);
+    double b5 = Hz(83), e6 = Hz(88);
+    Tone(b, 0.0, 0.085, b5, b5, 0.5f, W.Sine, 0.002, 6, 0.01);
+    Tone(b, 0.0, 0.085, b5, b5, 0.15f, W.Tri, 0.002, 6, 0.01);
+    Tone(b, 0.075, 0.28, e6, e6, 0.55f, W.Sine, 0.002, 9, 0.05);
+    Tone(b, 0.075, 0.28, e6, e6, 0.15f, W.Tri, 0.002, 11, 0.05);
+    Tone(b, 0.075, 0.28, e6, e6, 0.06f, W.SoftSq, 0.002, 14, 0.05);
+    Tone(b, 0.075, 0.2, e6 * 2.0, e6 * 2.0, 0.07f, W.Sine, 0.002, 16, 0.05);
+    return b;
+}</code></pre>
+<p>Finally <code>Make()</code> puts the numbers into a real <code>AudioClip</code> with <code>AudioClip.Create</code> and <code>clip.SetData</code>.</p>
+<div class="table-wrap"><table>
+  <tr><th>Sound ids</th></tr>
+  <tr><td><code>coin</code> · <code>step</code> · <code>alert</code> · <code>hit</code> · <code>win</code> · <code>lose</code> · <code>power</code> · <code>click</code> · <code>gate</code> · <code>star</code> · <code>buy</code> · <code>error</code> · <code>count</code> · <code>go</code> · <code>whoosh</code> · <code>music</code></td></tr>
+</table></div>
+<p>The music is an 8-bar loop at 112 BPM (about 17 seconds) in A minor: bass, chords, hi-hats and a melody picked by a <b>seeded</b> random generator, so it is the same tune every time.</p>
+
+<h2 id="step-5"><span class="step">5</span>Playing sounds and music</h2>
+<p><code>AudioFX</code> is the one place that plays audio. To play a sound from anywhere:</p>
+<pre><code>AudioFX.Play("coin");                  // normal
+AudioFX.Play("step", 0.35f, 1.1f);     // quieter, a little higher</code></pre>
+<ul>
+  <li>It keeps a <b>pool</b> of 8 <code>AudioSource</code>s, so up to 8 sounds can overlap. A 9th steals the oldest.</li>
+  <li>The coin sound gets a little higher for each coin in a row (<code>pitch = 1 + 0.05 × (Collected % 5)</code>), which makes collecting feel rewarding.</li>
+  <li>When a monster is chasing you, <code>SetTension(true)</code> makes the music slightly faster and louder.</li>
+  <li>On win or lose, <code>Duck()</code> turns the music down for a moment so the jingle stands out.</li>
+  <li>The MUSIC and SOUND switches in Settings and Pause are saved in the save file.</li>
+</ul>
+
+<h2 id="step-6"><span class="step">6</span>Particles</h2>
+<p><code>FX.cs</code> builds <code>ParticleSystem</code>s from code. Each effect is one line to call:</p>
+<div class="table-wrap"><table>
+  <tr><th>Call</th><th>Used for</th></tr>
+  <tr><td><code>FX.CoinBurst(pos)</code></td><td>Golden sparkles when you grab a coin</td></tr>
+  <tr><td><code>FX.Burst(...)</code></td><td>Power-up pickup, in the power-up's colour</td></tr>
+  <tr><td><code>FX.Puff(pos, color)</code></td><td>A dust cloud when you are hit</td></tr>
+  <tr><td><code>FX.Trail(...)</code></td><td>Running dust and the SPEED trail</td></tr>
+  <tr><td><code>FX.Confetti(pos)</code></td><td>Winning, and buying in the shop</td></tr>
+</table></div>
+<span class="file">Scripts/Gameplay/FX.cs</span>
+<pre><code>public static void CoinBurst(Vector3 pos)
+{
+    Burst(pos, new Color(1f, 0.9f, 0.4f), new Color(1f, 0.65f, 0.1f), 26, 2.5f, 6f, 0.35f, 0.7f, 0.8f, true);
+    Burst(pos, new Color(1f, 1f, 0.8f, 0.9f), new Color(1f, 0.85f, 0.4f, 0.6f), 6, 0.2f, 0.6f, 1.4f, 0.35f, 0f, false);
+}</code></pre>
+<p>The numbers after the colours are: how many particles, the slowest and fastest speed, the size, how long they live, and gravity. Together with a small camera <code>Shake</code> and the floating “+1” text, these turn a simple pickup into a satisfying moment. Game makers call this <b>juice</b>.</p>
+
+<h2 id="step-7"><span class="step">7</span>UI animation with tweens</h2>
+<p>A <b>tween</b> animates a value from A to B over time. <code>Tween.cs</code> has helpers used all over the UI:</p>
+<div class="table-wrap"><table>
+  <tr><th>Helper</th><th>Effect</th></tr>
+  <tr><td><code>Tween.PopIn(t)</code></td><td>Grows from nothing with a small overshoot (dialogs, stars)</td></tr>
+  <tr><td><code>Tween.Punch(t)</code></td><td>A quick bounce (buttons, the coin counter)</td></tr>
+  <tr><td><code>Tween.Fade(group, to, dur)</code></td><td>Fades a <code>CanvasGroup</code> in or out</td></tr>
+  <tr><td><code>Tween.Move(rt, to, dur)</code></td><td>Slides a UI element</td></tr>
+</table></div>
+<p>The <b>easing</b> functions (<code>OutCubic</code>, <code>OutBack</code>, <code>OutElastic</code>…) change how the motion feels. <code>OutBack</code> goes a little past the end and comes back, which looks bouncy. Tweens use unscaled time by default, so the pause menu still animates.</p>
+<p>Some small helper scripts add life without any tween:</p>
+<ul>
+  <li><code>CoinFlip</code> squashes the coin icon's width with a cosine, which looks like a 3D flip.</li>
+  <li><code>Bob</code> makes things float and pulse with sine waves (the low-heart warning uses it).</li>
+  <li><code>LogoTitle</code> builds the 3D-looking GOLD RUSH title from stacked text layers that follow the mouse.</li>
+</ul>
+<pre><code>// CoinFlip.cs
+float x = cycle &lt; flipTime ? Mathf.Cos(cycle / flipTime * Mathf.PI * 2f) : 1f;
+// keep a sliver of width so it never fully disappears
+transform.localScale = new Vector3(Mathf.Sign(x) * Mathf.Max(0.08f, Mathf.Abs(x)), 1f, 1f);</code></pre>
+
+<h2 id="step-8"><span class="step">8</span>Try it</h2>
+<div class="try"><h3>A slow sunset</h3>
+<p>In <code>DayNight.cs</code>, change <code>public float transitionTime = 1.5f;</code> to <code>5f</code>. Press <kbd>N</kbd> and watch a 5-second sunset.</p></div>
+<div class="try"><h3>Purple night fog</h3>
+<p>In <code>DayNight.cs</code>, change <code>NightFog</code> to <code>new Color(0.25f, 0.08f, 0.3f)</code>. For thicker fog, change <code>Mathf.Lerp(140f, 75f, t)</code> to <code>Mathf.Lerp(140f, 40f, t)</code>. Play Level 3, which starts at night.</p></div>
+<div class="try"><h3>A green night floor (no code)</h3>
+<p>In <code>Level1.unity</code>, select <code>Level 1 - Training Yard</code>. In <b>Day Night Tint</b>, find the entry with the <code>Floor</code> material and set its <b>Night</b> colour to bright green. Play and press <kbd>N</kbd>. (Edit the scene component, not the palette asset: the scene wins.)</p></div>
+<div class="try"><h3>Your own sound</h3>
+<p>In <code>Synth.cs</code>, add a new method next to <code>Whoosh()</code>:</p>
+<pre><code>static float[] Freeze() { var b = Buf(0.5); Tone(b, 0.0, 0.5, 1800, 600, 0.4f, W.Sine, 0.005, 4, 0.1, 0.02, 18); Noise(b, 0.0, 0.4, 0.2f, 9000, 3000, 2000, 0.002, 6, 0.1); return b; }</code></pre>
+<p>Register it in <code>BuildAll()</code>, before <code>return d;</code>:</p>
+<pre><code>d["freeze"] = Make("freeze", Freeze(), 0.85f);</code></pre>
+<p>To hear it, change <code>AudioFX.Play("whoosh", 0.7f)</code> in <code>DayNightButton.cs</code> to <code>AudioFX.Play("freeze")</code> and press <kbd>N</kbd>. You will use this sound for the Freeze power-up in the <a href="exercises.html">exercises</a>.</p></div>
+<div class="try"><h3>Faster music</h3>
+<p>In <code>Synth.cs</code>, change <code>const double bpm = 112.0;</code> to <code>140.0</code>.</p></div>
+<div class="try"><h3>A huge coin explosion</h3>
+<p>In <code>FX.CoinBurst</code>, change <code>26</code> to <code>120</code> and <code>0.35f</code> to <code>0.6f</code>.</p></div>
+
+<div class="check"><b>Checklist</b><ul>
+  <li>I can explain how one number from 0 to 1 and <code>Lerp</code> blend the whole day/night look.</li>
+  <li>I know how a sound is built from waves and an envelope, and how to play it with <code>AudioFX.Play</code>.</li>
+  <li>I can trigger a particle effect and a UI tween from code.</li>
+</ul></div>
+
+<nav class="pager" aria-label="Previous and next page">
+<a class="prev" href="part-5-guide.html"><small>← Previous</small>Part 5: Mobile controls</a>
+<a class="next" href="exercises.html"><small>Next →</small>Exercises</a>
+</nav>
+<footer class="site-footer">GOLD RUSH – a Unity 6 tutorial project. Characters: Quaternius (CC0). Font: Poppins (SIL Open Font License). Icons: Material Icons by Google (Apache 2.0). Code, levels, UI, sound and music: made for this project.</footer>
+</div>
+</main>
+</div>
+</body>
+</html>
