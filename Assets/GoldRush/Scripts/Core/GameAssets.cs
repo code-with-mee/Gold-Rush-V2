@@ -49,6 +49,7 @@ namespace GoldRush
     /// Project asset references, created by the editor setup (Gold Rush > Setup Project)
     /// at Assets/GoldRush/Resources/GoldRushAssets.asset and loaded at runtime via Resources.
     /// </summary>
+    [CreateAssetMenu(fileName = "GoldRushAssets", menuName = "Gold Rush/Game Assets")]
     public class GameAssets : ScriptableObject
     {
         [Header("Characters (Quaternius, CC0)")]

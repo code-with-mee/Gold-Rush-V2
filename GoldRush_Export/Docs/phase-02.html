@@ -1,0 +1,381 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>GOLD RUSH – Phase 2: Level design</title>
+<meta name="description" content="GOLD RUSH Unity tutorial, Phase 2: Level design.">
+<link rel="stylesheet" href="assets/style.css">
+<style>
+  .sw { display: inline-block; width: 14px; height: 14px; border-radius: 3px; border: 1px solid var(--line); vertical-align: -2px; margin-right: 4px; }
+</style>
+</head>
+<body>
+<header class="site-header">
+  <a class="brand" href="index.html"><span class="brand-mark">GR</span>GOLD RUSH <small>Unity tutorial</small></a>
+  <nav class="header-links" aria-label="Quick links">
+    <a class="hide-sm" href="index.html">Course</a>
+    <a href="troubleshooting.html">Help</a>
+    <a href="glossary.html">Glossary</a>
+  </nav>
+</header>
+<div class="layout">
+<aside class="sidebar" aria-label="Site navigation">
+<h2>Start</h2><ul>
+<li><a href="index.html"><span class="num">★</span><span class="label">Overview</span></a></li>
+</ul>
+<h2>Course</h2><ul>
+<li><a href="phase-00.html"><span class="num">0</span><span class="label">Create the project</span></a></li>
+<li><a href="phase-01.html"><span class="num">1</span><span class="label">Materials and prefabs</span></a></li>
+<li><a href="phase-02.html" aria-current="page"><span class="num">2</span><span class="label">Level design</span></a></li>
+<li><a href="phase-03.html"><span class="num">3</span><span class="label">The player</span></a></li>
+<li><a href="phase-04.html"><span class="num">4</span><span class="label">The camera</span></a></li>
+<li><a href="phase-05.html"><span class="num">5</span><span class="label">Coins and the HUD</span></a></li>
+<li><a href="phase-06.html"><span class="num">6</span><span class="label">Exit gate, win and lose</span></a></li>
+<li><a href="phase-07.html"><span class="num">7</span><span class="label">Monsters</span></a></li>
+<li><a href="phase-08.html"><span class="num">8</span><span class="label">Power-ups and effects</span></a></li>
+<li><a href="phase-09.html"><span class="num">9</span><span class="label">Menu, levels, shop, save</span></a></li>
+<li><a href="phase-10.html"><span class="num">10</span><span class="label">Polish and build</span></a></li>
+</ul>
+<h2>Help</h2><ul>
+<li><a href="troubleshooting.html"><span class="num">?</span><span class="label">Troubleshooting</span></a></li>
+<li><a href="glossary.html"><span class="num">A–Z</span><span class="label">Glossary</span></a></li>
+</ul>
+</aside>
+<main>
+<div class="content">
+<p class="eyebrow">GOLD RUSH · Phase 2</p>
+<h1>Level design</h1>
+<p class="lead">You build the first level, <b>Training Yard</b>, by hand: a 32 × 32 m yard with a grid floor, walls all around, an opening for the exit gate, lamp posts and blocks to hide behind. You add a sunset sun, sky and fog. Last, you place empty <b>markers</b> that show where the hero starts and where the coins, monsters and gate go.</p>
+<div class="meta"><span><b>Checkpoint package</b><code>GoldRush_Phase02_Level.unitypackage</code></span><span><b>Scene</b><code>Assets/GoldRush/Scenes/Level1.unity</code></span><a class="btn secondary" href="phase-02.pdf">Download PDF</a></div>
+
+<nav class="toc" aria-label="Steps on this page"><strong>Steps on this page</strong><ol>
+  <li><a href="#step-1">What you need</a></li>
+  <li><a href="#step-2">The plan</a></li>
+  <li><a href="#step-3">Create the Level1 scene</a></li>
+  <li><a href="#step-4">Make the groups</a></li>
+  <li><a href="#step-5">Grid snapping</a></li>
+  <li><a href="#step-6">The floor</a></li>
+  <li><a href="#step-7">The south wall</a></li>
+  <li><a href="#step-8">The north wall with the gate opening</a></li>
+  <li><a href="#step-9">East and west walls, corners</a></li>
+  <li><a href="#step-10">Lamp posts</a></li>
+  <li><a href="#step-11">Obstacles</a></li>
+  <li><a href="#step-12">The markers</a></li>
+  <li><a href="#step-13">The sun</a></li>
+  <li><a href="#step-14">Sky, ambient light and fog</a></li>
+  <li><a href="#step-15">Mark the level static</a></li>
+  <li><a href="#step-16">An overview camera</a></li>
+  <li><a href="#step-17">Fly around the Scene view</a></li>
+  <li><a href="#step-18">▶ Press Play</a></li>
+  <li><a href="#step-19">Common problems</a></li>
+</ol></nav>
+
+<!-- ======================================================= 1 -->
+<h2 id="step-1"><span class="step">1</span>What you need</h2>
+<ul>
+  <li>The project from <a href="phase-01.html">Phase 1</a> (or import <code>GoldRush_Phase01_Prefabs.unitypackage</code>). You need the prefabs in <code>Prefabs/Level</code>, the <code>M_</code> materials and <code>GR_SunsetSky</code>.</li>
+  <li>No new packages. No scripts in this phase.</li>
+</ul>
+
+<!-- ======================================================= 2 -->
+<h2 id="step-2"><span class="step">2</span>The plan</h2>
+<p>Look at the level from above. <b>+Z</b> is "north" (up in the picture). The hero starts in the south and runs north to the exit gate.</p>
+<ul>
+  <li>The playing area is <b>32 × 32 m</b>: from <code>-16</code> to <code>+16</code> on X and on Z. Its centre is <code>0, 0, 0</code>.</li>
+  <li>The walls stand just outside it, at <code>±16.5</code> (they are 1 m thick, so the inside face is at <code>±16</code>).</li>
+  <li>The north wall has an 8 m opening in the middle. The exit gate goes there in phase 6.</li>
+  <li>The floor is bigger (40 × 40 m), so you never see its edge from inside.</li>
+</ul>
+<figure class="shot todo"><div class="ph">Screenshot: top view of the finished Level1 (Scene view, Top, iso), with labels N / S, spawn, gate</div><figcaption>The finished Training Yard from above.</figcaption></figure>
+
+<!-- ======================================================= 3 -->
+<h2 id="step-3"><span class="step">3</span>Create the Level1 scene</h2>
+<ol>
+  <li>Save the Sandbox scene (<b>Ctrl+S</b> / <b>Cmd+S</b>).</li>
+  <li>Open <b>File → New Scene</b>. Pick <b>Basic (URP)</b> (or <b>Standard (URP)</b>). Click <b>Create</b>.</li>
+  <li><b>File → Save As…</b> → folder <code>Assets/GoldRush/Scenes</code> → name <code>Level1</code> → <b>Save</b>.</li>
+  <li>If the Hierarchy has a <b>Global Volume</b>, delete it. The game adds its own post-processing later.</li>
+</ol>
+<p>You now have a <b>Main Camera</b> and a <b>Directional Light</b>.</p>
+
+<!-- ======================================================= 4 -->
+<h2 id="step-4"><span class="step">4</span>Make the groups</h2>
+<p>Empty GameObjects can hold other objects like folders. This keeps the Hierarchy tidy. The real game uses the same names.</p>
+<ol>
+  <li><b>GameObject → Create Empty</b>. Name it <code>Level 1 - Training Yard</code>. Transform <b>⋮ → Reset</b>.</li>
+  <li>Make more empty objects and drag them into place so you get this tree. Reset the Transform of each one (all at <code>0, 0, 0</code>).</li>
+</ol>
+<pre><code>Level 1 - Training Yard
+  Static
+    Floor
+    Walls
+    Lamps
+    Obstacles
+  Scenery
+  Gameplay
+    Coins
+    Monsters
+    PowerUps</code></pre>
+<div class="table-wrap"><table>
+  <tr><th>Group</th><th>What goes in it</th></tr>
+  <tr><td><code>Static</code></td><td>Everything solid that never moves. In phase 7 the monsters' NavMesh is built from this group.</td></tr>
+  <tr><td><code>Scenery</code></td><td>Decoration outside the yard (the big outer ground).</td></tr>
+  <tr><td><code>Gameplay</code></td><td>The markers: where things start or appear.</td></tr>
+</table></div>
+<div class="tip">To make a child: right-click the parent in the Hierarchy → <b>Create Empty</b>. Then the new object is already inside the parent.</div>
+
+<!-- ======================================================= 5 -->
+<h2 id="step-5"><span class="step">5</span>Grid snapping</h2>
+<p>Snapping moves objects in fixed steps, so blocks line up. All positions in this phase are on a <b>0.5 m</b> grid.</p>
+<ol>
+  <li>Open <b>Edit → Grid and Snap Settings…</b></li>
+  <li>Set <b>Grid Size</b> to <code>0.5</code> (X, Y and Z). Set <b>Move</b> increment to <code>0.5</code> and <b>Rotate</b> to <code>90</code>.</li>
+  <li>In the Scene view toolbar, turn on <b>Grid Snapping</b> (the grid icon with a magnet).</li>
+</ol>
+<div class="table-wrap"><table>
+  <tr><th>Way to place</th><th>How</th></tr>
+  <tr><td>Type the numbers</td><td>The most exact way. Type Position and Rotation in the Inspector. Use this for the tables below.</td></tr>
+  <tr><td>Drag with grid snapping on</td><td>Move tool (<b>W</b>), drag an arrow. The object jumps in 0.5 m steps.</td></tr>
+  <tr><td>Hold <b>Ctrl</b> (<b>Cmd</b>) while dragging</td><td>Moves in increments, even with Grid Snapping off.</td></tr>
+  <tr><td>Hold <b>V</b> while dragging</td><td><b>Vertex snapping</b>: grab a corner and drop it on a corner of another object. Good for stacking.</td></tr>
+</table></div>
+<figure class="shot todo"><div class="ph">Screenshot: Grid and Snap Settings window (Grid Size 0.5) and the Grid Snapping button in the Scene toolbar</div><figcaption>Grid and Snap settings.</figcaption></figure>
+
+<!-- ======================================================= 6 -->
+<h2 id="step-6"><span class="step">6</span>The floor</h2>
+<ol>
+  <li>Right-click <code>Static/Floor</code> → <b>3D Object → Cube</b>. Name it <code>Ground</code>.</li>
+  <li>Set <b>Position</b> <code>0, -0.3, 0</code> and <b>Scale</b> <code>40, 0.6, 40</code>. The top face is now exactly at <code>Y = 0</code>.</li>
+  <li>Drag <code>M_Floor</code> onto it. You see 2 m tiles.</li>
+  <li>Right-click <code>Scenery</code> → <b>3D Object → Plane</b>. Name it <code>OuterGround</code>.</li>
+  <li>Set <b>Position</b> <code>0, -0.6, 0</code> and <b>Scale</b> <code>48, 1, 48</code>. (A plane is 10 m, so this is 480 m wide.)</li>
+  <li>Drag <code>M_OuterGround</code> onto it.</li>
+  <li>On <code>OuterGround</code>, remove the <b>Mesh Collider</b> (<b>⋮ → Remove Component</b>). Nobody walks there.</li>
+</ol>
+<p>The floor stands 0.6 m above the darker outer ground, like a stage. The fog (step 14) hides the far edge of the outer ground.</p>
+
+<!-- ======================================================= 7 -->
+<h2 id="step-7"><span class="step">7</span>The south wall</h2>
+<p>Build one wall side from four <code>Wall_8m</code> pieces. Then copy the whole side for the others.</p>
+<ol>
+  <li>Right-click <code>Static/Walls</code> → <b>Create Empty</b>. Name it <code>WallSouth</code>. Set <b>Position</b> <code>0, 0, -16.5</code>.</li>
+  <li>Drag <code>Prefabs/Level/Wall_8m</code> onto <code>WallSouth</code> in the Hierarchy (so it becomes a child).</li>
+  <li>Set its <b>Position</b> to <code>-12, 0, 0</code>. (Child positions are <b>local</b>: relative to the parent.)</li>
+  <li>Add three more <code>Wall_8m</code> children at <code>-4, 0, 0</code>, <code>4, 0, 0</code> and <code>12, 0, 0</code>.</li>
+</ol>
+<p>The wall now runs from X = -16 to X = +16 without gaps.</p>
+<div class="tip">Fast copy: select a child and press <b>Ctrl+D</b> (<b>Cmd+D</b>). Then only change the X value.</div>
+
+<!-- ======================================================= 8 -->
+<h2 id="step-8"><span class="step">8</span>The north wall with the gate opening</h2>
+<ol>
+  <li>Select <code>WallSouth</code>. Press <b>Ctrl+D</b>. Rename the copy <code>WallNorth</code>.</li>
+  <li>Set <code>WallNorth</code> <b>Position</b> to <code>0, 0, 16.5</code>.</li>
+  <li>Delete the two middle children (the ones at X <code>-4</code> and <code>4</code>).</li>
+  <li>Drag <code>Wall_4m</code> onto <code>WallNorth</code> twice. Set the positions to <code>-6, 0, 0</code> and <code>6, 0, 0</code>.</li>
+</ol>
+<p>Now there is an 8 m opening from X = -4 to X = +4. Close it with an invisible wall until the gate exists:</p>
+<ol start="5">
+  <li>Right-click <code>Static/Walls</code> → <b>Create Empty</b>. Name it <code>GateBlocker</code>.</li>
+  <li>Set <b>Position</b> <code>0, 2.5, 17.25</code>.</li>
+  <li><b>Add Component → Box Collider</b>. Set <b>Size</b> to <code>8, 5, 1</code>.</li>
+</ol>
+<p>The blocker sits just behind the opening. The player can walk into the opening (to reach the gate) but not out of the level.</p>
+
+<!-- ======================================================= 9 -->
+<h2 id="step-9"><span class="step">9</span>East and west walls, corners</h2>
+<ol>
+  <li>Duplicate <code>WallSouth</code>. Rename it <code>WallEast</code>. Set <b>Position</b> <code>16.5, 0, 0</code> and <b>Rotation</b> <code>0, 90, 0</code>.</li>
+  <li>Duplicate <code>WallSouth</code> again. Rename it <code>WallWest</code>. Set <b>Position</b> <code>-16.5, 0, 0</code> and <b>Rotation</b> <code>0, 90, 0</code>.</li>
+  <li>Right-click <code>Static/Walls</code> → <b>Create Empty</b>. Name it <code>Corners</code>.</li>
+  <li>Drag 4 × <code>Pillar</code> into <code>Corners</code>. Positions: <code>-16.5, 0, -16.5</code> · <code>16.5, 0, -16.5</code> · <code>-16.5, 0, 16.5</code> · <code>16.5, 0, 16.5</code>.</li>
+</ol>
+<p>The pillars fill the four corner gaps and are a bit higher than the walls.</p>
+<figure class="shot todo"><div class="ph">Screenshot: Scene view, the floor with all four walls, corner pillars and the north opening</div><figcaption>Floor, walls and the gate opening.</figcaption></figure>
+
+<!-- ======================================================= 10 -->
+<h2 id="step-10"><span class="step">10</span>Lamp posts</h2>
+<p>Drag 8 × <code>LampPost</code> into <code>Static/Lamps</code>. Rotation is <code>0, 0, 0</code> for all.</p>
+<div class="table-wrap"><table>
+  <tr><th>#</th><th>Position</th><th>Where</th></tr>
+  <tr><td>1</td><td><code>-14.5, 0, -14.5</code></td><td>South-west corner</td></tr>
+  <tr><td>2</td><td><code>14.5, 0, -14.5</code></td><td>South-east corner</td></tr>
+  <tr><td>3</td><td><code>-14.5, 0, 14.5</code></td><td>North-west corner</td></tr>
+  <tr><td>4</td><td><code>14.5, 0, 14.5</code></td><td>North-east corner</td></tr>
+  <tr><td>5</td><td><code>-14.5, 0, 0</code></td><td>West, middle</td></tr>
+  <tr><td>6</td><td><code>14.5, 0, 0</code></td><td>East, middle</td></tr>
+  <tr><td>7</td><td><code>-4.5, 0, -14.5</code></td><td>South, left of the start</td></tr>
+  <tr><td>8</td><td><code>4.5, 0, -14.5</code></td><td>South, right of the start</td></tr>
+</table></div>
+<div class="note">Keep it at <b>8 lamps</b> or fewer. Each lamp has a real light, and too many lights make the game slow on phones.</div>
+
+<!-- ======================================================= 11 -->
+<h2 id="step-11"><span class="step">11</span>Obstacles</h2>
+<p>Obstacles give the hero places to hide from monsters. Drag each prefab into <code>Static/Obstacles</code> and type the values. Rotation is around Y only (the other two stay 0). Scale stays <code>1, 1, 1</code>.</p>
+<div class="table-wrap"><table>
+  <tr><th>#</th><th>Prefab</th><th>Position</th><th>Rotation Y</th><th>Note</th></tr>
+  <tr><td>1</td><td><code>AccentBlock_Teal</code></td><td><code>4, 0, 4.5</code></td><td>0</td><td rowspan="4">An L-shaped cover in the middle</td></tr>
+  <tr><td>2</td><td><code>Block_4x1x2</code></td><td><code>7, 0, 4.5</code></td><td>0</td></tr>
+  <tr><td>3</td><td><code>Block_4x1x2</code></td><td><code>11, 0, 4.5</code></td><td>0</td></tr>
+  <tr><td>4</td><td><code>Block_4x1x2</code></td><td><code>4, 0, 7.5</code></td><td>90</td></tr>
+  <tr><td>5</td><td><code>Pillar</code></td><td><code>-12.5, 0, 4.5</code></td><td>0</td><td></td></tr>
+  <tr><td>6</td><td><code>Pillar</code></td><td><code>-11.5, 0, -5</code></td><td>0</td><td></td></tr>
+  <tr><td>7</td><td><code>Pillar</code></td><td><code>-5, 0, 12.5</code></td><td>0</td><td></td></tr>
+  <tr><td>8</td><td><code>Block_2x2x2</code></td><td><code>-11, 0, 10.5</code></td><td>0</td><td></td></tr>
+  <tr><td>9</td><td><code>Block_2x2x2</code></td><td><code>-6.5, 0, 1.5</code></td><td>0</td><td rowspan="2">A stack: #10 stands on #9</td></tr>
+  <tr><td>10</td><td><code>Block_1x1x1</code></td><td><code>-6.5, 2, 1.5</code></td><td>0</td></tr>
+  <tr><td>11</td><td><code>Block_4x1x2</code></td><td><code>6, 0, -6</code></td><td>90</td><td></td></tr>
+  <tr><td>12</td><td><code>Block_1x1x1</code></td><td><code>-6.5, 0, -9.5</code></td><td>0</td><td></td></tr>
+  <tr><td>13</td><td><code>Barrier_Orange</code></td><td><code>-2.5, 0, -5</code></td><td>0</td><td>In front of the start</td></tr>
+  <tr><td>14</td><td><code>AccentBlock_Red</code></td><td><code>10.5, 0, -10</code></td><td>0</td><td></td></tr>
+  <tr><td>15</td><td><code>AccentBlock_Teal</code></td><td><code>12, 0, -3.5</code></td><td>0</td><td></td></tr>
+  <tr><td>16</td><td><code>AccentBlock_Orange</code></td><td><code>10.5, 0, 12</code></td><td>0</td><td></td></tr>
+  <tr><td>17</td><td><code>AccentBlock_Red</code></td><td><code>-7.5, 0, 7</code></td><td>0</td><td></td></tr>
+</table></div>
+<div class="tip">This layout is close to the real Level 1. You can change it later, but keep a free path from the start (south) to the gate (north), and keep obstacles at least 1 m away from the walls so monsters can walk around them.</div>
+<figure class="shot todo"><div class="ph">Screenshot: Scene view of the yard with lamps and all 17 obstacles</div><figcaption>Lamps and obstacles in place.</figcaption></figure>
+
+<!-- ======================================================= 12 -->
+<h2 id="step-12"><span class="step">12</span>The markers</h2>
+<p>A <b>marker</b> is an empty GameObject that only marks a place. Later phases read these places: the hero appears at <code>PlayerSpawn</code>, a coin appears at each <code>CoinSpot</code>, and so on. For now they are just named empties. In later phases you add a small script to each one (it also draws a coloured shape in the Scene view).</p>
+<ol>
+  <li>Right-click the group from the table → <b>Create Empty</b>. Type the name and the position.</li>
+  <li>Give it an icon so you can see it: in the Inspector, click the cube icon left of the name → pick a coloured label (colour in the table).</li>
+</ol>
+<div class="table-wrap"><table>
+  <tr><th>Name</th><th>Parent</th><th>Position</th><th>Icon</th><th>Used in</th></tr>
+  <tr><td><code>PlayerSpawn</code></td><td><code>Gameplay</code></td><td><code>0, 0, -9</code> (Rotation <code>0, 0, 0</code>: faces north)</td><td>blue</td><td>Phase 3</td></tr>
+  <tr><td><code>CoinSpot 1</code></td><td><code>Gameplay/Coins</code></td><td><code>5, 0, 11.5</code></td><td>yellow</td><td rowspan="6">Phase 5</td></tr>
+  <tr><td><code>CoinSpot 2</code></td><td><code>Gameplay/Coins</code></td><td><code>-6.5, 0, -12.5</code></td><td>yellow</td></tr>
+  <tr><td><code>CoinSpot 3</code></td><td><code>Gameplay/Coins</code></td><td><code>14.5, 0, -7.5</code></td><td>yellow</td></tr>
+  <tr><td><code>CoinSpot 4</code></td><td><code>Gameplay/Coins</code></td><td><code>-7.5, 0, 0</code></td><td>yellow</td></tr>
+  <tr><td><code>CoinSpot 5</code></td><td><code>Gameplay/Coins</code></td><td><code>-14.5, 0, 12.5</code></td><td>yellow</td></tr>
+  <tr><td><code>CoinSpot 6</code></td><td><code>Gameplay/Coins</code></td><td><code>5, 0, -2</code></td><td>yellow</td></tr>
+  <tr><td><code>ExitGateSpot</code></td><td><code>Gameplay</code></td><td><code>0, 0, 16</code></td><td>green</td><td>Phase 6</td></tr>
+  <tr><td><code>Slime 1</code></td><td><code>Gameplay/Monsters</code></td><td><code>5.5, 0, 10.5</code></td><td>red</td><td rowspan="2">Phase 7</td></tr>
+  <tr><td><code>Slime 2</code></td><td><code>Gameplay/Monsters</code></td><td><code>14, 0, -9.5</code></td><td>red</td></tr>
+  <tr><td><code>PowerUp Magnet</code></td><td><code>Gameplay/PowerUps</code></td><td><code>-14.5, 0, -8.5</code></td><td>purple</td><td>Phase 8</td></tr>
+</table></div>
+<p>The real level has <b>6 coins</b>, <b>2 slimes</b> and <b>1 power-up</b>. The level is won when all coins are collected and the hero walks through the gate.</p>
+<div class="note">Put markers on the floor (<code>Y = 0</code>) and not inside a block. A coin floats 1 m above its marker. A monster placed inside a block cannot move.</div>
+<figure class="shot todo"><div class="ph">Screenshot: Hierarchy with Gameplay open (PlayerSpawn, Coins, Monsters, PowerUps, ExitGateSpot) and the coloured icons in the Scene view</div><figcaption>The markers and their icons.</figcaption></figure>
+
+<!-- ======================================================= 13 -->
+<h2 id="step-13"><span class="step">13</span>The sun</h2>
+<p>The game has a low, warm sunset sun. The game scripts look for the directional light in the scene and use it as the sun.</p>
+<ol>
+  <li>Select <b>Directional Light</b>. Rename it <code>Sun</code>.</li>
+  <li>Set <b>Rotation</b> <code>30, 35, 0</code> (Position does not matter for a directional light).</li>
+  <li>In the <b>Light</b> component: <b>Color</b> <span class="sw" style="background:#FFDEAD"></span><code>FFDEAD</code>, <b>Intensity</b> <code>1.5</code>.</li>
+  <li><b>Shadow Type</b>: <b>Soft Shadows</b>. <b>Strength</b>: <code>0.75</code>.</li>
+  <li>Under <b>Bias</b>, choose <b>Custom</b>: <b>Depth</b> <code>0.05</code>, <b>Normal</b> <code>0.4</code>. (This stops dark stripes on the blocks.)</li>
+</ol>
+
+<!-- ======================================================= 14 -->
+<h2 id="step-14"><span class="step">14</span>Sky, ambient light and fog</h2>
+<ol>
+  <li>Open <b>Window → Rendering → Lighting</b>. Click the <b>Environment</b> tab.</li>
+  <li><b>Skybox Material</b>: drag <code>GR_SunsetSky</code> into it.</li>
+  <li><b>Sun Source</b>: drag <code>Sun</code> into it.</li>
+  <li><b>Environment Lighting → Source</b>: <b>Gradient</b>. Set the three colours from the table.</li>
+  <li>Open <b>Other Settings</b>. Tick <b>Fog</b>. Set the colour, mode and distances from the table.</li>
+</ol>
+<div class="table-wrap"><table>
+  <tr><th>Setting</th><th>Value</th></tr>
+  <tr><td>Sky Color</td><td><span class="sw" style="background:#CCB29E"></span><code>CCB29E</code></td></tr>
+  <tr><td>Equator Color</td><td><span class="sw" style="background:#BD8F6B"></span><code>BD8F6B</code></td></tr>
+  <tr><td>Ground Color</td><td><span class="sw" style="background:#75543D"></span><code>75543D</code></td></tr>
+  <tr><td>Fog Color</td><td><span class="sw" style="background:#F5C999"></span><code>F5C999</code></td></tr>
+  <tr><td>Fog Mode</td><td><b>Linear</b></td></tr>
+  <tr><td>Start / End</td><td><code>35</code> / <code>120</code></td></tr>
+</table></div>
+<p><b>Ambient light</b> is the soft light that comes from everywhere, so shadows are not black. <b>Fog</b> fades far objects into a warm haze, so the world seems to go on forever.</p>
+<div class="tip">If you do not see the fog in the Scene view, open the Scene view's <b>effects</b> menu (the picture icon in the toolbar) and tick <b>Fog</b> and <b>Skybox</b>.</div>
+<figure class="shot todo"><div class="ph">Screenshot: Lighting window, Environment tab: GR_SunsetSky, Sun, Gradient colours, Fog Linear 35–120</div><figcaption>Lighting → Environment.</figcaption></figure>
+
+<!-- ======================================================= 15 -->
+<h2 id="step-15"><span class="step">15</span>Mark the level static</h2>
+<p><b>Static</b> objects never move. Unity can then draw many of them together (batching), which is faster.</p>
+<ol>
+  <li>Select the <code>Static</code> group.</li>
+  <li>At the top right of the Inspector, open the <b>Static</b> dropdown (the small arrow).</li>
+  <li>Tick <b>Batching Static</b>.</li>
+  <li>Unity asks about the children. Click <b>Yes, change children</b>.</li>
+</ol>
+<div class="note">Do not mark <code>Gameplay</code> as static. The gate door and the monsters move.</div>
+
+<!-- ======================================================= 16 -->
+<h2 id="step-16"><span class="step">16</span>An overview camera</h2>
+<p>Until the player camera exists (phase 4), use the Main Camera to look at the whole yard.</p>
+<ol>
+  <li>Select <b>Main Camera</b>.</li>
+  <li>Set <b>Position</b> <code>0, 22, -30</code> and <b>Rotation</b> <code>35, 0, 0</code>.</li>
+  <li>Save the scene.</li>
+</ol>
+
+<!-- ======================================================= 17 -->
+<h2 id="step-17"><span class="step">17</span>Fly around the Scene view</h2>
+<p>Check your level from every side, like a player would.</p>
+<div class="table-wrap"><table>
+  <tr><th>Do this</th><th>To</th></tr>
+  <tr><td>Hold the <b>right mouse button</b> + <b>W A S D</b></td><td>Fly forward, left, back, right.</td></tr>
+  <tr><td>Hold the right mouse button + <b>Q</b> / <b>E</b></td><td>Fly down / up.</td></tr>
+  <tr><td>Hold <b>Shift</b> while flying</td><td>Fly faster.</td></tr>
+  <tr><td><b>Alt</b> + left mouse drag (<b>Option</b> on Mac)</td><td>Orbit around the selected object.</td></tr>
+  <tr><td>Mouse wheel</td><td>Zoom.</td></tr>
+  <tr><td>Select an object, press <b>F</b></td><td>Jump to it.</td></tr>
+  <tr><td>Click the axis cube (top right) → <b>Y</b></td><td>Top view, like a map.</td></tr>
+</table></div>
+<p>Fly down to hero height (about 1.5 m) at <code>PlayerSpawn</code> and look north. You should see the gate opening between the walls.</p>
+<figure class="shot todo"><div class="ph">Screenshot: Scene view at hero height from PlayerSpawn looking north to the gate opening, sunset sky and fog</div><figcaption>The view from the start.</figcaption></figure>
+
+<!-- ======================================================= 18 -->
+<h2 id="step-18"><span class="step">18</span>▶ Press Play</h2>
+<ol>
+  <li>Save the scene.</li>
+  <li>Click <b>▶ Play</b>. The Game view shows the yard from the overview camera.</li>
+  <li>While it plays, click the <b>Scene</b> tab and fly around (step 17).</li>
+  <li>Click <b>▶</b> again to stop.</li>
+</ol>
+<div class="check">
+<p><b>You should see:</b></p>
+<ul>
+  <li>A light grid floor with walls on all four sides and an opening in the north wall.</li>
+  <li>8 lamp posts, pillars with cyan bands, grey blocks and red, orange and teal accent blocks.</li>
+  <li>A warm sunset sky, soft shadows and fog in the distance.</li>
+  <li>The marker icons (blue, yellow, green, red, purple) in the Scene view.</li>
+  <li>No red errors in the Console.</li>
+</ul>
+</div>
+
+<!-- ======================================================= 19 -->
+<h2 id="step-19"><span class="step">19</span>Common problems</h2>
+<div class="table-wrap"><table>
+  <tr><th>Problem</th><th>Fix</th></tr>
+  <tr><td>A wall piece is in the wrong place, far away.</td><td>It is not a child of its wall group, so its position is in world space. Drag it onto <code>WallSouth</code> (or the right group) and type the local position again.</td></tr>
+  <tr><td>The east/west walls run the wrong way.</td><td>Set the <b>group</b> rotation (<code>WallEast</code>, <code>WallWest</code>) to <code>0, 90, 0</code>, not the children.</td></tr>
+  <tr><td>Gaps at the corners.</td><td>Add the 4 corner pillars at <code>±16.5, 0, ±16.5</code>.</td></tr>
+  <tr><td>Blocks float or sink into the floor.</td><td>Y must be <code>0</code> (only the stacked block #10 has Y <code>2</code>). The floor cube must be at Y <code>-0.3</code> with scale Y <code>0.6</code>.</td></tr>
+  <tr><td>The floor has no grid, or giant tiles.</td><td>Check <code>M_Floor</code>: grid texture in Base Map, Tiling <code>20, 20</code>.</td></tr>
+  <tr><td>The sky is grey/blue, not sunset.</td><td>Lighting → Environment → Skybox Material must be <code>GR_SunsetSky</code>.</td></tr>
+  <tr><td>No fog.</td><td>Lighting → Environment → Other Settings → Fog ticked, Mode Linear, Start 35, End 120. In the Scene view, turn on Fog in the effects menu.</td></tr>
+  <tr><td>Everything is very dark.</td><td>Check the Sun Intensity (<code>1.5</code>) and the gradient ambient colours.</td></tr>
+  <tr><td>I cannot see the markers.</td><td>Give them an icon (step 12). Check that <b>Gizmos</b> is on in the Scene view toolbar.</td></tr>
+  <tr><td>Game view: "No cameras rendering".</td><td>You deleted the Main Camera. Add one: <b>GameObject → Camera</b>, tag it <b>MainCamera</b>, and set it as in step 16.</td></tr>
+  <tr><td>Grid snapping does nothing.</td><td>It only works with the Move tool in <b>Global</b> handle mode. Or type the numbers in the Inspector.</td></tr>
+</table></div>
+<p>More fixes are on the <a href="troubleshooting.html">Troubleshooting</a> page. New words are in the <a href="glossary.html">Glossary</a>.</p>
+<p><b>Checkpoint package:</b> <code>GoldRush_Phase02_Level.unitypackage</code></p>
+<p><b>Next:</b> in <a href="phase-03.html">Phase 3</a> the hero comes alive: animations, movement and sprint.</p>
+
+<nav class="pager" aria-label="Previous and next page">
+<a class="prev" href="phase-01.html"><small>← Previous</small>Phase 1: Materials and prefabs</a>
+<a class="next" href="phase-03.html"><small>Next →</small>Phase 3: The player</a>
+</nav>
+<footer class="site-footer">GOLD RUSH – a Unity 6 tutorial project. Characters: Quaternius (CC0). Font: Poppins (SIL Open Font License). Icons: Material Icons by Google (Apache 2.0).</footer>
+</div>
+</main>
+</div>
+</body>
+</html>

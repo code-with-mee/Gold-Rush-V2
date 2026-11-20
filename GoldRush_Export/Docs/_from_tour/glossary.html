@@ -1,0 +1,164 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>GOLD RUSH – Glossary</title>
+<meta name="description" content="GOLD RUSH Unity tutorial: Glossary.">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+<header class="site-header">
+  <a class="brand" href="index.html"><span class="brand-mark">GR</span>GOLD RUSH <small>Unity tutorial</small></a>
+  <nav class="header-links" aria-label="Quick links">
+    <a class="hide-sm" href="index.html">Course</a>
+    <a href="troubleshooting.html">Help</a>
+    <a href="glossary.html">Glossary</a>
+  </nav>
+</header>
+<div class="layout">
+<aside class="sidebar" aria-label="Site navigation">
+<h2>Start</h2><ul>
+<li><a href="index.html"><span class="num">★</span><span class="label">Overview</span></a></li>
+</ul>
+<h2>Course</h2><ul>
+<li><a href="part-1-guide.html"><span class="num">1</span><span class="label">Arena and hero</span></a></li>
+<li><a href="part-2-guide.html"><span class="num">2</span><span class="label">Characters</span></a></li>
+<li><a href="part-3-guide.html"><span class="num">3</span><span class="label">Gold and monsters</span></a></li>
+<li><a href="part-4-guide.html"><span class="num">4</span><span class="label">Rules, menu, win/lose</span></a></li>
+<li><a href="part-5-guide.html"><span class="num">5</span><span class="label">Mobile controls</span></a></li>
+<li><a href="part-6-guide.html"><span class="num">6</span><span class="label">Polish</span></a></li>
+</ul>
+<h2>Practice</h2><ul>
+<li><a href="exercises.html"><span class="num">✎</span><span class="label">Exercises</span></a></li>
+</ul>
+<h2>Help</h2><ul>
+<li><a href="troubleshooting.html"><span class="num">?</span><span class="label">Troubleshooting</span></a></li>
+<li><a href="glossary.html" aria-current="page"><span class="num">A–Z</span><span class="label">Glossary</span></a></li>
+</ul>
+</aside>
+<main>
+<div class="content">
+<p class="eyebrow">GOLD RUSH · Help</p>
+<h1>Glossary</h1>
+<p class="lead">Words used in this course, A to Z. The part where a word is explained best is linked after each entry.</p>
+
+<dl class="glossary">
+  <dt>Anchor</dt>
+  <dd>The point of the parent a UI element is attached to, from (0, 0) bottom-left to (1, 1) top-right. <code>UIKit.At()</code> sets it from code. <span class="see">→ <a href="part-4-guide.html#step-8">Part 4</a></span></dd>
+
+  <dt>Animator Controller</dt>
+  <dd>An asset that decides which animation plays: states, transitions and parameters. Gold Rush builds its four controllers from code in <code>CharacterSetup.cs</code>. <span class="see">→ <a href="part-2-guide.html#step-3">Part 2</a></span></dd>
+
+  <dt>AssetPostprocessor</dt>
+  <dd>An Editor script that Unity runs while importing files. <code>CharacterImportRules</code> and <code>UIImportRules</code> set import settings automatically. <span class="see">→ <a href="part-2-guide.html#step-2">Part 2</a></span></dd>
+
+  <dt>Blend tree</dt>
+  <dd>An Animator state that mixes several clips using a number. Gold Rush's <b>Locomotion</b> blend tree mixes Idle (0), Walk (0.5) and Run (1) with the <code>Speed</code> parameter. <span class="see">→ <a href="part-2-guide.html#step-3">Part 2</a></span></dd>
+
+  <dt>CC0</dt>
+  <dd>A “no rights reserved” licence. The Quaternius characters are CC0, so they can be used in any project, even commercially. <span class="see">→ <a href="part-2-guide.html#step-1">Part 2</a></span></dd>
+
+  <dt>CharacterController</dt>
+  <dd>A Unity component that moves a capsule with <code>Move()</code> and stops at walls, without physics forces. Used for the hero. <span class="see">→ <a href="part-1-guide.html#step-5">Part 1</a></span></dd>
+
+  <dt>Coroutine</dt>
+  <dd>A method that can pause with <code>yield return</code> and continue later, for example to wait a second. The intro countdown and the win/lose sequences are coroutines. <span class="see">→ <a href="part-4-guide.html#step-2">Part 4</a></span></dd>
+
+  <dt>Dead zone</dt>
+  <dd>A small area around the centre of a joystick that counts as “not pushed”. In Gold Rush it is 12% of the radius. <span class="see">→ <a href="part-5-guide.html#step-2">Part 5</a></span></dd>
+
+  <dt>Easing</dt>
+  <dd>A curve that changes how an animation speeds up and slows down, such as <code>OutCubic</code> or <code>OutBack</code>. <span class="see">→ <a href="part-6-guide.html#step-7">Part 6</a></span></dd>
+
+  <dt>Envelope</dt>
+  <dd>How a sound's volume changes over time: attack (fade in), decay and release (fade out). <span class="see">→ <a href="part-6-guide.html#step-4">Part 6</a></span></dd>
+
+  <dt>Event (C#)</dt>
+  <dd>A list of methods to call when something happens. <code>DayNight.Changed</code> tells every sun/moon button that the time of day changed. Subscribe with <code>+=</code>, unsubscribe with <code>-=</code>. <span class="see">→ <a href="part-5-guide.html#step-6">Part 5</a></span></dd>
+
+  <dt>Field of view (view cone)</dt>
+  <dd>How wide a monster can see. The slime sees 130° in front, the ghost sees all around. <span class="see">→ <a href="part-3-guide.html#step-7">Part 3</a></span></dd>
+
+  <dt>JSON</dt>
+  <dd>A text format for data. The save file is a <code>SaveData</code> object turned into JSON with <code>JsonUtility</code>. <span class="see">→ <a href="part-4-guide.html#step-6">Part 4</a></span></dd>
+
+  <dt>Juice</dt>
+  <dd>Small extra feedback (particles, shake, sounds, bounces) that makes actions feel satisfying. <span class="see">→ <a href="part-6-guide.html#step-6">Part 6</a></span></dd>
+
+  <dt>LateUpdate</dt>
+  <dd>Called every frame after all <code>Update()</code> methods. Cameras use it so they follow a target that has already moved. <span class="see">→ <a href="part-1-guide.html#step-7">Part 1</a></span></dd>
+
+  <dt>Lerp</dt>
+  <dd>Linear interpolation: <code>Lerp(a, b, t)</code> goes <code>t</code> of the way from <code>a</code> to <code>b</code>. Works for numbers, vectors and colours. <span class="see">→ <a href="part-6-guide.html#step-2">Part 6</a></span></dd>
+
+  <dt>Marker</dt>
+  <dd>In Gold Rush, an empty object with a small component (<code>CoinSpot</code>, <code>MonsterSpawn</code>, <code>PowerUpSpot</code>, <code>PlayerSpawn</code>) that tells the game where to create something. <span class="see">→ <a href="part-3-guide.html#step-1">Part 3</a></span></dd>
+
+  <dt>NavMesh / NavMeshAgent</dt>
+  <dd>A NavMesh is a map of walkable ground. A NavMeshAgent is a component that finds a path on it and walks there. Built at runtime by a <code>NavMeshSurface</code>. <span class="see">→ <a href="part-3-guide.html#step-5">Part 3</a></span></dd>
+
+  <dt>Par time</dt>
+  <dd>The target time for a level. Finishing at or under it earns the second star. <span class="see">→ <a href="part-4-guide.html#step-4">Part 4</a></span></dd>
+
+  <dt>PlayerPrefs</dt>
+  <dd>Unity's simple key/value storage on the device. Gold Rush stores its whole save under one key, <code>goldrush_save_v1</code>. <span class="see">→ <a href="part-4-guide.html#step-6">Part 4</a></span></dd>
+
+  <dt>Post-processing</dt>
+  <dd>Effects applied to the whole picture after rendering, such as bloom (glow), vignette (dark corners) and tonemapping. Set up by <code>EnvironmentSetup</code>. <span class="see">→ <a href="part-6-guide.html#step-1">Part 6</a></span></dd>
+
+  <dt>Prefab</dt>
+  <dd>A saved GameObject you can place many times. The level building blocks and markers are prefabs in <code>Prefabs/Level/</code>. <span class="see">→ <a href="part-1-guide.html#step-4">Part 1</a></span></dd>
+
+  <dt>Raycast</dt>
+  <dd>An invisible line shot into the scene that reports what it hits. Monsters use one to check whether a wall blocks their view. <span class="see">→ <a href="part-3-guide.html#step-7">Part 3</a></span></dd>
+
+  <dt>Reference resolution</dt>
+  <dd>The screen size the UI is designed for (1920 × 1080). The <code>CanvasScaler</code> scales it to the real screen. <span class="see">→ <a href="part-5-guide.html#step-1">Part 5</a></span></dd>
+
+  <dt>Root motion</dt>
+  <dd>Letting the animation move the character. It is <b>off</b> in Gold Rush: animations play in place, and code moves the character. <span class="see">→ <a href="part-2-guide.html#step-4">Part 2</a></span></dd>
+
+  <dt>Seed</dt>
+  <dd>The starting number for a random generator. The same seed always gives the same “random” level. The Daily Rush uses today's date as its seed. <span class="see">→ <a href="part-1-guide.html#step-3">Part 1</a></span></dd>
+
+  <dt>Singleton</dt>
+  <dd>A class with exactly one instance that others can reach through a static field, like <code>GameManager.I</code>. <span class="see">→ <a href="part-4-guide.html#step-1">Part 4</a></span></dd>
+
+  <dt>Smoothstep</dt>
+  <dd>The curve <code>t * t * (3 - 2t)</code>: starts slow, speeds up, ends slow. Used for the day/night blend and the gate door. <span class="see">→ <a href="part-6-guide.html#step-2">Part 6</a></span></dd>
+
+  <dt>sqrMagnitude</dt>
+  <dd>The squared length of a vector. Comparing squared distances skips a slow square root. <span class="see">→ <a href="part-3-guide.html#step-2">Part 3</a></span></dd>
+
+  <dt>Stamina</dt>
+  <dd>A 0–1 value that sprinting uses up and rest refills. <span class="see">→ <a href="part-1-guide.html#step-6">Part 1</a></span></dd>
+
+  <dt>State machine</dt>
+  <dd>A way to organise behaviour: always exactly one current state, with clear rules for switching. Used by the monsters (6 states) and the game (5 states). <span class="see">→ <a href="part-3-guide.html#step-6">Part 3</a></span></dd>
+
+  <dt>Time.timeScale</dt>
+  <dd>How fast game time runs. 0 freezes it (pause), 0.3 is slow motion, 1 is normal. <span class="see">→ <a href="part-4-guide.html#step-5">Part 4</a></span></dd>
+
+  <dt>Trigger (Animator)</dt>
+  <dd>An Animator parameter that fires once, such as <code>Hit</code> or <code>Win</code>, to start an action animation. <span class="see">→ <a href="part-2-guide.html#step-3">Part 2</a></span></dd>
+
+  <dt>Tween</dt>
+  <dd>An animation of a value from A to B over time, such as a pop-in or a fade. <span class="see">→ <a href="part-6-guide.html#step-7">Part 6</a></span></dd>
+
+  <dt>Unscaled time</dt>
+  <dd><code>Time.unscaledDeltaTime</code> keeps running even when <code>Time.timeScale</code> is 0. Needed for anything that should move while paused. <span class="see">→ <a href="part-4-guide.html#step-5">Part 4</a></span></dd>
+
+  <dt>Yaw / pitch</dt>
+  <dd>Yaw is turning left and right, pitch is tilting up and down. The camera stores both angles. <span class="see">→ <a href="part-1-guide.html#step-7">Part 1</a></span></dd>
+</dl>
+
+<nav class="pager" aria-label="Previous and next page">
+<a class="prev" href="troubleshooting.html"><small>← Previous</small>Troubleshooting</a>
+</nav>
+<footer class="site-footer">GOLD RUSH – a Unity 6 tutorial project. Characters: Quaternius (CC0). Font: Poppins (SIL Open Font License). Icons: Material Icons by Google (Apache 2.0). Code, levels, UI, sound and music: made for this project.</footer>
+</div>
+</main>
+</div>
+</body>
+</html>

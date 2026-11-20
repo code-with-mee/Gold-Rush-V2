@@ -218,6 +218,7 @@ namespace GoldRush.EditorTools
 
         // Automation hooks (used by tooling outside the editor): create Temp/gr_smoke.flag to run the
         // smoke test, or Temp/gr_preview.flag to render the character preview.
+        static string BakeMenuFlag => Path.GetFullPath(Path.Combine(Application.dataPath, "../Temp/gr_bakemenu.flag"));
         static string PreviewFlag => Path.GetFullPath(Path.Combine(Application.dataPath, "../Temp/gr_preview.flag"));
 
         static void PollSmokeFlag()
@@ -228,6 +229,12 @@ namespace GoldRush.EditorTools
                 EnsureIconSprites();
                 if (!File.Exists(AssetsPath) || !File.Exists(MenuScene) || !File.Exists(LevelBaker.ScenePath(0))) Setup();
                 RunSmokeTest();
+            }
+            else if (HandleFlag(BakeMenuFlag))
+            {
+                if (!EditorSceneManager.SaveCurrentModifiedScenesIfUserWantsTo()) return;
+                MenuBaker.Bake();
+                File.WriteAllText(BakeMenuFlag + ".done", System.DateTime.Now.ToString("O"));
             }
             else if (HandleFlag(PreviewFlag))
             {

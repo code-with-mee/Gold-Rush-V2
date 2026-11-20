@@ -1,0 +1,503 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>GOLD RUSH – Phase 3: The player</title>
+<meta name="description" content="GOLD RUSH Unity tutorial, Phase 3: The player.">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+<header class="site-header">
+  <a class="brand" href="index.html"><span class="brand-mark">GR</span>GOLD RUSH <small>Unity tutorial</small></a>
+  <nav class="header-links" aria-label="Quick links">
+    <a class="hide-sm" href="index.html">Course</a>
+    <a href="troubleshooting.html">Help</a>
+    <a href="glossary.html">Glossary</a>
+  </nav>
+</header>
+<div class="layout">
+<aside class="sidebar" aria-label="Site navigation">
+<h2>Start</h2><ul>
+<li><a href="index.html"><span class="num">★</span><span class="label">Overview</span></a></li>
+</ul>
+<h2>Course</h2><ul>
+<li><a href="phase-00.html"><span class="num">0</span><span class="label">Create the project</span></a></li>
+<li><a href="phase-01.html"><span class="num">1</span><span class="label">Materials and prefabs</span></a></li>
+<li><a href="phase-02.html"><span class="num">2</span><span class="label">Level design</span></a></li>
+<li><a href="phase-03.html" aria-current="page"><span class="num">3</span><span class="label">The player</span></a></li>
+<li><a href="phase-04.html"><span class="num">4</span><span class="label">The camera</span></a></li>
+<li><a href="phase-05.html"><span class="num">5</span><span class="label">Coins and the HUD</span></a></li>
+<li><a href="phase-06.html"><span class="num">6</span><span class="label">Exit gate, win and lose</span></a></li>
+<li><a href="phase-07.html"><span class="num">7</span><span class="label">Monsters</span></a></li>
+<li><a href="phase-08.html"><span class="num">8</span><span class="label">Power-ups and effects</span></a></li>
+<li><a href="phase-09.html"><span class="num">9</span><span class="label">Menu, levels, shop, save</span></a></li>
+<li><a href="phase-10.html"><span class="num">10</span><span class="label">Polish and build</span></a></li>
+</ul>
+<h2>Help</h2><ul>
+<li><a href="troubleshooting.html"><span class="num">?</span><span class="label">Troubleshooting</span></a></li>
+<li><a href="glossary.html"><span class="num">A–Z</span><span class="label">Glossary</span></a></li>
+</ul>
+</aside>
+<main>
+<div class="content">
+<p class="eyebrow">GOLD RUSH · Phase 3</p>
+<h1>The player</h1>
+<p class="lead">You will set up the hero model, build its Animator Controller by hand (idle, walk, run and four action animations) and make a <code>Player</code> prefab that you control with the keyboard. At the end the hero walks with <b>WASD</b>, sprints with <b>Shift</b>, and the right animation plays at every speed.</p>
+<div class="meta"><span><b>Checkpoint package</b><code>GoldRush_Phase03_Player.unitypackage</code></span><span><b>Scene</b><code>Assets/GoldRush/Scenes/Level1.unity</code></span><a class="btn secondary" href="phase-03.pdf">Download PDF</a></div>
+
+<nav class="toc" aria-label="Steps on this page"><strong>Steps on this page</strong><ol>
+  <li><a href="#step-1">What you need</a></li>
+  <li><a href="#step-2">Hero import settings</a></li>
+  <li><a href="#step-3">The animation clips</a></li>
+  <li><a href="#step-4">Create the Animator Controller</a></li>
+  <li><a href="#step-5">The Locomotion blend tree</a></li>
+  <li><a href="#step-6">The action states</a></li>
+  <li><a href="#step-7">The transitions</a></li>
+  <li><a href="#step-8">Script: VirtualJoystick (stub)</a></li>
+  <li><a href="#step-9">Script: PlayerMotor</a></li>
+  <li><a href="#step-10">Script: PlayerSpawn</a></li>
+  <li><a href="#step-11">Create the Player object</a></li>
+  <li><a href="#step-12">Add the hero model</a></li>
+  <li><a href="#step-13">Add PlayerMotor and save the prefab</a></li>
+  <li><a href="#step-14">Put the player on the spawn</a></li>
+  <li><a href="#step-15">▶ Press Play</a></li>
+  <li><a href="#step-16">Common problems</a></li>
+</ol></nav>
+
+<!-- ======================================================= 1 -->
+<h2 id="step-1"><span class="step">1</span>What you need</h2>
+<ul>
+  <li><a href="phase-02.html">Phase 2</a> is finished: the <code>Level1</code> scene has a floor, walls and blocks, and an empty marker called <code>PlayerSpawn</code>. (Or import <code>GoldRush_Phase02_Level.unitypackage</code>.)</li>
+  <li>The hero model is in <code>Assets/GoldRush/Art/Characters/Hero/Hero.fbx</code> (from Phase 0).</li>
+  <li><b>Active Input Handling</b> is <b>Both</b> (Phase 0). The scripts read the keyboard with the classic <code>Input</code> class.</li>
+</ul>
+<p>Open <code>Assets/GoldRush/Scenes/Level1.unity</code>.</p>
+
+<!-- ======================================================= 2 -->
+<h2 id="step-2"><span class="step">2</span>Hero import settings</h2>
+<p>An <b>FBX</b> file holds the 3D model, its skeleton (the "rig") and its animations. You tell Unity how to read it in the <b>Import Settings</b>.</p>
+<ol>
+  <li>In the Project window, click <code>Art/Characters/Hero/Hero.fbx</code>. The Inspector shows four tabs: <b>Model</b>, <b>Rig</b>, <b>Animation</b>, <b>Materials</b>.</li>
+  <li><b>Model</b> tab: untick <b>Import Cameras</b> and <b>Import Lights</b>. Click <b>Apply</b>.</li>
+  <li><b>Rig</b> tab: set <b>Animation Type</b> = <b>Generic</b>. Set <b>Avatar Definition</b> = <b>Create From This Model</b>. Click <b>Apply</b>.</li>
+  <li><b>Materials</b> tab: set <b>Material Creation Mode</b> = <b>Import via MaterialDescription</b> and <b>Location</b> = <b>Use Embedded Materials</b>. Click <b>Apply</b>.</li>
+</ol>
+<div class="tip"><b>Generic</b> means "use the skeleton as it is". (<b>Humanoid</b> is for sharing animations between human models. We do not need it.)</div>
+<figure class="shot todo"><div class="ph">Screenshot: Hero.fbx Import Settings, Rig tab (Generic, Create From This Model)</div><figcaption>Rig tab of Hero.fbx</figcaption></figure>
+
+<!-- ======================================================= 3 -->
+<h2 id="step-3"><span class="step">3</span>The animation clips</h2>
+<p>The FBX has many animations (clips). We use 7 of them. Idle, walk, run and wave must <b>loop</b> (play again and again). The others play once.</p>
+<ol>
+  <li>Open the <b>Animation</b> tab. Make sure <b>Import Animation</b> is ticked.</li>
+  <li>In the <b>Clips</b> list, click a clip. Its names look like <code>CharacterArmature|Idle</code>.</li>
+  <li>In the name field under the list, delete <code>CharacterArmature|</code> so the name is only <code>Idle</code>.</li>
+  <li>Set <b>Loop Time</b> and <b>Loop Pose</b> as in the table.</li>
+  <li>Do the same for all 7 clips in the table. Leave the other clips (Duck, Jump, Gun…) as they are.</li>
+  <li>Click <b>Apply</b> at the bottom.</li>
+</ol>
+<div class="table-wrap"><table>
+  <tr><th>Clip name</th><th>Used for</th><th>Loop Time</th><th>Loop Pose</th></tr>
+  <tr><td><code>Idle</code></td><td>standing still</td><td>✔</td><td>✔</td></tr>
+  <tr><td><code>Walk</code></td><td>walking</td><td>✔</td><td>✔</td></tr>
+  <tr><td><code>Run</code></td><td>sprinting</td><td>✔</td><td>✔</td></tr>
+  <tr><td><code>Wave</code></td><td>Win (waves a few times)</td><td>✔</td><td>✔</td></tr>
+  <tr><td><code>Punch</code></td><td>Attack</td><td>–</td><td>–</td></tr>
+  <tr><td><code>HitReact</code></td><td>Hit</td><td>–</td><td>–</td></tr>
+  <tr><td><code>Death</code></td><td>Die</td><td>–</td><td>–</td></tr>
+</table></div>
+<div class="tip">Press the ▶ button in the preview at the bottom of the Inspector to watch a clip. If a looping clip "jumps" at the end, check <b>Loop Pose</b>.</div>
+<figure class="shot todo"><div class="ph">Screenshot: Animation tab with the Run clip selected, Loop Time and Loop Pose ticked</div><figcaption>Animation tab: the Run clip loops</figcaption></figure>
+
+<!-- ======================================================= 4 -->
+<h2 id="step-4"><span class="step">4</span>Create the Animator Controller</h2>
+<p>An <b>Animator Controller</b> decides which clip plays. Scripts talk to it with <b>parameters</b>: a number (<code>Float</code>) or a one-time signal (<code>Trigger</code>).</p>
+<ol>
+  <li>In the Project window, open <code>Assets/GoldRush/Animations</code>.</li>
+  <li>Right-click → <b>Create → Animation → Animator Controller</b>. Name it <code>Hero</code>.</li>
+  <li>Double-click <code>Hero</code>. The <b>Animator</b> window opens.</li>
+  <li>On the left, open the <b>Parameters</b> tab. Click <b>+</b> and add these 5 parameters. The names must be <b>exactly</b> like this (capital letters too):</li>
+</ol>
+<div class="table-wrap"><table>
+  <tr><th>Name</th><th>Type</th><th>Meaning</th></tr>
+  <tr><td><code>Speed</code></td><td>Float</td><td>0 = idle, 0.5 = walk, 1 = run</td></tr>
+  <tr><td><code>Attack</code></td><td>Trigger</td><td>punch</td></tr>
+  <tr><td><code>Hit</code></td><td>Trigger</td><td>a monster hit the hero</td></tr>
+  <tr><td><code>Win</code></td><td>Trigger</td><td>level finished</td></tr>
+  <tr><td><code>Die</code></td><td>Trigger</td><td>caught, game over</td></tr>
+</table></div>
+<div class="note">The monsters in Phase 7 use the same 5 parameter names. The scripts send these names, so a typo (<code>speed</code>, <code>Hit </code> with a space) means "nothing happens".</div>
+
+<!-- ======================================================= 5 -->
+<h2 id="step-5"><span class="step">5</span>The Locomotion blend tree</h2>
+<p>A <b>blend tree</b> mixes clips by a number. With <code>Speed</code> = 0 the hero stands, with 0.5 it walks, with 1 it runs, and values in between mix two clips smoothly.</p>
+<ol>
+  <li>In the Animator window, right-click the empty grid → <b>Create State → From New Blend Tree</b>.</li>
+  <li>Click the new state. In the Inspector, rename it <code>Locomotion</code>. It is orange: it is the <b>default state</b> (the one that plays first).</li>
+  <li>Double-click <code>Locomotion</code> to go inside it. Click the <b>Blend Tree</b> node.</li>
+  <li>In the Inspector: <b>Blend Type</b> = <b>1D</b>, <b>Parameter</b> = <code>Speed</code>.</li>
+  <li>Under <b>Motion</b>, click <b>+ → Add Motion Field</b> three times.</li>
+  <li>Untick <b>Automate Thresholds</b>.</li>
+  <li>Fill the three rows. Drag each clip from the Project window (click the small arrow on <code>Hero.fbx</code> to see its clips):</li>
+</ol>
+<div class="table-wrap"><table>
+  <tr><th>Row</th><th>Motion</th><th>Threshold</th></tr>
+  <tr><td>1</td><td><code>Idle</code></td><td><code>0</code></td></tr>
+  <tr><td>2</td><td><code>Walk</code></td><td><code>0.5</code></td></tr>
+  <tr><td>3</td><td><code>Run</code></td><td><code>1</code></td></tr>
+</table></div>
+<ol start="8">
+  <li>Click <b>Base Layer</b> at the top of the Animator window to go back out.</li>
+</ol>
+<figure class="shot todo"><div class="ph">Screenshot: Blend Tree Inspector – 1D, Speed, Idle 0 / Walk 0.5 / Run 1, Automate Thresholds off</div><figcaption>The Locomotion blend tree</figcaption></figure>
+
+<!-- ======================================================= 6 -->
+<h2 id="step-6"><span class="step">6</span>The action states</h2>
+<p>Now add one state for each trigger. You will use them in later phases (Win in Phase 6, Hit and Die in Phase 7), but you can test them today.</p>
+<ol>
+  <li>Right-click the grid → <b>Create State → Empty</b>.</li>
+  <li>In the Inspector, give it a name from the table and drag its clip into <b>Motion</b>.</li>
+  <li>Repeat for all four.</li>
+</ol>
+<div class="table-wrap"><table>
+  <tr><th>State name</th><th>Motion (clip)</th></tr>
+  <tr><td><code>Attack</code></td><td><code>Punch</code></td></tr>
+  <tr><td><code>Hit</code></td><td><code>HitReact</code></td></tr>
+  <tr><td><code>Win</code></td><td><code>Wave</code></td></tr>
+  <tr><td><code>Die</code></td><td><code>Death</code></td></tr>
+</table></div>
+<div class="tip">If one of them turned orange, right-click <code>Locomotion</code> → <b>Set as Layer Default State</b>.</div>
+
+<!-- ======================================================= 7 -->
+<h2 id="step-7"><span class="step">7</span>The transitions</h2>
+<p>A <b>transition</b> is an arrow from one state to another. <b>Any State</b> means "from wherever you are now".</p>
+<p><b>A. From Any State to each action</b> (4 arrows):</p>
+<ol>
+  <li>Right-click <b>Any State</b> → <b>Make Transition</b> → click <code>Attack</code>.</li>
+  <li>Click the new arrow. In the Inspector:
+    <ul>
+      <li>Untick <b>Has Exit Time</b> (the action starts at once).</li>
+      <li>Open <b>Settings</b>: <b>Transition Duration</b> = <code>0.1</code>. Untick <b>Can Transition To Self</b>.</li>
+      <li>Under <b>Conditions</b>, click <b>+</b> and choose <code>Attack</code>.</li>
+    </ul>
+  </li>
+  <li>Do the same for <code>Hit</code>, <code>Win</code> and <code>Die</code> (each with its own trigger as condition).</li>
+</ol>
+<p><b>B. Back to Locomotion</b> (3 arrows, not for Die):</p>
+<ol>
+  <li>Right-click <code>Attack</code> → <b>Make Transition</b> → click <code>Locomotion</code>.</li>
+  <li>Click the arrow. Keep <b>Has Exit Time</b> ticked. Set <b>Exit Time</b> and <b>Transition Duration</b> from the table. No conditions.</li>
+  <li>Do the same for <code>Hit</code> and <code>Win</code>.</li>
+</ol>
+<div class="table-wrap"><table>
+  <tr><th>Arrow</th><th>Has Exit Time</th><th>Exit Time</th><th>Transition Duration</th><th>Condition</th></tr>
+  <tr><td>Any State → Attack / Hit / Win / Die</td><td>off</td><td>–</td><td><code>0.1</code></td><td>its trigger</td></tr>
+  <tr><td>Attack → Locomotion</td><td>on</td><td><code>0.85</code></td><td><code>0.2</code></td><td>none</td></tr>
+  <tr><td>Hit → Locomotion</td><td>on</td><td><code>0.85</code></td><td><code>0.2</code></td><td>none</td></tr>
+  <tr><td>Win → Locomotion</td><td>on</td><td><code>3</code></td><td><code>0.2</code></td><td>none</td></tr>
+</table></div>
+<ul>
+  <li><b>Exit Time 0.85</b> = leave when the clip is 85&nbsp;% done.</li>
+  <li><b>Exit Time 3</b> = the wave clip loops, so the hero waves 3 times, then goes back to idle.</li>
+  <li><b>Die</b> has no way back. The hero stays lying on the ground.</li>
+</ul>
+<figure class="shot todo"><div class="ph">Screenshot: Animator window – Any State with 4 arrows, Attack/Hit/Win arrows back to Locomotion</div><figcaption>The finished Hero controller</figcaption></figure>
+
+<!-- ======================================================= 8 -->
+<h2 id="step-8"><span class="step">8</span>Script: VirtualJoystick (stub)</h2>
+<p>On phones, the player moves with a touch joystick. That comes in a later phase. But <code>PlayerMotor</code> already reads it, so we need a tiny "stub" now: a placeholder class that compiles and always says "no finger on the stick".</p>
+<ol>
+  <li>In <code>Assets/GoldRush/Scripts/UI</code>: right-click → <b>Create → Scripting → MonoBehaviour Script</b>. Name it <code>VirtualJoystick</code>.</li>
+  <li>Open it and replace everything with this code. Save.</li>
+</ol>
+<pre class="long"><code>using UnityEngine;
+
+namespace GoldRush
+{
+    /// &lt;summary&gt;
+    /// PHASE 3 STUB. The real touch joystick comes in a later phase (touch controls).
+    /// For now it only has the two values PlayerMotor reads, and they are always "no touch".
+    /// &lt;/summary&gt;
+    public class VirtualJoystick : MonoBehaviour
+    {
+        public Vector2 Value { get; private set; }
+        /// &lt;summary&gt;True while a finger is on the stick.&lt;/summary&gt;
+        public bool Held =&gt; false;
+    }
+}</code></pre>
+<ul>
+  <li><b><code>namespace GoldRush</code></b>: all game scripts live in this "family name", so they can find each other.</li>
+  <li><b><code>Value</code></b> is the stick direction. Here it is always <code>(0, 0)</code>.</li>
+  <li>A later phase says "replace the whole file". Then the real joystick takes its place, and <code>PlayerMotor</code> does not change.</li>
+</ul>
+
+<!-- ======================================================= 9 -->
+<h2 id="step-9"><span class="step">9</span>Script: PlayerMotor</h2>
+<p>This script moves the hero. Create <code>Assets/GoldRush/Scripts/Gameplay/PlayerMotor.cs</code> the same way and paste this <b>Phase 3 version</b>. Later phases replace it with bigger versions.</p>
+<pre class="long"><code>using UnityEngine;
+
+namespace GoldRush
+{
+    /// &lt;summary&gt;Third-person player: CharacterController movement (collides with props), sprint/stamina,
+    /// walk/run animation.
+    /// PHASE 3 VERSION: later phases add power-ups, hits, sounds, dust and win/lose poses.&lt;/summary&gt;
+    [RequireComponent(typeof(CharacterController))]
+    public class PlayerMotor : MonoBehaviour
+    {
+        public float walkSpeed = 5f;
+        public float sprintSpeed = 8.2f;
+        public float acceleration = 20f;
+        public float turnSpeed = 560f;
+
+        [Header("Animation")]
+        [Tooltip("Ground speed (m/s) the Walk clip was animated for (measured from the feet).")]
+        public float clipWalkSpeed = 0.59f;
+        [Tooltip("Ground speed (m/s) the Run clip was animated for (measured from the feet).")]
+        public float clipRunSpeed = 0.84f;
+
+        public VirtualJoystick joystick;
+        public float Stamina { get; private set; } = 1f;
+        public bool Exhausted { get; private set; }
+        public bool Sprinting { get; private set; }
+        public bool Frozen { get; set; }
+        public Vector3 Velocity =&gt; velocity;
+        public Animator Anim =&gt; anim;
+
+        CharacterController cc;
+        float animSpeed = 1f;
+        Animator anim;
+        Vector3 velocity;
+        float vy;
+
+        void Awake()
+        {
+            cc = GetComponent&lt;CharacterController&gt;();
+            anim = GetComponentInChildren&lt;Animator&gt;(); // the Animator on the "Model" child
+        }
+
+        Vector2 ReadInput()
+        {
+            Vector2 v = joystick ? joystick.Value : Vector2.zero;
+            float kx = (Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.RightArrow) ? 1 : 0) - (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.LeftArrow) ? 1 : 0);
+            float ky = (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.UpArrow) ? 1 : 0) - (Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.DownArrow) ? 1 : 0);
+            if (kx != 0 || ky != 0) v = new Vector2(kx, ky).normalized;
+            return Vector2.ClampMagnitude(v, 1f);
+        }
+
+        void Update()
+        {
+            float dt = Time.deltaTime;
+            if (dt &lt;= 0f) return;
+            bool canMove = !Frozen;
+
+            Vector2 input = canMove ? ReadInput() : Vector2.zero;
+            float yaw = 0f; // Phase 4: the camera decides which way is "forward"
+            Vector3 dir = Quaternion.Euler(0, yaw, 0) * new Vector3(input.x, 0, input.y);
+            float mag = Mathf.Clamp01(dir.magnitude);
+
+            bool wantSprint = canMove &amp;&amp; mag &gt; 0.2f &amp;&amp; ((joystick &amp;&amp; joystick.Held &amp;&amp; joystick.Value.magnitude &gt; 0.9f) || Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift));
+            if (Exhausted &amp;&amp; Stamina &gt; 0.35f) Exhausted = false;
+            Sprinting = wantSprint &amp;&amp; !Exhausted &amp;&amp; Stamina &gt; 0f;
+            if (Sprinting)
+            {
+                Stamina = Mathf.Max(0f, Stamina - dt * 0.3f);
+                if (Stamina &lt;= 0f) Exhausted = true;
+            }
+            else Stamina = Mathf.Min(1f, Stamina + dt * (mag &gt; 0.1f ? 0.18f : 0.32f));
+
+            float speed = Sprinting ? sprintSpeed : walkSpeed;
+            Vector3 targetVel = mag &gt; 0.01f ? dir.normalized * (mag * speed) : Vector3.zero;
+            velocity = Vector3.MoveTowards(velocity, targetVel, acceleration * dt);
+
+            if (velocity.sqrMagnitude &gt; 0.05f &amp;&amp; !Frozen)
+            {
+                var targetRot = Quaternion.LookRotation(new Vector3(velocity.x, 0, velocity.z));
+                transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRot, turnSpeed * dt);
+            }
+
+            if (cc.isGrounded &amp;&amp; vy &lt; 0) vy = -2f; else vy -= 25f * dt;
+            if (cc.enabled) cc.Move((velocity + Vector3.up * vy) * dt);
+
+            // animation (0 idle, 0.5 walk, 1 run)
+            float horiz = new Vector3(velocity.x, 0, velocity.z).magnitude;
+            float blend = horiz &lt; 0.1f ? 0f : Mathf.Lerp(0.45f, 1f, Mathf.InverseLerp(2.5f, sprintSpeed, horiz));
+            if (anim &amp;&amp; anim.runtimeAnimatorController) anim.SetFloat("Speed", blend, 0.15f, dt);
+            // play the walk/run cycle as fast as the hero moves, so the feet don't slide
+            if (anim &amp;&amp; !Frozen)
+            {
+                float target = PlaybackSpeed(blend, horiz);
+                animSpeed = Mathf.Lerp(animSpeed, target, 1f - Mathf.Exp(-5f * dt)); // ease, never jump
+                anim.speed = animSpeed;
+            }
+        }
+
+        /// &lt;summary&gt;Animation playback speed so the feet match the ground.
+        /// blend = Animator "Speed" value (0.5 walk .. 1 run), groundSpeed = how fast the hero really moves.&lt;/summary&gt;
+        float PlaybackSpeed(float blend, float groundSpeed)
+        {
+            if (groundSpeed &lt; 0.15f) return 1f;
+            float natural = Mathf.Lerp(clipWalkSpeed, clipRunSpeed, Mathf.InverseLerp(0.5f, 1f, blend));
+            float ratio = groundSpeed / Mathf.Max(0.1f, natural);
+            // match most of the stride but keep it gentle: fluid motion matters more than perfect feet
+            return Mathf.Clamp(Mathf.Lerp(1f, ratio, 0.7f), 0.8f, 2.2f);
+        }
+    }
+}</code></pre>
+<ul>
+  <li><b><code>[RequireComponent(typeof(CharacterController))]</code></b>: Unity adds a CharacterController if it is missing. A <b>CharacterController</b> is a capsule that moves with <code>cc.Move()</code> and stops at walls, without real physics.</li>
+  <li><b><code>ReadInput()</code></b> reads <b>WASD</b> or the <b>arrow keys</b> into a direction. <code>.normalized</code> makes diagonal moves as fast as straight ones.</li>
+  <li><b>Sprint:</b> hold <b>Shift</b> → speed goes from <code>5</code> to <code>8.2</code> m/s. Sprinting uses <b>stamina</b> (1 = full). At 0 the hero is <b>exhausted</b> and walks until stamina is back above 0.35. (The HUD shows it later.)</li>
+  <li><b><code>Vector3.MoveTowards(velocity, targetVel, acceleration * dt)</code></b>: the hero speeds up and slows down smoothly (20 m/s²), instead of starting at full speed. <code>RotateTowards</code> turns him toward where he runs, 560° per second.</li>
+  <li><b><code>vy</code></b> is the falling speed. Gravity is <code>25</code> m/s². On the ground it stays at <code>-2</code> so the hero sticks to the floor.</li>
+  <li><b>Animation:</b> <code>anim.SetFloat("Speed", blend, 0.15f, dt)</code> feeds the blend tree (0 idle … 0.5 walk … 1 run), with a 0.15&nbsp;s smoothing. <code>PlaybackSpeed()</code> plays the cycle faster when the hero moves faster, so the feet do not slide. <code>clipWalkSpeed</code> / <code>clipRunSpeed</code> are how fast the clips were made to move (measured from the feet).</li>
+</ul>
+<div class="note">The line <code>float yaw = 0f;</code> means "forward is always the world's +Z direction". In Phase 4, the camera decides where forward is.</div>
+
+<!-- ======================================================= 10 -->
+<h2 id="step-10"><span class="step">10</span>Script: PlayerSpawn</h2>
+<p>This marker shows where the hero starts. <b>If you already made it in Phase 2, skip this step.</b></p>
+<ol>
+  <li>Create <code>Assets/GoldRush/Scripts/Level/PlayerSpawn.cs</code> and paste:</li>
+</ol>
+<pre class="long"><code>using UnityEngine;
+
+namespace GoldRush
+{
+    /// &lt;summary&gt;Where the hero starts. The blue arrow shows which way the hero (and camera) faces.&lt;/summary&gt;
+    public class PlayerSpawn : MonoBehaviour
+    {
+        void OnDrawGizmos()
+        {
+            Gizmos.color = new Color(0.25f, 0.6f, 1f);
+            Gizmos.DrawWireSphere(transform.position + Vector3.up * 0.7f, 0.5f);
+            Gizmos.DrawLine(transform.position + Vector3.up * 0.1f, transform.position + Vector3.up * 0.1f + transform.forward * 2f);
+            Gizmos.DrawSphere(transform.position + Vector3.up * 0.1f + transform.forward * 2f, 0.15f);
+        }
+    }
+}</code></pre>
+<ol start="2">
+  <li>Select the <code>PlayerSpawn</code> marker in the Hierarchy → <b>Add Component</b> → <code>PlayerSpawn</code>.</li>
+</ol>
+<ul>
+  <li><b><code>OnDrawGizmos</code></b> draws only in the Scene view: a blue ball and a blue arrow. The arrow is the way the hero will face. It is invisible in the game.</li>
+  <li>From Phase 5 on, the GameManager moves the Player to this marker when the level starts.</li>
+</ul>
+
+<!-- ======================================================= 11 -->
+<h2 id="step-11"><span class="step">11</span>Create the Player object</h2>
+<ol>
+  <li><b>GameObject → Create Empty</b>. Name it <code>Player</code>.</li>
+  <li>Transform: <b>Position</b> <code>0, 0, 0</code>, <b>Rotation</b> <code>0, 0, 0</code>, <b>Scale</b> <code>1, 1, 1</code>.</li>
+  <li><b>Add Component → Character Controller</b>. Set the values from the table.</li>
+  <li>At the top of the Inspector, set <b>Layer</b> = <b>Ignore Raycast</b>.</li>
+</ol>
+<div class="table-wrap"><table>
+  <tr><th>Character Controller</th><th>Value</th></tr>
+  <tr><td>Slope Limit</td><td><code>50</code></td></tr>
+  <tr><td>Step Offset</td><td><code>0.35</code></td></tr>
+  <tr><td>Skin Width</td><td><code>0.05</code></td></tr>
+  <tr><td>Center</td><td><code>0, 0.695, 0</code></td></tr>
+  <tr><td>Radius</td><td><code>0.36</code></td></tr>
+  <tr><td>Height</td><td><code>1.35</code></td></tr>
+</table></div>
+<ul>
+  <li><b>Height 1.35</b>: the hero is 1.35&nbsp;m tall. <b>Center Y 0.695</b> = half the height + 0.02, so the bottom of the capsule is at the feet.</li>
+  <li><b>Step Offset 0.35</b>: the hero can walk up small steps up to 35&nbsp;cm.</li>
+  <li><b>Ignore Raycast</b> layer: in Phase 4 the camera sends rays to find walls. With this layer, the rays fly through the player.</li>
+</ul>
+
+<!-- ======================================================= 12 -->
+<h2 id="step-12"><span class="step">12</span>Add the hero model</h2>
+<ol>
+  <li>Drag <code>Hero.fbx</code> from the Project window onto <code>Player</code> in the Hierarchy. It becomes a child.</li>
+  <li>Rename the child <code>Model</code>.</li>
+  <li>Transform of <code>Model</code>: <b>Position</b> <code>0, 0, 0</code>, <b>Rotation</b> <code>0, 0, 0</code>, <b>Scale</b> <code>0.36, 0.36, 0.36</code>.</li>
+  <li>Look at the Scene view. The hero must fit inside the green capsule of the Character Controller: feet at the bottom, head at the top. If not, change the Scale a little (same number in X, Y, Z).</li>
+  <li><code>Model</code> already has an <b>Animator</b> component. Set:
+    <ul>
+      <li><b>Controller</b> = <code>Hero</code> (from <code>Animations</code>)</li>
+      <li><b>Avatar</b> = <code>HeroAvatar</code> (normally already set)</li>
+      <li><b>Apply Root Motion</b> = off</li>
+      <li><b>Culling Mode</b> = <b>Always Animate</b></li>
+    </ul>
+  </li>
+</ol>
+<div class="tip"><b>Apply Root Motion</b> off: the script moves the player, not the animation. If it is on, the hero "walks away" from his capsule.</div>
+<figure class="shot todo"><div class="ph">Screenshot: Scene view – hero inside the green CharacterController capsule; Hierarchy Player → Model</div><figcaption>The hero fits the capsule</figcaption></figure>
+<figure class="shot todo"><div class="ph">Screenshot: Inspector of Model – Animator with Controller Hero, Apply Root Motion off, Always Animate</div><figcaption>The Animator on Model</figcaption></figure>
+
+<!-- ======================================================= 13 -->
+<h2 id="step-13"><span class="step">13</span>Add PlayerMotor and save the prefab</h2>
+<ol>
+  <li>Select <code>Player</code> → <b>Add Component</b> → <code>PlayerMotor</code>.</li>
+  <li>Check the values: Walk Speed <code>5</code>, Sprint Speed <code>8.2</code>, Acceleration <code>20</code>, Turn Speed <code>560</code>, Clip Walk Speed <code>0.59</code>, Clip Run Speed <code>0.84</code>. Leave <b>Joystick</b> empty.</li>
+  <li>Make sure the layer of <code>Player</code> <b>and</b> <code>Model</code> is <b>Ignore Raycast</b>: select <code>Player</code>, set the Layer again, and click <b>Yes, change children</b>.</li>
+  <li>Drag <code>Player</code> from the Hierarchy into <code>Assets/GoldRush/Prefabs/Gameplay</code>. It turns blue: it is now a prefab.</li>
+</ol>
+<figure class="shot todo"><div class="ph">Screenshot: Inspector of Player – Layer Ignore Raycast, Character Controller, PlayerMotor</div><figcaption>The Player prefab</figcaption></figure>
+
+<!-- ======================================================= 14 -->
+<h2 id="step-14"><span class="step">14</span>Put the player on the spawn</h2>
+<ol>
+  <li>Click the <code>PlayerSpawn</code> marker and read its <b>Position</b>. (In the real Level 1 it is <code>0, 0, -9</code>, facing +Z.)</li>
+  <li>Select <code>Player</code> and type the same <b>Position</b>. Keep <b>Rotation</b> <code>0, 0, 0</code>.</li>
+  <li>The camera does not follow yet (that is Phase 4). For now, put it high so you see most of the level. Select <code>Main Camera</code> (if there is none: <b>GameObject → Camera</b>, Tag = <b>MainCamera</b>):
+    <ul>
+      <li><b>Position</b> <code>0, 16, -26</code></li>
+      <li><b>Rotation</b> <code>35, 0, 0</code></li>
+    </ul>
+  </li>
+  <li>Save the scene (<b>Ctrl+S</b> / <b>Cmd+S</b>).</li>
+</ol>
+
+<!-- ======================================================= 15 -->
+<h2 id="step-15"><span class="step">15</span>▶ Press Play</h2>
+<p>Press <b>Play</b>. Click once in the <b>Game</b> view so it gets the keyboard. Open <b>Window → Animation → Animator</b> and select <code>Model</code> so you can watch the states.</p>
+<div class="check">
+<b>Checklist</b>
+<ul>
+  <li>The hero stands on the floor and plays <b>Idle</b>. He does not fall or float.</li>
+  <li><b>W A S D</b> (or the arrow keys) move him. <b>W</b> runs away from the camera. He turns smoothly toward where he goes.</li>
+  <li>While moving, the <b>Walk</b> animation plays. Hold <b>Shift</b>: he goes faster and plays <b>Run</b>.</li>
+  <li>Keep sprinting for about 3 seconds: he gets tired and walks again. After a short rest he can sprint again.</li>
+  <li>He stops at walls and blocks, and can walk up small steps.</li>
+  <li>In the Animator window, click the small circle next to <code>Win</code>: he waves 3 times, then goes back to idle. <code>Hit</code> and <code>Attack</code> play once. <code>Die</code>: he falls and stays down.</li>
+  <li>No red errors in the Console.</li>
+</ul>
+</div>
+<p><b>Press Play: you should see the hero run around with the right animation.</b></p>
+<figure class="shot todo"><div class="ph">Screenshot: Game view – hero running in Level1, seen from the high temporary camera</div><figcaption>The hero runs around Level 1</figcaption></figure>
+
+<!-- ======================================================= 16 -->
+<h2 id="step-16"><span class="step">16</span>Common problems</h2>
+<div class="table-wrap"><table>
+  <tr><th>Problem</th><th>Fix</th></tr>
+  <tr><td>The hero stands in a "T" pose and never moves his arms and legs</td><td>The Animator on <code>Model</code> has no <b>Controller</b>. Drag <code>Hero</code> into it. Also check the <b>Avatar</b>.</td></tr>
+  <tr><td>The hero slides, but always plays Idle</td><td>The parameter is not called exactly <code>Speed</code> (step 4), or the blend tree <b>Parameter</b> is not <code>Speed</code> (step 5).</td></tr>
+  <tr><td>Walk or run plays once and then freezes</td><td><b>Loop Time</b> is off for that clip. Tick it in the Animation tab of <code>Hero.fbx</code> and click <b>Apply</b>.</td></tr>
+  <tr><td>Walk and run look mixed up, or the hero runs when walking</td><td><b>Automate Thresholds</b> is still on, or the thresholds are not <code>0</code> / <code>0.5</code> / <code>1</code>.</td></tr>
+  <tr><td>The hero moves away from his capsule, or slides on after you stop</td><td>Untick <b>Apply Root Motion</b> on the Animator.</td></tr>
+  <tr><td>The hero floats above the floor or sinks into it</td><td>Model <b>Position</b> must be <code>0, 0, 0</code>. CharacterController <b>Center</b> = <code>0, 0.695, 0</code>, <b>Height</b> = <code>1.35</code>.</td></tr>
+  <tr><td>The hero falls through the floor</td><td>The floor has no collider, or the Player starts below the floor. Select the floor: it needs a <b>Box Collider</b> (or Mesh Collider).</td></tr>
+  <tr><td>The hero is tiny or giant</td><td>Change the <b>Scale</b> of <code>Model</code> (not of <code>Player</code>) until he fits the green capsule.</td></tr>
+  <tr><td>Nothing happens when I press keys</td><td>Click inside the Game view first. Check that <code>PlayerMotor</code> is on <code>Player</code> and is ticked.</td></tr>
+  <tr><td><i>"You are trying to read Input using the UnityEngine.Input class…"</i></td><td><b>Edit → Project Settings → Player → Other Settings → Active Input Handling</b> = <b>Both</b>. Unity restarts.</td></tr>
+  <tr><td><i>"The type or namespace name 'VirtualJoystick' could not be found"</i></td><td>Do step 8. Check that the file is called <code>VirtualJoystick.cs</code> and the code has <code>namespace GoldRush</code>.</td></tr>
+  <tr><td>The hero is pink</td><td>Materials tab of <code>Hero.fbx</code>: <b>Import via MaterialDescription</b>, <b>Use Embedded Materials</b>, <b>Apply</b>. The project must be a URP project.</td></tr>
+  <tr><td>A trigger in the Animator does nothing</td><td>The <b>Any State</b> arrow has no condition, or the condition uses the wrong trigger.</td></tr>
+  <tr><td>After Win / Hit the hero stays in that animation</td><td>The arrow back to <code>Locomotion</code> is missing, or <b>Has Exit Time</b> is off on it.</td></tr>
+</table></div>
+<p>More fixes are on the <a href="troubleshooting.html">Troubleshooting</a> page. New words are explained in the <a href="glossary.html">Glossary</a>.</p>
+<p><b>Checkpoint package:</b> <code>GoldRush_Phase03_Player.unitypackage</code></p>
+
+<nav class="pager" aria-label="Previous and next page">
+<a class="prev" href="phase-02.html"><small>← Previous</small>Phase 2: Level design</a>
+<a class="next" href="phase-04.html"><small>Next →</small>Phase 4: The camera</a>
+</nav>
+<footer class="site-footer">GOLD RUSH – a Unity 6 tutorial project. Characters: Quaternius (CC0). Font: Poppins (SIL Open Font License). Icons: Material Icons by Google (Apache 2.0).</footer>
+</div>
+</main>
+</div>
+</body>
+</html>

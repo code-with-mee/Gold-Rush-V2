@@ -1,0 +1,162 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>GOLD RUSH – Exercises</title>
+<meta name="description" content="GOLD RUSH Unity tutorial: Exercises.">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+<header class="site-header">
+  <a class="brand" href="index.html"><span class="brand-mark">GR</span>GOLD RUSH <small>Unity tutorial</small></a>
+  <nav class="header-links" aria-label="Quick links">
+    <a class="hide-sm" href="index.html">Course</a>
+    <a href="troubleshooting.html">Help</a>
+    <a href="glossary.html">Glossary</a>
+  </nav>
+</header>
+<div class="layout">
+<aside class="sidebar" aria-label="Site navigation">
+<h2>Start</h2><ul>
+<li><a href="index.html"><span class="num">★</span><span class="label">Overview</span></a></li>
+</ul>
+<h2>Course</h2><ul>
+<li><a href="part-1-guide.html"><span class="num">1</span><span class="label">Arena and hero</span></a></li>
+<li><a href="part-2-guide.html"><span class="num">2</span><span class="label">Characters</span></a></li>
+<li><a href="part-3-guide.html"><span class="num">3</span><span class="label">Gold and monsters</span></a></li>
+<li><a href="part-4-guide.html"><span class="num">4</span><span class="label">Rules, menu, win/lose</span></a></li>
+<li><a href="part-5-guide.html"><span class="num">5</span><span class="label">Mobile controls</span></a></li>
+<li><a href="part-6-guide.html"><span class="num">6</span><span class="label">Polish</span></a></li>
+</ul>
+<h2>Practice</h2><ul>
+<li><a href="exercises.html" aria-current="page"><span class="num">✎</span><span class="label">Exercises</span></a></li>
+</ul>
+<h2>Help</h2><ul>
+<li><a href="troubleshooting.html"><span class="num">?</span><span class="label">Troubleshooting</span></a></li>
+<li><a href="glossary.html"><span class="num">A–Z</span><span class="label">Glossary</span></a></li>
+</ul>
+</aside>
+<main>
+<div class="content">
+<p class="eyebrow">GOLD RUSH · Practice</p>
+<h1>Exercises</h1>
+<p class="lead">Eight projects that change the real game, from a five-minute tweak to a new AI behaviour. Do them in order: each one uses what you learned in the parts before it. Each exercise lists the files to open and hints, but not the full answer.</p>
+<div class="meta"><span><b>Before you start</b>commit or copy the project, so you can always go back</span><a class="btn secondary" href="exercises.pdf">Download PDF</a></div>
+
+<nav class="toc" aria-label="Exercises on this page"><strong>Exercises</strong><ol>
+  <li><a href="#ex-1">Tune a level</a></li>
+  <li><a href="#ex-2">A new shop colour</a></li>
+  <li><a href="#ex-3">Your name on the badge</a></li>
+  <li><a href="#ex-4">Faster ghosts</a></li>
+  <li><a href="#ex-5">A Freeze power-up</a></li>
+  <li><a href="#ex-6">A freeze sound</a></li>
+  <li><a href="#ex-7">Level 5</a></li>
+  <li><a href="#ex-8">Monsters that call for help</a></li>
+</ol></nav>
+
+<div class="table-wrap"><table>
+  <tr><th>#</th><th>Exercise</th><th>Level</th><th>Uses</th></tr>
+  <tr><td>1</td><td>Tune a level</td><td>★☆☆</td><td>Parts 1, 3</td></tr>
+  <tr><td>2</td><td>A new shop colour</td><td>★☆☆</td><td>Part 4</td></tr>
+  <tr><td>3</td><td>Your name on the badge</td><td>★☆☆</td><td>Part 2</td></tr>
+  <tr><td>4</td><td>Faster ghosts</td><td>★☆☆</td><td>Part 3</td></tr>
+  <tr><td>5</td><td>A Freeze power-up</td><td>★★☆</td><td>Parts 3, 4</td></tr>
+  <tr><td>6</td><td>A freeze sound</td><td>★★☆</td><td>Part 6</td></tr>
+  <tr><td>7</td><td>Level 5</td><td>★★☆</td><td>Parts 1, 4</td></tr>
+  <tr><td>8</td><td>Monsters that call for help</td><td>★★★</td><td>Part 3</td></tr>
+</table></div>
+
+<h2 id="ex-1"><span class="step">1</span>Tune a level</h2>
+<p><b>Goal:</b> Level 1 has 10 coins and 4 slimes.</p>
+<div class="note">Changing <code>coins = 6, patrollers = 2</code> in <code>Data.cs</code> is <b>not enough</b>. Level 1 is the saved scene <code>Level1.unity</code>, and its coins and monsters come from the markers inside it (Part 3, step 1).</div>
+<p>Choose one way:</p>
+<ol>
+  <li><b>In the scene (recommended):</b> open <code>Level1.unity</code>. Drag 4 more <code>CoinSpot</code> prefabs onto <code>Gameplay/Coins</code>, and 2 more <code>Monster_Slime</code> prefabs onto <code>Gameplay/Monsters</code>. Spread them out. Then change <code>coins = 6</code> to <code>coins = 10</code> in <code>Data.cs</code>, so the level card and intro text show the right number.</li>
+  <li><b>Generate it:</b> in <code>Data.cs</code>, change the numbers <b>and</b> remove <code>scene = "Level1",</code> from that line. Level 1 is now built by <code>LevelBuilder</code> in <code>Game.unity</code>, with a new layout.</li>
+</ol>
+<p><b>Check:</b> the HUD says <b>0 / 10</b> and there are four green slimes.</p>
+
+<h2 id="ex-2"><span class="step">2</span>A new shop colour</h2>
+<p><b>Goal:</b> an “Ocean” colour that costs 40 gold.</p>
+<ul>
+  <li>File: <code>Scripts/Core/Data.cs</code>, array <code>Catalog.Colors</code>.</li>
+  <li>Copy one of the lines and change the id, name, price and colour. The id must be new, for example <code>"color_ocean"</code>.</li>
+  <li>Use <b>Gold Rush → Give 500 Gold (debug)</b> to test buying it.</li>
+</ul>
+<p><b>Check:</b> an 8th card appears in the Shop, buying it costs 40, and the hero turns ocean blue. The shop grid has room for 9 colours.</p>
+
+<h2 id="ex-3"><span class="step">3</span>Your name on the badge</h2>
+<p><b>Goal:</b> the monsters wear your name instead of ITSTEP.</p>
+<ul>
+  <li>File: <code>Scripts/Gameplay/Badge.cs</code>. Change <code>DefaultText</code>.</li>
+  <li>Only I, T, S, E, P and space are drawn. For every other letter in your name, add an entry to <code>Glyphs</code>: 7 strings of 5 characters, <code>#</code> for ink and <code>.</code> for empty.</li>
+  <li>Draw the letter on squared paper first. Letters that are missing are skipped without any error.</li>
+</ul>
+<p><b>Check:</b> every monster's chest patch shows your full name.</p>
+
+<h2 id="ex-4"><span class="step">4</span>Faster ghosts</h2>
+<p><b>Goal:</b> make the ghosts scary in Level 2.</p>
+<ul>
+  <li>File: <code>Scripts/Gameplay/EnemyAI.cs</code>, method <code>Configure()</code>, the <code>Chaser</code> line.</li>
+  <li>Try <code>chaseSpeed</code> values of 5, 6.5 and 8. Remember that the hero walks at 5 and sprints at 8.2, and that the level's <code>enemySpeed</code> multiplies your value.</li>
+  <li>Also try <code>detectRange</code> and <code>loseRange</code>.</li>
+</ul>
+<p><b>Think:</b> at which speed does the game stop being fun? Why is it important that the monsters are slower than a sprint?</p>
+
+<h2 id="ex-5"><span class="step">5</span>A Freeze power-up</h2>
+<p><b>Goal:</b> a new power-up, <b>FREEZE</b>, that stops every monster for 4 seconds.</p>
+<p>A new power-up touches several files. Do it in this order:</p>
+<ol>
+  <li><code>Data.cs</code>: add <code>Freeze</code> to <code>enum PowerType</code>.</li>
+  <li><code>PowerUp.cs</code>: add a <code>case PowerType.Freeze</code> to <code>ColorOf</code> (pick an icy blue) and to <code>NameOf</code> (<code>"FREEZE"</code>). Without this, the new power-up looks like a red MAGNET, because <code>default:</code> is the magnet.</li>
+  <li><code>GameManager.cs</code>, <code>CollectPowerUp()</code>: add a case. The simplest version stuns every monster:
+<pre><code>case PowerType.Freeze:
+    foreach (var e in enemies) if (e) e.Stun(4f);
+    desc = "Monsters frozen!";
+    break;</code></pre>
+  A stunned monster cannot catch you (Part 3, step 6).</li>
+  <li>Place it: in <code>Level1.unity</code>, select a <code>PowerUpSpot</code> under <code>Gameplay/PowerUps</code> and set its <b>Type</b> to <b>Freeze</b>.</li>
+</ol>
+<div class="tip"><b>Extra challenge:</b> make it work like GHOST, with a countdown. Add <code>FreezeDuration</code>, <code>FreezeLeft</code> and <code>FreezeActive</code> next to <code>GhostLeft</code> in <code>GameManager</code>, count it down in <code>Update()</code>, and stop the <code>NavMeshAgent</code> in <code>EnemyAI.Update()</code> while it is active. For a HUD bar, look at <code>UpdatePowerRows()</code> in <code>GameUI.cs</code> and raise the number of rows from 3 to 4.</div>
+<p><b>Check:</b> picking it up shows a <b>FREEZE</b> toast and every monster spins in place with a blue “z”.</p>
+
+<h2 id="ex-6"><span class="step">6</span>A freeze sound</h2>
+<p><b>Goal:</b> FREEZE gets its own icy sound.</p>
+<ul>
+  <li>Follow “Your own sound” in <a href="part-6-guide.html#step-8">Part 6</a> to add a <code>Freeze()</code> sound and register it as <code>"freeze"</code>.</li>
+  <li>Play it from your new case in <code>CollectPowerUp()</code>: <code>AudioFX.Play("freeze");</code></li>
+  <li>Experiment: a falling pitch (<code>f0</code> high, <code>f1</code> low) sounds “cold”. A rising one sounds like a power-up.</li>
+</ul>
+<p><b>Check:</b> the Console shows no <code>[AudioFX] Unknown sound id</code> warning, and you hear your sound on pickup.</p>
+
+<h2 id="ex-7"><span class="step">7</span>Level 5</h2>
+<p><b>Goal:</b> a fifth campaign level that you can choose in the menu.</p>
+<ol>
+  <li>In <code>Data.cs</code>, add a fifth <code>LevelDef</code> to <code>Levels.All</code>. Leave out <code>scene</code>, so it is generated (pick your own <code>seed</code>, <code>size</code>, coins and monsters). Saving, stars and unlocking adapt by themselves.</li>
+  <li>Play Level 4 and win: Level 5 unlocks.</li>
+  <li><b>The level-select screen does not fit yet.</b> In <code>GoldRushMenu.BuildLevels()</code>, the card row is sized for exactly 5 cards (4 levels + Daily), so your new card lands on top of the Daily card. Replace the fixed <code>5</code> and <code>4</code> with values based on <code>Levels.All.Length</code>, and make <code>CardW</code> smaller so 6 cards fit in 1920 pixels.</li>
+</ol>
+<div class="tip">Want Level 5 as a scene you can edit by hand? After adding it, run <b>Gold Rush → Level Design → Rebuild Level Scenes (overwrites!)</b>, then add <code>scene = "Level5"</code> to your <code>LevelDef</code>. Careful: this rebuilds Levels 1–4 too, and any hand edits to them are lost.</div>
+<p><b>Check:</b> six cards in a row, none overlapping, and Level 5 plays.</p>
+
+<h2 id="ex-8"><span class="step">8</span>Monsters that call for help</h2>
+<p><b>Goal:</b> when one monster spots you, nearby monsters join the chase.</p>
+<ul>
+  <li>The spot moment is when a monster enters <code>Alert</code> (look at <code>Go(S.Alert)</code> in <code>EnemyAI.cs</code>).</li>
+  <li>Monsters do not know about each other yet. You can use <code>FindObjectsByType&lt;EnemyAI&gt;(FindObjectsSortMode.None)</code>, or keep a <code>static List&lt;EnemyAI&gt;</code> in <code>EnemyAI</code> (add in <code>OnEnable</code>, remove in <code>OnDisable</code>).</li>
+  <li>Add a public method, for example <code>Alarm(Vector3 playerPos)</code>. It should only react if the monster is in Patrol, Search or Return, and it must set <code>lastSeen</code> <b>and</b> <code>lastSeenTime</code> before calling <code>Go(S.Alert)</code>. Without <code>lastSeenTime</code>, the monster gives up after 2.2 seconds.</li>
+  <li>Only call monsters within, say, 15 m, or the whole level will chase you at once.</li>
+</ul>
+<p><b>Think:</b> a Mushroom King has a leash and goes back home. Should it answer the call? How would you show the player that a monster heard the alarm?</p>
+
+<nav class="pager" aria-label="Previous and next page">
+<a class="prev" href="part-6-guide.html"><small>← Previous</small>Part 6: Day, night, sound and effects</a>
+<a class="next" href="troubleshooting.html"><small>Next →</small>Troubleshooting</a>
+</nav>
+<footer class="site-footer">GOLD RUSH – a Unity 6 tutorial project. Characters: Quaternius (CC0). Font: Poppins (SIL Open Font License). Icons: Material Icons by Google (Apache 2.0). Code, levels, UI, sound and music: made for this project.</footer>
+</div>
+</main>
+</div>
+</body>
+</html>

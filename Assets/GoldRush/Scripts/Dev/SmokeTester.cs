@@ -55,6 +55,8 @@ namespace GoldRush
                 menu.DebugShowLevels(); yield return Wait(1.2f); yield return Shot("02_levels");
                 menu.DebugShowShop(); yield return Wait(1.5f); yield return Shot("03_shop");
                 menu.DebugShowTitle(); yield return Wait(0.3f);
+                menu.DebugShowSettings(); yield return Wait(0.8f); yield return Shot("03b_settings");
+                menu.DebugHideSettings(); yield return Wait(0.4f);
                 menu.StartLevel(0);
             }
             else Note("menu missing!");

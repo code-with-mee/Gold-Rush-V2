@@ -8,6 +8,7 @@ namespace GoldRush
     /// (Assets/GoldRush/Resources/DayNightPalette.asset). Every DayNightTint also applies these,
     /// so prefabs dragged into a level change colour at night automatically.
     /// </summary>
+    [CreateAssetMenu(fileName = "DayNightPalette", menuName = "Gold Rush/Day Night Palette")]
     public class DayNightPalette : ScriptableObject
     {
         public List<DayNightTint.Entry> entries = new List<DayNightTint.Entry>();

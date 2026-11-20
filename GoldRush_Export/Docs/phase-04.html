@@ -1,0 +1,523 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>GOLD RUSH – Phase 4: The camera</title>
+<meta name="description" content="GOLD RUSH Unity tutorial, Phase 4: The camera.">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+<header class="site-header">
+  <a class="brand" href="index.html"><span class="brand-mark">GR</span>GOLD RUSH <small>Unity tutorial</small></a>
+  <nav class="header-links" aria-label="Quick links">
+    <a class="hide-sm" href="index.html">Course</a>
+    <a href="troubleshooting.html">Help</a>
+    <a href="glossary.html">Glossary</a>
+  </nav>
+</header>
+<div class="layout">
+<aside class="sidebar" aria-label="Site navigation">
+<h2>Start</h2><ul>
+<li><a href="index.html"><span class="num">★</span><span class="label">Overview</span></a></li>
+</ul>
+<h2>Course</h2><ul>
+<li><a href="phase-00.html"><span class="num">0</span><span class="label">Create the project</span></a></li>
+<li><a href="phase-01.html"><span class="num">1</span><span class="label">Materials and prefabs</span></a></li>
+<li><a href="phase-02.html"><span class="num">2</span><span class="label">Level design</span></a></li>
+<li><a href="phase-03.html"><span class="num">3</span><span class="label">The player</span></a></li>
+<li><a href="phase-04.html" aria-current="page"><span class="num">4</span><span class="label">The camera</span></a></li>
+<li><a href="phase-05.html"><span class="num">5</span><span class="label">Coins and the HUD</span></a></li>
+<li><a href="phase-06.html"><span class="num">6</span><span class="label">Exit gate, win and lose</span></a></li>
+<li><a href="phase-07.html"><span class="num">7</span><span class="label">Monsters</span></a></li>
+<li><a href="phase-08.html"><span class="num">8</span><span class="label">Power-ups and effects</span></a></li>
+<li><a href="phase-09.html"><span class="num">9</span><span class="label">Menu, levels, shop, save</span></a></li>
+<li><a href="phase-10.html"><span class="num">10</span><span class="label">Polish and build</span></a></li>
+</ul>
+<h2>Help</h2><ul>
+<li><a href="troubleshooting.html"><span class="num">?</span><span class="label">Troubleshooting</span></a></li>
+<li><a href="glossary.html"><span class="num">A–Z</span><span class="label">Glossary</span></a></li>
+</ul>
+</aside>
+<main>
+<div class="content">
+<p class="eyebrow">GOLD RUSH · Phase 4</p>
+<h1>The camera</h1>
+<p class="lead">You will make a third-person camera that follows the hero from behind. You turn it with the mouse (the cursor is hidden while you play), it moves smoothly, and it slides closer when a wall is in the way, so it never looks through walls. The hero now runs in the direction the camera looks.</p>
+<div class="meta"><span><b>Checkpoint package</b><code>GoldRush_Phase04_Camera.unitypackage</code></span><span><b>Scene</b><code>Assets/GoldRush/Scenes/Level1.unity</code></span><a class="btn secondary" href="phase-04.pdf">Download PDF</a></div>
+
+<nav class="toc" aria-label="Steps on this page"><strong>Steps on this page</strong><ol>
+  <li><a href="#step-1">What you need</a></li>
+  <li><a href="#step-2">How the camera works</a></li>
+  <li><a href="#step-3">Script: TouchLookArea (stub)</a></li>
+  <li><a href="#step-4">Script: ThirdPersonCamera</a></li>
+  <li><a href="#step-5">Update PlayerMotor</a></li>
+  <li><a href="#step-6">Set up the Main Camera</a></li>
+  <li><a href="#step-7">Add ThirdPersonCamera</a></li>
+  <li><a href="#step-8">Connect the player to the camera</a></li>
+  <li><a href="#step-9">Check the player's layer</a></li>
+  <li><a href="#step-10">The controls</a></li>
+  <li><a href="#step-11">▶ Press Play</a></li>
+  <li><a href="#step-12">Tune it (optional)</a></li>
+  <li><a href="#step-13">Common problems</a></li>
+</ol></nav>
+
+<!-- ======================================================= 1 -->
+<h2 id="step-1"><span class="step">1</span>What you need</h2>
+<ul>
+  <li><a href="phase-03.html">Phase 3</a> is finished: the <code>Player</code> prefab is in <code>Level1</code> on the spawn and runs with WASD. (Or import <code>GoldRush_Phase03_Player.unitypackage</code>.)</li>
+  <li>Your walls and blocks have colliders (Box Collider). The camera uses them to find walls.</li>
+</ul>
+<p>Open <code>Assets/GoldRush/Scenes/Level1.unity</code>.</p>
+
+<!-- ======================================================= 2 -->
+<h2 id="step-2"><span class="step">2</span>How the camera works</h2>
+<p>Read this first. Then the code is easy to follow.</p>
+<ul>
+  <li><b>Orbit:</b> the camera sits on an invisible ball around the hero. <b>Yaw</b> = the angle left/right around him. <b>Pitch</b> = the angle up/down (between <code>4°</code> and <code>62°</code>). <b>Distance</b> = <code>6.2</code>&nbsp;m from a point <code>1.15</code>&nbsp;m above his feet.</li>
+  <li><b>Target and current:</b> the mouse changes the <i>target</i> angles. The camera <i>eases</i> toward them in about 0.1&nbsp;s with <code>SmoothDamp</code>. That is why it feels smooth, not jerky.</li>
+  <li><b>Lead:</b> the follow point moves a little in front of the hero when he runs, so you see where you go.</li>
+  <li><b>Walls:</b> each frame the camera sends 6 rays from the hero toward the camera. If a ray hits a wall, the camera comes closer (but never nearer than <code>1.4</code>&nbsp;m).</li>
+  <li><b>Forward = where the camera looks:</b> <code>PlayerMotor</code> reads the camera's <code>Yaw</code>. <b>W</b> always runs "into the screen".</li>
+</ul>
+<figure class="shot todo"><div class="ph">Diagram: hero, focus point 1.15 m above him, camera on the orbit at distance 6.2, yaw and pitch angles, rays to a wall</div><figcaption>Yaw, pitch, distance and the wall rays</figcaption></figure>
+
+<!-- ======================================================= 3 -->
+<h2 id="step-3"><span class="step">3</span>Script: TouchLookArea (stub)</h2>
+<p>On phones you will turn the camera by dragging on the right half of the screen. That comes later. The camera already asks for that drag, so we add a small stub now, like the joystick in Phase 3.</p>
+<ol>
+  <li>In <code>Assets/GoldRush/Scripts/UI</code>: right-click → <b>Create → Scripting → MonoBehaviour Script</b>. Name it <code>TouchLookArea</code>.</li>
+  <li>Replace everything with this code. Save.</li>
+</ol>
+<pre class="long"><code>using UnityEngine;
+
+namespace GoldRush
+{
+    /// &lt;summary&gt;
+    /// PHASE 4 STUB. The real touch look area (drag on the right half of the screen) comes in a later phase.
+    /// For now it never has any drag to give.
+    /// &lt;/summary&gt;
+    public class TouchLookArea : MonoBehaviour
+    {
+        /// &lt;summary&gt;Returns and clears the drag delta (screen pixels) since the last call.&lt;/summary&gt;
+        public static Vector2 Consume() =&gt; Vector2.zero;
+    }
+}</code></pre>
+<ul>
+  <li><b><code>static</code></b>: the camera calls it as <code>TouchLookArea.Consume()</code>, without any object in the scene.</li>
+  <li>It always returns <code>(0, 0)</code> = "no finger is dragging". A later phase replaces the whole file.</li>
+</ul>
+
+<!-- ======================================================= 4 -->
+<h2 id="step-4"><span class="step">4</span>Script: ThirdPersonCamera</h2>
+<p>Create <code>Assets/GoldRush/Scripts/Gameplay/ThirdPersonCamera.cs</code> and paste this <b>Phase 4 version</b>.</p>
+<pre class="long"><code>using UnityEngine;
+
+namespace GoldRush
+{
+    /// &lt;summary&gt;Smooth orbit camera: mouse / right-mouse / Q-E to rotate, wall collision, shake.
+    /// PHASE 4 VERSION: a later phase adds the intro swoop, and the GameManager takes over the mouse cursor.&lt;/summary&gt;
+    public class ThirdPersonCamera : MonoBehaviour
+    {
+        public Transform target;
+        public float distance = 6.2f;
+        public float height = 1.15f;
+        public float minPitch = 4f, maxPitch = 62f;
+        public float touchSensitivity = 0.16f; // degrees per reference pixel (1920 wide)
+        [Tooltip("Mouse look speed on computers (cursor is locked while playing).")]
+        public float mouseSensitivity = 2.4f;
+        public float yaw, pitch = 20f;
+
+        /// &lt;summary&gt;Smoothed yaw the camera is actually using (movement is relative to this).&lt;/summary&gt;
+        public float Yaw =&gt; curYaw;
+
+        Vector3 focus, focusVel;
+        float curDist, distVel, targetDist;
+        float curYaw, curPitch, yawVel, pitchVel;
+        float shakeAmp, shakeTime, shakeDur;
+
+        void Start()
+        {
+            if (target) Init(target, target.eulerAngles.y); // start right behind the hero
+            LockCursor(true);
+        }
+
+        /// &lt;summary&gt;Puts the camera behind the target at once (no glide from far away).&lt;/summary&gt;
+        public void Init(Transform newTarget, float startYaw)
+        {
+            target = newTarget;
+            yaw = startYaw;
+            focus = target.position + Vector3.up * height;
+            curDist = targetDist = distance;
+            curYaw = yaw;
+            curPitch = pitch;
+            Snap();
+        }
+
+        public void Shake(float amplitude, float duration)
+        {
+            shakeAmp = Mathf.Max(shakeAmp * (shakeTime / Mathf.Max(0.01f, shakeDur)), amplitude);
+            shakeDur = shakeTime = duration;
+        }
+
+        void Snap()
+        {
+            var rot = Quaternion.Euler(curPitch, curYaw, 0);
+            transform.SetPositionAndRotation(focus + rot * Vector3.back * curDist, rot);
+        }
+
+        // ---- PHASE 4 ONLY: the mouse cursor. From the GameManager phase on, GameManager does this.
+        static bool UseMouseLook =&gt; !Application.isMobilePlatform &amp;&amp; !Input.touchSupported;
+
+        static void LockCursor(bool locked)
+        {
+            if (!UseMouseLook) return;
+            Cursor.lockState = locked ? CursorLockMode.Locked : CursorLockMode.None;
+            Cursor.visible = !locked;
+        }
+
+        void Update()
+        {
+            if (Input.GetKeyDown(KeyCode.Escape)) LockCursor(false);
+            // clicked back into the game window after the cursor was freed
+            else if (UseMouseLook &amp;&amp; Cursor.lockState != CursorLockMode.Locked &amp;&amp; Input.GetMouseButtonDown(0)) LockCursor(true);
+        }
+
+        void OnDestroy() { LockCursor(false); }
+        // ---- end of PHASE 4 ONLY
+
+        void LateUpdate()
+        {
+            if (!target) return;
+            float dt = Time.deltaTime;
+
+            // ---- input changes the TARGET angles (yaw / pitch); the camera eases toward them
+            if (Time.timeScale &gt; 0f)
+            {
+                Vector2 look = TouchLookArea.Consume() * (1920f / Mathf.Max(1, Screen.width));
+                yaw += look.x * touchSensitivity;
+                pitch -= look.y * touchSensitivity * 0.8f;
+                // computer: mouse look while the cursor is locked (like a PC 3D game);
+                // right-drag still works when the cursor is free
+                if (Cursor.lockState == CursorLockMode.Locked || Input.GetMouseButton(1))
+                {
+                    yaw += Input.GetAxis("Mouse X") * mouseSensitivity;
+                    pitch -= Input.GetAxis("Mouse Y") * mouseSensitivity * 0.8f;
+                }
+                if (Input.GetKey(KeyCode.Q)) yaw -= 110f * dt;
+                if (Input.GetKey(KeyCode.E)) yaw += 110f * dt;
+                distance = Mathf.Clamp(distance - Input.mouseScrollDelta.y * 0.5f, 4f, 11f);
+            }
+            else TouchLookArea.Consume();
+            pitch = Mathf.Clamp(pitch, minPitch, maxPitch);
+            if (dt &gt; 0f)
+            {
+                curYaw = Mathf.SmoothDampAngle(curYaw, yaw, ref yawVel, 0.09f, Mathf.Infinity, dt);
+                curPitch = Mathf.SmoothDamp(curPitch, pitch, ref pitchVel, 0.09f, Mathf.Infinity, dt);
+            }
+
+            // ---- follow point: slightly behind the hero, leading a little in the running direction
+            Vector3 lead = Vector3.zero;
+            var motor = target.GetComponent&lt;PlayerMotor&gt;();
+            if (motor) { lead = motor.Velocity * 0.12f; lead.y = 0f; }
+            Vector3 want = target.position + Vector3.up * height + lead;
+            if (dt &gt; 0f) focus = Vector3.SmoothDamp(focus, want, ref focusVel, 0.12f, Mathf.Infinity, dt);
+
+            float d = distance;
+            Quaternion rot = Quaternion.Euler(curPitch, curYaw, 0);
+            Vector3 dir = rot * Vector3.back;
+
+            // ---- wall avoidance: several rays (centre + 4 corners of the view), take the nearest hit.
+            // Small changes are ignored (no flicker) and the camera glides in/out instead of snapping.
+            float allowed = d;
+            Vector3 right = rot * Vector3.right, up = rot * Vector3.up;
+            if (Physics.SphereCast(focus, 0.22f, dir, out var hit, d, Physics.DefaultRaycastLayers, QueryTriggerInteraction.Ignore))
+                allowed = Mathf.Min(allowed, hit.distance);
+            for (int i = 0; i &lt; 4; i++)
+            {
+                Vector3 off = (i &lt; 2 ? right : up) * (i % 2 == 0 ? 0.35f : -0.35f);
+                if (Physics.Raycast(focus + off, dir, out var h2, d, Physics.DefaultRaycastLayers, QueryTriggerInteraction.Ignore))
+                    allowed = Mathf.Min(allowed, h2.distance);
+            }
+            // also make sure nothing hides the hero's body (low walls between hero and camera)
+            Vector3 camGuess = focus + dir * d;
+            Vector3 body = target.position + Vector3.up * 0.6f;
+            Vector3 toCam = camGuess - body;
+            if (Physics.Raycast(body, toCam.normalized, out var h3, toCam.magnitude, Physics.DefaultRaycastLayers, QueryTriggerInteraction.Ignore))
+            {
+                // distance along the camera ray that corresponds to the blocking point
+                float frac = h3.distance / Mathf.Max(0.01f, toCam.magnitude);
+                allowed = Mathf.Min(allowed, d * frac);
+            }
+            allowed = Mathf.Max(1.4f, allowed - 0.25f);
+            if (allowed &lt; targetDist - 0.05f || allowed &gt; targetDist + 0.35f) targetDist = allowed; // hysteresis
+            bool pullingIn = targetDist &lt; curDist;
+            if (dt &gt; 0f) curDist = Mathf.SmoothDamp(curDist, targetDist, ref distVel, pullingIn ? 0.1f : 0.45f, Mathf.Infinity, dt);
+            curDist = Mathf.Min(curDist, allowed + 0.6f); // never sink deep inside a wall
+
+            Vector3 pos = focus + dir * curDist;
+            if (shakeTime &gt; 0f)
+            {
+                shakeTime -= Time.unscaledDeltaTime;
+                float k = Mathf.Clamp01(shakeTime / shakeDur);
+                float t = Time.unscaledTime * 40f;
+                pos += (transform.right * (Mathf.PerlinNoise(t, 0.3f) - 0.5f) + transform.up * (Mathf.PerlinNoise(0.7f, t) - 0.5f)) * (2f * shakeAmp * k);
+            }
+            transform.SetPositionAndRotation(pos, rot);
+        }
+    }
+}</code></pre>
+<ul>
+  <li><b><code>Start()</code> → <code>Init()</code></b> puts the camera right behind the hero at once (<code>Snap()</code>), facing the way he faces. Without it, the camera would fly in from the middle of the world.</li>
+  <li><b>Mouse look:</b> <code>Input.GetAxis("Mouse X")</code> is how far the mouse moved this frame. It only turns the camera while the cursor is <b>locked</b> (or while you hold the <b>right</b> mouse button). Up/down is a bit slower (<code>* 0.8f</code>).</li>
+  <li><b>The cursor (Phase 4 only):</b> <code>Cursor.lockState = Locked</code> keeps the mouse in the middle of the window, and <code>Cursor.visible = false</code> hides it. <b>Esc</b> frees it, a <b>left click</b> locks it again. In Phase 5 the GameManager takes over this job (Esc will pause the game).</li>
+  <li><b><code>Mathf.SmoothDampAngle(curYaw, yaw, …, 0.09f, …)</code></b> eases the real angle toward the target in about 0.09&nbsp;s. <code>SmoothDampAngle</code> knows that 359° and 1° are close.</li>
+  <li><b>Walls:</b> one <code>SphereCast</code> (a thick ray, 0.22&nbsp;m) plus 4 thin rays at the corners of the view, plus one ray from the hero's body. The nearest hit is the <code>allowed</code> distance. The camera pulls in fast (<code>0.1</code>&nbsp;s) and moves out slowly (<code>0.45</code>&nbsp;s). Small changes are ignored, so it does not flicker.</li>
+  <li><b><code>LateUpdate</code></b> runs after all <code>Update</code>s. The hero has already moved this frame, so the camera never lags one frame behind. <code>Shake()</code> is used later, when a monster hits you.</li>
+</ul>
+
+<!-- ======================================================= 5 -->
+<h2 id="step-5"><span class="step">5</span>Update PlayerMotor</h2>
+<p>The hero must run where the camera looks. Open <code>PlayerMotor.cs</code> and <b>replace the whole file</b> with this Phase 4 version.</p>
+<pre class="long"><code>using UnityEngine;
+
+namespace GoldRush
+{
+    /// &lt;summary&gt;Third-person player: CharacterController movement (collides with props), sprint/stamina,
+    /// walk/run animation.
+    /// PHASE 4 VERSION: later phases add power-ups, hits, sounds, dust and win/lose poses.&lt;/summary&gt;
+    [RequireComponent(typeof(CharacterController))]
+    public class PlayerMotor : MonoBehaviour
+    {
+        public float walkSpeed = 5f;
+        public float sprintSpeed = 8.2f;
+        public float acceleration = 20f;
+        public float turnSpeed = 560f;
+
+        [Header("Animation")]
+        [Tooltip("Ground speed (m/s) the Walk clip was animated for (measured from the feet).")]
+        public float clipWalkSpeed = 0.59f;
+        [Tooltip("Ground speed (m/s) the Run clip was animated for (measured from the feet).")]
+        public float clipRunSpeed = 0.84f;
+
+        public VirtualJoystick joystick;
+        public ThirdPersonCamera cam;
+
+        public float Stamina { get; private set; } = 1f;
+        public bool Exhausted { get; private set; }
+        public bool Sprinting { get; private set; }
+        public bool Frozen { get; set; }
+        public Vector3 Velocity =&gt; velocity;
+        public Animator Anim =&gt; anim;
+
+        CharacterController cc;
+        float animSpeed = 1f;
+        Animator anim;
+        Vector3 velocity;
+        float vy;
+
+        void Awake()
+        {
+            cc = GetComponent&lt;CharacterController&gt;();
+            anim = GetComponentInChildren&lt;Animator&gt;(); // the Animator on the "Model" child
+        }
+
+        Vector2 ReadInput()
+        {
+            Vector2 v = joystick ? joystick.Value : Vector2.zero;
+            float kx = (Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.RightArrow) ? 1 : 0) - (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.LeftArrow) ? 1 : 0);
+            float ky = (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.UpArrow) ? 1 : 0) - (Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.DownArrow) ? 1 : 0);
+            if (kx != 0 || ky != 0) v = new Vector2(kx, ky).normalized;
+            return Vector2.ClampMagnitude(v, 1f);
+        }
+
+        void Update()
+        {
+            float dt = Time.deltaTime;
+            if (dt &lt;= 0f) return;
+            bool canMove = !Frozen;
+
+            Vector2 input = canMove ? ReadInput() : Vector2.zero;
+            float yaw = cam ? cam.Yaw : 0f;
+            Vector3 dir = Quaternion.Euler(0, yaw, 0) * new Vector3(input.x, 0, input.y);
+            float mag = Mathf.Clamp01(dir.magnitude);
+
+            bool wantSprint = canMove &amp;&amp; mag &gt; 0.2f &amp;&amp; ((joystick &amp;&amp; joystick.Held &amp;&amp; joystick.Value.magnitude &gt; 0.9f) || Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift));
+            if (Exhausted &amp;&amp; Stamina &gt; 0.35f) Exhausted = false;
+            Sprinting = wantSprint &amp;&amp; !Exhausted &amp;&amp; Stamina &gt; 0f;
+            if (Sprinting)
+            {
+                Stamina = Mathf.Max(0f, Stamina - dt * 0.3f);
+                if (Stamina &lt;= 0f) Exhausted = true;
+            }
+            else Stamina = Mathf.Min(1f, Stamina + dt * (mag &gt; 0.1f ? 0.18f : 0.32f));
+
+            float speed = Sprinting ? sprintSpeed : walkSpeed;
+            Vector3 targetVel = mag &gt; 0.01f ? dir.normalized * (mag * speed) : Vector3.zero;
+            velocity = Vector3.MoveTowards(velocity, targetVel, acceleration * dt);
+
+            if (velocity.sqrMagnitude &gt; 0.05f &amp;&amp; !Frozen)
+            {
+                var targetRot = Quaternion.LookRotation(new Vector3(velocity.x, 0, velocity.z));
+                transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRot, turnSpeed * dt);
+            }
+
+            if (cc.isGrounded &amp;&amp; vy &lt; 0) vy = -2f; else vy -= 25f * dt;
+            if (cc.enabled) cc.Move((velocity + Vector3.up * vy) * dt);
+
+            // animation (0 idle, 0.5 walk, 1 run)
+            float horiz = new Vector3(velocity.x, 0, velocity.z).magnitude;
+            float blend = horiz &lt; 0.1f ? 0f : Mathf.Lerp(0.45f, 1f, Mathf.InverseLerp(2.5f, sprintSpeed, horiz));
+            if (anim &amp;&amp; anim.runtimeAnimatorController) anim.SetFloat("Speed", blend, 0.15f, dt);
+            // play the walk/run cycle as fast as the hero moves, so the feet don't slide
+            if (anim &amp;&amp; !Frozen)
+            {
+                float target = PlaybackSpeed(blend, horiz);
+                animSpeed = Mathf.Lerp(animSpeed, target, 1f - Mathf.Exp(-5f * dt)); // ease, never jump
+                anim.speed = animSpeed;
+            }
+        }
+
+        /// &lt;summary&gt;Animation playback speed so the feet match the ground.
+        /// blend = Animator "Speed" value (0.5 walk .. 1 run), groundSpeed = how fast the hero really moves.&lt;/summary&gt;
+        float PlaybackSpeed(float blend, float groundSpeed)
+        {
+            if (groundSpeed &lt; 0.15f) return 1f;
+            float natural = Mathf.Lerp(clipWalkSpeed, clipRunSpeed, Mathf.InverseLerp(0.5f, 1f, blend));
+            float ratio = groundSpeed / Mathf.Max(0.1f, natural);
+            // match most of the stride but keep it gentle: fluid motion matters more than perfect feet
+            return Mathf.Clamp(Mathf.Lerp(1f, ratio, 0.7f), 0.8f, 2.2f);
+        }
+    }
+}</code></pre>
+<p>Only two things changed:</p>
+<ul>
+  <li>A new field: <b><code>public ThirdPersonCamera cam;</code></b></li>
+  <li><b><code>float yaw = cam ? cam.Yaw : 0f;</code></b> The keys are turned by the camera's angle. If <b>Cam</b> is empty, it works like Phase 3.</li>
+</ul>
+
+<!-- ======================================================= 6 -->
+<h2 id="step-6"><span class="step">6</span>Set up the Main Camera</h2>
+<ol>
+  <li>Select <code>Main Camera</code> in the Hierarchy. Its <b>Tag</b> must be <b>MainCamera</b>.</li>
+  <li>Camera component:
+    <ul>
+      <li><b>Field of View</b> = <code>55</code></li>
+      <li><b>Clipping Planes → Near</b> = <code>0.1</code>, <b>Far</b> = <code>400</code></li>
+    </ul>
+  </li>
+  <li>Check that it has an <b>Audio Listener</b> (the "ears" of the game, needed for sounds in Phase 5).</li>
+  <li>The Position and Rotation from Phase 3 do not matter any more. The script sets them when you press Play.</li>
+</ol>
+
+<!-- ======================================================= 7 -->
+<h2 id="step-7"><span class="step">7</span>Add ThirdPersonCamera</h2>
+<ol>
+  <li>With <code>Main Camera</code> selected: <b>Add Component</b> → <code>ThirdPersonCamera</code>.</li>
+  <li>Drag <code>Player</code> from the Hierarchy into <b>Target</b>.</li>
+  <li>Check the values:</li>
+</ol>
+<div class="table-wrap"><table>
+  <tr><th>Field</th><th>Value</th><th>Meaning</th></tr>
+  <tr><td>Distance</td><td><code>6.2</code></td><td>metres behind the hero (mouse wheel: 4 – 11)</td></tr>
+  <tr><td>Height</td><td><code>1.15</code></td><td>the camera looks at this point above his feet</td></tr>
+  <tr><td>Min Pitch / Max Pitch</td><td><code>4</code> / <code>62</code></td><td>how low / high the camera can go</td></tr>
+  <tr><td>Touch Sensitivity</td><td><code>0.16</code></td><td>used later on phones</td></tr>
+  <tr><td>Mouse Sensitivity</td><td><code>2.4</code></td><td>mouse look speed</td></tr>
+  <tr><td>Yaw / Pitch</td><td><code>0</code> / <code>20</code></td><td>start angles (Yaw is set from the hero when you press Play)</td></tr>
+</table></div>
+<figure class="shot todo"><div class="ph">Screenshot: Inspector of Main Camera – Camera (FOV 55, Near 0.1, Far 400) and ThirdPersonCamera with Target = Player</div><figcaption>Main Camera with ThirdPersonCamera</figcaption></figure>
+
+<!-- ======================================================= 8 -->
+<h2 id="step-8"><span class="step">8</span>Connect the player to the camera</h2>
+<ol>
+  <li>Select <code>Player</code> in the Hierarchy.</li>
+  <li>In <b>PlayerMotor</b>, drag <code>Main Camera</code> into <b>Cam</b>.</li>
+  <li>Save the scene.</li>
+</ol>
+<div class="note">Do <b>not</b> click <b>Overrides → Apply</b> for this field. A prefab in the Project can not point at an object in a scene. The link stays in the scene only, and that is fine.</div>
+
+<!-- ======================================================= 9 -->
+<h2 id="step-9"><span class="step">9</span>Check the player's layer</h2>
+<p>The wall rays start <i>at the hero</i>. If they hit the hero's own capsule, the camera thinks there is a wall and jumps in close.</p>
+<ol>
+  <li>Select <code>Player</code>. <b>Layer</b> must be <b>Ignore Raycast</b>.</li>
+  <li>Open it: <code>Model</code> must be <b>Ignore Raycast</b> too.</li>
+</ol>
+<p>The rays use <code>Physics.DefaultRaycastLayers</code>, which skips the <b>Ignore Raycast</b> layer. So the rays fly through the player and only hit walls and blocks.</p>
+
+<!-- ======================================================= 10 -->
+<h2 id="step-10"><span class="step">10</span>The controls</h2>
+<div class="table-wrap"><table>
+  <tr><th>Key / mouse</th><th>Does</th></tr>
+  <tr><td><b>W A S D</b> or arrows</td><td>move (relative to the camera)</td></tr>
+  <tr><td><b>Shift</b></td><td>sprint</td></tr>
+  <tr><td>Move the mouse</td><td>look around (cursor hidden and locked)</td></tr>
+  <tr><td><b>Esc</b></td><td>free the cursor</td></tr>
+  <tr><td>Left click in the Game view</td><td>lock the cursor again</td></tr>
+  <tr><td>Hold right mouse button and drag</td><td>look around while the cursor is free</td></tr>
+  <tr><td><b>Q</b> / <b>E</b></td><td>turn the camera left / right</td></tr>
+  <tr><td>Mouse wheel</td><td>zoom in / out</td></tr>
+</table></div>
+
+<!-- ======================================================= 11 -->
+<h2 id="step-11"><span class="step">11</span>▶ Press Play</h2>
+<p>Press <b>Play</b> and click once in the Game view.</p>
+<div class="check">
+<b>Checklist</b>
+<ul>
+  <li>The camera starts right behind the hero, a little above him.</li>
+  <li>The cursor is hidden. Moving the mouse turns the camera around the hero, smoothly.</li>
+  <li>You can not look from below the floor or straight down: the pitch stops at 4° and 62°.</li>
+  <li><b>W</b> runs into the screen, wherever the camera looks. <b>A</b>/<b>D</b> run left/right.</li>
+  <li>The camera follows smoothly when he runs and sprints.</li>
+  <li>Run along a wall and turn the camera into it: the camera slides closer and you never see through the wall. Walk away: it glides back out.</li>
+  <li><b>Esc</b> shows the cursor. A click hides it again.</li>
+  <li>Q / E and the mouse wheel work.</li>
+  <li>No red errors in the Console.</li>
+</ul>
+</div>
+<p><b>Press Play: you should see a smooth third-person view.</b></p>
+<figure class="shot todo"><div class="ph">Screenshot: Game view – third-person view behind the hero in Level1</div><figcaption>The third-person camera</figcaption></figure>
+<figure class="shot todo"><div class="ph">Screenshot: Game view – hero next to a wall, the camera pulled in close</div><figcaption>The camera avoids the wall</figcaption></figure>
+
+<!-- ======================================================= 12 -->
+<h2 id="step-12"><span class="step">12</span>Tune it (optional)</h2>
+<p>While playing, select <code>Main Camera</code> and change the values in the Inspector. You see the change at once.</p>
+<ul>
+  <li><b>Mouse Sensitivity</b>: higher = faster turns.</li>
+  <li><b>Distance</b> and <b>Height</b>: further back or closer.</li>
+  <li><b>Pitch</b>: the start angle up/down.</li>
+</ul>
+<div class="note">Changes made in Play mode are lost when you stop. Write down the numbers you like, stop, and type them again. For the real game, keep the values from step 7.</div>
+
+<!-- ======================================================= 13 -->
+<h2 id="step-13"><span class="step">13</span>Common problems</h2>
+<div class="table-wrap"><table>
+  <tr><th>Problem</th><th>Fix</th></tr>
+  <tr><td>The camera does not move at all</td><td><b>Target</b> on ThirdPersonCamera is empty. Drag <code>Player</code> into it.</td></tr>
+  <tr><td>The camera is very close to the hero all the time, or jumps in and out</td><td>The player is not on the <b>Ignore Raycast</b> layer (step 9). Also check <code>Model</code>.</td></tr>
+  <tr><td><b>W</b> always runs the same way, not where the camera looks</td><td><b>Cam</b> on PlayerMotor is empty (step 8), or you still have the Phase 3 PlayerMotor (step 5).</td></tr>
+  <tr><td>The mouse does not turn the camera</td><td>Click inside the Game view so the cursor locks. Or hold the right mouse button while you drag.</td></tr>
+  <tr><td>The cursor never hides</td><td>Click inside the Game view. On a touch-screen computer, Unity may think it is a phone: then mouse look stays off and you use right-drag or Q/E.</td></tr>
+  <tr><td>The camera looks through walls</td><td>The wall has no collider. Add a <b>Box Collider</b> to the wall prefab (Phase 1).</td></tr>
+  <tr><td>The camera stops near an invisible thing</td><td>An object with a collider but no visible mesh is in the way (for example a marker with a collider). Remove that collider, or put that object on <b>Ignore Raycast</b>.</td></tr>
+  <tr><td>Up/down is the wrong way round</td><td>That is how the game is made (mouse up = look up). To flip it, change <code>pitch -= …</code> to <code>pitch += …</code> on the <code>Mouse Y</code> line.</td></tr>
+  <tr><td><i>"The type or namespace name 'TouchLookArea' could not be found"</i></td><td>Do step 3. Check the file name and <code>namespace GoldRush</code>.</td></tr>
+  <tr><td><i>"The type or namespace name 'ThirdPersonCamera' could not be found"</i> in PlayerMotor</td><td>Check that <code>ThirdPersonCamera.cs</code> has no errors and the class name matches the file name.</td></tr>
+  <tr><td>Error about <code>Input</code> / <code>"Mouse X"</code></td><td><b>Active Input Handling</b> must be <b>Both</b> (Project Settings → Player).</td></tr>
+  <tr><td>The camera shakes a little when the hero runs</td><td>Make sure there is only <b>one</b> ThirdPersonCamera, and that the camera is <b>not</b> a child of <code>Player</code>.</td></tr>
+</table></div>
+<p>More fixes are on the <a href="troubleshooting.html">Troubleshooting</a> page. New words are explained in the <a href="glossary.html">Glossary</a>.</p>
+<p><b>Checkpoint package:</b> <code>GoldRush_Phase04_Camera.unitypackage</code></p>
+
+<nav class="pager" aria-label="Previous and next page">
+<a class="prev" href="phase-03.html"><small>← Previous</small>Phase 3: The player</a>
+<a class="next" href="phase-05.html"><small>Next →</small>Phase 5: Coins and the HUD</a>
+</nav>
+<footer class="site-footer">GOLD RUSH – a Unity 6 tutorial project. Characters: Quaternius (CC0). Font: Poppins (SIL Open Font License). Icons: Material Icons by Google (Apache 2.0).</footer>
+</div>
+</main>
+</div>
+</body>
+</html>

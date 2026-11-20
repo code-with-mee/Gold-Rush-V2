@@ -1,0 +1,387 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>GOLD RUSH – Phase 1: Materials and prefabs</title>
+<meta name="description" content="GOLD RUSH Unity tutorial, Phase 1: Materials and prefabs.">
+<link rel="stylesheet" href="assets/style.css">
+<style>
+  .sw { display: inline-block; width: 14px; height: 14px; border-radius: 3px; border: 1px solid var(--line); vertical-align: -2px; margin-right: 4px; }
+</style>
+</head>
+<body>
+<header class="site-header">
+  <a class="brand" href="index.html"><span class="brand-mark">GR</span>GOLD RUSH <small>Unity tutorial</small></a>
+  <nav class="header-links" aria-label="Quick links">
+    <a class="hide-sm" href="index.html">Course</a>
+    <a href="troubleshooting.html">Help</a>
+    <a href="glossary.html">Glossary</a>
+  </nav>
+</header>
+<div class="layout">
+<aside class="sidebar" aria-label="Site navigation">
+<h2>Start</h2><ul>
+<li><a href="index.html"><span class="num">★</span><span class="label">Overview</span></a></li>
+</ul>
+<h2>Course</h2><ul>
+<li><a href="phase-00.html"><span class="num">0</span><span class="label">Create the project</span></a></li>
+<li><a href="phase-01.html" aria-current="page"><span class="num">1</span><span class="label">Materials and prefabs</span></a></li>
+<li><a href="phase-02.html"><span class="num">2</span><span class="label">Level design</span></a></li>
+<li><a href="phase-03.html"><span class="num">3</span><span class="label">The player</span></a></li>
+<li><a href="phase-04.html"><span class="num">4</span><span class="label">The camera</span></a></li>
+<li><a href="phase-05.html"><span class="num">5</span><span class="label">Coins and the HUD</span></a></li>
+<li><a href="phase-06.html"><span class="num">6</span><span class="label">Exit gate, win and lose</span></a></li>
+<li><a href="phase-07.html"><span class="num">7</span><span class="label">Monsters</span></a></li>
+<li><a href="phase-08.html"><span class="num">8</span><span class="label">Power-ups and effects</span></a></li>
+<li><a href="phase-09.html"><span class="num">9</span><span class="label">Menu, levels, shop, save</span></a></li>
+<li><a href="phase-10.html"><span class="num">10</span><span class="label">Polish and build</span></a></li>
+</ul>
+<h2>Help</h2><ul>
+<li><a href="troubleshooting.html"><span class="num">?</span><span class="label">Troubleshooting</span></a></li>
+<li><a href="glossary.html"><span class="num">A–Z</span><span class="label">Glossary</span></a></li>
+</ul>
+</aside>
+<main>
+<div class="content">
+<p class="eyebrow">GOLD RUSH · Phase 1</p>
+<h1>Materials and prefabs</h1>
+<p class="lead">You make the materials of the game: a grid floor, light-grey blocks, red, orange and teal accent colours, glowing lights and gold. Then you build the level pieces from simple cubes and save them as <b>prefabs</b>: blocks, walls, a pillar, a barrier and a lamp post. In phase 2 you build the whole level from these pieces.</p>
+<div class="meta"><span><b>Checkpoint package</b><code>GoldRush_Phase01_Prefabs.unitypackage</code></span><span><b>Scene</b><code>Assets/GoldRush/Scenes/Sandbox.unity</code></span><a class="btn secondary" href="phase-01.pdf">Download PDF</a></div>
+
+<nav class="toc" aria-label="Steps on this page"><strong>Steps on this page</strong><ol>
+  <li><a href="#step-1">What you need</a></li>
+  <li><a href="#step-2">What is a material?</a></li>
+  <li><a href="#step-3">Make the floor material</a></li>
+  <li><a href="#step-4">Make the colour materials</a></li>
+  <li><a href="#step-5">Make the glow materials</a></li>
+  <li><a href="#step-6">Make the gold materials</a></li>
+  <li><a href="#step-7">Make the base materials for the scripts</a></li>
+  <li><a href="#step-8">Make the sunset sky</a></li>
+  <li><a href="#step-9">What is a prefab?</a></li>
+  <li><a href="#step-10">Build the first block</a></li>
+  <li><a href="#step-11">Save it as a prefab</a></li>
+  <li><a href="#step-12">More blocks with Prefab Mode</a></li>
+  <li><a href="#step-13">Accent blocks</a></li>
+  <li><a href="#step-14">Walls</a></li>
+  <li><a href="#step-15">Pillar and barrier</a></li>
+  <li><a href="#step-16">Lamp post</a></li>
+  <li><a href="#step-17">Prefab vs instance</a></li>
+  <li><a href="#step-18">▶ Press Play</a></li>
+  <li><a href="#step-19">Common problems</a></li>
+</ol></nav>
+
+<!-- ======================================================= 1 -->
+<h2 id="step-1"><span class="step">1</span>What you need</h2>
+<ul>
+  <li>The project from <a href="phase-00.html">Phase 0</a> (or import <code>GoldRush_Phase00_Project.unitypackage</code> into a new <b>Universal 3D</b> project).</li>
+  <li>Open the scene <code>Assets/GoldRush/Scenes/Sandbox.unity</code>.</li>
+  <li>No new packages. No scripts in this phase.</li>
+</ul>
+
+<!-- ======================================================= 2 -->
+<h2 id="step-2"><span class="step">2</span>What is a material?</h2>
+<p>A <b>material</b> tells Unity how a surface looks: its colour, how shiny it is, and if it glows. A 3D object shows a material through its <b>Mesh Renderer</b> component. All our materials use the URP shader <b>Universal Render Pipeline/Lit</b> (a <b>shader</b> is the small program that draws the surface).</p>
+<p>The settings you will use:</p>
+<div class="table-wrap"><table>
+  <tr><th>Setting</th><th>What it does</th></tr>
+  <tr><td><b>Base Map</b></td><td>The colour (the colour box on the right) and an optional texture (the small square on the left).</td></tr>
+  <tr><td><b>Tiling</b></td><td>How many times the texture repeats over the surface.</td></tr>
+  <tr><td><b>Metallic</b></td><td>0 = plastic or stone, 1 = metal.</td></tr>
+  <tr><td><b>Smoothness</b></td><td>0 = matt, 1 = mirror-like shine.</td></tr>
+  <tr><td><b>Emission</b></td><td>The surface makes its own light. With <b>bloom</b> (a glow effect the game adds later) it shines.</td></tr>
+</table></div>
+<div class="tip">To type a colour: click the colour box → in the colour picker, type the value in the <b>Hexadecimal</b> field (for example <code>DBDEE6</code>) → press Enter.</div>
+
+<!-- ======================================================= 3 -->
+<h2 id="step-3"><span class="step">3</span>Make the floor material</h2>
+<p>First, set up the grid texture so it repeats nicely.</p>
+<ol>
+  <li>Open <code>Assets/GoldRush/Art/Textures</code>. Click the grid texture (<code>grid</code>).</li>
+  <li>In the Inspector, check <b>Wrap Mode</b> = <b>Repeat</b>. Set <b>Aniso Level</b> to <code>4</code> (the grid stays sharp when you look at it from the side). Click <b>Apply</b>.</li>
+</ol>
+<p>Now the material:</p>
+<ol>
+  <li>Right-click the folder <code>Assets/GoldRush/Materials</code> → <b>Create → Material</b>.</li>
+  <li>Name it <code>M_Floor</code>.</li>
+  <li>In the Inspector, check that <b>Shader</b> is <b>Universal Render Pipeline/Lit</b>.</li>
+  <li>Drag the <code>grid</code> texture onto the small square next to <b>Base Map</b>.</li>
+  <li>Click the colour box next to <b>Base Map</b>. Type <code>DBDEE6</code>.</li>
+  <li>Set <b>Smoothness</b> to <code>0.35</code>.</li>
+  <li>Under <b>Surface Inputs</b>, set <b>Tiling</b> to <code>X 20</code>, <code>Y 20</code>.</li>
+</ol>
+<p>One texture repeat is one floor tile. The level floor is 40 m wide, so tiling 20 gives tiles of 2 × 2 m.</p>
+<div class="note">In some Unity versions the menu is <b>Create → Rendering → Material</b>. If the shader is not URP Lit, click the <b>Shader</b> dropdown → <b>Universal Render Pipeline → Lit</b>.</div>
+<figure class="shot todo"><div class="ph">Screenshot: Inspector of M_Floor (URP Lit, grid texture in Base Map, Tiling 20 × 20, Smoothness 0.35)</div><figcaption>M_Floor.</figcaption></figure>
+
+<!-- ======================================================= 4 -->
+<h2 id="step-4"><span class="step">4</span>Make the colour materials</h2>
+<p>Make the next materials the same way. Tip: select <code>M_Floor</code> and press <b>Ctrl+D</b> (<b>Cmd+D</b> on Mac) to duplicate it, then rename it and change the values. For the plain colours, remove the texture: click the small square next to <b>Base Map</b> → choose <b>None</b>, and set Tiling back to <code>1, 1</code>.</p>
+<div class="table-wrap"><table>
+  <tr><th>Name</th><th>Base Map colour</th><th>Texture</th><th>Smoothness</th><th>Used for</th></tr>
+  <tr><td><code>M_OuterGround</code></td><td><span class="sw" style="background:#99A1B0"></span><code>99A1B0</code></td><td>grid, Tiling <code>120, 120</code></td><td>0.2</td><td>The big ground outside the level</td></tr>
+  <tr><td><code>M_Block</code></td><td><span class="sw" style="background:#CCD1DB"></span><code>CCD1DB</code></td><td>None</td><td>0.15</td><td>Sides of blocks and walls</td></tr>
+  <tr><td><code>M_BlockTop</code></td><td><span class="sw" style="background:#EDF0F7"></span><code>EDF0F7</code></td><td>None</td><td>0.2</td><td>Lighter top slab of blocks and walls</td></tr>
+  <tr><td><code>M_Trim</code></td><td><span class="sw" style="background:#6B7385"></span><code>6B7385</code></td><td>None</td><td>0.3</td><td>Dark feet, bases and lamp poles</td></tr>
+  <tr><td><code>M_Red</code></td><td><span class="sw" style="background:#ED4C4C"></span><code>ED4C4C</code></td><td>None</td><td>0.3</td><td>Red accent block</td></tr>
+  <tr><td><code>M_RedTop</code></td><td><span class="sw" style="background:#FF7870"></span><code>FF7870</code></td><td>None</td><td>0.35</td><td>Top of the red block</td></tr>
+  <tr><td><code>M_Orange</code></td><td><span class="sw" style="background:#FF9938"></span><code>FF9938</code></td><td>None</td><td>0.3</td><td>Orange accent block</td></tr>
+  <tr><td><code>M_OrangeTop</code></td><td><span class="sw" style="background:#FFBD6B"></span><code>FFBD6B</code></td><td>None</td><td>0.35</td><td>Top of orange block and barrier</td></tr>
+  <tr><td><code>M_Teal</code></td><td><span class="sw" style="background:#33BDBD"></span><code>33BDBD</code></td><td>None</td><td>0.3</td><td>Teal accent block</td></tr>
+  <tr><td><code>M_TealTop</code></td><td><span class="sw" style="background:#6BDED9"></span><code>6BDED9</code></td><td>None</td><td>0.35</td><td>Top of the teal block</td></tr>
+</table></div>
+<p>For all of them: <b>Metallic</b> = <code>0</code>.</p>
+<div class="tip">Why a separate top material? The top slab is a bit lighter than the sides. This makes the blocks look bevelled, like in the real game, without any extra modelling.</div>
+
+<!-- ======================================================= 5 -->
+<h2 id="step-5"><span class="step">5</span>Make the glow materials</h2>
+<p>Glow materials have <b>Emission</b> turned on. The emission colour uses <b>HDR</b> (High Dynamic Range: colours brighter than white), so it can really shine.</p>
+<ol>
+  <li>Make a new material, for example <code>M_GlowCyan</code>. Set its <b>Base Map</b> colour and <b>Smoothness</b> <code>0.5</code> from the table.</li>
+  <li>Tick <b>Emission</b>.</li>
+  <li>Click the <b>Emission Map</b> colour box. The HDR colour picker opens.</li>
+  <li>Type the <b>Emission</b> hex colour from the table.</li>
+  <li>Set <b>Intensity</b> (at the bottom of the picker) to the value in the table.</li>
+  <li>Repeat for the other glow materials.</li>
+</ol>
+<div class="table-wrap"><table>
+  <tr><th>Name</th><th>Base Map colour</th><th>Emission colour</th><th>Intensity</th><th>Used for</th></tr>
+  <tr><td><code>M_GlowCyan</code></td><td><span class="sw" style="background:#79E2FF"></span><code>79E2FF</code></td><td><span class="sw" style="background:#4CD9FF"></span><code>4CD9FF</code></td><td><code>1</code></td><td>Pillar bands, floor lines</td></tr>
+  <tr><td><code>M_GlowOrange</code></td><td><span class="sw" style="background:#FFA966"></span><code>FFA966</code></td><td><span class="sw" style="background:#FF8C33"></span><code>FF8C33</code></td><td><code>1</code></td><td>Orange floor lines</td></tr>
+  <tr><td><code>M_GlowLamp</code></td><td><span class="sw" style="background:#FFE8C6"></span><code>FFE8C6</code></td><td><span class="sw" style="background:#FFE0B2"></span><code>FFE0B2</code></td><td><code>1.4</code></td><td>Lamp caps</td></tr>
+  <tr><td><code>M_GlowRed</code></td><td><span class="sw" style="background:#FF6A66"></span><code>FF6A66</code></td><td><span class="sw" style="background:#FF3833"></span><code>FF3833</code></td><td><code>1.4</code></td><td>Exit gate light when closed (phase 6)</td></tr>
+  <tr><td><code>M_GlowGreen</code></td><td><span class="sw" style="background:#79FF96"></span><code>79FF96</code></td><td><span class="sw" style="background:#4CFF73"></span><code>4CFF73</code></td><td><code>1.4</code></td><td>Exit gate light when open (phase 6)</td></tr>
+</table></div>
+<p>For all glow materials: <b>Metallic</b> = <code>0</code>, <b>Smoothness</b> = <code>0.5</code>.</p>
+<div class="note">In the Scene view the glow looks flat. That is normal. The glow (bloom) is added by the game's post-processing when the game runs (phase 5 onwards).</div>
+<figure class="shot todo"><div class="ph">Screenshot: HDR colour picker for Emission with hex 4CD9FF and Intensity 1</div><figcaption>The HDR picker for M_GlowCyan.</figcaption></figure>
+
+<!-- ======================================================= 6 -->
+<h2 id="step-6"><span class="step">6</span>Make the gold materials</h2>
+<p>Gold is shiny metal with a soft warm glow. The coins (phase 5) use two of them: a bright outer ring and a darker centre.</p>
+<div class="table-wrap"><table>
+  <tr><th>Name</th><th>Base Map colour</th><th>Metallic</th><th>Smoothness</th><th>Emission colour</th><th>Intensity</th></tr>
+  <tr><td><code>M_Gold</code></td><td><span class="sw" style="background:#FFB21F"></span><code>FFB21F</code></td><td><code>0.85</code></td><td><code>0.8</code></td><td><span class="sw" style="background:#8C540E"></span><code>8C540E</code></td><td><code>0</code></td></tr>
+  <tr><td><code>M_GoldDark</code></td><td><span class="sw" style="background:#D98014"></span><code>D98014</code></td><td><code>0.85</code></td><td><code>0.75</code></td><td><span class="sw" style="background:#502807"></span><code>502807</code></td><td><code>0</code></td></tr>
+</table></div>
+<figure class="shot todo"><div class="ph">Screenshot: Project window, Materials folder with all M_ materials as coloured balls</div><figcaption>All M_ materials.</figcaption></figure>
+
+<!-- ======================================================= 7 -->
+<h2 id="step-7"><span class="step">7</span>Make the base materials for the scripts</h2>
+<p>Some scripts make objects while the game runs (coins, sparks, effects). They copy a <b>base material</b> and change its colour in code. Make these four now. They stay white: the code sets the colour.</p>
+<div class="table-wrap"><table>
+  <tr><th>Name</th><th>Shader</th><th>Settings</th></tr>
+  <tr><td><code>GR_Lit</code></td><td>Universal Render Pipeline/Lit</td><td>Base Map colour white <code>FFFFFF</code>, Metallic <code>0</code>, Smoothness <code>0.3</code>.</td></tr>
+  <tr><td><code>GR_LitEmissive</code></td><td>Universal Render Pipeline/Lit</td><td>Like <code>GR_Lit</code>. Tick <b>Emission</b>, emission colour white <code>FFFFFF</code>, Intensity <code>0</code>.</td></tr>
+  <tr><td><code>GR_LitTransparent</code></td><td>Universal Render Pipeline/Lit</td><td>Like <code>GR_Lit</code>. At the top, <b>Surface Type</b> = <b>Transparent</b>, <b>Blending Mode</b> = <b>Alpha</b>.</td></tr>
+  <tr><td><code>GR_Particle</code></td><td>Universal Render Pipeline/Particles/Unlit</td><td><b>Surface Type</b> = <b>Transparent</b>, <b>Blending Mode</b> = <b>Alpha</b>, Base Map colour white.</td></tr>
+</table></div>
+<p>You connect them to the scripts later, in the <b>GameAssets</b> file.</p>
+
+<!-- ======================================================= 8 -->
+<h2 id="step-8"><span class="step">8</span>Make the sunset sky</h2>
+<p>The sky is a material too. You use it in phase 2.</p>
+<ol>
+  <li>Create a material. Name it <code>GR_SunsetSky</code>.</li>
+  <li>Set <b>Shader</b> to <b>Skybox → Procedural</b>.</li>
+  <li>Set the values below.</li>
+</ol>
+<div class="table-wrap"><table>
+  <tr><th>Setting</th><th>Value</th></tr>
+  <tr><td><b>Sun</b></td><td><b>High Quality</b></td></tr>
+  <tr><td><b>Sun Size</b></td><td><code>0.06</code></td></tr>
+  <tr><td><b>Sun Size Convergence</b></td><td><code>3</code></td></tr>
+  <tr><td><b>Atmosphere Thickness</b></td><td><code>1.35</code></td></tr>
+  <tr><td><b>Sky Tint</b></td><td><span class="sw" style="background:#FF9E73"></span><code>FF9E73</code></td></tr>
+  <tr><td><b>Ground</b></td><td><span class="sw" style="background:#9E7354"></span><code>9E7354</code></td></tr>
+  <tr><td><b>Exposure</b></td><td><code>1.2</code></td></tr>
+</table></div>
+
+<!-- ======================================================= 9 -->
+<h2 id="step-9"><span class="step">9</span>What is a prefab?</h2>
+<p>A <b>prefab</b> is a saved GameObject (with its children and components) stored as a file in the Project window. You can place it in a scene many times. Each copy in a scene is an <b>instance</b>. When you change the prefab file, every instance changes too.</p>
+<p>Our level pieces are made of plain cubes:</p>
+<ul>
+  <li>An empty parent object (the root) with the prefab's name.</li>
+  <li>A <code>Body</code> cube with <code>M_Block</code>.</li>
+  <li>A thin <code>Top</code> cube on top, a little smaller, with <code>M_BlockTop</code>.</li>
+</ul>
+<div class="note"><b>Pivot at the bottom.</b> The root's position is the centre of the block's <b>bottom</b> face. Then a block at <code>Y = 0</code> stands exactly on the floor. That is why the children have a positive Y position.</div>
+
+<!-- ======================================================= 10 -->
+<h2 id="step-10"><span class="step">10</span>Build the first block</h2>
+<ol>
+  <li>Open <b>GameObject → Create Empty</b>. Name it <code>Block_1x1x1</code>.</li>
+  <li>In the Inspector, at the Transform's <b>⋮</b> menu, click <b>Reset</b>. Position is now <code>0, 0, 0</code>.</li>
+  <li>Right-click <code>Block_1x1x1</code> in the Hierarchy → <b>3D Object → Cube</b>. Name it <code>Body</code>.</li>
+  <li>Set <code>Body</code>: <b>Position</b> <code>0, 0.43, 0</code>, <b>Scale</b> <code>1, 0.86, 1</code>.</li>
+  <li>Drag <code>M_Block</code> from the Project window onto <code>Body</code>.</li>
+  <li>Right-click <code>Block_1x1x1</code> again → <b>3D Object → Cube</b>. Name it <code>Top</code>.</li>
+  <li>Set <code>Top</code>: <b>Position</b> <code>0, 0.93, 0</code>, <b>Scale</b> <code>0.92, 0.14, 0.92</code>.</li>
+  <li>Drag <code>M_BlockTop</code> onto <code>Top</code>.</li>
+</ol>
+<p>The block is 1 m wide and 1 m tall. The top slab is 0.14 m thick and 0.08 m smaller, so you see a light edge on top.</p>
+<figure class="shot todo"><div class="ph">Screenshot: Hierarchy Block_1x1x1 with Body and Top, Scene view of the block</div><figcaption>Block_1x1x1: Body + Top.</figcaption></figure>
+
+<!-- ======================================================= 11 -->
+<h2 id="step-11"><span class="step">11</span>Save it as a prefab</h2>
+<ol>
+  <li>Drag <code>Block_1x1x1</code> from the <b>Hierarchy</b> into the folder <code>Assets/GoldRush/Prefabs/Level</code> in the Project window.</li>
+  <li>The name in the Hierarchy turns <b>blue</b>. Blue means: this is a prefab instance.</li>
+</ol>
+<p>Each cube keeps its <b>Box Collider</b>. The collider makes the block solid: the player cannot walk through it.</p>
+
+<!-- ======================================================= 12 -->
+<h2 id="step-12"><span class="step">12</span>More blocks with Prefab Mode</h2>
+<p><b>Prefab Mode</b> is a special view where you edit a prefab file on its own. Open it by double-clicking a prefab in the Project window. Leave it with the <b>&lt;</b> arrow at the top of the Hierarchy.</p>
+<ol>
+  <li>In the Project window, select <code>Block_1x1x1</code>. Press <b>Ctrl+D</b> (<b>Cmd+D</b>). Rename the copy <code>Block_2x2x2</code>.</li>
+  <li>Double-click <code>Block_2x2x2</code>. Prefab Mode opens.</li>
+  <li>Select the root object and rename it <code>Block_2x2x2</code> too (if it still has the old name).</li>
+  <li>Set the <code>Body</code> and <code>Top</code> values from the table.</li>
+  <li>Click <b>&lt;</b> at the top of the Hierarchy to leave Prefab Mode. It saves by itself (if <b>Auto Save</b> is on; otherwise click <b>Save</b>).</li>
+  <li>Do the same for <code>Block_4x1x2</code>.</li>
+</ol>
+<div class="table-wrap"><table>
+  <tr><th>Prefab</th><th>Size (W × H × D)</th><th>Body Position / Scale</th><th>Top Position / Scale</th></tr>
+  <tr><td><code>Block_1x1x1</code></td><td>1 × 1 × 1</td><td><code>0, 0.43, 0</code> / <code>1, 0.86, 1</code></td><td><code>0, 0.93, 0</code> / <code>0.92, 0.14, 0.92</code></td></tr>
+  <tr><td><code>Block_2x2x2</code></td><td>2 × 2 × 2</td><td><code>0, 0.93, 0</code> / <code>2, 1.86, 2</code></td><td><code>0, 1.93, 0</code> / <code>1.91, 0.14, 1.91</code></td></tr>
+  <tr><td><code>Block_4x1x2</code></td><td>4 × 1 × 2</td><td><code>0, 0.43, 0</code> / <code>4, 0.86, 2</code></td><td><code>0, 0.93, 0</code> / <code>3.91, 0.14, 1.91</code></td></tr>
+</table></div>
+<figure class="shot todo"><div class="ph">Screenshot: Prefab Mode of Block_2x2x2 (blue background, &lt; arrow at the top of the Hierarchy)</div><figcaption>Editing a prefab in Prefab Mode.</figcaption></figure>
+
+<!-- ======================================================= 13 -->
+<h2 id="step-13"><span class="step">13</span>Accent blocks</h2>
+<p>Coloured blocks make the level easier to read: "the gold is near the red block".</p>
+<ol>
+  <li>Duplicate <code>Block_1x1x1</code> and name it <code>AccentBlock_Red</code>. Open it in Prefab Mode.</li>
+  <li>Set <code>Body</code>: Position <code>0, 0.68, 0</code>, Scale <code>1.5, 1.36, 1.5</code>. Material <code>M_Red</code>.</li>
+  <li>Set <code>Top</code>: Position <code>0, 1.43, 0</code>, Scale <code>1.41, 0.14, 1.41</code>. Material <code>M_RedTop</code>.</li>
+  <li>Leave Prefab Mode.</li>
+  <li>Duplicate <code>AccentBlock_Red</code> twice. Name the copies <code>AccentBlock_Orange</code> and <code>AccentBlock_Teal</code>.</li>
+  <li>In each copy, swap the materials: <code>M_Orange</code> / <code>M_OrangeTop</code> and <code>M_Teal</code> / <code>M_TealTop</code>.</li>
+</ol>
+
+<!-- ======================================================= 14 -->
+<h2 id="step-14"><span class="step">14</span>Walls</h2>
+<p>Walls are long, high blocks: <b>2.3 m</b> high and <b>1 m</b> thick. The length goes along the X axis.</p>
+<ol>
+  <li>Duplicate <code>Block_1x1x1</code>. Name it <code>Wall_4m</code>. Set the values from the table in Prefab Mode.</li>
+  <li>Duplicate <code>Wall_4m</code>. Name it <code>Wall_8m</code>. Set its values.</li>
+</ol>
+<div class="table-wrap"><table>
+  <tr><th>Prefab</th><th>Size (L × H × T)</th><th>Body Position / Scale</th><th>Top Position / Scale</th></tr>
+  <tr><td><code>Wall_4m</code></td><td>4 × 2.3 × 1</td><td><code>0, 1.08, 0</code> / <code>4, 2.16, 1</code></td><td><code>0, 2.23, 0</code> / <code>3.92, 0.14, 0.92</code></td></tr>
+  <tr><td><code>Wall_8m</code></td><td>8 × 2.3 × 1</td><td><code>0, 1.08, 0</code> / <code>8, 2.16, 1</code></td><td><code>0, 2.23, 0</code> / <code>7.92, 0.14, 0.92</code></td></tr>
+</table></div>
+<div class="tip">2.3 m is higher than the hero (1.35 m), but low enough that the camera can look over it.</div>
+
+<!-- ======================================================= 15 -->
+<h2 id="step-15"><span class="step">15</span>Pillar and barrier</h2>
+<p>These pieces have extra parts. Parts marked <b>no collider</b> are only decoration: select the part, then on its <b>Box Collider</b> click <b>⋮ → Remove Component</b>. Parts marked <b>no shadow</b>: in the <b>Mesh Renderer</b>, set <b>Lighting → Cast Shadows</b> to <b>Off</b>.</p>
+<p>Build each one like <code>Block_1x1x1</code> (an empty root at <code>0, 0, 0</code> with cube children), then drag it into <code>Prefabs/Level</code>.</p>
+<h3>Pillar (1 × 3 × 1)</h3>
+<div class="table-wrap"><table>
+  <tr><th>Child</th><th>Position</th><th>Scale</th><th>Material</th><th>Notes</th></tr>
+  <tr><td><code>Base</code></td><td><code>0, 0.11, 0</code></td><td><code>1.24, 0.22, 1.24</code></td><td><code>M_Trim</code></td><td>no collider, no shadow</td></tr>
+  <tr><td><code>Body</code></td><td><code>0, 1.43, 0</code></td><td><code>1, 2.86, 1</code></td><td><code>M_Block</code></td><td></td></tr>
+  <tr><td><code>Top</code></td><td><code>0, 2.93, 0</code></td><td><code>0.92, 0.14, 0.92</code></td><td><code>M_BlockTop</code></td><td></td></tr>
+  <tr><td><code>Band</code></td><td><code>0, 2.55, 0</code></td><td><code>1.04, 0.1, 1.04</code></td><td><code>M_GlowCyan</code></td><td>no collider, no shadow</td></tr>
+</table></div>
+<h3>Barrier_Orange (3 × 0.95 × 0.6)</h3>
+<p>A low wall the hero can hide behind.</p>
+<div class="table-wrap"><table>
+  <tr><th>Child</th><th>Position</th><th>Scale</th><th>Material</th><th>Notes</th></tr>
+  <tr><td><code>Body</code></td><td><code>0, 0.41, 0</code></td><td><code>3, 0.81, 0.6</code></td><td><code>M_Block</code></td><td></td></tr>
+  <tr><td><code>Top</code></td><td><code>0, 0.88, 0</code></td><td><code>2.95, 0.14, 0.55</code></td><td><code>M_OrangeTop</code></td><td></td></tr>
+  <tr><td><code>FootLeft</code></td><td><code>-1.15, 0.08, 0</code></td><td><code>0.5, 0.16, 0.9</code></td><td><code>M_Trim</code></td><td>no collider, no shadow</td></tr>
+  <tr><td><code>FootRight</code></td><td><code>1.15, 0.08, 0</code></td><td><code>0.5, 0.16, 0.9</code></td><td><code>M_Trim</code></td><td>no collider, no shadow</td></tr>
+</table></div>
+<figure class="shot todo"><div class="ph">Screenshot: Pillar and Barrier_Orange side by side in the Scene view</div><figcaption>Pillar (with the cyan band) and Barrier_Orange.</figcaption></figure>
+
+<!-- ======================================================= 16 -->
+<h2 id="step-16"><span class="step">16</span>Lamp post</h2>
+<p>A thin post with a glowing cap and a real light inside.</p>
+<ol>
+  <li>Make an empty root <code>LampPost</code> at <code>0, 0, 0</code> with these cube children:</li>
+</ol>
+<div class="table-wrap"><table>
+  <tr><th>Child</th><th>Position</th><th>Scale</th><th>Material</th><th>Notes</th></tr>
+  <tr><td><code>Base</code></td><td><code>0, 0.14, 0</code></td><td><code>0.6, 0.28, 0.6</code></td><td><code>M_Trim</code></td><td></td></tr>
+  <tr><td><code>Pole</code></td><td><code>0, 1.6, 0</code></td><td><code>0.22, 2.9, 0.22</code></td><td><code>M_Trim</code></td><td></td></tr>
+  <tr><td><code>Cap</code></td><td><code>0, 3.2, 0</code></td><td><code>0.5, 0.32, 0.5</code></td><td><code>M_GlowLamp</code></td><td>no collider, no shadow</td></tr>
+  <tr><td><code>Hat</code></td><td><code>0, 3.41, 0</code></td><td><code>0.64, 0.1, 0.64</code></td><td><code>M_BlockTop</code></td><td>no collider</td></tr>
+</table></div>
+<ol start="2">
+  <li>Right-click <code>LampPost</code> → <b>Light → Point Light</b>. Name it <code>LampLight</code>.</li>
+  <li>Set <code>LampLight</code> <b>Position</b> to <code>0, 2.9, 0</code>.</li>
+  <li>In the <b>Light</b> component: <b>Color</b> <code>FFE0B2</code>, <b>Intensity</b> <code>2.4</code>, <b>Range</b> <code>9</code>, <b>Shadow Type</b> <b>No Shadows</b>.</li>
+  <li>Drag <code>LampPost</code> into <code>Prefabs/Level</code>.</li>
+</ol>
+<div class="tip">Light without shadows is much cheaper. The level has 8 lamps, so this keeps the game fast on phones. In phase 10 the lamps switch on only at night.</div>
+
+<!-- ======================================================= 17 -->
+<h2 id="step-17"><span class="step">17</span>Prefab vs instance</h2>
+<p>Try how prefabs and instances work together.</p>
+<ol>
+  <li>Delete the loose test objects you built in the Hierarchy (the prefab files stay safe in the Project window).</li>
+  <li>Drag 3 × <code>Block_1x1x1</code>, 1 × <code>Wall_8m</code>, 1 × <code>Pillar</code> and 1 × <code>LampPost</code> into the Scene. Place them on the plane next to the hero.</li>
+  <li>Select one <code>Block_1x1x1</code> instance. Change its <code>Body</code> material to <code>M_Red</code>. Only this one block changes. The changed value is <b>bold</b> with a blue line: that is an <b>override</b>.</li>
+  <li>Select the root of that block. At the top of the Inspector, click <b>Overrides</b> → <b>Revert All</b>. The block is grey again.</li>
+  <li>Double-click <code>Block_1x1x1</code> in the Project window. In Prefab Mode, change the <code>Top</code> material to <code>M_TealTop</code>. Leave Prefab Mode. <b>All three</b> blocks now have a teal top.</li>
+  <li>Change it back to <code>M_BlockTop</code>.</li>
+  <li>Save the scene.</li>
+</ol>
+<div class="table-wrap"><table>
+  <tr><th>You change…</th><th>What changes</th></tr>
+  <tr><td>The prefab file (Prefab Mode)</td><td>Every instance in every scene.</td></tr>
+  <tr><td>One instance in the scene</td><td>Only that instance (an override). <b>Overrides → Apply All</b> copies it to the prefab file.</td></tr>
+  <tr><td>Position, rotation of the instance root</td><td>Only that instance. This is normal and never applied.</td></tr>
+</table></div>
+<figure class="shot todo"><div class="ph">Screenshot: Sandbox scene with the hero, three blocks, a wall, a pillar and a lamp post</div><figcaption>The Sandbox test scene.</figcaption></figure>
+
+<!-- ======================================================= 18 -->
+<h2 id="step-18"><span class="step">18</span>▶ Press Play</h2>
+<ol>
+  <li>Click <b>▶ Play</b>.</li>
+  <li>Look at the Game view. Move the Main Camera if you cannot see the prefabs (for example Position <code>0, 3, -8</code>, Rotation <code>15, 0, 0</code>).</li>
+  <li>Click <b>▶</b> again to stop.</li>
+</ol>
+<div class="check">
+<p><b>You should see:</b></p>
+<ul>
+  <li>A test scene with the hero, light-grey blocks with lighter tops, a wall, a pillar with a cyan band and a lamp post with a warm light.</li>
+  <li>11 prefabs in <code>Assets/GoldRush/Prefabs/Level</code>: <code>Block_1x1x1</code>, <code>Block_2x2x2</code>, <code>Block_4x1x2</code>, <code>AccentBlock_Red</code>, <code>AccentBlock_Orange</code>, <code>AccentBlock_Teal</code>, <code>Wall_4m</code>, <code>Wall_8m</code>, <code>Pillar</code>, <code>Barrier_Orange</code>, <code>LampPost</code>.</li>
+  <li>The materials in <code>Assets/GoldRush/Materials</code>: 18 <code>M_</code> materials and 5 <code>GR_</code> materials.</li>
+  <li>No red errors in the Console.</li>
+</ul>
+</div>
+
+<!-- ======================================================= 19 -->
+<h2 id="step-19"><span class="step">19</span>Common problems</h2>
+<div class="table-wrap"><table>
+  <tr><th>Problem</th><th>Fix</th></tr>
+  <tr><td>A new material is pink, or has no <b>Base Map</b> field.</td><td>The shader is wrong. Set <b>Shader</b> to <b>Universal Render Pipeline/Lit</b>.</td></tr>
+  <tr><td>The floor grid is one giant tile.</td><td>Set <b>Tiling</b> on <code>M_Floor</code> to <code>20, 20</code>. Check that the grid texture's <b>Wrap Mode</b> is <b>Repeat</b>.</td></tr>
+  <tr><td>The block floats above the floor or sinks into it.</td><td>The <b>root</b> must be at <code>Y = 0</code>, and the child positions must match the table. The root is the bottom of the block.</td></tr>
+  <tr><td>The top slab flickers (stripes) on the body.</td><td>The <code>Top</code> is inside the body. Check the Top's Y position (for example <code>0.93</code> for 1 m blocks).</td></tr>
+  <tr><td>My change in Prefab Mode does not show in the scene.</td><td>You did not save. Turn on <b>Auto Save</b> (top right of the Scene view in Prefab Mode) or click <b>Save</b>.</td></tr>
+  <tr><td>I changed an instance, and now I want the change for all.</td><td>Select the instance root → <b>Overrides → Apply All</b>.</td></tr>
+  <tr><td>The name in the Hierarchy is not blue.</td><td>It is not a prefab instance. Delete it and drag the prefab from the Project window again.</td></tr>
+  <tr><td>Glow materials do not glow.</td><td>Normal for now. Bloom comes with the game's post-processing in a later phase. Check that <b>Emission</b> is ticked.</td></tr>
+  <tr><td>The lamp light lights up nothing.</td><td>Check the <code>LampLight</code> Range (<code>9</code>) and Intensity (<code>2.4</code>). In a bright scene it is hard to see in the day. That is fine.</td></tr>
+</table></div>
+<p>More fixes are on the <a href="troubleshooting.html">Troubleshooting</a> page. New words are in the <a href="glossary.html">Glossary</a>.</p>
+<p><b>Checkpoint package:</b> <code>GoldRush_Phase01_Prefabs.unitypackage</code></p>
+<p><b>Next:</b> in <a href="phase-02.html">Phase 2</a> you build the first level with these prefabs.</p>
+
+<nav class="pager" aria-label="Previous and next page">
+<a class="prev" href="phase-00.html"><small>← Previous</small>Phase 0: Create the project</a>
+<a class="next" href="phase-02.html"><small>Next →</small>Phase 2: Level design</a>
+</nav>
+<footer class="site-footer">GOLD RUSH – a Unity 6 tutorial project. Characters: Quaternius (CC0). Font: Poppins (SIL Open Font License). Icons: Material Icons by Google (Apache 2.0).</footer>
+</div>
+</main>
+</div>
+</body>
+</html>

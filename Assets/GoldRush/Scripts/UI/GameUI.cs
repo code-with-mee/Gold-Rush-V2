@@ -573,13 +573,26 @@ namespace GoldRush
         }
 
         public static void AddToggle(Transform parent, Vector2 pos, string label, System.Func<bool> get, System.Action<bool> set)
+            => BindToggle(ToggleButton(parent, pos, label), label, get, set);
+
+        /// <summary>An ON/OFF chip button (MUSIC or SOUND) without a click action yet: see BindToggle.</summary>
+        public static Button ToggleButton(Transform parent, Vector2 pos, string label)
         {
-            Button b = null;
-            b = UIKit.ChipButton(parent, label == "MUSIC" ? UIKit.Icon.Music : UIKit.Icon.Sound, "", get() ? UIKit.Green : UIKit.Gray, new Vector2(260, 76), () =>
+            var b = UIKit.ChipButton(parent, label == "MUSIC" ? UIKit.Icon.Music : UIKit.Icon.Sound, label + "  ON", UIKit.Green, new Vector2(260, 76), null, 28);
+            ((RectTransform)b.transform).At(new Vector2(0.5f, 0), pos, new Vector2(260, 76), new Vector2(0.5f, 0.5f));
+            return b;
+        }
+
+        /// <summary>Connects a toggle button to a setting: click flips it, the label shows ON / OFF.</summary>
+        public static void BindToggle(Button b, string label, System.Func<bool> get, System.Action<bool> set)
+        {
+            if (!b) return;
+            b.onClick.AddListener(() =>
             {
+                AudioFX.Play("click");
                 set(!get());
                 Refresh();
-            }, 28);
+            });
             void Refresh()
             {
                 UIKit.ButtonLabel(b).text = label + (get() ? "  ON" : "  OFF");
@@ -587,7 +600,6 @@ namespace GoldRush
                 if (disc) disc.GetComponent<Image>().color = UIKit.WithAlpha(get() ? UIKit.Green : UIKit.Gray, 0.85f);
             }
             Refresh();
-            ((RectTransform)b.transform).At(new Vector2(0.5f, 0), pos, new Vector2(260, 76), new Vector2(0.5f, 0.5f));
         }
 
         public void HidePause()

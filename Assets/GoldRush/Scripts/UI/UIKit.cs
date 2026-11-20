@@ -68,6 +68,21 @@ namespace GoldRush
         static Sprite Make(string key, int n, Func<float, float, float> sdfPixels, float border = 0, bool soft = false)
         {
             if (cache.TryGetValue(key, out var s) && s) return s;
+            // the editor saves every shape as a PNG in Resources/UISprites (so scenes can reference real assets)
+            s = Resources.Load<Sprite>("UISprites/" + key);
+            if (s) { cache[key] = s; return s; }
+            s = Generate(key, n, sdfPixels, border, soft);
+            cache[key] = s;
+            return s;
+        }
+
+        /// <summary>Editor: forget cached sprites (after they were saved as PNG files).</summary>
+        public static void ClearCache() => cache.Clear();
+
+        /// <summary>Draws the sprite into a new texture (used when no saved PNG exists).</summary>
+        public static Sprite Generate(string key, int n, Func<float, float, float> sdfPixels, float border, bool soft)
+        {
+            Sprite s;
             var tex = new Texture2D(n, n, TextureFormat.RGBA32, true) { name = key, wrapMode = TextureWrapMode.Clamp, filterMode = FilterMode.Bilinear };
             var px = new Color32[n * n];
             for (int y = 0; y < n; y++)
@@ -82,7 +97,6 @@ namespace GoldRush
             s = Sprite.Create(tex, new Rect(0, 0, n, n), new Vector2(0.5f, 0.5f), 100, 0, SpriteMeshType.FullRect,
                 new Vector4(border, border, border, border));
             s.name = key;
-            cache[key] = s;
             return s;
         }
 

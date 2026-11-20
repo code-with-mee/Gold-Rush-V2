@@ -4,23 +4,40 @@ using UnityEngine.UI;
 
 namespace GoldRush
 {
-    /// <summary>Main menu scene root: 3D diorama + Title / Level Select / Shop screens.</summary>
+    /// <summary>
+    /// Main menu scene root: 3D diorama + Title / Level Select / Shop / Settings screens.
+    /// The stage and the screens are normal GameObjects saved in MainMenu.unity (menu: Gold Rush > Level Design >
+    /// Rebuild Menu Scene). This script only connects them: buttons with a <see cref="MenuAction"/> call
+    /// <see cref="Run"/>, and the data (gold, stars, level cards, shop items) is filled in when the scene starts.
+    /// If the scene is empty, everything is built from code instead.
+    /// </summary>
     public class GoldRushMenu : MonoBehaviour
     {
         enum Screen { Title, Levels, Shop }
 
         public static GoldRushMenu I { get; private set; }
 
-        Camera cam;
-        Transform playerRoot;
-        Animator playerAnim;
+        [Header("Stage (saved in the scene)")]
+        [SerializeField] Camera cam;
+        [SerializeField] Transform playerRoot;
+        [SerializeField] Animator playerAnim;
+        [SerializeField] Light lantern;
+        [SerializeField] List<Light> menuGlows = new List<Light>();
+
+        [Header("Screens (saved in the scene)")]
+        [SerializeField] RectTransform canvasRt;
+        [SerializeField] RectTransform titleScreen, levelScreen, shopScreen, settingsRoot, settingsPanel;
+        [SerializeField] GameObject[] topRight;
+        [SerializeField] RectTransform[] entrance;
+
+        [Header("Filled in at runtime")]
+        [SerializeField] RectTransform goldPill;
+        [SerializeField] Text goldText, titleGoldText, starsText, playSubtitle;
+        [SerializeField] RectTransform starsBar, levelCards, shopTabs, shopGrid;
+        [SerializeField] Button musicToggle, soundToggle;
+
         Screen current = Screen.Title;
         float lookSide = -1.3f, lookSideTarget = -1.3f, camDist = 5.6f, camDistTarget = 5.6f;
-
-        RectTransform canvasRt, titleScreen, levelScreen, shopScreen;
-        RectTransform goldPill;
-        Text goldText;
-        RectTransform shopGrid;
         bool shopHats;
         int shownGold;
 
@@ -31,10 +48,61 @@ namespace GoldRush
         {
             UIKit.EnsureEventSystem();
             AudioFX.StartMusic();
+            // anything not placed in the scene is built from code
+            if (!cam) BuildWorld();
+            if (!titleScreen) BuildUI();
+            EnvironmentSetup.Apply(cam, true, true); // the menu uses the spooky night mood
+            if (lantern) DayNight.RegisterNightLight(lantern);
+            foreach (var g in menuGlows) DayNight.RegisterNightLight(g);
+            Cosmetics.Apply(playerAnim, GameAssets.I.hero, Save.Data.color, Save.Data.hat, false);
+            RefreshTitle();
+            BindSettings();
+            settingsRoot.gameObject.SetActive(false);
+            UpdateCamera(1f);
+            Show(Screen.Title, true);
+            PlayEntrance();
+            Fader.FadeIn();
+        }
+
+#if UNITY_EDITOR
+        /// <summary>Editor only (LevelBaker): builds the stage and every screen as scene objects.</summary>
+        public void BuildForEditor()
+        {
             BuildWorld();
             BuildUI();
-            Show(Screen.Title, true);
-            Fader.FadeIn();
+        }
+#endif
+
+        /// <summary>Puts the saved data into the title screen: gold, stars and the PLAY subtitle.</summary>
+        void RefreshTitle()
+        {
+            shownGold = Save.Data.gold;
+            goldText.text = titleGoldText.text = shownGold.ToString();
+            int stars = 0; foreach (var l in Save.Data.levels) stars += l.stars;
+            int maxStars = Levels.All.Length * 3;
+            starsText.text = $"{stars}<size=24><color=#9FB3D9> / {maxStars}</color></size>";
+            starsBar.anchorMax = new Vector2(Mathf.Max(0.08f, stars / (float)maxStars), 1);
+            int next = Mathf.Clamp(Save.Data.unlocked - 1, 0, Levels.All.Length - 1);
+            if (playSubtitle) playSubtitle.text = $"LEVEL {next + 1}  •  {Levels.All[next].title.ToUpper()}";
+        }
+
+        /// <summary>Entrance animation: the buttons slide in from the left.</summary>
+        void PlayEntrance()
+        {
+            for (int k = 0; k < entrance.Length; k++)
+            {
+                var rt = entrance[k];
+                if (!rt) continue;
+                Vector2 target = rt.anchoredPosition;
+                rt.anchoredPosition = target + Vector2.left * 640f;
+                Tween.Move(rt, target, 0.55f, Tween.OutBack, 0.15f + k * 0.08f);
+            }
+        }
+
+        static Button WithAction(Button b, string action)
+        {
+            b.gameObject.AddComponent<MenuAction>().action = action;
+            return b;
         }
 
         // ================================================================ WORLD
@@ -47,7 +115,6 @@ namespace GoldRush
             playerRoot.rotation = Quaternion.Euler(0, 180, 0);
             var a = GameAssets.I;
             playerAnim = CharacterFactory.BuildModel(a.hero, playerRoot);
-            Cosmetics.Apply(playerAnim, a.hero, Save.Data.color, Save.Data.hat, false);
 
             // the monster cast hanging around behind the hero
             Monster(a.slime, EnemyType.Patroller, new Vector3(-3.4f, 0, 3.2f), 160);
@@ -61,10 +128,9 @@ namespace GoldRush
             cam.nearClipPlane = 0.1f;
             cam.farClipPlane = 400f;
             camGo.AddComponent<AudioListener>();
-            EnvironmentSetup.Apply(cam, true, true); // the menu uses the spooky night mood
 
             // warm lantern light on the hero
-            var spot = new GameObject("Lantern").AddComponent<Light>();
+            var spot = lantern = new GameObject("Lantern").AddComponent<Light>();
             spot.type = LightType.Spot;
             spot.color = new Color(1f, 0.82f, 0.55f);
             spot.intensity = 20f;
@@ -73,8 +139,6 @@ namespace GoldRush
             spot.shadows = LightShadows.Soft;
             spot.transform.position = new Vector3(-1.5f, 5.5f, -3.5f);
             spot.transform.LookAt(new Vector3(0, 0.5f, 0));
-            DayNight.RegisterNightLight(spot);
-            foreach (var g in menuGlows) DayNight.RegisterNightLight(g);
             UpdateCamera(1f);
         }
 
@@ -89,7 +153,6 @@ namespace GoldRush
         }
 
         float nextWave = 3f;
-        readonly List<Light> menuGlows = new List<Light>();
 
         void Update()
         {
@@ -137,6 +200,7 @@ namespace GoldRush
         void BuildUI()
         {
             var canvas = UIKit.Canvas("MenuUI", 10);
+            canvas.transform.SetParent(transform, false);
             canvasRt = (RectTransform)canvas.transform;
 
             titleScreen = UIKit.Rect("Title", canvasRt); titleScreen.Fill();
@@ -155,14 +219,15 @@ namespace GoldRush
             shownGold = Save.Data.gold;
 
             var dn = DayNightButton.Create(canvasRt, new Vector2(1, 1), new Vector2(-362, -34), 100f, true);
-            var gear = UIKit.RoundIconButton(canvasRt, UIKit.Icon.Gear, ShowSettings, 100, true);
+            var gear = WithAction(UIKit.RoundIconButton(canvasRt, UIKit.Icon.Gear, null, 100, true), "settings");
             ((RectTransform)gear.transform).At(new Vector2(1, 1), new Vector2(-484, -34), new Vector2(100, 100));
             // top-right bar is used on the Levels / Shop screens; the title screen has its own top-left cluster
             topRight = new[] { goldPill.gameObject, dn.gameObject, gear.gameObject };
 
             BuildTitle();
-            BuildLevels();
+            BuildLevelsScreen();
             BuildShop();
+            BuildSettings();
         }
 
         void BuildTitle()
@@ -179,7 +244,7 @@ namespace GoldRush
 
             // ---- top-left icon cluster: settings · day/night · gold · stars
             const float chipH = 76f, top = -30f;
-            var gear = UIKit.RoundIconButton(t, UIKit.Icon.Gear, ShowSettings, chipH, true);
+            var gear = WithAction(UIKit.RoundIconButton(t, UIKit.Icon.Gear, null, chipH, true), "settings");
             ((RectTransform)gear.transform).At(new Vector2(0, 1), new Vector2(32, top), new Vector2(chipH, chipH));
             DayNightButton.Create(t, new Vector2(0, 1), new Vector2(32 + chipH + 14, top), chipH, true);
 
@@ -196,13 +261,14 @@ namespace GoldRush
             var chip = UIKit.Rect("Stars", t).At(new Vector2(0, 1), new Vector2(32 + (chipH + 14) * 2 + 214, top), new Vector2(200, chipH));
             UIKit.Glass(chip, Sprites.Pill, 128f / chipH);
             UIKit.IconGraphic(chip, UIKit.Icon.Star, 44, UIKit.Gold).At(new Vector2(0, 0.5f), new Vector2(18, 2), new Vector2(44, 44), new Vector2(0, 0.5f));
-            UIKit.Label(chip, $"{stars}<size=24><color=#9FB3D9> / {maxStars}</color></size>", 34, UIKit.Cream, TextAnchor.MiddleLeft)
-                .rectTransform.Fill(72, 16, 14, 0);
+            starsText = UIKit.Label(chip, $"{stars}<size=24><color=#9FB3D9> / {maxStars}</color></size>", 34, UIKit.Cream, TextAnchor.MiddleLeft);
+            starsText.rectTransform.Fill(72, 16, 14, 0);
             var barBg = UIKit.Img(chip, Sprites.Pill, new Color(1, 1, 1, 0.14f), "BarBg");
             barBg.rectTransform.At(new Vector2(0, 0), new Vector2(74, 14), new Vector2(104, 8), new Vector2(0, 0)); barBg.pixelsPerUnitMultiplier = 16f;
             var bar = UIKit.Img(barBg.transform, Sprites.Pill, UIKit.Gold, "Bar");
             bar.rectTransform.anchorMin = Vector2.zero; bar.rectTransform.anchorMax = new Vector2(Mathf.Max(0.08f, stars / (float)maxStars), 1);
             bar.rectTransform.offsetMin = bar.rectTransform.offsetMax = Vector2.zero; bar.pixelsPerUnitMultiplier = 16f;
+            starsBar = bar.rectTransform;
 
             // ---- title: top-centre, one line "GOLD RUSH" + tagline
             var glow = UIKit.Img(t, Sprites.Soft, UIKit.WithAlpha(UIKit.Gold, 0.26f), "LogoGlow");
@@ -225,53 +291,63 @@ namespace GoldRush
             var playGlow = UIKit.Img(t, Sprites.Soft, UIKit.WithAlpha(UIKit.Cyan, 0.35f), "PlayGlow");
             playGlow.rectTransform.At(new Vector2(0, 0), new Vector2(colX + colW * 0.5f, playY + playH * 0.5f), new Vector2(colW + 260, playH + 160), new Vector2(0.5f, 0.5f));
             playGlow.gameObject.AddComponent<Bob>().Setup(0f, 2.4f, 0f, 0.06f);
-            var play = UIKit.GlassButton(t, UIKit.Icon.Play, "PLAY", $"LEVEL {next + 1}  •  {Levels.All[next].title.ToUpper()}",
-                UIKit.Cyan, new Vector2(colW, playH), () => StartLevel(next), 64, 0.62f);
+            string playSub = $"LEVEL {next + 1}  •  {Levels.All[next].title.ToUpper()}";
+            var play = WithAction(UIKit.GlassButton(t, UIKit.Icon.Play, "PLAY", playSub,
+                UIKit.Cyan, new Vector2(colW, playH), null, 64, 0.62f), "play");
+            foreach (var txt in play.GetComponentsInChildren<Text>(true)) if (txt.text == playSub) playSubtitle = txt;
             ((RectTransform)play.transform).At(new Vector2(0, 0), new Vector2(colX, playY), new Vector2(colW, playH), new Vector2(0, 0));
-            var levels = UIKit.GlassButton(t, UIKit.Icon.Levels, "LEVELS", null, UIKit.Blue, new Vector2(colW, btnH), () => Show(Screen.Levels), 38);
+            var levels = WithAction(UIKit.GlassButton(t, UIKit.Icon.Levels, "LEVELS", null, UIKit.Blue, new Vector2(colW, btnH), null, 38), "levels");
             ((RectTransform)levels.transform).At(new Vector2(0, 0), new Vector2(colX, levelsY), new Vector2(colW, btnH), new Vector2(0, 0));
-            var shop = UIKit.GlassButton(t, UIKit.Icon.Bag, "SHOP", null, UIKit.Orange, new Vector2(colW, btnH), () => Show(Screen.Shop), 38);
+            var shop = WithAction(UIKit.GlassButton(t, UIKit.Icon.Bag, "SHOP", null, UIKit.Orange, new Vector2(colW, btnH), null, 38), "shop");
             ((RectTransform)shop.transform).At(new Vector2(0, 0), new Vector2(colX, shopY), new Vector2(colW, btnH), new Vector2(0, 0));
 
             UIKit.Label(t, "v1.0", 22, UIKit.WithAlpha(UIKit.Cream, 0.45f), TextAnchor.LowerRight, false)
                 .rectTransform.At(new Vector2(1, 0), new Vector2(-32, 28), new Vector2(200, 30), new Vector2(1, 0));
 
-            // entrance animation: buttons slide in from the left, title drops in
-            var items = new[] { (RectTransform)play.transform, (RectTransform)levels.transform, (RectTransform)shop.transform };
-            for (int k = 0; k < items.Length; k++)
-            {
-                var rt = items[k];
-                Vector2 target = rt.anchoredPosition;
-                rt.anchoredPosition = target + Vector2.left * 640f;
-                Tween.Move(rt, target, 0.55f, Tween.OutBack, 0.15f + k * 0.08f);
-            }
+            // these slide in from the left when the menu opens (see PlayEntrance)
+            entrance = new[] { (RectTransform)play.transform, (RectTransform)levels.transform, (RectTransform)shop.transform };
         }
 
-        RectTransform settingsRoot;
-        GameObject[] topRight;
-        Text titleGoldText;
+        // ---------------------------------------------------------------- settings dialog
 
-        void ShowSettings()
+        void BuildSettings()
         {
-            if (settingsRoot) return;
             settingsRoot = UIKit.Rect("Settings", canvasRt); settingsRoot.Fill();
-            var cg = settingsRoot.gameObject.AddComponent<CanvasGroup>();
-            cg.alpha = 0; Tween.Fade(cg, 1f, 0.2f);
+            settingsRoot.gameObject.AddComponent<CanvasGroup>();
             UIKit.Dim(settingsRoot, 0.55f);
             var face = UIKit.GlassPanel(settingsRoot, new Vector2(600, 440), UIKit.PanelBg, "Panel");
             var prt = (RectTransform)face.transform.parent;
             prt.At(new Vector2(0.5f, 0.5f), Vector2.zero, new Vector2(600, 440), new Vector2(0.5f, 0.5f));
-            Tween.Scale(prt, Vector3.one * 0.85f, Vector3.one, 0.35f, Tween.OutBack);
+            settingsPanel = prt;
             var rib = UIKit.GlassRibbon(face.transform, "SETTINGS", UIKit.Cyan, new Vector2(380, 96), 48);
             ((RectTransform)rib.transform.parent.parent).At(new Vector2(0.5f, 1), new Vector2(0, 36), new Vector2(380, 96), new Vector2(0.5f, 0.5f));
-            GameUI.AddToggle(face.transform, new Vector2(0, 285), "MUSIC", () => Save.Data.music, v => { Save.Data.music = v; Save.Persist(); AudioFX.RefreshMute(); });
-            GameUI.AddToggle(face.transform, new Vector2(0, 180), "SOUND", () => Save.Data.sfx, v => { Save.Data.sfx = v; Save.Persist(); AudioFX.RefreshMute(); });
-            var close = UIKit.GlassTextButton(face.transform, "CLOSE", UIKit.Gray, new Vector2(240, 86), () =>
-            {
-                var r = settingsRoot; settingsRoot = null;
-                Tween.Fade(r.GetComponent<CanvasGroup>(), 0f, 0.15f, 0f, () => { if (r) Destroy(r.gameObject); });
-            }, 38);
+            musicToggle = GameUI.ToggleButton(face.transform, new Vector2(0, 285), "MUSIC");
+            soundToggle = GameUI.ToggleButton(face.transform, new Vector2(0, 180), "SOUND");
+            var close = WithAction(UIKit.GlassTextButton(face.transform, "CLOSE", UIKit.Gray, new Vector2(240, 86), null, 38), "closeSettings");
             ((RectTransform)close.transform).At(new Vector2(0.5f, 0), new Vector2(0, 66), new Vector2(240, 86), new Vector2(0.5f, 0.5f));
+            settingsRoot.gameObject.SetActive(false);
+        }
+
+        void BindSettings()
+        {
+            GameUI.BindToggle(musicToggle, "MUSIC", () => Save.Data.music, v => { Save.Data.music = v; Save.Persist(); AudioFX.RefreshMute(); });
+            GameUI.BindToggle(soundToggle, "SOUND", () => Save.Data.sfx, v => { Save.Data.sfx = v; Save.Persist(); AudioFX.RefreshMute(); });
+        }
+
+        void ShowSettings()
+        {
+            if (settingsRoot.gameObject.activeSelf) return;
+            settingsRoot.gameObject.SetActive(true);
+            settingsRoot.SetAsLastSibling();
+            var cg = settingsRoot.GetComponent<CanvasGroup>();
+            cg.alpha = 0; Tween.Fade(cg, 1f, 0.2f);
+            if (settingsPanel) Tween.Scale(settingsPanel, Vector3.one * 0.85f, Vector3.one, 0.35f, Tween.OutBack);
+        }
+
+        void HideSettings()
+        {
+            var cg = settingsRoot.GetComponent<CanvasGroup>();
+            Tween.Fade(cg, 0f, 0.15f, 0f, () => { if (settingsRoot) settingsRoot.gameObject.SetActive(false); });
         }
 
         static void AddHeavyOutline(Text t)
@@ -299,14 +375,20 @@ namespace GoldRush
 
         const float CardW = 300f, CardH = 440f, CardGap = 28f;
 
-        void BuildLevels()
+        /// <summary>The fixed part of the Level Select screen (saved in the scene). The cards are added by BuildLevels.</summary>
+        void BuildLevelsScreen()
         {
-            foreach (Transform c in levelScreen) Destroy(c.gameObject);
             var dim = UIKit.Img(levelScreen, null, UIKit.WithAlpha(UIKit.Navy, 0.55f), "Dim"); dim.rectTransform.Fill();
             ScreenHeader(levelScreen, "SELECT LEVEL", "Night levels are darker — watch for glowing monsters!");
             BackButton(levelScreen);
+            levelCards = UIKit.Rect("Cards", levelScreen).At(new Vector2(0.5f, 0.5f), new Vector2(0, -50), new Vector2(5 * CardW + 4 * CardGap, CardH), new Vector2(0.5f, 0.5f));
+        }
 
-            var row = UIKit.Rect("Cards", levelScreen).At(new Vector2(0.5f, 0.5f), new Vector2(0, -50), new Vector2(5 * CardW + 4 * CardGap, CardH), new Vector2(0.5f, 0.5f));
+        /// <summary>One card per level (+ the daily challenge), made from the level data and the save.</summary>
+        void BuildLevels()
+        {
+            foreach (Transform c in levelCards) Destroy(c.gameObject);
+            var row = levelCards;
             var d = Save.Data;
             float x0 = -2f * (CardW + CardGap);
             for (int i = 0; i < Levels.All.Length; i++) LevelCard(row, i, new Vector2(x0 + i * (CardW + CardGap), 0), d);
@@ -396,11 +478,9 @@ namespace GoldRush
 
         // ---------------------------------------------------------------- shop
 
-        RectTransform shopTabs;
-
+        /// <summary>The fixed part of the Shop screen (saved in the scene). Tabs and items are added by RefreshShop.</summary>
         void BuildShop()
         {
-            foreach (Transform c in shopScreen) Destroy(c.gameObject);
             BackButton(shopScreen);
             var panel = UIKit.Rect("ShopPanel", shopScreen).At(new Vector2(1, 0.5f), new Vector2(-150, -40), new Vector2(900, 880), new Vector2(1, 0.5f));
             var face = UIKit.Glass(panel, Sprites.RoundRect, 0.8f, 0.9f);
@@ -420,7 +500,6 @@ namespace GoldRush
 
             shopTabs = UIKit.Rect("Tabs", ft).At(new Vector2(0.5f, 1), new Vector2(0, -150), new Vector2(560, 76), new Vector2(0.5f, 1));
             shopGrid = UIKit.Rect("Grid", ft).At(new Vector2(0.5f, 1), new Vector2(0, -250), new Vector2(820, 610), new Vector2(0.5f, 1));
-            RefreshShop();
         }
 
         void RefreshShop()
@@ -504,7 +583,7 @@ namespace GoldRush
 
         void BackButton(Transform parent)
         {
-            var b = UIKit.ChipButton(parent, UIKit.Icon.Back, "BACK", UIKit.Gray, new Vector2(200, 80), () => Show(Screen.Title), 30);
+            var b = WithAction(UIKit.ChipButton(parent, UIKit.Icon.Back, "BACK", UIKit.Gray, new Vector2(200, 80), null, 30), "back");
             ((RectTransform)b.transform).At(new Vector2(0, 1), new Vector2(32, -34), new Vector2(200, 80));
         }
 
@@ -540,6 +619,7 @@ namespace GoldRush
                 case "shop": Show(Screen.Shop); break;
                 case "back": Show(Screen.Title); break;
                 case "settings": ShowSettings(); break;
+                case "closeSettings": HideSettings(); break;
                 default: Debug.LogWarning("[GoldRush] Unknown menu action: " + action); break;
             }
         }
@@ -554,6 +634,8 @@ namespace GoldRush
         public void DebugShowLevels() => Show(Screen.Levels);
         public void DebugShowShop() => Show(Screen.Shop);
         public void DebugShowTitle() => Show(Screen.Title);
+        public void DebugShowSettings() => ShowSettings();
+        public void DebugHideSettings() => HideSettings();
 
         static void Shake(RectTransform rt)
         {
