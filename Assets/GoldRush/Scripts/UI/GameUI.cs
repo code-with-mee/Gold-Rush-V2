@@ -938,18 +938,17 @@ namespace GoldRush
             if (g == null) g = hud.gameObject.AddComponent<CanvasGroup>();
             g.blocksRaycasts = visible;
             Tween.Fade(g, visible ? 1f : 0f, 0.2f);
-            Markers.gameObject.SetActive(visible);
+            if (markers) markers.gameObject.SetActive(visible);
         }
 
         void HideHud()
         {
-            Markers.gameObject.SetActive(false);
+            if (markers) markers.gameObject.SetActive(false);
             var g = hud.GetComponent<CanvasGroup>();
             if (g == null) g = hud.gameObject.AddComponent<CanvasGroup>();
             g.blocksRaycasts = false;
             Tween.Fade(g, 0f, 0.3f);
-            Joystick.Release();
-            Joystick.gameObject.SetActive(false);
+            if (joystick) { joystick.Release(); joystick.gameObject.SetActive(false); } // touch controls come in phase 10
         }
     }
 }

@@ -52,6 +52,54 @@ namespace GoldRush.EditorTools
             Debug.Log($"[GoldRush] Starter package: {paths.Count} files → {outPath}");
         }
 
+        /// <summary>Scenes + everything they use, but no scripts (students have their own), plus the link fixer.</summary>
+        static void ExportAssetsWithoutScripts(string[] roots, string name)
+        {
+            var paths = new HashSet<string>();
+            foreach (var dep in AssetDatabase.GetDependencies(roots, true))
+                if (!dep.EndsWith(".cs") && dep.StartsWith("Assets/")) paths.Add(dep);
+            paths.Add("Assets/GoldRush/Editor/FixScriptLinks.cs");
+            paths.Add("Assets/GoldRush/Editor/ScriptLinks.json");
+            Directory.CreateDirectory(PackageDir);
+            string outPath = Path.Combine(PackageDir, name + ".unitypackage");
+            AssetDatabase.ExportPackage(paths.OrderBy(p => p).ToArray(), outPath, ExportPackageOptions.Default);
+            File.WriteAllLines(Path.Combine(PackageDir, name + ".txt"), paths.OrderBy(p => p));
+            Debug.Log($"[GoldRush] {name}: {paths.Count} files");
+        }
+
+        [MenuItem("Gold Rush/Course/Export Levels 2-4 Package", priority = 91)]
+        public static void ExportLevels2to4()
+        {
+            ExportAssetsWithoutScripts(new[] { "Assets/GoldRush/Scenes/Level2.unity", "Assets/GoldRush/Scenes/Level3.unity",
+                "Assets/GoldRush/Scenes/Level4.unity", "Assets/GoldRush/Scenes/Game.unity" }, "GoldRush_Levels2to4");
+        }
+
+        /// <summary>Saves the three dialogs of Level1's GameUI as prefabs and exports them (phase 9 shortcut).</summary>
+        [MenuItem("Gold Rush/Course/Export Game UI Dialogs Package", priority = 92)]
+        public static void ExportDialogs()
+        {
+            const string dir = "Assets/GoldRush/Prefabs/UI/";
+            Directory.CreateDirectory(dir);
+            var scene = UnityEditor.SceneManagement.EditorSceneManager.OpenScene("Assets/GoldRush/Scenes/Level1.unity", UnityEditor.SceneManagement.OpenSceneMode.Single);
+            var ui = scene.GetRootGameObjects().Select(g => g.GetComponent<GameUI>()).FirstOrDefault(g => g);
+            var made = new List<string>();
+            if (ui)
+            {
+                var modal = ui.transform.Find("Modal");
+                foreach (var (child, prefab) in new[] { ("Pause", "Dialog_Pause"), ("Win", "Dialog_Win"), ("Lose", "Dialog_Lose") })
+                {
+                    var t = modal ? modal.Find(child) : null;
+                    if (!t) { Debug.LogWarning("[GoldRush] dialog not found: " + child); continue; }
+                    string path = dir + prefab + ".prefab";
+                    PrefabUtility.SaveAsPrefabAsset(t.gameObject, path); // a copy: the scene keeps its own dialog
+                    made.Add(path);
+                }
+            }
+            AssetDatabase.SaveAssets();
+            ExportAssetsWithoutScripts(made.ToArray(), "GoldRush_GameUIDialogs");
+            UnityEditor.SceneManagement.EditorSceneManager.OpenScene(GoldRushSetup.MenuScene, UnityEditor.SceneManagement.OpenSceneMode.Single);
+        }
+
         /// <summary>Writes the import settings our AssetPostprocessors apply into the .meta files.</summary>
         static void BakeImportSettings()
         {

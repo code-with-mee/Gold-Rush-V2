@@ -452,7 +452,7 @@ namespace GoldRush
 <ol>
   <li>Build the table. Drag <code>Stat_GOLD</code> into <code>Prefabs/UI</code> (<b>Original Prefab</b>). Rename the prefab file to <code>StatCard</code>.</li>
   <li>Add the coin to this card: drag the <b>CoinIcon</b> prefab onto <code>Stat_GOLD</code>. Anchor top left, pivot <b>0, 1</b>. Pos <b>18, -16</b>. Scale <b>0.74</b>.</li>
-  <li>Drag the <b>StatCard</b> prefab onto <code>Pause/Panel/Glass</code> twice. Change them like this:</li>
+  <li>Drag the <b>StatCard</b> prefab onto <code>Pause/Panel/Glass</code> twice. Rename the two copies <code>Stat_TIME</code> and <code>Stat_LIVES</code> and change them like this:</li>
 </ol>
 <div class="table-wrap"><table>
   <tr><th>Card</th><th>Pos</th><th>Caption</th><th>Value (colour)</th><th>Icon child</th></tr>
@@ -565,7 +565,7 @@ namespace GoldRush
 <h2 id="step-17"><span class="step">17</span>The LEVEL COMPLETE dialog</h2>
 <p>LEVEL COMPLETE is bigger (860 × 740). It shows up to three stars, the three star rules, and three cards. Start from PAUSE again, because it has the right three buttons.</p>
 <ol>
-  <li>Tick <code>Pause</code>, press <b>Ctrl+D</b>, rename the copy <code>Win</code>. Untick <code>Pause</code>. Drag <code>Win</code> above <code>Lose</code>.</li>
+  <li>Tick <code>Pause</code>, press <b>Ctrl+D</b>, rename the copy <code>Win</code>. Untick <code>Pause</code>. (Modal now has Intro, Countdown, Pause, Win, Lose.)</li>
   <li>Change these values (paths start at <code>Win/Panel</code>):</li>
 </ol>
 <div class="table-wrap"><table>

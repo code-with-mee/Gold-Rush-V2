@@ -1,0 +1,144 @@
+{
+ "links": [
+  {
+   "guid": "d734cb3ec0b9849f9829d43ea57434ea",
+   "type": "GoldRush.AudioFX"
+  },
+  {
+   "guid": "b85886634645f4ed3ae03837593da621",
+   "type": "GoldRush.Bob"
+  },
+  {
+   "guid": "8632cf34f564740ee929d3e2bce66268",
+   "type": "GoldRush.ButtonFX"
+  },
+  {
+   "guid": "a1106b00230da4a4592814fbb5c8e1c3",
+   "type": "GoldRush.Coin"
+  },
+  {
+   "guid": "3165fc94e2dad4530b0feed1e8062ad6",
+   "type": "GoldRush.CoinFlip"
+  },
+  {
+   "guid": "29af7b568fc614c3493368c76878d8ab",
+   "type": "GoldRush.CoinSpot"
+  },
+  {
+   "guid": "05b207faab8c94e01a698ed1aba9acea",
+   "type": "GoldRush.DayNight"
+  },
+  {
+   "guid": "a523d1a40be1f49308d1bf497487aa14",
+   "type": "GoldRush.DayNightButton"
+  },
+  {
+   "guid": "9beefca0cc2204b74a8462076504a20c",
+   "type": "GoldRush.DayNightPalette"
+  },
+  {
+   "guid": "9ddb4a112ec6b4a0e9a15a0da0bd65aa",
+   "type": "GoldRush.DayNightTint"
+  },
+  {
+   "guid": "baba91d6f28704bc8b85d8586e930dc7",
+   "type": "GoldRush.EnemyAI"
+  },
+  {
+   "guid": "f284b891c51b94c3a818dd8bebbad219",
+   "type": "GoldRush.ExitGate"
+  },
+  {
+   "guid": "3a24ce2fa0e4047e88d1e3c65e3bcec9",
+   "type": "GoldRush.Fader"
+  },
+  {
+   "guid": "0c006a2a98f8241dc9492555e6c4de14",
+   "type": "GoldRush.GameAction"
+  },
+  {
+   "guid": "63cfaa8a65f0f45c284de5119029e0c5",
+   "type": "GoldRush.GameAssets"
+  },
+  {
+   "guid": "c28c39d4cb48c4a86b7965fe16e556f2",
+   "type": "GoldRush.GameManager"
+  },
+  {
+   "guid": "0e65b97b12e56411caec5506e6f684fc",
+   "type": "GoldRush.GameUI"
+  },
+  {
+   "guid": "1cf8970358dd546b8ae0980cbdfb06c3",
+   "type": "GoldRush.GoldRushMenu"
+  },
+  {
+   "guid": "aae2cac872bf54daab381e3ede0f73d0",
+   "type": "GoldRush.LevelScene"
+  },
+  {
+   "guid": "2ce9a81d1157f4c6b9e11879bb82ba8c",
+   "type": "GoldRush.LogoTitle"
+  },
+  {
+   "guid": "2893433804f674809aeddd9067eb9ec1",
+   "type": "GoldRush.MenuAction"
+  },
+  {
+   "guid": "b68d5d9ab59d642f6868300e4dbec815",
+   "type": "GoldRush.MonsterSpawn"
+  },
+  {
+   "guid": "f8ea4399349ac4e089eec2901ec02116",
+   "type": "GoldRush.NightLight"
+  },
+  {
+   "guid": "25b7c574a7172446b88a1c7c253f7a45",
+   "type": "GoldRush.OriginalMaterials"
+  },
+  {
+   "guid": "fa8999db746d448de962dfb470ddfe9d",
+   "type": "GoldRush.PlayerMotor"
+  },
+  {
+   "guid": "14d0e4561048f42ba91aa81e5f6dfc97",
+   "type": "GoldRush.PlayerSpawn"
+  },
+  {
+   "guid": "c1a07b06cd11c4d3bb1c65f5aead1046",
+   "type": "GoldRush.PowerUp"
+  },
+  {
+   "guid": "811635d238e2540d785e15a1261d0225",
+   "type": "GoldRush.PowerUpSpot"
+  },
+  {
+   "guid": "9d05af1652de540e4ad504420067c629",
+   "type": "GoldRush.SmokeTester"
+  },
+  {
+   "guid": "2e23e766fc41e404b8d397e1d6db98b8",
+   "type": "GoldRush.ThirdPersonCamera"
+  },
+  {
+   "guid": "92468b4c6cfe748cc84f2f15afc3a5f8",
+   "type": "GoldRush.TouchLookArea"
+  },
+  {
+   "guid": "6640c1a034e4d4f65bbf06232ee74e7b",
+   "type": "GoldRush.TrailerRecorder"
+  },
+  {
+   "guid": "65212c41d961c420b90a40344f951524",
+   "type": "GoldRush.TweenRunner"
+  },
+  {
+   "guid": "6182e8e4a629b4052a3f6ebde1af7833",
+   "type": "GoldRush.VirtualJoystick"
+  },
+  {
+   "guid": "3fc35f6487f6244c397843d4b54b5e76",
+   "type": "GoldRush.WorldMarkers"
+  }
+ ]
+}
