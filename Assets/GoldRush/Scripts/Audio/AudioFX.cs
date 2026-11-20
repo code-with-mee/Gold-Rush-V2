@@ -59,7 +59,13 @@ namespace GoldRush
         void Init()
         {
             if (clips != null) return;
-            clips = Synth.BuildAll();
+            // the sound files (Art/Audio/*.wav) are listed in the GoldRushAssets asset; "coin.wav" -> id "coin"
+            clips = new Dictionary<string, AudioClip>();
+            var assets = GameAssets.I;
+            if (assets && assets.sounds != null)
+                foreach (var clip in assets.sounds)
+                    if (clip) clips[clip.name] = clip;
+            if (clips.Count == 0) clips = Synth.BuildAll(); // no sound files yet: make them from code
 
             pool = new AudioSource[PoolSize];
             for (int i = 0; i < PoolSize; i++)

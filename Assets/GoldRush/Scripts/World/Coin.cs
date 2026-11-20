@@ -10,6 +10,13 @@ namespace GoldRush
         [SerializeField] Transform visual;
         [SerializeField] float phase;
 
+        void Start()
+        {
+            // a coin placed by hand gets its own random start, so the coins don't all bob together
+            if (phase == 0f) phase = Random.Range(0.01f, Mathf.PI * 2f);
+            if (!visual && transform.childCount > 0) visual = transform.GetChild(0);
+        }
+
         public static Coin Create(Transform parent, Vector3 groundPos)
         {
             var go = new GameObject("Coin");

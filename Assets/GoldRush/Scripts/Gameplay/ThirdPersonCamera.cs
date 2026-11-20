@@ -35,14 +35,26 @@ namespace GoldRush
             cam.farClipPlane = 400f;
             go.AddComponent<AudioListener>();
             var c = go.AddComponent<ThirdPersonCamera>();
-            c.target = target;
-            c.yaw = yaw;
-            c.focus = target.position + Vector3.up * c.height;
-            c.curDist = c.targetDist = c.distance;
-            c.curYaw = yaw;
-            c.curPitch = c.pitch;
-            c.Snap();
+            c.Init(target, yaw);
             return c;
+        }
+
+        /// <summary>Starts following a target from behind (also used for a camera placed in the scene).</summary>
+        public void Init(Transform newTarget, float startYaw)
+        {
+            target = newTarget;
+            yaw = startYaw;
+            focus = target.position + Vector3.up * height;
+            curDist = targetDist = distance;
+            curYaw = yaw;
+            curPitch = pitch;
+            Snap();
+        }
+
+        void Start()
+        {
+            // a camera placed in the scene with a Target set, that nobody initialised yet
+            if (target && curDist <= 0f) Init(target, target.eulerAngles.y);
         }
 
         public void PlayIntro(float duration)

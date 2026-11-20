@@ -695,7 +695,7 @@ namespace GoldRush
                 enemies.Add(EnemyAI.Create(layout.dynamicRoot, layout.enemyPoints[i], type, home, Def.enemySpeed, layout.half, UI.Markers));
             }
             // monster prefabs you placed in the scene by hand
-            foreach (var e in FindObjectsByType&lt;EnemyAI&gt;(FindObjectsSortMode.None))
+            foreach (var e in FindObjectsByType&lt;EnemyAI&gt;())
             {
                 if (enemies.Contains(e)) continue;
                 e.SetupPlaced(Def.enemySpeed, layout.half, UI.Markers);

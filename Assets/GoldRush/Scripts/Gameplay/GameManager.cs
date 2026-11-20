@@ -105,8 +105,18 @@ namespace GoldRush
             // hand-made level in this scene? otherwise generate one from the level's seed
             var handMade = FindAnyObjectByType<LevelScene>();
             layout = handMade ? LevelFromScene(handMade) : LevelBuilder.Build(Def);
-            Player = PlayerMotor.Create(layout.spawn, layout.spawnYaw);
-            Cam = ThirdPersonCamera.Create(Player.transform, layout.spawnYaw);
+            // a Player / camera placed in the scene is used; otherwise they are made in code
+            Player = FindAnyObjectByType<PlayerMotor>();
+            if (Player) { Player.Teleport(layout.spawn, layout.spawnYaw); Player.SetupPlaced(); }
+            else Player = PlayerMotor.Create(layout.spawn, layout.spawnYaw);
+            Cam = FindAnyObjectByType<ThirdPersonCamera>();
+            if (Cam) Cam.Init(Player.transform, layout.spawnYaw);
+            else
+            {
+                foreach (var c in FindObjectsByType<Camera>())
+                    if (c.CompareTag("MainCamera")) Destroy(c.gameObject); // a plain overview camera from level design
+                Cam = ThirdPersonCamera.Create(Player.transform, layout.spawnYaw);
+            }
             EnvironmentSetup.Apply(Cam.GetComponent<Camera>(), false, Def.night);
             Player.AddLantern(); // only visible at night (DayNight fades it)
 
@@ -129,6 +139,13 @@ namespace GoldRush
                 Vector3 home = layout.enemyPoints[i];
                 if (type == EnemyType.Guard && guardIndex < layout.guardHomes.Count) home = layout.guardHomes[guardIndex++];
                 enemies.Add(EnemyAI.Create(layout.dynamicRoot, layout.enemyPoints[i], type, home, Def.enemySpeed, layout.half, UI.Markers));
+            }
+            // monster prefabs placed in the scene by hand
+            foreach (var e in FindObjectsByType<EnemyAI>())
+            {
+                if (enemies.Contains(e)) continue;
+                e.SetupPlaced(Def.enemySpeed, layout.half, UI.Markers);
+                enemies.Add(e);
             }
             Gate = layout.gate;
             if (Gate) UI.AddGateLabel(Gate);
@@ -158,9 +175,15 @@ namespace GoldRush
             var spawn = scene.GetComponentInChildren<PlayerSpawn>();
             l.spawn = spawn ? spawn.transform.position : Vector3.zero;
             l.spawnYaw = spawn ? spawn.transform.eulerAngles.y : 0f;
-            foreach (var c in scene.GetComponentsInChildren<CoinSpot>()) l.coinPoints.Add(c.transform.position);
+            foreach (var c in scene.GetComponentsInChildren<CoinSpot>())
+            {
+                var placed = c.GetComponentInChildren<Coin>();
+                if (placed) coins.Add(placed);               // a Coin prefab placed by hand
+                else l.coinPoints.Add(c.transform.position); // an empty marker: Build() makes a coin here
+            }
             foreach (var m in scene.GetComponentsInChildren<MonsterSpawn>())
             {
+                if (m.GetComponent<EnemyAI>()) continue;     // a monster prefab placed by hand: set up in Build()
                 Vector3 p = m.transform.position;
                 if (UnityEngine.AI.NavMesh.SamplePosition(p, out var hit, 3f, UnityEngine.AI.NavMesh.AllAreas)) p = hit.position;
                 l.enemyPoints.Add(p);
@@ -172,7 +195,7 @@ namespace GoldRush
                 l.powerUpPoints.Add(pu.transform.position);
                 powerTypes.Add(pu.type);
             }
-            if (l.coinPoints.Count == 0) Debug.LogWarning("[GoldRush] This level has no CoinSpot objects — add some from Prefabs/Level.");
+            if (l.coinPoints.Count == 0 && coins.Count == 0) Debug.LogWarning("[GoldRush] This level has no CoinSpot objects — add some from Prefabs/Level.");
             return l;
         }
 

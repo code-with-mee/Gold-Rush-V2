@@ -60,7 +60,38 @@ namespace GoldRush
             return p;
         }
 
-        void Awake() { cc = GetComponent<CharacterController>(); }
+        void Awake()
+        {
+            cc = GetComponent<CharacterController>();
+            // a Player placed in the scene by hand: find its model (the child with the Animator)
+            if (!anim) anim = GetComponentInChildren<Animator>();
+            if (anim && !model) model = anim.transform;
+        }
+
+        /// <summary>Finishes a Player that was placed in the scene (Create() does all of this for a code-made one).</summary>
+        public void SetupPlaced()
+        {
+            gameObject.layer = 2; // Ignore Raycast: camera/enemy line-of-sight rays pass through the player
+            foreach (var t in GetComponentsInChildren<Transform>(true)) t.gameObject.layer = 2;
+            if (anim)
+            {
+                anim.applyRootMotion = false;
+                anim.cullingMode = AnimatorCullingMode.AlwaysAnimate;
+                Cosmetics.Apply(anim, GameAssets.I.hero, Save.Data.color, Save.Data.hat, true);
+            }
+            renderers = GetComponentsInChildren<Renderer>();
+            if (!dust) dust = FX.Trail(transform, new Vector3(0, 0.1f, -0.2f), new Color(0.9f, 0.78f, 0.6f, 0.55f), 0.7f, 0.7f);
+            if (!boostTrail) boostTrail = FX.Trail(transform, new Vector3(0, 0.9f, -0.2f), new Color(0.4f, 0.95f, 1f, 0.8f), 0.35f, 0.5f, true);
+        }
+
+        /// <summary>Moves the player (a CharacterController ignores teleports while it is enabled).</summary>
+        public void Teleport(Vector3 pos, float yaw)
+        {
+            if (!cc) cc = GetComponent<CharacterController>();
+            if (cc) cc.enabled = false;
+            transform.SetPositionAndRotation(pos, Quaternion.Euler(0, yaw, 0));
+            if (cc) cc.enabled = true;
+        }
 
         Vector2 ReadInput()
         {

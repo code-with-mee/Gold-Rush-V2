@@ -74,6 +74,44 @@ namespace GoldRush
             return e;
         }
 
+        /// <summary>A monster prefab placed in the scene by hand (it has a NavMeshAgent, a model child and a
+        /// MonsterSpawn for its type). GameManager calls this when the level starts.</summary>
+        public void SetupPlaced(float speedMul, float arenaHalf, WorldMarkers markers)
+        {
+            if (agent) return; // already set up by Create()
+            agent = GetComponent<NavMeshAgent>();
+            if (!agent) agent = gameObject.AddComponent<NavMeshAgent>();
+            var spawn = GetComponent<MonsterSpawn>();
+            Type = spawn ? spawn.type : Type;
+            home = spawn ? spawn.HomePosition : transform.position;
+            this.speedMul = speedMul;
+            half = arenaHalf;
+            var def = GameAssets.I.Enemy(Type);
+            height = def.height;
+            agent.height = def.height;
+            agent.radius = Type == EnemyType.Guard ? 0.75f : 0.45f;
+            agent.acceleration = 22f;
+            agent.angularSpeed = 720f;
+            agent.stoppingDistance = 0.2f;
+            agent.updateRotation = false; // we turn the monster ourselves
+            agent.obstacleAvoidanceType = ObstacleAvoidanceType.LowQualityObstacleAvoidance;
+            agent.avoidancePriority = Random.Range(30, 70);
+            catchRadius = Type == EnemyType.Guard ? 1.6f : 1.05f;
+            if (NavMesh.SamplePosition(transform.position, out var hit, 3f, NavMesh.AllAreas)) agent.Warp(hit.position);
+
+            anim = GetComponentInChildren<Animator>();
+            if (!anim && def.model) anim = CharacterFactory.BuildModel(def, transform);
+            if (anim)
+            {
+                anim.applyRootMotion = false;
+                anim.cullingMode = AnimatorCullingMode.AlwaysAnimate;
+                if (!anim.runtimeAnimatorController) anim.runtimeAnimatorController = def.controller;
+            }
+            Configure();
+            Decorate();
+            if (markers) BuildBubble(markers);
+        }
+
         void Configure()
         {
             switch (Type)

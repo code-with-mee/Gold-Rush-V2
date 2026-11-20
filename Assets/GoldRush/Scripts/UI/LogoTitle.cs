@@ -22,12 +22,30 @@ namespace GoldRush
 
         static string Word(string text, string hex) => $"<color=#{hex}>{text}</color>";
 
+        [Tooltip("Letter size, used when the logo builds itself (an empty Logo object in the scene).")]
+        [SerializeField] int fontSize = 176;
+
+        void Awake()
+        {
+            // added by hand to an empty RectTransform: build the text layers now
+            if (layers == null || layers.Length == 0) Fill(this, (RectTransform)transform, fontSize, 12);
+        }
+
         public static LogoTitle Build(RectTransform parent, int fontSize, int depth = 12)
         {
-            var logo = parent.gameObject.AddComponent<LogoTitle>();
+            var logo = parent.GetComponent<LogoTitle>();
+            if (!logo) logo = parent.gameObject.AddComponent<LogoTitle>();
+            logo.fontSize = fontSize;
+            if (logo.layers == null || logo.layers.Length == 0) Fill(logo, parent, fontSize, depth);
+            return logo;
+        }
+
+        static void Fill(LogoTitle logo, RectTransform parent, int fontSize, int depth)
+        {
             logo.root = parent;
             // invisible hit area so the mouse can "touch" the logo
-            var hit = parent.gameObject.AddComponent<Image>();
+            var hit = parent.GetComponent<Image>();
+            if (!hit) hit = parent.gameObject.AddComponent<Image>();
             hit.color = new Color(0, 0, 0, 0);
 
             // soft drop shadow
@@ -48,7 +66,6 @@ namespace GoldRush
             var o = logo.face.gameObject.AddComponent<Outline>();
             o.effectColor = new Color(0.03f, 0.05f, 0.15f, 0.55f);
             o.effectDistance = new Vector2(2, -2);
-            return logo;
         }
 
         static RectTransform Layer(Transform parent, string text, int size, Color c, string name)

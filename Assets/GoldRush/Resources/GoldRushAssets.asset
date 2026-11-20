@@ -49,3 +49,20 @@ MonoBehaviour:
   litTransparent: {fileID: 2100000, guid: 8b4b54ab820674ed38151a6905380081, type: 2}
   particle: {fileID: 2100000, guid: 04feac7b4368c4decae818c0ce1c3aa7, type: 2}
   skybox: {fileID: 2100000, guid: 979803816aa8d4e5b82a67153b97f260, type: 2}
+  sounds:
+  - {fileID: 8300000, guid: 513c6a7966bd9452c9de84458c238030, type: 3}
+  - {fileID: 8300000, guid: 72a61a2f272a042dcb2295827b7f5185, type: 3}
+  - {fileID: 8300000, guid: 7421a9d34c5a34248a9571eb29fc19b5, type: 3}
+  - {fileID: 8300000, guid: c6de31fef81c74cb5ab68d19911afa97, type: 3}
+  - {fileID: 8300000, guid: d387ebdfbb2054da18e5dc59720e2133, type: 3}
+  - {fileID: 8300000, guid: 45981a629cede490f9cc52fa7be25f23, type: 3}
+  - {fileID: 8300000, guid: bc72498c266b44a1c859d66aa5399f84, type: 3}
+  - {fileID: 8300000, guid: 36ff4139324884f25ae40ec4f5e34874, type: 3}
+  - {fileID: 8300000, guid: 05b778bb066e54c83817ab3768248597, type: 3}
+  - {fileID: 8300000, guid: ce521aa2801ab46caa49a5eda1da5857, type: 3}
+  - {fileID: 8300000, guid: 5c3b509c8fc794f0d8816b52913c637b, type: 3}
+  - {fileID: 8300000, guid: 283f590a3b5fe4adb9d9de7e40c52a91, type: 3}
+  - {fileID: 8300000, guid: 2e6550772c5714b69a020fa5b57c935e, type: 3}
+  - {fileID: 8300000, guid: 081c22a79937a41daa91c8bc0e410403, type: 3}
+  - {fileID: 8300000, guid: 38a12cc2ab23247268d9241cc44cf9a4, type: 3}
+  - {fileID: 8300000, guid: 3ee6fcb38fc0848eea804be8f5169ed0, type: 3}

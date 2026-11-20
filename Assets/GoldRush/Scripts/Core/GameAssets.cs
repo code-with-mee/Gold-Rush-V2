@@ -65,6 +65,9 @@ namespace GoldRush
         public Material particle;       // URP Particles/Unlit, transparent alpha blend
         public Material skybox;         // Skybox/Procedural, sunset
 
+        [Header("Sounds (Art/Audio). The file name is the sound id, e.g. coin")]
+        public AudioClip[] sounds;
+
         public CharacterDef Enemy(EnemyType type)
         {
             switch (type)

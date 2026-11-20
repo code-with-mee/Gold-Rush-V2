@@ -218,6 +218,7 @@ namespace GoldRush.EditorTools
 
         // Automation hooks (used by tooling outside the editor): create Temp/gr_smoke.flag to run the
         // smoke test, or Temp/gr_preview.flag to render the character preview.
+        static string JobFlag => Path.GetFullPath(Path.Combine(Application.dataPath, "../Temp/gr_job.flag"));
         static string BakeMenuFlag => Path.GetFullPath(Path.Combine(Application.dataPath, "../Temp/gr_bakemenu.flag"));
         static string PreviewFlag => Path.GetFullPath(Path.Combine(Application.dataPath, "../Temp/gr_preview.flag"));
 
@@ -229,6 +230,27 @@ namespace GoldRush.EditorTools
                 EnsureIconSprites();
                 if (!File.Exists(AssetsPath) || !File.Exists(MenuScene) || !File.Exists(LevelBaker.ScenePath(0))) Setup();
                 RunSmokeTest();
+            }
+            else if (HandleFlag(JobFlag))
+            {
+                // Temp/gr_job.txt holds "Namespace.Class.Method" lines: static methods to run, in order
+                var log = new System.Text.StringBuilder();
+                foreach (var line in File.ReadAllLines(JobFlag + ".txt"))
+                {
+                    if (string.IsNullOrWhiteSpace(line)) continue;
+                    int dot = line.LastIndexOf('.');
+                    try
+                    {
+                        System.Type type = null;
+                        foreach (var asm in System.AppDomain.CurrentDomain.GetAssemblies())
+                            if ((type = asm.GetType(line.Substring(0, dot))) != null) break;
+                        type.GetMethod(line.Substring(dot + 1), System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Static)
+                            .Invoke(null, null);
+                        log.AppendLine("ok " + line);
+                    }
+                    catch (System.Exception e) { log.AppendLine("FAIL " + line + ": " + (e.InnerException ?? e)); Debug.LogException(e); }
+                }
+                File.WriteAllText(JobFlag + ".done", log.ToString());
             }
             else if (HandleFlag(BakeMenuFlag))
             {
