@@ -69,6 +69,7 @@ namespace GoldRush
             pendingTints.Clear();
             pendingLights.Clear();
             d.ApplyNow();
+            Changed?.Invoke(d.target > 0.5f); // buttons made before this show the right sun / moon
             return d;
         }
 

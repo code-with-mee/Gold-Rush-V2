@@ -13,11 +13,19 @@ namespace GoldRush
         public void Setup(float amplitude, float speed, float wobbleDegrees, float pulse = 0f)
         {
             this.amplitude = amplitude; this.speed = speed; wobble = wobbleDegrees; this.pulse = pulse;
+            Remember();
+        }
+
+        /// <summary>Remembers where the object starts (added by hand: set the numbers in the Inspector).</summary>
+        void Remember()
+        {
             rt = transform as RectTransform;
             basePos = rt ? rt.anchoredPosition : Vector2.zero;
             baseRot = transform.localRotation;
             phase = Random.Range(0f, 10f);
         }
+
+        void Awake() { if (!rt) Remember(); }
 
         void Update()
         {

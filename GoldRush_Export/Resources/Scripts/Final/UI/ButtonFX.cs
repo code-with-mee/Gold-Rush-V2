@@ -62,7 +62,23 @@ namespace GoldRush
             }
         }
 
-        void Awake() { button = GetComponent<Button>(); }
+        void Awake()
+        {
+            button = GetComponent<Button>();
+            if (!face) // added by hand in the editor: find the glass parts by the same names UIKit uses
+            {
+                Transform f = transform.Find("Face");
+                if (!f) f = transform.Find("Glass");
+                if (f)
+                {
+                    face = (RectTransform)f;
+                    Transform halo = transform.Find("Halo"), edge = f.Find("Edge"), disc = f.Find("IconDisc"), glow = transform.Find("EdgeGlow");
+                    SetupHover(halo ? halo.GetComponent<Image>() : null, edge ? edge.GetComponent<Image>() : null,
+                        f.Find("Sweep") as RectTransform, disc ? disc.GetComponent<Image>() : null,
+                        glow ? glow.GetComponent<Image>() : null, f.Find("Content") as RectTransform, f.Find("Chevron") as RectTransform);
+                }
+            }
+        }
 
         public void SetColor(Color c)
         {
