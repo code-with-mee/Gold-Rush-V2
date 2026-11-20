@@ -179,12 +179,12 @@
   <li>Open <b>File → New Scene</b>. Pick <b>Basic (URP)</b> (or <b>Standard (URP)</b>). Click <b>Create</b>.</li>
   <li><b>File → Save As…</b> → folder <code>Assets/GoldRush/Scenes</code> → name <code>Sandbox</code> → <b>Save</b>.</li>
   <li>Drag <code>Prefabs/Level/Floor_40m</code> into the Hierarchy. Set its <b>Position</b> to <code>0, 0, 0</code>.</li>
-  <li>Drag <code>Art/Characters/Hero/Hero.fbx</code> into the Hierarchy. Set its <b>Position</b> to <code>0, 0, 0</code>.</li>
+  <li>Drag <code>Art/Characters/Hero/Hero.fbx</code> into the Hierarchy. Set its <b>Position</b> to <code>0, 0, 0</code> and its <b>Scale</b> to <code>0.36, 0.36, 0.36</code>. (The model file is almost 4 m tall. At 0.36 it has the game size.)</li>
   <li>Move the mouse over the Scene view and press <b>F</b>. The view zooms to the hero.</li>
   <li>Select <b>Main Camera</b>. Set <b>Position</b> <code>0, 1.5, -4</code> and <b>Rotation</b> <code>10, 0, 0</code>.</li>
   <li>Save the scene (<b>Ctrl+S</b> / <b>Cmd+S</b>).</li>
 </ol>
-<p>The hero is about 1.35 m tall in the game. In phase 3 you turn this model into the player.</p>
+<p>The hero is about 1.35 m tall in the game (that is the scale 0.36). He looks north (+Z), so the camera sees his back. In phase 3 you turn this model into the player.</p>
 <div class="tip">The template also has <code>Assets/Scenes/SampleScene</code>. You do not need it. You can delete the <code>Assets/Scenes</code> folder.</div>
 <figure class="shot todo"><div class="ph">Screenshot: Scene view with the hero model standing on the grid floor</div><figcaption>The hero in the Sandbox scene.</figcaption></figure>
 

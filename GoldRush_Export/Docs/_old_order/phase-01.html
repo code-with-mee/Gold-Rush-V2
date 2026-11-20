@@ -1,0 +1,224 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>GOLD RUSH – Phase 1: The prefab kit</title>
+<meta name="description" content="GOLD RUSH Unity tutorial, Phase 1: The prefab kit.">
+<link rel="stylesheet" href="assets/style.css">
+<style>
+  td figure.shot { margin: 0; min-width: 110px; }
+  td figure.shot.todo .ph { padding: 10px 6px; font-size: 12px; }
+</style>
+</head>
+<body>
+<header class="site-header">
+  <a class="brand" href="index.html"><span class="brand-mark">GR</span>GOLD RUSH <small>Unity tutorial</small></a>
+  <nav class="header-links" aria-label="Quick links">
+    <a class="hide-sm" href="index.html">Course</a>
+    <a href="troubleshooting.html">Help</a>
+    <a href="glossary.html">Glossary</a>
+  </nav>
+</header>
+<div class="layout">
+<aside class="sidebar" aria-label="Site navigation">
+<h2>Start</h2><ul>
+<li><a href="index.html"><span class="num">★</span><span class="label">Overview</span></a></li>
+</ul>
+<h2>Course</h2><ul>
+<li><a href="phase-00.html"><span class="num">0</span><span class="label">Create the project</span></a></li>
+<li><a href="phase-01.html" aria-current="page"><span class="num">1</span><span class="label">The prefab kit</span></a></li>
+<li><a href="phase-02.html"><span class="num">2</span><span class="label">Level design</span></a></li>
+<li><a href="phase-03.html"><span class="num">3</span><span class="label">The player</span></a></li>
+<li><a href="phase-04.html"><span class="num">4</span><span class="label">The camera</span></a></li>
+<li><a href="phase-05.html"><span class="num">5</span><span class="label">Coins and the HUD</span></a></li>
+<li><a href="phase-06.html"><span class="num">6</span><span class="label">Exit gate, win and lose</span></a></li>
+<li><a href="phase-07.html"><span class="num">7</span><span class="label">Monsters</span></a></li>
+<li><a href="phase-08.html"><span class="num">8</span><span class="label">Power-ups and effects</span></a></li>
+<li><a href="phase-09.html"><span class="num">9</span><span class="label">Menu, levels, shop, save</span></a></li>
+<li><a href="phase-10.html"><span class="num">10</span><span class="label">Polish and build</span></a></li>
+</ul>
+<h2>Help</h2><ul>
+<li><a href="troubleshooting.html"><span class="num">?</span><span class="label">Troubleshooting</span></a></li>
+<li><a href="glossary.html"><span class="num">A–Z</span><span class="label">Glossary</span></a></li>
+<li><a href="exercises.html"><span class="num">✎</span><span class="label">Exercises</span></a></li>
+</ul>
+</aside>
+<main>
+<div class="content">
+<p class="eyebrow">GOLD RUSH · Phase 1</p>
+<h1>The prefab kit</h1>
+<p class="lead">The starter package gives you a ready-made <b>prefab kit</b>: floor, blocks, walls, a pillar, a lamp post and more, plus the models of the coin, the gate and the power-ups. You take a short tour: what a prefab is, how to look inside one, and how a prefab and its copies in the scene work together. In phase 2 you build the whole level from this kit.</p>
+<div class="meta"><span><b>Checkpoint package</b><code>GoldRush_Phase01_Prefabs.unitypackage</code></span><span><b>Scene</b><code>Assets/GoldRush/Scenes/Sandbox.unity</code></span><a class="btn secondary" href="phase-01.pdf">Download PDF</a></div>
+
+<nav class="toc" aria-label="Steps on this page"><strong>Steps on this page</strong><ol>
+  <li><a href="#step-1">What you need</a></li>
+  <li><a href="#step-2">What is a prefab?</a></li>
+  <li><a href="#step-3">The level kit</a></li>
+  <li><a href="#step-4">Gameplay models and materials</a></li>
+  <li><a href="#step-5">Place some kit pieces</a></li>
+  <li><a href="#step-6">Look inside with Prefab Mode</a></li>
+  <li><a href="#step-7">Try it: change a colour</a></li>
+  <li><a href="#step-8">Instance, override, revert</a></li>
+  <li><a href="#step-9">▶ Press Play</a></li>
+  <li><a href="#step-10">Common problems</a></li>
+</ol></nav>
+
+<!-- ======================================================= 1 -->
+<h2 id="step-1"><span class="step">1</span>What you need</h2>
+<ul>
+  <li>The project from <a href="phase-00.html">Phase 0</a> (or import <code>GoldRush_Phase00_Project.unitypackage</code> into a new <b>Universal 3D</b> project).</li>
+  <li>Open the scene <code>Assets/GoldRush/Scenes/Sandbox.unity</code>.</li>
+  <li>No new packages. No scripts in this phase.</li>
+</ul>
+
+<!-- ======================================================= 2 -->
+<h2 id="step-2"><span class="step">2</span>What is a prefab?</h2>
+<p>A <b>prefab</b> is a saved GameObject (with its children and components) stored as a file in the Project window. You can place it in a scene many times. Each copy in a scene is an <b>instance</b>. When you change the prefab file, every instance changes too.</p>
+<p>The kit pieces are made of simple cubes. A block, for example, has:</p>
+<ul>
+  <li>a root object with the prefab's name,</li>
+  <li>a <code>Body</code> cube with the material <code>M_Block</code> (light grey),</li>
+  <li>a thin <code>Top</code> cube with <code>M_BlockTop</code> (a bit lighter), so the block looks bevelled.</li>
+</ul>
+<div class="note"><b>Pivot at the bottom.</b> The root's position is the centre of the block's <b>bottom</b> face. So a piece at <code>Y = 0</code> stands exactly on the floor. You never have to lift blocks by half their height.</div>
+
+<!-- ======================================================= 3 -->
+<h2 id="step-3"><span class="step">3</span>The level kit</h2>
+<p>Open <code>Assets/GoldRush/Prefabs/Level</code>. These are the pieces for building levels. Sizes are width × height × depth.</p>
+<div class="table-wrap"><table>
+  <tr><th>Picture</th><th>Prefab</th><th>Size</th><th>What it is</th></tr>
+  <tr><td><figure class="shot thumb"><img src="images/kit/Floor_40m.png" alt="Floor_40m" loading="lazy"></figure></td><td><code>Floor_40m</code></td><td>40 × 40 m</td><td>Grid floor (2 m tiles) on a dark plinth. The top is at Y = 0. Solid.</td></tr>
+  <tr><td><figure class="shot thumb"><img src="images/kit/OuterGround.png" alt="OuterGround" loading="lazy"></figure></td><td><code>OuterGround</code></td><td>480 × 480 m</td><td>Big dark ground around the level, 0.6 m lower. No collider.</td></tr>
+  <tr><td><figure class="shot thumb"><img src="images/kit/Block_1x1x1.png" alt="Block_1x1x1" loading="lazy"></figure></td><td><code>Block_1x1x1</code></td><td>1 × 1 × 1</td><td>Small grey block.</td></tr>
+  <tr><td><figure class="shot thumb"><img src="images/kit/Block_2x2x2.png" alt="Block_2x2x2" loading="lazy"></figure></td><td><code>Block_2x2x2</code></td><td>2 × 2 × 2</td><td>Big grey block.</td></tr>
+  <tr><td><figure class="shot thumb"><img src="images/kit/Block_4x1x2.png" alt="Block_4x1x2" loading="lazy"></figure></td><td><code>Block_4x1x2</code></td><td>4 × 1 × 2</td><td>Long low block (cover).</td></tr>
+  <tr><td><figure class="shot thumb"><img src="images/kit/AccentBlock_Red.png" alt="AccentBlock_Red" loading="lazy"></figure></td><td><code>AccentBlock_Red</code></td><td>1.5 × 1.5 × 1.5</td><td>Red block: a landmark.</td></tr>
+  <tr><td><figure class="shot thumb"><img src="images/kit/AccentBlock_Orange.png" alt="AccentBlock_Orange" loading="lazy"></figure></td><td><code>AccentBlock_Orange</code></td><td>1.5 × 1.5 × 1.5</td><td>Orange block.</td></tr>
+  <tr><td><figure class="shot thumb"><img src="images/kit/AccentBlock_Teal.png" alt="AccentBlock_Teal" loading="lazy"></figure></td><td><code>AccentBlock_Teal</code></td><td>1.5 × 1.5 × 1.5</td><td>Teal block.</td></tr>
+  <tr><td><figure class="shot thumb"><img src="images/kit/Wall_4m.png" alt="Wall_4m" loading="lazy"></figure></td><td><code>Wall_4m</code></td><td>4 × 2.3 × 1</td><td>Short wall. The length is along X.</td></tr>
+  <tr><td><figure class="shot thumb"><img src="images/kit/Wall_8m.png" alt="Wall_8m" loading="lazy"></figure></td><td><code>Wall_8m</code></td><td>8 × 2.3 × 1</td><td>Long wall, two 4 m segments.</td></tr>
+  <tr><td><figure class="shot thumb"><img src="images/kit/Pillar.png" alt="Pillar" loading="lazy"></figure></td><td><code>Pillar</code></td><td>1 × 3 × 1</td><td>Square pillar with a glowing cyan band.</td></tr>
+  <tr><td><figure class="shot thumb"><img src="images/kit/Barrier_Orange.png" alt="Barrier_Orange" loading="lazy"></figure></td><td><code>Barrier_Orange</code></td><td>3 × 0.95 × 0.6</td><td>Low wall to hide behind, orange top.</td></tr>
+  <tr><td><figure class="shot thumb"><img src="images/kit/LampPost.png" alt="LampPost" loading="lazy"></figure></td><td><code>LampPost</code></td><td>0.6 × 3.5 × 0.6</td><td>Post with a glowing cap and a warm point light.</td></tr>
+  <tr><td><figure class="shot thumb"><img src="images/kit/Terminal.png" alt="Terminal" loading="lazy"></figure></td><td><code>Terminal</code></td><td>1.1 × 1.5 × 0.75</td><td>Computer console with a glowing screen (decoration you can bump into).</td></tr>
+  <tr><td><figure class="shot thumb"><img src="images/kit/FloorPad_Cyan.png" alt="FloorPad_Cyan" loading="lazy"></figure></td><td><code>FloorPad_Cyan</code></td><td>3 × 3 m</td><td>Flat pad with a glowing border. Decoration, no collider.</td></tr>
+</table></div>
+<div class="tip">Make the thumbnails bigger with the slider at the bottom right of the Project window.</div>
+
+<!-- ======================================================= 4 -->
+<h2 id="step-4"><span class="step">4</span>Gameplay models and materials</h2>
+<p><code>Assets/GoldRush/Prefabs/Gameplay</code> has the <b>looks</b> of the gameplay objects. They have no scripts yet: they do nothing until you add the scripts in later phases.</p>
+<div class="table-wrap"><table>
+  <tr><th>Picture</th><th>Prefab</th><th>Size</th><th>What it is</th></tr>
+  <tr><td><figure class="shot thumb"><img src="images/kit/Coin.png" alt="Coin" loading="lazy"></figure></td><td><code>Coin</code></td><td>0.72 m</td><td>Spinning gold coin (model only). Becomes a real coin in phase 5.</td></tr>
+  <tr><td><figure class="shot thumb"><img src="images/kit/ExitGate.png" alt="ExitGate" loading="lazy"></figure></td><td><code>ExitGate</code></td><td>8 × 5 m</td><td>Gate with a door, EXIT sign and red/green lights (model only). Phase 6.</td></tr>
+  <tr><td><figure class="shot thumb"><img src="images/kit/PowerUp_Speed.png" alt="PowerUp_Speed" loading="lazy"></figure></td><td><code>PowerUp_Speed</code></td><td>1 m</td><td>Cyan orb. Phase 8.</td></tr>
+  <tr><td><figure class="shot thumb"><img src="images/kit/PowerUp_Ghost.png" alt="PowerUp_Ghost" loading="lazy"></figure></td><td><code>PowerUp_Ghost</code></td><td>1 m</td><td>Purple orb. Phase 8.</td></tr>
+  <tr><td><figure class="shot thumb"><img src="images/kit/PowerUp_Magnet.png" alt="PowerUp_Magnet" loading="lazy"></figure></td><td><code>PowerUp_Magnet</code></td><td>1 m</td><td>Red orb. Phase 8.</td></tr>
+</table></div>
+<p><code>Assets/GoldRush/Materials</code> has all materials. The kit uses them:</p>
+<div class="table-wrap"><table>
+  <tr><th>Materials</th><th>What they are</th></tr>
+  <tr><td><code>M_Floor</code>, <code>M_OuterGround</code></td><td>Grid floor (light) and outer ground (dark).</td></tr>
+  <tr><td><code>M_Block</code>, <code>M_BlockTop</code>, <code>M_Trim</code></td><td>Grey sides, lighter tops, dark feet and poles.</td></tr>
+  <tr><td><code>M_Red</code>, <code>M_Orange</code>, <code>M_Teal</code> (+ <code>…Top</code>)</td><td>Accent colours.</td></tr>
+  <tr><td><code>M_GlowCyan</code>, <code>M_GlowOrange</code>, <code>M_GlowLamp</code>, <code>M_GlowRed</code>, <code>M_GlowGreen</code></td><td>Glowing parts (<b>Emission</b> on). They shine when the game adds bloom.</td></tr>
+  <tr><td><code>M_Gold</code>, <code>M_GoldDark</code></td><td>Shiny metal for the coin.</td></tr>
+  <tr><td><code>GR_Lit</code>, <code>GR_LitEmissive</code>, <code>GR_LitTransparent</code>, <code>GR_Particle</code></td><td>White base materials. Scripts copy them and set the colour in code (effects, sparks).</td></tr>
+  <tr><td><code>GR_SunsetSky</code></td><td>The sunset sky. You use it in phase 2.</td></tr>
+</table></div>
+<p>All materials use the URP shader <b>Universal Render Pipeline/Lit</b> (the sky uses <b>Skybox/Procedural</b>).</p>
+
+<!-- ======================================================= 5 -->
+<h2 id="step-5"><span class="step">5</span>Place some kit pieces</h2>
+<ol>
+  <li>Drag <code>Block_1x1x1</code> from the Project window into the Scene view, next to the hero. Do it <b>three</b> times.</li>
+  <li>Drag in one <code>Wall_8m</code>, one <code>Pillar</code> and one <code>LampPost</code>.</li>
+  <li>For each one, check that <b>Position Y</b> is <code>0</code> in the Inspector. Move them so they do not overlap.</li>
+</ol>
+<p>The names in the Hierarchy are <b>blue</b>. Blue means: this is a prefab instance.</p>
+<figure class="shot todo"><div class="ph">Screenshot: Sandbox scene with the hero, three blocks, a wall, a pillar and a lamp post</div><figcaption>Kit pieces in the Sandbox scene.</figcaption></figure>
+
+<!-- ======================================================= 6 -->
+<h2 id="step-6"><span class="step">6</span>Look inside with Prefab Mode</h2>
+<p><b>Prefab Mode</b> is a view where you see and edit one prefab file on its own.</p>
+<ol>
+  <li>In the Project window, double-click <code>LampPost</code>. The Scene view shows only the lamp, on a blue background.</li>
+  <li>In the Hierarchy, click each child one by one: the dark base and pole, the glowing cap, the light-grey hat on top, and <code>LampLight</code>. Each child is a simple cube with one material.</li>
+  <li>Select <code>LampLight</code>. In the Inspector it is a <b>Point Light</b>: Intensity <code>2.4</code>, Range <code>9</code>, no shadows (cheap for phones).</li>
+  <li>Select the glowing cap. It has no <b>Box Collider</b>: only the base and the pole are solid.</li>
+  <li>Click the <b>&lt;</b> arrow at the top of the Hierarchy to leave Prefab Mode. Do not change anything.</li>
+</ol>
+<figure class="shot todo"><div class="ph">Screenshot: Prefab Mode of LampPost (blue background, &lt; arrow at the top of the Hierarchy, LampLight selected)</div><figcaption>LampPost in Prefab Mode.</figcaption></figure>
+
+<!-- ======================================================= 7 -->
+<h2 id="step-7"><span class="step">7</span>Try it: change a colour</h2>
+<p>This step is optional. It shows that many objects share one material.</p>
+<ol>
+  <li>In <code>Assets/GoldRush/Materials</code>, click <code>M_BlockTop</code>.</li>
+  <li>In the Inspector, click the colour box next to <b>Base Map</b>. Pick a bright yellow.</li>
+  <li>Look at the Scene: the tops of <b>all</b> blocks, the wall and the pillar are yellow now.</li>
+  <li>Change it back: type <code>EDF0F7</code> in the <b>Hexadecimal</b> field and press Enter.</li>
+</ol>
+<div class="note">A material is shared. Changing it changes every object that uses it, in every scene. Always set it back.</div>
+
+<!-- ======================================================= 8 -->
+<h2 id="step-8"><span class="step">8</span>Instance, override, revert</h2>
+<ol>
+  <li>Select one <code>Block_1x1x1</code> in the scene. Open it in the Hierarchy and select its <code>Top</code>.</li>
+  <li>Drag <code>M_Red</code> from the Project window onto the Top. Only this one block changes.</li>
+  <li>Look at the Inspector: the changed value is <b>bold</b> with a blue line at the left. This is an <b>override</b>: a change on one instance only.</li>
+  <li>Select the block's root. At the top of the Inspector, click <b>Overrides</b>. The list shows your change.</li>
+  <li>Click <b>Revert All</b>. The block is normal again.</li>
+  <li>Save the scene.</li>
+</ol>
+<div class="table-wrap"><table>
+  <tr><th>You change…</th><th>What changes</th></tr>
+  <tr><td>The prefab file (in Prefab Mode)</td><td>Every instance in every scene.</td></tr>
+  <tr><td>One instance in the scene</td><td>Only that instance (an override). <b>Overrides → Apply All</b> would copy it to the prefab file. Do not do this with the kit.</td></tr>
+  <tr><td>Position and rotation of an instance</td><td>Only that instance. This is normal: you place every piece somewhere else.</td></tr>
+  <tr><td>A material</td><td>Every object that uses the material.</td></tr>
+</table></div>
+
+<!-- ======================================================= 9 -->
+<h2 id="step-9"><span class="step">9</span>▶ Press Play</h2>
+<ol>
+  <li>Click <b>▶ Play</b>. Move the Main Camera if you cannot see the pieces (for example Position <code>0, 3, -8</code>, Rotation <code>15, 0, 0</code>).</li>
+  <li>Click <b>▶</b> again to stop.</li>
+</ol>
+<div class="check">
+<p><b>You should see:</b></p>
+<ul>
+  <li>A test scene with the hero, three grey blocks with light tops, a wall, a pillar with a cyan band and a lamp post.</li>
+  <li>All kit pieces stand on the floor (none float or sink).</li>
+  <li>No red errors in the Console.</li>
+</ul>
+</div>
+
+<!-- ======================================================= 10 -->
+<h2 id="step-10"><span class="step">10</span>Common problems</h2>
+<div class="table-wrap"><table>
+  <tr><th>Problem</th><th>Fix</th></tr>
+  <tr><td>A piece floats or sinks into the floor.</td><td>Set its <b>Position Y</b> to <code>0</code>. The pivot is at the bottom.</td></tr>
+  <tr><td>Pieces are pink.</td><td>The URP settings are missing (see Phase 0, Common problems).</td></tr>
+  <tr><td>All blocks changed colour, and I want the old colour back.</td><td>You changed a material. <code>M_BlockTop</code> is <code>EDF0F7</code>, <code>M_Block</code> is <code>CCD1DB</code>. Or import the starter package again and tick only <code>Materials</code>.</td></tr>
+  <tr><td>I changed a prefab by mistake (Apply All).</td><td>Edit → Undo, or import the starter package again and tick only <code>Prefabs</code>.</td></tr>
+  <tr><td>The name in the Hierarchy is not blue.</td><td>It is not a prefab instance (maybe you unpacked it). Delete it and drag the prefab from the Project window again.</td></tr>
+  <tr><td>Glow materials do not glow.</td><td>Normal for now. Bloom comes with the game's post-processing in a later phase.</td></tr>
+  <tr><td>I cannot leave Prefab Mode.</td><td>Click the <b>&lt;</b> arrow at the top left of the Hierarchy, or double-click the scene file.</td></tr>
+</table></div>
+<p>More fixes are on the <a href="troubleshooting.html">Troubleshooting</a> page. New words are in the <a href="glossary.html">Glossary</a>.</p>
+<p><b>Checkpoint package:</b> <code>GoldRush_Phase01_Prefabs.unitypackage</code></p>
+<p><b>Next:</b> in <a href="phase-02.html">Phase 2</a> you build the first level with the kit.</p>
+
+<nav class="pager" aria-label="Previous and next page">
+<a class="prev" href="phase-00.html"><small>← Previous</small>Phase 0: Create the project</a>
+<a class="next" href="phase-02.html"><small>Next →</small>Phase 2: Level design</a>
+</nav>
+<footer class="site-footer">GOLD RUSH – a Unity 6 tutorial project. Characters: Quaternius (CC0). Font: Poppins (SIL Open Font License). Icons: Material Icons by Google (Apache 2.0).</footer>
+</div>
+</main>
+</div>
+</body>
+</html>

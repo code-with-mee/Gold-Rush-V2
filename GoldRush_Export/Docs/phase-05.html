@@ -1307,12 +1307,12 @@ It is only the look (a gold rim, a dark face and a star, no colliders). You add 
   <li>Set the child Coin's <b>Position</b> to <code>0, 1, 0</code>. It now sits inside the gold ball.</li>
   <li>Do the same for the other 5 markers.</li>
 </ol>
-<p>The marker positions (from phase 2, the same as the real game):</p>
+<p>The marker positions (from phase 2, on the 0.5 m grid; the real game is within a few cm of this):</p>
 <div class="table-wrap"><table>
   <tr><th>Marker</th><th>Position X, Y, Z</th><th>Marker</th><th>Position X, Y, Z</th></tr>
-  <tr><td>CoinSpot 1</td><td>5.1, 0, 11.3</td><td>CoinSpot 4</td><td>-7.4, 0, 0</td></tr>
-  <tr><td>CoinSpot 2</td><td>-6.5, 0, -12.5</td><td>CoinSpot 5</td><td>-14.4, 0, 12.7</td></tr>
-  <tr><td>CoinSpot 3</td><td>14.3, 0, -7.4</td><td>CoinSpot 6</td><td>4.9, 0, -1.9</td></tr>
+  <tr><td>CoinSpot 1</td><td>5, 0, 11.5</td><td>CoinSpot 4</td><td>-7.5, 0, 0</td></tr>
+  <tr><td>CoinSpot 2</td><td>-6.5, 0, -12.5</td><td>CoinSpot 5</td><td>-14.5, 0, 12.5</td></tr>
+  <tr><td>CoinSpot 3</td><td>14.5, 0, -7.5</td><td>CoinSpot 6</td><td>5, 0, -2</td></tr>
 </table></div>
 <div class="tip">Move a marker, and its coin moves with it. You decide where the gold is. Keep coins away from walls and blocks, so the hero can reach them.</div>
 <figure class="shot todo"><div class="ph">Screenshot: Scene view of Level1 from above with the 6 gold CoinSpot gizmos and coins; Hierarchy Gameplay › Coins › CoinSpot 1 › Coin</div><figcaption>Six coins in the Training Yard.</figcaption></figure>
@@ -1335,6 +1335,8 @@ It is only the look (a gold rim, a dark face and a star, no colliders). You add 
 <b>You should see:</b>
 <ul>
   <li>The screen fades in. The HUD drops in: coin counter <code>0 / 6</code> (top-left), 2 hearts, the timer with <b>PAR 0:40</b>, the moon button and the pause button (top-right).</li>
+  <li>The level is dark blue: a new save starts at <b>night</b>. Click the moon button (or press <b>N</b>) to switch to the sunset look. The game remembers your choice.</li>
+  <li>The sky looks different from the Scene view: when you press Play, <code>EnvironmentSetup</code> sets the game's own sky, sun, fog and glow (a clear blue sky by day). Your sunset settings from phase 2 are still used in the Scene view.</li>
   <li>The coins float and spin, each at its own speed. An arrow at the edge of the screen points to the nearest coin when it is out of view.</li>
   <li>Run into a coin: it disappears, you hear the coin sound, "+1" floats up, a coin flies to the counter and it shows <code>1 / 6</code>.</li>
   <li>After the 6th coin: the message <b>ALL GOLD COLLECTED!</b></li>

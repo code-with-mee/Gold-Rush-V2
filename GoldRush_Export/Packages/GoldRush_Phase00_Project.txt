@@ -116,3 +116,4 @@ Assets/GoldRush/Resources/UISprites/soft.png
 Assets/GoldRush/Resources/UISprites/square.png
 Assets/GoldRush/Resources/UISprites/star.png
 Assets/GoldRush/Resources/UISprites/tri.png
+Assets/GoldRush/Scenes/Sandbox.unity
