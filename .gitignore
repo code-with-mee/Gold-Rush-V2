@@ -50,3 +50,7 @@ sysinfo.txt
 # ---- OS ----
 .DS_Store
 Thumbs.db
+
+# ---- exported zips (share copies, not source) ----
+/GoldRush_Export.zip
+*.zip
