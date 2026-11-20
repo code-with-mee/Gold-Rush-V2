@@ -34,6 +34,13 @@
 <li><a href="phase-09.html"><span class="num">9</span><span class="label">Gameplay UI</span></a></li>
 <li><a href="phase-10.html"><span class="num">10</span><span class="label">Polish and build</span></a></li>
 </ul>
+<h2>Practice</h2><ul>
+<li><a href="practicals.html"><span class="num">▶</span><span class="label">Practicals overview</span></a></li>
+<li><a href="practical-1.html"><span class="num">P1</span><span class="label">Practical 1</span></a></li>
+<li><a href="practical-2.html"><span class="num">P2</span><span class="label">Practical 2</span></a></li>
+<li><a href="practical-3.html"><span class="num">P3</span><span class="label">Practical 3</span></a></li>
+<li><a href="practical-4.html"><span class="num">P4</span><span class="label">Practical 4</span></a></li>
+</ul>
 <h2>Help</h2><ul>
 <li><a href="troubleshooting.html"><span class="num">?</span><span class="label">Troubleshooting</span></a></li>
 <li><a href="glossary.html"><span class="num">A–Z</span><span class="label">Glossary</span></a></li>
@@ -94,17 +101,16 @@
 <tr><td><code>Punch</code>, <code>HitReact</code>, <code>Death</code></td><td>Attack, Hit, Die (play once)</td><td>off</td></tr>
 </table></div>
 <div class="tip"><b>Generic</b> means "use the skeleton as it is". If a clip name starts with <code>CharacterArmature|</code>, delete that part, so the name is only <code>Idle</code>, <code>Walk</code>…</div>
-<figure class="shot todo" data-shot="phase-04/step-02-a" data-window="inspector" data-select="Assets/GoldRush/Art/Characters/Hero/Hero.fbx"><div class="ph">Hero.fbx Import Settings, Rig tab: Generic, Create From This Model</div><figcaption>Rig tab of Hero.fbx.</figcaption></figure>
-<figure class="shot todo" data-shot="phase-04/step-02-b" data-window="inspector" data-select="Assets/GoldRush/Art/Characters/Hero/Hero.fbx"><div class="ph">Hero.fbx Import Settings, Animation tab: Run clip selected, Loop Time and Loop Pose ticked</div><figcaption>Animation tab: the Run clip loops.</figcaption></figure>
+<figure class="shot"><img src="images/phase-04/step-02-a.png" alt="" loading="lazy"><figcaption>Rig tab of Hero.fbx.</figcaption></figure>
 
 <!-- ======================================================= 3 -->
 <h2 id="step-3"><span class="step">3</span>The Hero Animator Controller</h2>
 <p>An <b>Animator Controller</b> decides which clip plays. Scripts talk to it with <b>parameters</b>: a number (<code>Float</code>) or a one-time signal (<code>Trigger</code>).</p>
 <ol>
-<li>Open <code>Assets/GoldRush/Animations</code>. If there is already a <code>Hero</code> controller (from the menu in Phase 1), use that one and add only what is missing. Do not make a second one.</li>
+<li>Open <code>Assets/GoldRush/Animations</code>. You already have the <code>Hero</code> controller from Phase 1 (with the <code>Win</code> trigger and the states <code>Idle</code> and <code>Win</code>). Use that one and add only what is missing. Do not make a second one: the menu hero uses it too.</li>
 <li>Otherwise: right-click → <b>Create → Animation → Animator Controller</b>. Name it <code>Hero</code>.</li>
 <li>Double-click <code>Hero</code>. The <b>Animator</b> window opens.</li>
-<li>Open the <b>Parameters</b> tab on the left. Click <b>+</b> and add these 5 parameters. The names must be <b>exactly</b> like this:</li>
+<li>Open the <b>Parameters</b> tab on the left. Click <b>+</b> and add the parameters of this table that are missing (<code>Win</code> is already there, so you add 4). The names must be <b>exactly</b> like this:</li>
 </ol>
 <div class="table-wrap"><table>
 <tr><th>Name</th><th>Type</th><th>Meaning</th></tr>
@@ -115,7 +121,6 @@
 <tr><td><code>Die</code></td><td>Trigger</td><td>caught, game over</td></tr>
 </table></div>
 <div class="note">The scripts send these names. A typo (<code>speed</code>, or <code>Hit </code> with a space) means "nothing happens". The monsters in Phase 7 use the same 5 names.</div>
-<figure class="shot todo" data-shot="phase-04/step-03" data-window="project" data-select="Assets/GoldRush/Animations/Hero.controller"><div class="ph">Project window: Assets/GoldRush/Animations with the Hero controller (Animator window: Parameters tab with Speed, Attack, Hit, Win, Die)</div><figcaption>The Hero controller and its 5 parameters.</figcaption></figure>
 
 <!-- ======================================================= 4 -->
 <h2 id="step-4"><span class="step">4</span>The Locomotion blend tree</h2>
@@ -128,6 +133,7 @@
 <li>Under <b>Motion</b>, click <b>+ → Add Motion Field</b> three times. Untick <b>Automate Thresholds</b>.</li>
 <li>Fill the rows from the table. Drag each clip from <code>Hero.fbx</code> (click its small arrow to see the clips).</li>
 <li>Click <b>Base Layer</b> at the top of the Animator window to go back.</li>
+<li>Now delete the old <code>Idle</code> state from Phase 1: click it and press <b>Delete</b>. <code>Locomotion</code> plays the idle clip now. Check that <code>Locomotion</code> is orange.</li>
 </ol>
 <div class="table-wrap"><table>
 <tr><th>Row</th><th>Motion</th><th>Threshold</th></tr>
@@ -135,7 +141,6 @@
 <tr><td>2</td><td><code>Walk</code></td><td><code>0.5</code></td></tr>
 <tr><td>3</td><td><code>Run</code></td><td><code>1</code></td></tr>
 </table></div>
-<figure class="shot todo" data-shot="phase-04/step-04" data-window="inspector" data-select="Assets/GoldRush/Animations/Hero.controller"><div class="ph">Blend Tree Inspector: 1D, Parameter Speed, Idle 0 / Walk 0.5 / Run 1, Automate Thresholds off</div><figcaption>Check the three thresholds.</figcaption></figure>
 
 <!-- ======================================================= 5 -->
 <h2 id="step-5"><span class="step">5</span>The action states</h2>
@@ -152,7 +157,6 @@
 <tr><td><code>Win</code></td><td><code>Wave</code></td></tr>
 <tr><td><code>Die</code></td><td><code>Death</code></td></tr>
 </table></div>
-<figure class="shot todo" data-shot="phase-04/step-05" data-window="inspector" data-select="Assets/GoldRush/Animations/Hero.controller"><div class="ph">Animator window: Locomotion (orange) and the states Attack, Hit, Win, Die</div><figcaption>Five states. Locomotion is orange.</figcaption></figure>
 
 <!-- ======================================================= 6 -->
 <h2 id="step-6"><span class="step">6</span>The transitions</h2>
@@ -160,9 +164,9 @@
 <ol>
 <li>Right-click <b>Any State</b> → <b>Make Transition</b> → click <code>Attack</code>.</li>
 <li>Click the arrow. Untick <b>Has Exit Time</b>. Open <b>Settings</b>: <b>Transition Duration</b> <code>0.1</code>, untick <b>Can Transition To Self</b>. Under <b>Conditions</b>, click <b>+</b> → <code>Attack</code>.</li>
-<li>Do the same for <code>Hit</code>, <code>Win</code> and <code>Die</code>, each with its own trigger.</li>
+<li>Do the same for <code>Hit</code> and <code>Die</code>, each with its own trigger. <code>Win</code> already has this arrow from Phase 1: click it and check the same values.</li>
 <li>Right-click <code>Attack</code> → <b>Make Transition</b> → click <code>Locomotion</code>. Keep <b>Has Exit Time</b> on. Set the values from the table. No conditions.</li>
-<li>Do the same for <code>Hit</code> and <code>Win</code>. <code>Die</code> gets no way back: the hero stays down.</li>
+<li>Do the same for <code>Hit</code> and <code>Win</code>. (The old arrow <code>Win → Idle</code> from Phase 1 went away with the <code>Idle</code> state. If you still see it, delete it.) <code>Die</code> gets no way back: the hero stays down.</li>
 </ol>
 <div class="table-wrap"><table>
 <tr><th>Arrow</th><th>Has Exit Time</th><th>Exit Time</th><th>Duration</th><th>Condition</th></tr>
@@ -172,7 +176,6 @@
 <tr><td>Win → Locomotion</td><td>on</td><td><code>3</code></td><td><code>0.2</code></td><td>none</td></tr>
 </table></div>
 <p><b>Exit Time 0.85</b> = leave when the clip is 85&nbsp;% done. <b>Exit Time 3</b> = the wave loops, so the hero waves 3 times, then goes back to idle.</p>
-<figure class="shot todo" data-shot="phase-04/step-06" data-window="inspector" data-select="Assets/GoldRush/Animations/Hero.controller"><div class="ph">Animator window: Any State with 4 arrows, arrows from Attack, Hit and Win back to Locomotion</div><figcaption>The finished Hero controller: 7 arrows.</figcaption></figure>
 
 <!-- ======================================================= 7 -->
 <h2 id="step-7"><span class="step">7</span>Two stub scripts</h2>
@@ -547,7 +550,6 @@ namespace GoldRush
 <li>Select the <code>PlayerSpawn</code> marker (<code>Level 1 - Training Yard/Gameplay/PlayerSpawn</code>) → <b>Add Component</b> → <code>PlayerSpawn</code>.</li>
 </ol>
 <p><b><code>OnDrawGizmos</code></b> draws only in the Scene view: a blue ball and an arrow that shows the way the hero will face. From Phase 5 on, the GameManager moves the Player to this marker when the level starts.</p>
-<figure class="shot todo" data-shot="phase-04/step-10" data-window="inspector" data-select="Level 1 - Training Yard/Gameplay/PlayerSpawn"><div class="ph">Inspector of PlayerSpawn: Position 0, 0, -9 and the PlayerSpawn component</div><figcaption>The marker has the PlayerSpawn script.</figcaption></figure>
 
 <!-- ======================================================= 11 -->
 <h2 id="step-11"><span class="step">11</span>Create the Player object</h2>
@@ -567,19 +569,16 @@ namespace GoldRush
 <li><b>Height 1.35</b>: the hero is 1.35&nbsp;m tall. <b>Center Y 0.695</b> = half the height + 0.02, so the bottom of the capsule is at the feet.</li>
 <li><b>Ignore Raycast</b>: the camera's wall rays fly through the player and only hit walls and blocks.</li>
 </ul>
-<figure class="shot todo" data-shot="phase-04/step-11" data-window="inspector" data-select="Player"><div class="ph">Inspector of Player: Layer Ignore Raycast, Position 0, 0, -9, Character Controller (50, 0.35, 0.05, center 0/0.695/0, radius 0.36, height 1.35)</div><figcaption>Check the layer and the capsule values.</figcaption></figure>
 
 <!-- ======================================================= 12 -->
 <h2 id="step-12"><span class="step">12</span>Add the hero model</h2>
 <ol>
 <li>Drag <code>Hero.fbx</code> from the Project window onto <code>Player</code> in the Hierarchy. Rename the child <code>Model</code>.</li>
-<li>Transform of <code>Model</code>: <b>Position</b> <code>0, 0, 0</code>, <b>Rotation</b> <code>0, 0, 0</code>, <b>Scale</b> <code>0.36, 0.36, 0.36</code>.</li>
+<li>Transform of <code>Model</code>: <b>Position</b> <code>0, 0.068, 0</code> (the feet of the model are a little below its pivot), <b>Rotation</b> <code>0, 0, 0</code>, <b>Scale</b> <code>0.337, 0.337, 0.337</code> (the same as in the menu: the hero is 1.35 m tall).</li>
 <li>In the Scene view, the hero must fit inside the green capsule: feet at the bottom, head at the top. If not, change the Scale a little (same number in X, Y, Z).</li>
 <li>On the <b>Animator</b> of <code>Model</code>: <b>Controller</b> = <code>Hero</code>, <b>Apply Root Motion</b> off, <b>Culling Mode</b> = <b>Always Animate</b>.</li>
 </ol>
 <div class="tip"><b>Apply Root Motion</b> off: the script moves the player, not the animation. If it is on, the hero "walks away" from his capsule.</div>
-<figure class="shot todo" data-shot="phase-04/step-12-a" data-window="scene" data-select="Player"><div class="ph">Scene view: the hero inside the green Character Controller capsule at the spawn</div><figcaption>The hero fits the capsule.</figcaption></figure>
-<figure class="shot todo" data-shot="phase-04/step-12-b" data-window="inspector" data-select="Player/Model"><div class="ph">Inspector of Model: Scale 0.36; Animator with Controller Hero, Apply Root Motion off, Culling Mode Always Animate</div><figcaption>The Animator on Model uses the Hero controller.</figcaption></figure>
 
 <!-- ======================================================= 13 -->
 <h2 id="step-13"><span class="step">13</span>Add PlayerMotor and save the prefab</h2>
@@ -588,8 +587,6 @@ namespace GoldRush
 <li>Set the <b>Layer</b> of <code>Player</code> to <b>Ignore Raycast</b> again and click <b>Yes, change children</b>. Now <code>Model</code> is on that layer too.</li>
 <li>Drag <code>Player</code> from the Hierarchy into <code>Assets/GoldRush/Prefabs/Gameplay</code>. Its name turns blue: it is a prefab now.</li>
 </ol>
-<figure class="shot todo" data-shot="phase-04/step-13-a" data-window="inspector" data-select="Player"><div class="ph">Inspector of Player: Character Controller and PlayerMotor (5, 8.2, 20, 560, 0.59, 0.84)</div><figcaption>Player has a Character Controller and PlayerMotor.</figcaption></figure>
-<figure class="shot todo" data-shot="phase-04/step-13-b" data-window="project" data-select="Assets/GoldRush/Prefabs/Gameplay/Player.prefab"><div class="ph">Project window: Prefabs/Gameplay with the new Player prefab next to Coin, ExitGate and the power-ups</div><figcaption>The Player prefab is saved.</figcaption></figure>
 
 <!-- ======================================================= 14 -->
 <h2 id="step-14"><span class="step">14</span>Set up the camera</h2>
@@ -600,7 +597,6 @@ namespace GoldRush
 <li>Keep the default values: Distance <code>6.2</code>, Height <code>1.15</code>, Min/Max Pitch <code>4</code> / <code>62</code>, Touch Sensitivity <code>0.16</code>, Mouse Sensitivity <code>2.4</code>, Yaw <code>0</code>, Pitch <code>20</code>.</li>
 </ol>
 <p>The Position and Rotation from Phase 3 do not matter any more. The script places the camera when you press Play.</p>
-<figure class="shot todo" data-shot="phase-04/step-14" data-window="inspector" data-select="Main Camera"><div class="ph">Inspector of Main Camera: Camera (FOV 55, Near 0.1, Far 400), Audio Listener, ThirdPersonCamera with Target = Player</div><figcaption>Target must be Player.</figcaption></figure>
 
 <!-- ======================================================= 15 -->
 <h2 id="step-15"><span class="step">15</span>Connect the player to the camera</h2>
@@ -610,7 +606,6 @@ namespace GoldRush
 <li>Save the scene.</li>
 </ol>
 <div class="note">Do <b>not</b> click <b>Overrides → Apply</b> for this field. A prefab file cannot point at an object in a scene. The link stays in the scene, and that is fine.</div>
-<figure class="shot todo" data-shot="phase-04/step-15" data-window="inspector" data-select="Player"><div class="ph">Inspector of Player: PlayerMotor with Cam = Main Camera (bold, a scene override)</div><figcaption>Cam = Main Camera.</figcaption></figure>
 
 <!-- ======================================================= 16 -->
 <h2 id="step-16"><span class="step">16</span>▶ Press Play</h2>
@@ -639,7 +634,7 @@ namespace GoldRush
 </div>
 <p><b>Press Play: you should be able to run around Level1, from the menu's PLAY button.</b></p>
 <figure class="shot"><img src="images/phase-04/camera-behind.jpg" alt="Third-person view behind the hero in Level1" loading="lazy"><figcaption>The third-person camera behind the hero.</figcaption></figure>
-<figure class="shot todo" data-shot="phase-04/step-16" data-window="game" data-select="Player"><div class="ph">Game view in Play mode: third-person view behind the hero running in Level1</div><figcaption>Your hero runs around Level1.</figcaption></figure>
+<figure class="shot"><img src="images/phase-03/hero-run.jpg" alt="" loading="lazy"><figcaption>Your hero runs around Level1.</figcaption></figure>
 <div class="note"><b>Back to the menu:</b> stop Play mode. <b>Esc</b> only frees the cursor in this phase. In Phase 6 the game goes back to the menu after you win or lose, and in Phase 9 the pause dialog gets a Home button.</div>
 
 <!-- ======================================================= 17 -->
@@ -651,7 +646,7 @@ namespace GoldRush
 <tr><td>Walk or run plays once and then freezes.</td><td><b>Loop Time</b> is off for that clip (step 2). Tick it and click <b>Apply</b>.</td></tr>
 <tr><td>The hero runs when he should walk.</td><td><b>Automate Thresholds</b> is still on, or the thresholds are not <code>0</code> / <code>0.5</code> / <code>1</code>.</td></tr>
 <tr><td>The hero walks away from his capsule.</td><td>Untick <b>Apply Root Motion</b> on the Animator.</td></tr>
-<tr><td>The hero floats or sinks, or is tiny or giant.</td><td>Model Position <code>0, 0, 0</code>. Change the <b>Scale</b> of <code>Model</code> (not of <code>Player</code>) until he fits the capsule.</td></tr>
+<tr><td>The hero floats or sinks, or is tiny or giant.</td><td>Model Position <code>0, 0.068, 0</code>, Scale <code>0.337</code>. Change the <b>Scale</b> of <code>Model</code> (not of <code>Player</code>) only if he does not fit the capsule.</td></tr>
 <tr><td>After Win / Hit the hero stays in that animation.</td><td>The arrow back to <code>Locomotion</code> is missing, or <b>Has Exit Time</b> is off on it.</td></tr>
 <tr><td>The camera does not move at all.</td><td><b>Target</b> on ThirdPersonCamera is empty. Drag <code>Player</code> into it.</td></tr>
 <tr><td>The camera is very close all the time, or jumps in and out.</td><td><code>Player</code> and <code>Model</code> must be on <b>Ignore Raycast</b> (step 13).</td></tr>

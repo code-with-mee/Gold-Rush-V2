@@ -36,10 +36,10 @@
 </ul>
 <h2>Practice</h2><ul>
 <li><a href="practicals.html"><span class="num">▶</span><span class="label">Practicals overview</span></a></li>
-<li><a href="practical-1.html"><span class="num">P1</span><span class="label">Coin Garden</span></a></li>
-<li><a href="practical-2.html"><span class="num">P2</span><span class="label">The Maze</span></a></li>
-<li><a href="practical-3.html"><span class="num">P3</span><span class="label">Guard Tower</span></a></li>
-<li><a href="practical-4.html" aria-current="page"><span class="num">P4</span><span class="label">Night Run</span></a></li>
+<li><a href="practical-1.html"><span class="num">P1</span><span class="label">Practical 1</span></a></li>
+<li><a href="practical-2.html"><span class="num">P2</span><span class="label">Practical 2</span></a></li>
+<li><a href="practical-3.html"><span class="num">P3</span><span class="label">Practical 3</span></a></li>
+<li><a href="practical-4.html" aria-current="page"><span class="num">P4</span><span class="label">Practical 4</span></a></li>
 </ul>
 <h2>Help</h2><ul>
 <li><a href="troubleshooting.html"><span class="num">?</span><span class="label">Troubleshooting</span></a></li>
@@ -72,7 +72,6 @@
 <li><a href="#step-16">Self-check</a></li>
 </ol></nav>
 
-
 <!-- ======================================================= 1 -->
 <h2 id="step-1"><span class="step">1</span>Goal and values</h2>
 <div class="panel"><h3>Goal</h3><p>Build a <b>36 × 36 m</b> night level with <b>12 coins</b>, <b>all 3 monster types</b> (2 Slimes, 1 Ghost, 1 Mushroom King with Home), a <b>MAGNET</b> and <b>8 lamps</b>. Then change at least 3 things to make it your own design.</p><p>You learn: a bigger arena, an off-centre gate, lights at night, combining monsters, using a power-up as a tool, designing on your own.</p></div>
@@ -92,7 +91,6 @@
 <tr><td><code>lives</code></td><td><code>2</code> (the default, you can leave it out)</td></tr>
 <tr><td><code>night</code></td><td><code>true</code></td></tr>
 </table></div>
-
 
 <!-- ======================================================= 2 -->
 <h2 id="step-2"><span class="step">2</span>The map</h2>
@@ -276,7 +274,6 @@
 <figcaption>Night Run: 36 × 36 m, 12 coins, 2 Slimes, a Ghost, the Mushroom King, a MAGNET. The gate is at X -2.</figcaption></figure>
 <p>The safe way goes round the outside (alleys), the fast way goes through the plaza. The Ghost guards the exit, so the last run is the hardest part.</p>
 
-
 <!-- ======================================================= 3 -->
 <h2 id="step-3"><span class="step">3</span>Make the scene</h2>
 <ol>
@@ -286,8 +283,6 @@
 <li>In its <b>Level Scene</b> component, set <b>Arena Half</b> = <code>18</code>.</li>
 <li>Save.</li>
 </ol>
-<figure class="shot todo" data-shot="practical-4/step-03" data-window="inspector" data-select="Level 8 - Night Run"><div class="ph">Inspector of Level 8 - Night Run: Level Scene with Arena Half 18</div><figcaption>Arena Half is 18. The yellow square matches the walls.</figcaption></figure>
-
 
 <!-- ======================================================= 4 -->
 <h2 id="step-4"><span class="step">4</span>Clear out</h2>
@@ -295,8 +290,6 @@
 <li>Delete all 17 children of <code>Static/Obstacles</code>.</li>
 <li>Keep <code>PowerUp Magnet</code>, both Slimes and the 6 CoinSpots: you move them and add more.</li>
 </ol>
-<figure class="shot todo" data-shot="practical-4/step-04" data-window="hierarchy" data-select="Level 8 - Night Run"><div class="ph">Hierarchy: Level 8 - Night Run with empty Obstacles, Slime 1, Slime 2, 6 CoinSpots, PowerUp Magnet</div><figcaption>Ready to grow.</figcaption></figure>
-
 
 <!-- ======================================================= 5 -->
 <h2 id="step-5"><span class="step">5</span>Make the arena bigger</h2>
@@ -318,8 +311,6 @@
 <tr><td><code>ExitGate</code></td><td><code>-2, 0, 18</code></td><td><code>0, 0, 0</code></td><td>In the middle of the gap. Not static.</td></tr>
 </table></div>
 <div class="note">The walls stand at ±18.5 and the floor ends at ±20. Do not make the arena bigger than this: the walls would stand off the floor.</div>
-<figure class="shot todo" data-shot="practical-4/step-05" data-window="scene" data-select="Level 8 - Night Run/Static/Walls"><div class="ph">Scene view from the top: the 36 × 36 m arena, the gate gap from X -6 to 2 in the north wall</div><figcaption>The gap is 2 m left of the middle.</figcaption></figure>
-
 
 <!-- ======================================================= 6 -->
 <h2 id="step-6"><span class="step">6</span>Lamps</h2>
@@ -331,7 +322,6 @@
 <tr><td>7–8</td><td><code>-7, 0, 16</code> · <code>3, 0, 16</code></td><td>Left and right of the gate: "the exit is here"</td></tr>
 </table></div>
 <div class="note">Still only 8 lamps. More lights make the game slow on phones.</div>
-
 
 <!-- ======================================================= 7 -->
 <h2 id="step-7"><span class="step">7</span>Buildings and plaza</h2>
@@ -356,8 +346,6 @@
 <tr><td>15</td><td><code>FloorPad_Cyan</code></td><td><code>Static/Floor</code></td><td><code>0, 0, 2</code></td><td>0</td><td>The King's pad (glows at night)</td></tr>
 </table></div>
 <div class="tip">Build one L, then select both walls, <b>Ctrl+D</b>, and change only the signs of X and/or Z for the other three.</div>
-<figure class="shot todo" data-shot="practical-4/step-07" data-window="scene" data-select="Level 8 - Night Run/Static/Obstacles"><div class="ph">Scene view from the top: Night Run with all walls and obstacles (same as the map)</div><figcaption>Compare with the map in step 2.</figcaption></figure>
-
 
 <!-- ======================================================= 8 -->
 <h2 id="step-8"><span class="step">8</span>Coins</h2>
@@ -382,8 +370,6 @@
 <tr><td><code>CoinSpot 11</code></td><td><code>-13, 0, -15</code></td><td>South, easy start</td></tr>
 <tr><td><code>CoinSpot 12</code></td><td><code>13, 0, -15</code></td><td>South, easy start</td></tr>
 </table></div>
-<figure class="shot todo" data-shot="practical-4/step-08" data-window="hierarchy" data-select="Level 8 - Night Run/Gameplay/Coins"><div class="ph">Hierarchy: Gameplay › Coins with CoinSpot 1 … 12, each with a Coin child</div><figcaption>12 CoinSpots, one Coin in each.</figcaption></figure>
-
 
 <!-- ======================================================= 9 -->
 <h2 id="step-9"><span class="step">9</span>Monsters</h2>
@@ -399,8 +385,6 @@
 <li>Right-click <code>Gameplay/Monsters</code> → <b>Create Empty</b>. Name it <code>KingHome</code>. Position <code>0, 0, 2</code>.</li>
 <li>Drag <code>KingHome</code> into the <b>Home</b> field of <code>Mushroom King 1</code> (Monster Spawn).</li>
 </ol>
-<figure class="shot todo" data-shot="practical-4/step-09" data-window="scene" data-select="Level 8 - Night Run/Gameplay/Monsters"><div class="ph">Scene view from the top: the monster boxes (MonsterSpawn gizmos) on the blue NavMesh</div><figcaption>Every monster stands on the blue NavMesh.</figcaption></figure>
-
 
 <!-- ======================================================= 10 -->
 <h2 id="step-10"><span class="step">10</span>Power-up</h2>
@@ -411,8 +395,6 @@
 <li>Drag <code>PowerUp_Magnet</code> onto the marker. Set the child's Position to <code>0, 0, 0</code>.</li>
 </ol>
 <p>The MAGNET pulls coins from up to 11 m for 8 seconds. From the east alley you can pull the two plaza coins without going near the King, if you are fast.</p>
-<figure class="shot todo" data-shot="practical-4/step-10" data-window="inspector" data-select="Level 8 - Night Run/Gameplay/PowerUps/PowerUp Magnet"><div class="ph">Inspector of PowerUp Magnet: Position and Power Up Spot (Type Magnet)</div><figcaption>The marker type and the prefab inside are the same.</figcaption></figure>
-
 
 <!-- ======================================================= 11 -->
 <h2 id="step-11"><span class="step">11</span>Start, gate and NavMesh</h2>
@@ -424,8 +406,6 @@
 <li>Save.</li>
 </ol>
 <p>The start is at X <code>2</code>, a bit right of the middle, so the barrier and the plaza pillars do not block the first view.</p>
-<figure class="shot todo" data-shot="practical-4/step-11" data-window="scene" data-select="Level 8 - Night Run/Static"><div class="ph">Scene view from the top: the blue NavMesh with holes around the walls and blocks, reaching every coin and the gate</div><figcaption>Blue everywhere the hero must go.</figcaption></figure>
-
 
 <!-- ======================================================= 12 -->
 <h2 id="step-12"><span class="step">12</span>LevelDef and Build Profiles</h2>
@@ -439,8 +419,6 @@
 <li><b>File → Build Profiles → Scene List</b>: drag in <code>Scenes/Level8</code>. Check it is ticked.</li>
 </ol>
 <p>Not sure? Read <a href="practicals.html#step-6">Practicals, step 6 and 7</a>.</p>
-<figure class="shot todo" data-shot="practical-4/step-12" data-window="buildprofiles" data-select="Assets/GoldRush/Scenes/Level8.unity"><div class="ph">Build Profiles → Scene List with Level8 ticked at the end</div><figcaption>Level8 is in the build.</figcaption></figure>
-
 
 <!-- ======================================================= 13 -->
 <h2 id="step-13"><span class="step">13</span>▶ Play test</h2>
@@ -460,13 +438,10 @@
 </div>
 <p><b>The card:</b> it shows <b>NIGHT RUN</b>, "Gold under the moon" and "12 GOLD TO FIND". It is locked until you win the level before it. With the updated menu the cards are in two rows; with the old menu it hides under DAILY RUSH (see <a href="practicals.html#step-8">Practicals, step 8</a>).</p>
 <p><b>Tune the par time:</b> best time + 25 %, rounded to 5 s. Change <code>parTime</code> in <code>Data.cs</code>.</p>
-<figure class="shot todo" data-shot="practical-4/step-13" data-window="game" data-select="Player"><div class="ph">Game view at night: lamps lighting the alleys, the King on the glowing pad in the plaza, the EXIT sign in the distance</div><figcaption>Your level in Play mode.</figcaption></figure>
-
 
 <!-- ======================================================= 14 -->
 <h2 id="step-14"><span class="step">14</span>Make it harder</h2>
 <div class="tip"><b>Make it harder</b> (pick one or two, test after each):<ul><li>A second Ghost at <code>-12, 0, 15</code>.</li><li>Set <code>enemySpeed = 1.12f</code> (like Gold Fever) and <code>parTime = 85</code>.</li><li>Move the MAGNET into the SE pocket (and that coin to the alley): you must risk the pocket first.</li><li>Put a second Mushroom King with its own Home in front of the gate, at <code>-2, 0, 13</code>.</li></ul></div>
-
 
 <!-- ======================================================= 15 -->
 <h2 id="step-15"><span class="step">15</span>Your own idea</h2>
@@ -493,8 +468,6 @@
 <li>☐ I changed the title and subtitle in Data.cs to fit my idea.</li>
 </ul>
 </div>
-<figure class="shot todo" data-shot="practical-4/step-15" data-window="scene" data-select="Level 8 - Night Run"><div class="ph">Scene view from above: the student's own version of Night Run at night, lamps showing the way</div><figcaption>Your own design.</figcaption></figure>
-
 
 <!-- ======================================================= 16 -->
 <h2 id="step-16"><span class="step">16</span>Self-check</h2>

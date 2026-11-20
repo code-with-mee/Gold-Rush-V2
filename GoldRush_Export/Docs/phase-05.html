@@ -34,6 +34,13 @@
 <li><a href="phase-09.html"><span class="num">9</span><span class="label">Gameplay UI</span></a></li>
 <li><a href="phase-10.html"><span class="num">10</span><span class="label">Polish and build</span></a></li>
 </ul>
+<h2>Practice</h2><ul>
+<li><a href="practicals.html"><span class="num">▶</span><span class="label">Practicals overview</span></a></li>
+<li><a href="practical-1.html"><span class="num">P1</span><span class="label">Practical 1</span></a></li>
+<li><a href="practical-2.html"><span class="num">P2</span><span class="label">Practical 2</span></a></li>
+<li><a href="practical-3.html"><span class="num">P3</span><span class="label">Practical 3</span></a></li>
+<li><a href="practical-4.html"><span class="num">P4</span><span class="label">Practical 4</span></a></li>
+</ul>
 <h2>Help</h2><ul>
 <li><a href="troubleshooting.html"><span class="num">?</span><span class="label">Troubleshooting</span></a></li>
 <li><a href="glossary.html"><span class="num">A–Z</span><span class="label">Glossary</span></a></li>
@@ -134,7 +141,6 @@ namespace GoldRush
   <li><code>OnDrawGizmos()</code> runs only in the editor. It draws in the Scene view, never in the game.</li>
   <li><code>Gizmos.DrawSphere</code> draws a gold ball 1 m above the marker: the coin will float there.</li>
 </ul>
-<figure class="shot todo" data-shot="phase-05/step-03" data-window="project" data-select="Assets/GoldRush/Scripts/Level/CoinSpot.cs"><div class="ph">Project window: Scripts/Level with CoinSpot.cs and PlayerSpawn.cs</div><figcaption>CoinSpot.cs is in the Level folder.</figcaption></figure>
 
 <!-- ======================================================= 4 -->
 <h2 id="step-4"><span class="step">4</span>Script: LevelScene</h2>
@@ -166,7 +172,6 @@ namespace GoldRush
   <li><code>[Tooltip]</code> shows a help text when you hold the mouse over the field in the Inspector.</li>
   <li>The yellow square in the Scene view shows the play area.</li>
 </ul>
-<figure class="shot todo" data-shot="phase-05/step-04" data-window="project" data-select="Assets/GoldRush/Scripts/Level/LevelScene.cs"><div class="ph">Project window: Scripts/Level with CoinSpot.cs, LevelScene.cs, PlayerSpawn.cs</div><figcaption>LevelScene.cs is in the Level folder.</figcaption></figure>
 
 <!-- ======================================================= 5 -->
 <h2 id="step-5"><span class="step">5</span>Script: Coin</h2>
@@ -216,7 +221,6 @@ namespace GoldRush
   <li><code>Collect()</code> marks the coin as collected and destroys it. <code>Collected</code> stops a second pickup.</li>
 </ul>
 <div class="tip">This is the phase 5 version of <code>Coin.cs</code>. The full game file also has a <code>Create()</code> function that builds a coin in code. You get it in a later phase, when the level builder arrives.</div>
-<figure class="shot todo" data-shot="phase-05/step-05" data-window="project" data-select="Assets/GoldRush/Scripts/World/Coin.cs"><div class="ph">Project window: Scripts/World with Coin.cs (next to EnvironmentSetup, DayNight, NightLight)</div><figcaption>Coin.cs is in the World folder.</figcaption></figure>
 
 <!-- ======================================================= 6 -->
 <h2 id="step-6"><span class="step">6</span>Update the PlayerMotor</h2>
@@ -431,7 +435,6 @@ namespace GoldRush
   <li><code>Hit()</code>, <code>PlayVictory()</code> and <code>PlayCaught()</code> are ready for phases 6 and 7. <code>ScriptedInput</code> is only for our trailer tool. You can ignore it.</li>
 </ul>
 <div class="note">Now the Console shows red errors, for example <code>The name 'GameManager' does not exist</code>. That is normal. They go away when you finish step 8.</div>
-<figure class="shot todo" data-shot="phase-05/step-06" data-window="project" data-select="Assets/GoldRush/Scripts/Gameplay/PlayerMotor.cs"><div class="ph">Project window: Scripts/Gameplay with PlayerMotor.cs and ThirdPersonCamera.cs</div><figcaption>PlayerMotor.cs is replaced.</figcaption></figure>
 
 <!-- ======================================================= 7 -->
 <h2 id="step-7"><span class="step">7</span>Update the camera</h2>
@@ -619,7 +622,6 @@ namespace GoldRush
   <li>Removed: the <code>PHASE 4 ONLY</code> cursor part. The GameManager locks and frees the cursor now.</li>
   <li><code>Create()</code> makes a camera in code, only for a level without a camera. Your scene has one. <code>ScriptedLook</code> is for our trailer tool.</li>
 </ul>
-<figure class="shot todo" data-shot="phase-05/step-07" data-window="project" data-select="Assets/GoldRush/Scripts/Gameplay/ThirdPersonCamera.cs"><div class="ph">Project window: Scripts/Gameplay with PlayerMotor.cs and ThirdPersonCamera.cs</div><figcaption>ThirdPersonCamera.cs is replaced.</figcaption></figure>
 
 <!-- ======================================================= 8 -->
 <h2 id="step-8"><span class="step">8</span>Script: GameManager</h2>
@@ -821,7 +823,6 @@ namespace GoldRush
   <li><b>Esc</b> or <b>P</b> pauses: <code>Time.timeScale = 0</code> stops all movement. The cursor is free again, so you can click in the editor.</li>
 </ul>
 <div class="check">Save. Wait for Unity to compile. The Console must have <b>no red errors</b> now.</div>
-<figure class="shot todo" data-shot="phase-05/step-08" data-window="project" data-select="Assets/GoldRush/Scripts/Gameplay/GameManager.cs"><div class="ph">Project window: Scripts/Gameplay with GameManager.cs, PlayerMotor.cs, ThirdPersonCamera.cs</div><figcaption>GameManager.cs is in the Gameplay folder.</figcaption></figure>
 
 <!-- ======================================================= 9 -->
 <h2 id="step-9"><span class="step">9</span>Check GoldRushAssets: hero and sounds</h2>
@@ -840,7 +841,7 @@ namespace GoldRush
   <tr><td>Walk Speed / Run Speed</td><td><code>0.59</code> / <code>0.84</code></td><td>How fast the walk and run clips move. The same numbers as in your phase 4 PlayerMotor: they stop foot sliding.</td></tr>
 </table></div>
 <div class="tip">The name of each clip is its sound id. <code>AudioFX.Play("coin")</code> plays <code>coin.wav</code>. The Slime, Ghost and Mushroom King fields are for phase 7.</div>
-<figure class="shot todo" data-shot="phase-05/step-09" data-window="inspector" data-select="Assets/GoldRush/Resources/GoldRushAssets.asset"><div class="ph">Inspector of GoldRushAssets: Hero (Model Hero, Controller Hero, Height 1.35, Hat Scale 1.9, Hat Height 0.74, Walk 0.59, Run 0.84), Sounds list with 16 clips</div><figcaption>Hero values and 16 sounds.</figcaption></figure>
+<figure class="shot"><img src="images/phase-05/step-09.png" alt="" loading="lazy"><figcaption>Hero values and 16 sounds.</figcaption></figure>
 
 <!-- ======================================================= 10 -->
 <h2 id="step-10"><span class="step">10</span>Make the Coin prefab work</h2>
@@ -853,7 +854,6 @@ namespace GoldRush
   <li>Check that there is no collider on the coin.</li>
   <li>Click the <b>&lt;</b> arrow at the top of the Hierarchy to leave prefab mode. Unity saves the prefab.</li>
 </ol>
-<figure class="shot todo" data-shot="phase-05/step-10" data-window="inspector" data-select="Assets/GoldRush/Prefabs/Gameplay/Coin.prefab"><div class="ph">Inspector of the Coin prefab root: Transform + Coin (Visual = Visual, Phase 0)</div><figcaption>The Coin component, with Visual filled in.</figcaption></figure>
 
 <!-- ======================================================= 11 -->
 <h2 id="step-11"><span class="step">11</span>Mark the level root</h2>
@@ -863,7 +863,6 @@ namespace GoldRush
   <li>Check <b>Arena Half</b> = <code>16</code>.</li>
 </ol>
 <p>A yellow square appears around the yard in the Scene view.</p>
-<figure class="shot todo" data-shot="phase-05/step-11" data-window="inspector" data-select="Level 1 - Training Yard"><div class="ph">Inspector of Level 1 - Training Yard: Transform + Level Scene (Arena Half 16)</div><figcaption>The level root has Level Scene.</figcaption></figure>
 
 <!-- ======================================================= 12 -->
 <h2 id="step-12"><span class="step">12</span>Mark the coin spots</h2>
@@ -873,7 +872,6 @@ namespace GoldRush
   <li>Click <b>Add Component</b> and choose <b>Coin Spot</b>. All 6 get it at once.</li>
 </ol>
 <p>Gold balls appear in the Scene view, 1 m above each marker.</p>
-<figure class="shot todo" data-shot="phase-05/step-12" data-window="inspector" data-select="Level 1 - Training Yard/Gameplay/Coins/CoinSpot 1"><div class="ph">Inspector of CoinSpot 1: Transform (5, 0, 11.5) + Coin Spot</div><figcaption>Each marker has a Coin Spot component.</figcaption></figure>
 
 <!-- ======================================================= 13 -->
 <h2 id="step-13"><span class="step">13</span>Put a coin in each spot</h2>
@@ -891,8 +889,7 @@ namespace GoldRush
   <tr><td><code>CoinSpot 3</code></td><td><code>14.5, 0, -7.5</code></td><td><code>CoinSpot 6</code></td><td><code>5, 0, -2</code></td></tr>
 </table></div>
 <div class="tip">Move a marker and its coin moves with it. You decide where the gold is. Keep coins away from walls and blocks, so the hero can reach them.</div>
-<figure class="shot todo" data-shot="phase-05/step-13-a" data-window="hierarchy" data-select="Level 1 - Training Yard/Gameplay/Coins/CoinSpot 1/Coin"><div class="ph">Hierarchy: Gameplay › Coins › CoinSpot 1 › Coin (and CoinSpot 2–6, each with a Coin)</div><figcaption>Every CoinSpot has one Coin inside.</figcaption></figure>
-<figure class="shot todo" data-shot="phase-05/step-13-b" data-window="scene" data-select="Level 1 - Training Yard/Gameplay/Coins"><div class="ph">Scene view of Level1 from above: 6 gold balls with coins inside, the yellow LevelScene square</div><figcaption>Six coins in the Training Yard.</figcaption></figure>
+<figure class="shot"><img src="images/phase-05/step-13-a.png" alt="" loading="lazy"><figcaption>Every CoinSpot has one Coin inside.</figcaption></figure>
 
 <!-- ======================================================= 14 -->
 <h2 id="step-14"><span class="step">14</span>Check the start point, hero and camera</h2>
@@ -903,7 +900,6 @@ namespace GoldRush
   <li>There is one <code>Main Camera</code> with <b>Third Person Camera</b>.</li>
 </ol>
 <div class="tip">The Player can stand anywhere in the Scene view. When you press Play, the GameManager moves him to the PlayerSpawn.</div>
-<figure class="shot todo" data-shot="phase-05/step-14" data-window="inspector" data-select="Level 1 - Training Yard/Gameplay/PlayerSpawn"><div class="ph">Inspector of PlayerSpawn: Position 0, 0, -9, Rotation 0, 0, 0, Player Spawn component</div><figcaption>The start point.</figcaption></figure>
 
 <!-- ======================================================= 15 -->
 <h2 id="step-15"><span class="step">15</span>Add the GameManager to the scene</h2>
@@ -914,7 +910,6 @@ namespace GoldRush
   <li>Save the scene (<b>Ctrl+S</b>).</li>
 </ol>
 <div class="note">The scene must be called exactly <code>Level1</code>. The GameManager uses the name to find the level settings.</div>
-<figure class="shot todo" data-shot="phase-05/step-15" data-window="inspector" data-select="GameManager"><div class="ph">Inspector of GameManager: Transform (0,0,0) + Game Manager (no fields)</div><figcaption>The GameManager object.</figcaption></figure>
 
 <!-- ======================================================= 16 -->
 <h2 id="step-16"><span class="step">16</span>▶ Press Play</h2>
@@ -931,7 +926,7 @@ namespace GoldRush
   <li><b>Esc</b> pauses (everything stops, the cursor comes back). Press <b>Esc</b> again to play on.</li>
   <li>No red errors in the Console.</li>
 </ul>
-<figure class="shot todo" data-shot="phase-05/step-16" data-window="game" data-select=""><div class="ph">Game view while playing: the hero runs to a floating coin in Level1 (no HUD)</div><figcaption>Collecting gold. The counter is in the Console for now.</figcaption></figure>
+<figure class="shot"><img src="images/phase-05/coins-collect.jpg" alt="" loading="lazy"><figcaption>Collecting gold. The counter is in the Console for now.</figcaption></figure>
 <div class="tip">To stop playing, press <b>Esc</b> first (the cursor comes back), then click the Play button.</div>
 
 <!-- ======================================================= 17 -->

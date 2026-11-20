@@ -36,10 +36,10 @@
 </ul>
 <h2>Practice</h2><ul>
 <li><a href="practicals.html"><span class="num">▶</span><span class="label">Practicals overview</span></a></li>
-<li><a href="practical-1.html" aria-current="page"><span class="num">P1</span><span class="label">Coin Garden</span></a></li>
-<li><a href="practical-2.html"><span class="num">P2</span><span class="label">The Maze</span></a></li>
-<li><a href="practical-3.html"><span class="num">P3</span><span class="label">Guard Tower</span></a></li>
-<li><a href="practical-4.html"><span class="num">P4</span><span class="label">Night Run</span></a></li>
+<li><a href="practical-1.html" aria-current="page"><span class="num">P1</span><span class="label">Practical 1</span></a></li>
+<li><a href="practical-2.html"><span class="num">P2</span><span class="label">Practical 2</span></a></li>
+<li><a href="practical-3.html"><span class="num">P3</span><span class="label">Practical 3</span></a></li>
+<li><a href="practical-4.html"><span class="num">P4</span><span class="label">Practical 4</span></a></li>
 </ul>
 <h2>Help</h2><ul>
 <li><a href="troubleshooting.html"><span class="num">?</span><span class="label">Troubleshooting</span></a></li>
@@ -70,7 +70,6 @@
 <li><a href="#step-14">Self-check</a></li>
 </ol></nav>
 
-
 <!-- ======================================================= 1 -->
 <h2 id="step-1"><span class="step">1</span>Goal and values</h2>
 <div class="panel"><h3>Goal</h3><p>Build a <b>24 × 24 m</b> open level with <b>8 coins</b>, <b>1 Slime</b> and no power-ups. A new player must win it on the first try.</p><p>You learn: <b>Save As</b> a scene, move and delete wall pieces, snapping, CoinSpots, one monster, LevelDef.</p></div>
@@ -88,7 +87,6 @@
 <tr><td><code>parTime</code></td><td><code>35</code> seconds (tune it in the play test)</td></tr>
 <tr><td><code>lives</code></td><td><code>3</code></td></tr>
 </table></div>
-
 
 <!-- ======================================================= 2 -->
 <h2 id="step-2"><span class="step">2</span>The map</h2>
@@ -226,7 +224,6 @@
 <figcaption>Coin Garden: 24 × 24 m, 8 coins, 1 Slime. Start south, exit north.</figcaption></figure>
 <p>The player sees coin 5 straight ahead. The beds make a square; the last coins wait at the gate. The Slime walks in the middle, so the player must look before running.</p>
 
-
 <!-- ======================================================= 3 -->
 <h2 id="step-3"><span class="step">3</span>Make the scene</h2>
 <ol>
@@ -236,8 +233,6 @@
 <li>In its <b>Level Scene</b> component, set <b>Arena Half</b> = <code>12</code>.</li>
 <li>Save.</li>
 </ol>
-<figure class="shot todo" data-shot="practical-1/step-03" data-window="inspector" data-select="Level 5 - Coin Garden"><div class="ph">Inspector of Level 5 - Coin Garden: Level Scene with Arena Half 12</div><figcaption>Arena Half is 12. The yellow square matches the walls.</figcaption></figure>
-
 
 <!-- ======================================================= 4 -->
 <h2 id="step-4"><span class="step">4</span>Clear out</h2>
@@ -248,8 +243,6 @@
 <li><code>Gameplay/PowerUps/PowerUp Magnet</code>. This level has no power-ups.</li>
 </ol>
 <p>Keep the 6 CoinSpots, the walls, the lamps, <code>PlayerSpawn</code>, <code>ExitGate</code>, <code>GameManager</code>, <code>Player</code>, the camera and the UI.</p>
-<figure class="shot todo" data-shot="practical-1/step-04" data-window="hierarchy" data-select="Level 5 - Coin Garden"><div class="ph">Hierarchy: Level 5 - Coin Garden with Static (Floor, Walls, Lamps, empty Obstacles), Gameplay (PlayerSpawn, Coins with 6 CoinSpots, Monsters with Slime 1, empty PowerUps)</div><figcaption>Obstacles and PowerUps are empty.</figcaption></figure>
-
 
 <!-- ======================================================= 5 -->
 <h2 id="step-5"><span class="step">5</span>Shrink the walls</h2>
@@ -271,8 +264,6 @@
 <tr><td><code>ExitGate</code></td><td><code>0, 0, 12</code></td><td><code>0, 0, 0</code></td><td>In the middle of the gap. Not static.</td></tr>
 </table></div>
 <div class="tip">Select a wall child and press <b>V</b>, then drag a corner onto the next wall: they snap together without a gap.</div>
-<figure class="shot todo" data-shot="practical-1/step-05" data-window="scene" data-select="Level 5 - Coin Garden/Static/Walls"><div class="ph">Scene view from the top: the smaller 24 × 24 m yard with walls, corner pillars and the 8 m gap in the north wall</div><figcaption>The walls are 4 m closer on every side.</figcaption></figure>
-
 
 <!-- ======================================================= 6 -->
 <h2 id="step-6"><span class="step">6</span>Lamps</h2>
@@ -283,7 +274,6 @@
 <tr><td>5–6</td><td><code>-10.5, 0, 0</code> · <code>10.5, 0, 0</code></td><td>West and east, middle</td></tr>
 <tr><td>7–8</td><td><code>-4.5, 0, -10.5</code> · <code>4.5, 0, -10.5</code></td><td>Left and right of the start</td></tr>
 </table></div>
-
 
 <!-- ======================================================= 7 -->
 <h2 id="step-7"><span class="step">7</span>Garden pieces</h2>
@@ -303,8 +293,6 @@
 <tr><td>11</td><td><code>FloorPad_Cyan</code></td><td><code>Static/Floor</code></td><td><code>6, 0, 5</code></td><td>0</td><td>Flower bed</td></tr>
 </table></div>
 <div class="tip"><b>Snap practice:</b> place the first <code>FloorPad_Cyan</code> by typing <code>-6, 0, -3</code>. For the other three, press <b>Ctrl+D</b> and drag with <b>Ctrl</b> / <b>Cmd</b> held (snap 0.5). Check the numbers in the Inspector afterwards.</div>
-<figure class="shot todo" data-shot="practical-1/step-07" data-window="scene" data-select="Level 5 - Coin Garden/Static/Obstacles"><div class="ph">Scene view from the top: Coin Garden with all walls and obstacles (same as the map)</div><figcaption>Compare with the map in step 2.</figcaption></figure>
-
 
 <!-- ======================================================= 8 -->
 <h2 id="step-8"><span class="step">8</span>Coins</h2>
@@ -325,8 +313,6 @@
 <tr><td><code>CoinSpot 7</code></td><td><code>-10, 0, 8</code></td><td>Corner reward, behind the left block</td></tr>
 <tr><td><code>CoinSpot 8</code></td><td><code>10, 0, 8</code></td><td>Corner reward, behind the right block</td></tr>
 </table></div>
-<figure class="shot todo" data-shot="practical-1/step-08" data-window="hierarchy" data-select="Level 5 - Coin Garden/Gameplay/Coins"><div class="ph">Hierarchy: Gameplay › Coins with CoinSpot 1 … 8, each with a Coin child</div><figcaption>8 CoinSpots, one Coin in each.</figcaption></figure>
-
 
 <!-- ======================================================= 9 -->
 <h2 id="step-9"><span class="step">9</span>Monsters</h2>
@@ -335,8 +321,6 @@
 <tr><th>Name</th><th>Prefab</th><th>Position</th><th>Note</th></tr>
 <tr><td><code>Slime 1</code></td><td><code>Monster_Slime</code></td><td><code>3, 0, 3</code></td><td>Keep <code>Slime 1</code>, move it. Delete <code>Slime 2</code>. 12 m from the start.</td></tr>
 </table></div>
-<figure class="shot todo" data-shot="practical-1/step-09" data-window="scene" data-select="Level 5 - Coin Garden/Gameplay/Monsters"><div class="ph">Scene view from the top: the monster boxes (MonsterSpawn gizmos) on the blue NavMesh</div><figcaption>Every monster stands on the blue NavMesh.</figcaption></figure>
-
 
 <!-- ======================================================= 10 -->
 <h2 id="step-10"><span class="step">10</span>Start, gate and NavMesh</h2>
@@ -348,8 +332,6 @@
 <li>Save.</li>
 </ol>
 <p>The start and the gate are the same as in Level1, only the gate and blocker move 4 m south.</p>
-<figure class="shot todo" data-shot="practical-1/step-10" data-window="scene" data-select="Level 5 - Coin Garden/Static"><div class="ph">Scene view from the top: the blue NavMesh with holes around the walls and blocks, reaching every coin and the gate</div><figcaption>Blue everywhere the hero must go.</figcaption></figure>
-
 
 <!-- ======================================================= 11 -->
 <h2 id="step-11"><span class="step">11</span>LevelDef and Build Profiles</h2>
@@ -363,8 +345,6 @@
 <li><b>File → Build Profiles → Scene List</b>: drag in <code>Scenes/Level5</code>. Check it is ticked.</li>
 </ol>
 <p>Not sure? Read <a href="practicals.html#step-6">Practicals, step 6 and 7</a>.</p>
-<figure class="shot todo" data-shot="practical-1/step-11" data-window="buildprofiles" data-select="Assets/GoldRush/Scenes/Level5.unity"><div class="ph">Build Profiles → Scene List with Level5 ticked at the end</div><figcaption>Level5 is in the build.</figcaption></figure>
-
 
 <!-- ======================================================= 12 -->
 <h2 id="step-12"><span class="step">12</span>▶ Play test</h2>
@@ -384,13 +364,10 @@
 </div>
 <p><b>The card:</b> it shows <b>COIN GARDEN</b>, "Pick the golden flowers" and "8 GOLD TO FIND". It is locked until you win the level before it. With the updated menu the cards are in two rows; with the old menu it hides under DAILY RUSH (see <a href="practicals.html#step-8">Practicals, step 8</a>).</p>
 <p><b>Tune the par time:</b> best time + 25 %, rounded to 5 s. Change <code>parTime</code> in <code>Data.cs</code>.</p>
-<figure class="shot todo" data-shot="practical-1/step-12" data-window="game" data-select="Player"><div class="ph">Game view: the hero at the start of Coin Garden, the orange centre block, flower beds with coins, the gate in the distance</div><figcaption>Your level in Play mode.</figcaption></figure>
-
 
 <!-- ======================================================= 13 -->
 <h2 id="step-13"><span class="step">13</span>Make it harder</h2>
 <div class="tip"><b>Make it harder</b> (pick one or two, test after each):<ul><li>Add a second <code>Monster_Slime</code> at <code>-6, 0, 9</code> (near coin 7).</li><li>Set <code>enemySpeed = 1f</code> and <code>lives = 2</code>.</li><li>Lower <code>parTime</code> to <code>25</code>.</li><li>Add a <code>PowerUp Speed</code> at <code>0, 0, -6</code> and make the par time even shorter.</li><li>Move coin 5 behind the centre block, so the player has to search.</li></ul></div>
-
 
 <!-- ======================================================= 14 -->
 <h2 id="step-14"><span class="step">14</span>Self-check</h2>

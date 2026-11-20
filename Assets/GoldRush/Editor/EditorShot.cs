@@ -94,6 +94,71 @@ namespace GoldRush.EditorTools
             EditorApplication.update += Tick;
         }
 
+        [Serializable] class Shot { public string shot, window, select, scene; }
+        [Serializable] class ShotList { public Shot[] items; }
+
+        /// <summary>Takes the pictures listed in Temp/keyshots.json (course key shots) into GoldRush_Export/Docs/images/.</summary>
+        public static void TakeKeyShots()
+        {
+            var json = "{\"items\":" + File.ReadAllText("Temp/keyshots.json") + "}";
+            var list = JsonUtility.FromJson<ShotList>(json).items;
+            string outDir = Path.GetFullPath(Path.Combine(Application.dataPath, "../GoldRush_Export/Docs/images/"));
+            int i = 0;
+            var log = new System.Text.StringBuilder();
+            void Next()
+            {
+                if (i >= list.Length)
+                {
+                    File.WriteAllText("Temp/keyshots.done", log.ToString());
+                    return;
+                }
+                var s = list[i++];
+                string scenePath = "Assets/GoldRush/Scenes/" + s.scene + ".unity";
+                if (UnityEditor.SceneManagement.EditorSceneManager.GetActiveScene().path != scenePath)
+                    UnityEditor.SceneManagement.EditorSceneManager.OpenScene(scenePath);
+                string kind = s.window;
+                UnityEngine.Object target = null;
+                if (s.select.StartsWith("Assets/"))
+                {
+                    target = AssetDatabase.LoadMainAssetAtPath(s.select);
+                    if (kind == "hierarchy") kind = "project"; // an asset lives in the Project window
+                }
+                else target = FindPath(s.select);
+                if (target) { Selection.activeObject = target; EditorGUIUtility.PingObject(target); }
+                if (kind == "scene" && SceneView.lastActiveSceneView) SceneView.lastActiveSceneView.FrameSelected();
+                var w = Find(kind);
+                if (w) { w.Show(); w.Focus(); }
+                ActiveEditorTracker.sharedTracker.ForceRebuild(); // the Inspector shows the new selection
+                log.AppendLine($"{s.shot} {kind} {(target ? target.name : "NOT FOUND " + s.select)}");
+                double until = EditorApplication.timeSinceStartup + 1.5; // let Unity draw the window for real
+                void Wait()
+                {
+                    if (w) w.Repaint();
+                    if (EditorApplication.timeSinceStartup < until) return;
+                    EditorApplication.update -= Wait;
+                    CaptureLater(w, outDir + s.shot + ".png", Next, 20);
+                }
+                EditorApplication.update += Wait;
+            }
+            Next();
+        }
+
+        /// <summary>Finds a scene object by its Hierarchy path; if part of the path is missing, the closest parent.</summary>
+        static GameObject FindPath(string path)
+        {
+            var parts = path.Split('/');
+            var scene = UnityEngine.SceneManagement.SceneManager.GetActiveScene();
+            Transform t = scene.GetRootGameObjects().Select(g => g.transform).FirstOrDefault(g => g.name == parts[0]);
+            if (!t) return null;
+            for (int k = 1; k < parts.Length; k++)
+            {
+                var c = t.Find(parts[k]);
+                if (!c) break;
+                t = c;
+            }
+            return t.gameObject;
+        }
+
         /// <summary>Test: saves the Hierarchy, Inspector and Project windows to Temp/editorshots/.</summary>
         public static void TestCapture()
         {

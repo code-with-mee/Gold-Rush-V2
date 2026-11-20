@@ -36,10 +36,10 @@
 </ul>
 <h2>Practice</h2><ul>
 <li><a href="practicals.html"><span class="num">▶</span><span class="label">Practicals overview</span></a></li>
-<li><a href="practical-1.html"><span class="num">P1</span><span class="label">Coin Garden</span></a></li>
-<li><a href="practical-2.html" aria-current="page"><span class="num">P2</span><span class="label">The Maze</span></a></li>
-<li><a href="practical-3.html"><span class="num">P3</span><span class="label">Guard Tower</span></a></li>
-<li><a href="practical-4.html"><span class="num">P4</span><span class="label">Night Run</span></a></li>
+<li><a href="practical-1.html"><span class="num">P1</span><span class="label">Practical 1</span></a></li>
+<li><a href="practical-2.html" aria-current="page"><span class="num">P2</span><span class="label">Practical 2</span></a></li>
+<li><a href="practical-3.html"><span class="num">P3</span><span class="label">Practical 3</span></a></li>
+<li><a href="practical-4.html"><span class="num">P4</span><span class="label">Practical 4</span></a></li>
 </ul>
 <h2>Help</h2><ul>
 <li><a href="troubleshooting.html"><span class="num">?</span><span class="label">Troubleshooting</span></a></li>
@@ -70,7 +70,6 @@
 <li><a href="#step-14">Self-check</a></li>
 </ol></nav>
 
-
 <!-- ======================================================= 1 -->
 <h2 id="step-1"><span class="step">1</span>Goal and values</h2>
 <div class="panel"><h3>Goal</h3><p>Turn the Level1 yard into a <b>maze</b> with <b>8 coins</b>, <b>2 Slimes</b>, <b>1 Ghost</b> and a <b>SPEED</b> power-up. Every corridor is at least 3 m wide. Two dead ends hold a reward coin.</p><p>You learn: walls as maze pieces, rotation 90, passage width, sight lines (walls hide you), PowerUpSpot, par time.</p></div>
@@ -89,7 +88,6 @@
 <tr><td><code>parTime</code></td><td><code>60</code> seconds (tune it in the play test)</td></tr>
 <tr><td><code>lives</code></td><td><code>2</code> (the default, you can leave it out)</td></tr>
 </table></div>
-
 
 <!-- ======================================================= 2 -->
 <h2 id="step-2"><span class="step">2</span>The map</h2>
@@ -255,7 +253,6 @@
 <figcaption>The Maze: 32 × 32 m. The path goes west → east → west → north to the gate.</figcaption></figure>
 <p>Follow the path with your finger: start → <b>west gap</b> in row A (X −16…−12) → east along the 2nd corridor, through the 3 m passage at the splitter → <b>east gap</b> in row B (X 12…16) → west along the 3rd corridor → <b>gap</b> in row C (X −8…−4) → gate. Coins 2 and 6 sit in dead ends.</p>
 
-
 <!-- ======================================================= 3 -->
 <h2 id="step-3"><span class="step">3</span>Make the scene</h2>
 <ol>
@@ -265,8 +262,6 @@
 <li>In its <b>Level Scene</b> component, set <b>Arena Half</b> = <code>16</code>.</li>
 <li>Save.</li>
 </ol>
-<figure class="shot todo" data-shot="practical-2/step-03" data-window="inspector" data-select="Level 6 - The Maze"><div class="ph">Inspector of Level 6 - The Maze: Level Scene with Arena Half 16</div><figcaption>Arena Half is 16. The yellow square matches the walls.</figcaption></figure>
-
 
 <!-- ======================================================= 4 -->
 <h2 id="step-4"><span class="step">4</span>Clear out</h2>
@@ -276,8 +271,6 @@
 <li>Keep both Slimes and the 6 CoinSpots: you move them.</li>
 </ol>
 <p>The outer walls, the gate and the floor stay exactly as in Level1.</p>
-<figure class="shot todo" data-shot="practical-2/step-04" data-window="scene" data-select="Level 6 - The Maze"><div class="ph">Scene view from the top: the empty Level1 yard (walls, lamps, gate), no obstacles</div><figcaption>An empty yard, ready for the maze.</figcaption></figure>
-
 
 <!-- ======================================================= 5 -->
 <h2 id="step-5"><span class="step">5</span>Lamps</h2>
@@ -288,7 +281,6 @@
 <tr><td>6</td><td><code>14.5, 0, 0</code></td><td><code>10, 0, 12</code></td></tr>
 </table></div>
 <p>Now two lamps light the last area in front of the gate.</p>
-
 
 <!-- ======================================================= 6 -->
 <h2 id="step-6"><span class="step">6</span>Build the maze</h2>
@@ -319,8 +311,6 @@
 </table></div>
 <div class="note">Walls in a row must touch, end to end. A gap of 0.5 m looks small, but the hero can not pass and the monsters see through it. Use <b>V</b> (vertex snap) or type the numbers exactly.</div>
 <div class="tip">Walls are 2.3 m high: monsters can not see through them. A Slime in the next corridor does not know you are there.</div>
-<figure class="shot todo" data-shot="practical-2/step-06" data-window="scene" data-select="Level 6 - The Maze/Static/Obstacles"><div class="ph">Scene view from the top: The Maze with all walls and obstacles (same as the map)</div><figcaption>Compare with the map in step 2.</figcaption></figure>
-
 
 <!-- ======================================================= 7 -->
 <h2 id="step-7"><span class="step">7</span>Coins</h2>
@@ -341,8 +331,6 @@
 <tr><td><code>CoinSpot 7</code></td><td><code>-2, 0, 4</code></td><td>In the third corridor</td></tr>
 <tr><td><code>CoinSpot 8</code></td><td><code>12, 0, 12</code></td><td>Last coin, top right: then run to the gate</td></tr>
 </table></div>
-<figure class="shot todo" data-shot="practical-2/step-07" data-window="hierarchy" data-select="Level 6 - The Maze/Gameplay/Coins"><div class="ph">Hierarchy: Gameplay › Coins with CoinSpot 1 … 8, each with a Coin child</div><figcaption>8 CoinSpots, one Coin in each.</figcaption></figure>
-
 
 <!-- ======================================================= 8 -->
 <h2 id="step-8"><span class="step">8</span>Monsters</h2>
@@ -353,8 +341,6 @@
 <tr><td><code>Slime 2</code></td><td><code>Monster_Slime</code></td><td><code>-8, 0, -4</code></td><td>In the second corridor. You meet it after the SPEED power-up.</td></tr>
 <tr><td><code>Ghost 1</code></td><td><code>Monster_Ghost</code></td><td><code>4, 0, 12</code></td><td>Near the gate. It sees all around (12 m), so use the row C wall as cover.</td></tr>
 </table></div>
-<figure class="shot todo" data-shot="practical-2/step-08" data-window="scene" data-select="Level 6 - The Maze/Gameplay/Monsters"><div class="ph">Scene view from the top: the monster boxes (MonsterSpawn gizmos) on the blue NavMesh</div><figcaption>Every monster stands on the blue NavMesh.</figcaption></figure>
-
 
 <!-- ======================================================= 9 -->
 <h2 id="step-9"><span class="step">9</span>Power-up</h2>
@@ -365,8 +351,6 @@
 <li>Drag <code>PowerUp_Speed</code> onto the marker. Set the child's Position to <code>0, 0, 0</code>.</li>
 </ol>
 <p>The SPEED orb sits right before the first long corridor. 6 seconds of speed is just enough to pass Slime 2.</p>
-<figure class="shot todo" data-shot="practical-2/step-09" data-window="inspector" data-select="Level 6 - The Maze/Gameplay/PowerUps/PowerUp Speed"><div class="ph">Inspector of PowerUp Speed: Position and Power Up Spot (Type Speed)</div><figcaption>The marker type and the prefab inside are the same.</figcaption></figure>
-
 
 <!-- ======================================================= 10 -->
 <h2 id="step-10"><span class="step">10</span>Start, gate and NavMesh</h2>
@@ -378,8 +362,6 @@
 <li>Save.</li>
 </ol>
 <p>The start moves 4 m back (Z <code>-13</code>), to the bottom of the first corridor. The gate and the blocker stay where they are in Level1.</p>
-<figure class="shot todo" data-shot="practical-2/step-10" data-window="scene" data-select="Level 6 - The Maze/Static"><div class="ph">Scene view from the top: the blue NavMesh with holes around the walls and blocks, reaching every coin and the gate</div><figcaption>Blue everywhere the hero must go.</figcaption></figure>
-
 
 <!-- ======================================================= 11 -->
 <h2 id="step-11"><span class="step">11</span>LevelDef and Build Profiles</h2>
@@ -393,8 +375,6 @@
 <li><b>File → Build Profiles → Scene List</b>: drag in <code>Scenes/Level6</code>. Check it is ticked.</li>
 </ol>
 <p>Not sure? Read <a href="practicals.html#step-6">Practicals, step 6 and 7</a>.</p>
-<figure class="shot todo" data-shot="practical-2/step-11" data-window="buildprofiles" data-select="Assets/GoldRush/Scenes/Level6.unity"><div class="ph">Build Profiles → Scene List with Level6 ticked at the end</div><figcaption>Level6 is in the build.</figcaption></figure>
-
 
 <!-- ======================================================= 12 -->
 <h2 id="step-12"><span class="step">12</span>▶ Play test</h2>
@@ -414,13 +394,10 @@
 </div>
 <p><b>The card:</b> it shows <b>THE MAZE</b>, "Find the way out" and "8 GOLD TO FIND". It is locked until you win the level before it. With the updated menu the cards are in two rows; with the old menu it hides under DAILY RUSH (see <a href="practicals.html#step-8">Practicals, step 8</a>).</p>
 <p><b>Tune the par time:</b> best time + 25 %, rounded to 5 s. Change <code>parTime</code> in <code>Data.cs</code>.</p>
-<figure class="shot todo" data-shot="practical-2/step-12" data-window="game" data-select="Player"><div class="ph">Game view: the hero in a maze corridor between tall walls, a coin ahead, the SPEED orb glowing</div><figcaption>Your level in Play mode.</figcaption></figure>
-
 
 <!-- ======================================================= 13 -->
 <h2 id="step-13"><span class="step">13</span>Make it harder</h2>
 <div class="tip"><b>Make it harder</b> (pick one or two, test after each):<ul><li>Change Slime 2 to a <code>Monster_Ghost</code>.</li><li>Put a third <code>Monster_Slime</code> at <code>-10, 0, 4</code>, next to the dead end of coin 6.</li><li>Move the SPEED power-up to the dead end of coin 6 (risk for reward).</li><li>Set <code>enemySpeed = 1.1f</code> and <code>parTime = 50</code>.</li><li>Add a second gap in row B at the west end (delete the <code>Wall_4m</code> at <code>-14, 0, 0</code>): two ways to go, which is faster?</li></ul></div>
-
 
 <!-- ======================================================= 14 -->
 <h2 id="step-14"><span class="step">14</span>Self-check</h2>

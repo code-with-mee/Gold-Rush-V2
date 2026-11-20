@@ -34,6 +34,13 @@
 <li><a href="phase-09.html"><span class="num">9</span><span class="label">Gameplay UI</span></a></li>
 <li><a href="phase-10.html"><span class="num">10</span><span class="label">Polish and build</span></a></li>
 </ul>
+<h2>Practice</h2><ul>
+<li><a href="practicals.html"><span class="num">▶</span><span class="label">Practicals overview</span></a></li>
+<li><a href="practical-1.html"><span class="num">P1</span><span class="label">Practical 1</span></a></li>
+<li><a href="practical-2.html"><span class="num">P2</span><span class="label">Practical 2</span></a></li>
+<li><a href="practical-3.html"><span class="num">P3</span><span class="label">Practical 3</span></a></li>
+<li><a href="practical-4.html"><span class="num">P4</span><span class="label">Practical 4</span></a></li>
+</ul>
 <h2>Help</h2><ul>
 <li><a href="troubleshooting.html"><span class="num">?</span><span class="label">Troubleshooting</span></a></li>
 <li><a href="glossary.html"><span class="num">A–Z</span><span class="label">Glossary</span></a></li>
@@ -97,7 +104,7 @@
 <p>A <b>particle system</b> shoots many tiny pictures (sparkles, dust, confetti) that move and fade out. <code>FX.cs</code> makes all of them in code.</p>
 <ol>
   <li>In Finder or Explorer, open the Resources pack folder <code>Scripts/Helpers/Gameplay/</code>.</li>
-  <li>Drag <code>FX.cs</code> into <code>Assets/GoldRush/Scripts/Gameplay/</code> in Unity. (If it is already there, click <b>Replace</b>.)</li>
+  <li>Drag <code>FX.cs</code> into <code>Assets/GoldRush/Scripts/Gameplay/</code> in Unity. It is a new file. (If <code>FX.cs</code> is already there, do not drag it in again: Unity would add a second file <code>FX 1.cs</code>. Open your file and paste the new text into it instead.)</li>
 </ol>
 <p>You don't need to read the whole file. These are the functions the game calls:</p>
 <div class="table-wrap"><table>
@@ -109,7 +116,6 @@
   <tr><td><code>FX.Confetti(pos)</code></td><td>140 colourful paper bits shoot up.</td><td>winning</td></tr>
 </table></div>
 <div class="tip">The particles copy the <code>GR_Particle</code> material from the <b>Particle</b> field of GoldRushAssets. If particles show as pink squares, check that field.</div>
-<figure class="shot todo" data-shot="phase-08/step-03" data-window="project" data-select="Assets/GoldRush/Scripts/Gameplay/FX.cs"><div class="ph">Project window: Scripts/Gameplay with FX.cs</div><figcaption>FX.cs is in the Gameplay folder.</figcaption></figure>
 
 <!-- ======================================================= 4 -->
 <h2 id="step-4"><span class="step">4</span>Script: PowerUpSpot</h2>
@@ -138,7 +144,6 @@ namespace GoldRush
   <li><code>PowerType</code> is an enum from <code>Data.cs</code>: <code>Speed</code>, <code>Ghost</code>, <code>Magnet</code>.</li>
   <li><code>OnDrawGizmos()</code> draws a wire ball 1.1 m above the ground (where the orb floats). Cyan = Speed, purple = Ghost, red = Magnet.</li>
 </ul>
-<figure class="shot todo" data-shot="phase-08/step-04" data-window="project" data-select="Assets/GoldRush/Scripts/Level/PowerUpSpot.cs"><div class="ph">Project window: Scripts/Level with CoinSpot, LevelScene, MonsterSpawn, PlayerSpawn, PowerUpSpot</div><figcaption>PowerUpSpot.cs is in the Level folder.</figcaption></figure>
 
 <!-- ======================================================= 5 -->
 <h2 id="step-5"><span class="step">5</span>Script: PowerUp</h2>
@@ -227,7 +232,6 @@ namespace GoldRush
   <li><code>Collect()</code> deletes the orb. <code>Collected</code> stops a second pickup.</li>
 </ul>
 <div class="tip">This is the phase 8 version. The full game file also has <code>Create()</code> and <code>Build()</code>, which build an orb in code for the level builder.</div>
-<figure class="shot todo" data-shot="phase-08/step-05" data-window="project" data-select="Assets/GoldRush/Scripts/World/PowerUp.cs"><div class="ph">Project window: Scripts/World with Coin.cs, ExitGate.cs, PowerUp.cs</div><figcaption>PowerUp.cs is in the World folder.</figcaption></figure>
 
 <!-- ======================================================= 6 -->
 <h2 id="step-6"><span class="step">6</span>Make the power-up prefabs work</h2>
@@ -240,7 +244,7 @@ namespace GoldRush
   <li>Leave prefab mode (the <b>&lt;</b> arrow).</li>
   <li>Do the same for <code>PowerUp_Speed</code> (Type <code>Speed</code>) and <code>PowerUp_Ghost</code> (Type <code>Ghost</code>).</li>
 </ol>
-<figure class="shot todo" data-shot="phase-08/step-06" data-window="inspector" data-select="Assets/GoldRush/Prefabs/Gameplay/PowerUp_Magnet.prefab"><div class="ph">Inspector of the PowerUp_Magnet prefab root: Power Up (Type Magnet, Visual, Inner, Ring filled)</div><figcaption>The Power Up component on PowerUp_Magnet.</figcaption></figure>
+<figure class="shot"><img src="images/phase-08/step-06.png" alt="" loading="lazy"><figcaption>The Power Up component on PowerUp_Magnet.</figcaption></figure>
 
 <!-- ======================================================= 7 -->
 <h2 id="step-7"><span class="step">7</span>Place the MAGNET in Level 1</h2>
@@ -253,8 +257,8 @@ namespace GoldRush
   <li>Save the scene.</li>
 </ol>
 <div class="note">Use the same type on the marker and on the prefab inside it. The marker must be inside the level root, like the coins.</div>
-<figure class="shot todo" data-shot="phase-08/step-07-a" data-window="inspector" data-select="Level 1 - Training Yard/Gameplay/PowerUps/PowerUp Magnet"><div class="ph">Inspector of PowerUp Magnet: Position -14.5, 0, -8.5 and Power Up Spot (Type Magnet)</div><figcaption>The marker has Power Up Spot.</figcaption></figure>
-<figure class="shot todo" data-shot="phase-08/step-07-b" data-window="hierarchy" data-select="Level 1 - Training Yard/Gameplay/PowerUps/PowerUp Magnet/PowerUp_Magnet"><div class="ph">Hierarchy: Gameplay › PowerUps › PowerUp Magnet › PowerUp_Magnet</div><figcaption>The orb is inside the marker.</figcaption></figure>
+
+<figure class="shot"><img src="images/phase-08/step-07-b.png" alt="" loading="lazy"><figcaption>The orb is inside the marker.</figcaption></figure>
 
 <!-- ======================================================= 8 -->
 <h2 id="step-8"><span class="step">8</span>Add test power-ups</h2>
@@ -267,7 +271,6 @@ namespace GoldRush
   <li>Save the scene.</li>
 </ol>
 <div class="tip">When you are done testing, delete <code>PowerUp Speed</code> and <code>PowerUp Ghost</code>, so Level 1 matches the real game. Or keep them – it's your level!</div>
-<figure class="shot todo" data-shot="phase-08/step-08" data-window="scene" data-select="Level 1 - Training Yard/Gameplay/PowerUps"><div class="ph">Scene view: three power-up orbs with their gizmos (cyan, purple, red wire balls) in Level1</div><figcaption>Three power-ups for testing.</figcaption></figure>
 
 <!-- ======================================================= 9 -->
 <h2 id="step-9"><span class="step">9</span>Update the PlayerMotor (final)</h2>
@@ -565,7 +568,6 @@ namespace GoldRush
   <li><code>Create()</code> makes a whole Player in code. Your scene has a Player, so the game does not use it.</li>
 </ul>
 <div class="note">Red errors now (for example <code>'GameManager' does not contain a definition for 'SpeedMultiplier'</code>) are normal. They go away after step 10.</div>
-<figure class="shot todo" data-shot="phase-08/step-09" data-window="project" data-select="Assets/GoldRush/Scripts/Gameplay/PlayerMotor.cs"><div class="ph">Project window: Scripts/Gameplay with PlayerMotor.cs (final version)</div><figcaption>PlayerMotor.cs is replaced.</figcaption></figure>
 
 <!-- ======================================================= 10 -->
 <h2 id="step-10"><span class="step">10</span>Update the GameManager</h2>
@@ -968,7 +970,6 @@ namespace GoldRush
   <li><b>Effects</b>: <code>FX.CoinBurst</code> when you take a coin, <code>FX.Confetti</code> when you win, and <code>Player.AddLantern()</code> in <code>Build()</code>.</li>
 </ul>
 <div class="check">Save. Wait for Unity to compile. The Console must have <b>no red errors</b> now.</div>
-<figure class="shot todo" data-shot="phase-08/step-10" data-window="project" data-select="Assets/GoldRush/Scripts/Gameplay/GameManager.cs"><div class="ph">Project window: Scripts/Gameplay with GameManager.cs (phase 8 version)</div><figcaption>GameManager.cs is replaced.</figcaption></figure>
 
 <!-- ======================================================= 11 -->
 <h2 id="step-11"><span class="step">11</span>▶ Press Play</h2>
@@ -983,7 +984,7 @@ namespace GoldRush
   <li>Take all gold and win: confetti!</li>
   <li>At night a warm lantern light follows the hero. Switch day/night in the main menu to compare.</li>
 </ul>
-<figure class="shot todo" data-shot="phase-08/step-11" data-window="game" data-select=""><div class="ph">Game view: the hero with the cyan SPEED star trail runs past a red MAGNET orb</div><figcaption>SPEED is active: stars behind the hero.</figcaption></figure>
+<figure class="shot"><img src="images/05_level1_play.jpg" alt="" loading="lazy"><figcaption>SPEED is active: stars behind the hero.</figcaption></figure>
 <div class="tip">The power-up bars, labels and the arrow to the next coin are part of the HUD in phase 9.</div>
 
 <!-- ======================================================= 12 -->

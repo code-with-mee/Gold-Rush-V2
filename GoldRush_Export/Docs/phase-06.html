@@ -34,6 +34,13 @@
 <li><a href="phase-09.html"><span class="num">9</span><span class="label">Gameplay UI</span></a></li>
 <li><a href="phase-10.html"><span class="num">10</span><span class="label">Polish and build</span></a></li>
 </ul>
+<h2>Practice</h2><ul>
+<li><a href="practicals.html"><span class="num">▶</span><span class="label">Practicals overview</span></a></li>
+<li><a href="practical-1.html"><span class="num">P1</span><span class="label">Practical 1</span></a></li>
+<li><a href="practical-2.html"><span class="num">P2</span><span class="label">Practical 2</span></a></li>
+<li><a href="practical-3.html"><span class="num">P3</span><span class="label">Practical 3</span></a></li>
+<li><a href="practical-4.html"><span class="num">P4</span><span class="label">Practical 4</span></a></li>
+</ul>
 <h2>Help</h2><ul>
 <li><a href="troubleshooting.html"><span class="num">?</span><span class="label">Troubleshooting</span></a></li>
 <li><a href="glossary.html"><span class="num">A–Z</span><span class="label">Glossary</span></a></li>
@@ -68,7 +75,7 @@
     If you start here, import <code>GoldRush_Phase05_Coins.unitypackage</code>.</li>
   <li>Open the scene <code>Assets/GoldRush/Scenes/Level1.unity</code>.</li>
   <li>The gate model from the starter package: <code>Assets/GoldRush/Prefabs/Gameplay/ExitGate.prefab</code>.</li>
-  <li>The north wall of the level (the +Z side) has a 5.5 m gap in the middle (phase 3). The gate goes there.</li>
+  <li>The north wall of the level (the +Z side) has an 8 m gap in the middle (phase 3). The gate goes there: its posts fill the gap, and its own opening is 5.5 m wide.</li>
   <li><b>File → Build Profiles → Scene List</b> has <code>MainMenu</code> and <code>Level1</code> (phases 1 and 3). The game loads scenes from this list.</li>
 </ul>
 <p>New or changed files in this phase:</p>
@@ -172,7 +179,6 @@ namespace GoldRush
   <li>Every <code>if (door)</code>, <code>if (glow)</code> … check means: a missing part does not break the gate.</li>
 </ul>
 <div class="tip">This is the phase 6 version. The full game file also has <code>Create()</code>, which builds a gate in code for the level builder. You get it in a later phase.</div>
-<figure class="shot todo" data-shot="phase-06/step-03" data-window="project" data-select="Assets/GoldRush/Scripts/World/ExitGate.cs"><div class="ph">Project window: Scripts/World with Coin.cs and ExitGate.cs</div><figcaption>ExitGate.cs is in the World folder.</figcaption></figure>
 
 <!-- ======================================================= 4 -->
 <h2 id="step-4"><span class="step">4</span>Look at the gate prefab</h2>
@@ -191,7 +197,7 @@ namespace GoldRush
   <tr><td><code>LanternLight</code></td><td>A warm light above the gate.</td></tr>
   <tr><td><code>MarkerAnchor</code></td><td>An empty point 5.6 m up. Phase 9 puts the EXIT label here.</td></tr>
 </table></div>
-<figure class="shot todo" data-shot="phase-06/step-04" data-window="hierarchy" data-select="Assets/GoldRush/Prefabs/Gameplay/ExitGate.prefab"><div class="ph">Prefab mode of ExitGate: Hierarchy with PostLeft, PostRight, Lintel, Text, StripTop/Left/Right, Door › Panel, LanternLight, Glow (greyed out), GlowLight, MarkerAnchor</div><figcaption>The provided gate model.</figcaption></figure>
+<figure class="shot"><img src="images/phase-06/step-04.png" alt="" loading="lazy"><figcaption>The provided gate model.</figcaption></figure>
 
 <!-- ======================================================= 5 -->
 <h2 id="step-5"><span class="step">5</span>Add the ExitGate script</h2>
@@ -215,7 +221,7 @@ namespace GoldRush
   <li>Check: <code>Glow</code> is unticked, and the Light component on <code>GlowLight</code> is unticked. They switch on when the gate opens.</li>
   <li>Leave prefab mode (the <b>&lt;</b> arrow).</li>
 </ol>
-<figure class="shot todo" data-shot="phase-06/step-05" data-window="inspector" data-select="Assets/GoldRush/Prefabs/Gameplay/ExitGate.prefab"><div class="ph">Inspector of the ExitGate prefab root: Exit Gate component with Door, Glow, Glow Ring, Marker Anchor, Glow Light, Text, 3 Strips, Green Strip = M_GlowGreen</div><figcaption>All fields of Exit Gate are filled.</figcaption></figure>
+<figure class="shot"><img src="images/phase-06/step-05.png" alt="" loading="lazy"><figcaption>All fields of Exit Gate are filled.</figcaption></figure>
 
 <!-- ======================================================= 6 -->
 <h2 id="step-6"><span class="step">6</span>Place the gate</h2>
@@ -227,8 +233,6 @@ namespace GoldRush
   <li>Look at the gate from inside the level: the EXIT sign and the red strips face you.</li>
 </ol>
 <div class="tip">The gate is under <code>Static</code> because its posts are solid. In phase 7 the monsters' walk map is made from <code>Static</code>, so they walk around the posts.</div>
-<figure class="shot todo" data-shot="phase-06/step-06-a" data-window="inspector" data-select="Level 1 - Training Yard/Static/ExitGate"><div class="ph">Inspector of ExitGate in the scene: Position 0, 0, 16, Rotation 0, 0, 0, Static not ticked</div><figcaption>The gate in the gap of the north wall.</figcaption></figure>
-<figure class="shot todo" data-shot="phase-06/step-06-b" data-window="scene" data-select="Level 1 - Training Yard/Static/ExitGate"><div class="ph">Scene view: the closed gate with red strips in the north wall, seen from inside the yard</div><figcaption>The gate faces into the level.</figcaption></figure>
 
 <!-- ======================================================= 7 -->
 <h2 id="step-7"><span class="step">7</span>Check the gate blocker</h2>
@@ -238,7 +242,6 @@ namespace GoldRush
   <li>Check <b>Position</b> <code>0, 2.5, 17.25</code> and a <b>Box Collider</b> with <b>Size</b> <code>8, 5, 1</code>.</li>
   <li>Not there? Right-click <code>Static › Walls</code> → <b>Create Empty</b>, name it <code>GateBlocker</code>, set the position, and add a <b>Box Collider</b> with that size.</li>
 </ol>
-<figure class="shot todo" data-shot="phase-06/step-07" data-window="inspector" data-select="Level 1 - Training Yard/Static/Walls/GateBlocker"><div class="ph">Inspector of GateBlocker: Position 0, 2.5, 17.25 and a Box Collider with Size 8, 5, 1</div><figcaption>An invisible wall behind the gate.</figcaption></figure>
 
 <!-- ======================================================= 8 -->
 <h2 id="step-8"><span class="step">8</span>Update the GameManager</h2>
@@ -280,7 +283,6 @@ namespace GoldRush
         public PlayerMotor Player { get; private set; }
         public ThirdPersonCamera Cam { get; private set; }
         public ExitGate Gate { get; private set; }
-
 
         readonly List&lt;Coin&gt; coins = new List&lt;Coin&gt;();
         Vector3 spawn;
@@ -550,7 +552,6 @@ namespace GoldRush
   <li><code>Hits</code> counts monster hits for the third star. It stays 0 until phase 7.</li>
 </ul>
 <div class="note">The line with <code>KeyCode.L</code> is for testing only. In phase 7 the monsters make you lose, and the new GameManager has no L key.</div>
-<figure class="shot todo" data-shot="phase-06/step-08" data-window="project" data-select="Assets/GoldRush/Scripts/Gameplay/GameManager.cs"><div class="ph">Project window: Scripts/Gameplay with GameManager.cs (phase 6 version)</div><figcaption>GameManager.cs is replaced.</figcaption></figure>
 
 <!-- ======================================================= 9 -->
 <h2 id="step-9"><span class="step">9</span>▶ Press Play: win</h2>
@@ -562,7 +563,7 @@ namespace GoldRush
   <li>The Console shows <code>LEVEL COMPLETE! Stars: 3, time 31.2 s (par 40 s)…</code>.</li>
   <li>The screen fades out and the main menu opens. Open <b>LEVELS</b>: Level 1 shows your stars, and Level 2 is unlocked. Your gold went up.</li>
 </ul>
-<figure class="shot todo" data-shot="phase-06/step-09" data-window="game" data-select=""><div class="ph">Game view: the open gate with the green pad, the hero waves in front of it</div><figcaption>The gate is open.</figcaption></figure>
+<figure class="shot"><img src="images/phase-06/gate-open.jpg" alt="" loading="lazy"><figcaption>The gate is open.</figcaption></figure>
 <div class="tip">You got only 2 stars? Then you were slower than 40 seconds. Try again: sprint with <b>Shift</b>.</div>
 
 <!-- ======================================================= 10 -->

@@ -34,6 +34,13 @@
 <li><a href="phase-09.html"><span class="num">9</span><span class="label">Gameplay UI</span></a></li>
 <li><a href="phase-10.html"><span class="num">10</span><span class="label">Polish and build</span></a></li>
 </ul>
+<h2>Practice</h2><ul>
+<li><a href="practicals.html"><span class="num">▶</span><span class="label">Practicals overview</span></a></li>
+<li><a href="practical-1.html"><span class="num">P1</span><span class="label">Practical 1</span></a></li>
+<li><a href="practical-2.html"><span class="num">P2</span><span class="label">Practical 2</span></a></li>
+<li><a href="practical-3.html"><span class="num">P3</span><span class="label">Practical 3</span></a></li>
+<li><a href="practical-4.html"><span class="num">P4</span><span class="label">Practical 4</span></a></li>
+</ul>
 <h2>Help</h2><ul>
 <li><a href="troubleshooting.html"><span class="num">?</span><span class="label">Troubleshooting</span></a></li>
 <li><a href="glossary.html"><span class="num">A–Z</span><span class="label">Glossary</span></a></li>
@@ -116,10 +123,10 @@
   <tr><td><code>World/DayNight.cs</code>, <code>World/NightLight.cs</code>, <code>World/EnvironmentSetup.cs</code></td><td>The mood: sky, fog, ambient light, glow (bloom) and the night lights.</td></tr>
 </table></div>
 <ol>
-  <li>Drag the files in. If Unity asks to replace a file, click <b>Replace</b>.</li>
+  <li>Drag the files in. They are all new, so nothing is replaced. (Unity never replaces a file you drag in: if the name already exists, it adds a copy called, for example, <code>UIKit 1.cs</code>. Delete such a copy at once.)</li>
   <li>Unity shows red errors in the Console now: the scripts need <code>Save</code> and <code>GoldRushMenu</code>. That is normal. You type them in the next steps, then the errors are gone.</li>
 </ol>
-<figure class="shot todo" data-shot="phase-01/step-03" data-window="project" data-select="Assets/GoldRush/Scripts/UI"><div class="ph">Project window: Scripts/UI with UIKit, ButtonFX, LogoTitle, DayNightButton</div><figcaption>Check: each file is in the same folder name as in Helpers/.</figcaption></figure>
+<figure class="shot"><img src="images/phase-01/step-03.png" alt="Project window: Scripts/UI with UIKit, ButtonFX, LogoTitle, DayNightButton" loading="lazy"><figcaption>Check: each file is in the same folder name as in Helpers/.</figcaption></figure>
 
 <!-- ======================================================= 4 -->
 <h2 id="step-4"><span class="step">4</span>Script: Data (save data)</h2>
@@ -487,7 +494,7 @@ namespace GoldRush
   <li><code>Run(action)</code>: the words of the buttons. In phase 1 they only write a message in the Console.</li>
 </ul>
 <p>Wait for Unity to compile. The Console must show <b>no red errors</b> now.</p>
-<figure class="shot todo" data-shot="phase-01/step-06" data-window="project" data-select="Assets/GoldRush/Scripts/UI/GoldRushMenu.cs"><div class="ph">Project window: Scripts/UI with GoldRushMenu, MenuAction, CoinFlip, Bob (and the imported helpers); Console empty</div><figcaption>Check: no red errors in the Console.</figcaption></figure>
+<figure class="shot"><img src="images/phase-01/step-06.png" alt="Project window: Scripts/UI with GoldRushMenu, MenuAction, CoinFlip, Bob (and the imported helpers); Console empty" loading="lazy"><figcaption>Check: no red errors in the Console.</figcaption></figure>
 
 <!-- ======================================================= 7 -->
 <h2 id="step-7"><span class="step">7</span>Create the GoldRushAssets asset</h2>
@@ -511,7 +518,7 @@ namespace GoldRush
   <li>Click the lock icon again to unlock the Inspector.</li>
 </ol>
 <p>The file name is the sound name: <code>click.wav</code> plays with <code>AudioFX.Play("click")</code>, <code>music.wav</code> is the background music.</p>
-<figure class="shot todo" data-shot="phase-01/step-07" data-window="inspector" data-select="Assets/GoldRush/Resources/GoldRushAssets.asset"><div class="ph">Inspector of GoldRushAssets: Hero Model = Hero, base materials filled, Skybox = GR_SunsetSky, Sounds = 16 elements</div><figcaption>Check: Sounds has 16 elements and Skybox is GR_SunsetSky.</figcaption></figure>
+<figure class="shot"><img src="images/phase-01/step-07.png" alt="Inspector of GoldRushAssets: Hero Model = Hero, base materials filled, Skybox = GR_SunsetSky, Sounds = 16 elements" loading="lazy"><figcaption>Check: Sounds has 16 elements and Skybox is GR_SunsetSky.</figcaption></figure>
 
 <!-- ======================================================= 8 -->
 <h2 id="step-8"><span class="step">8</span>Hero animations: Idle and Wave</h2>
@@ -524,7 +531,7 @@ namespace GoldRush
   <li>Click the clip that ends with <code>Wave</code>. Tick <b>Loop Time</b> and <b>Loop Pose</b>.</li>
   <li>Click <b>Apply</b> at the bottom.</li>
 </ol>
-<figure class="shot todo" data-shot="phase-01/step-08-a" data-window="inspector" data-select="Assets/GoldRush/Art/Characters/Hero/Hero.fbx"><div class="ph">Inspector of Hero.fbx, Animation tab: Idle clip selected, Loop Time and Loop Pose ticked</div><figcaption>Check: Loop Time is ticked for Idle and for Wave.</figcaption></figure>
+<figure class="shot"><img src="images/phase-01/step-08-a.png" alt="Inspector of Hero.fbx, Animation tab with the clip list" loading="lazy"><figcaption>The Animation tab lists all clips. Click Idle, then Wave, and check Loop Time below the list.</figcaption></figure>
 <h3>The Animator Controller</h3>
 <p>An <b>Animator Controller</b> is a little map of animation <b>states</b> and the <b>transitions</b> (arrows) between them.</p>
 <ol>
@@ -538,8 +545,8 @@ namespace GoldRush
   <li>Right-click <code>Win</code> → <b>Make Transition</b> → click <code>Idle</code>. Select the arrow and set: <b>Has Exit Time</b> on, <b>Exit Time</b> <code>3</code>, <b>Transition Duration</b> <code>0.2</code>. (The hero waves 3 times, then goes back to Idle.)</li>
   <li>Select <code>Resources/GoldRushAssets</code> and drag <code>Hero.controller</code> into <b>Hero → Controller</b>.</li>
 </ol>
-<figure class="shot todo" data-shot="phase-01/step-08-b" data-window="inspector" data-select="Assets/GoldRush/Animations/Hero.controller" data-manual="true"><div class="ph">Animator window of Hero.controller: Any State → Win → Idle (orange), parameter Win</div><figcaption>Check: Idle is orange (default) and there are two arrows.</figcaption></figure>
-<figure class="shot todo" data-shot="phase-01/step-08-c" data-window="inspector" data-select="Assets/GoldRush/Resources/GoldRushAssets.asset"><div class="ph">Inspector of GoldRushAssets: Hero Model = Hero, Controller = Hero</div><figcaption>Check: Hero → Controller is filled.</figcaption></figure>
+<figure class="shot"><img src="images/phase-01/step-08-b.png" alt="Animator window of Hero.controller: Any State → Win → Idle (orange), parameter Win" loading="lazy"><figcaption>Check: Idle is orange (default) and there are two arrows.</figcaption></figure>
+<figure class="shot"><img src="images/phase-01/step-08-c.png" alt="Inspector of GoldRushAssets: Hero Model = Hero, Controller = Hero" loading="lazy"><figcaption>Check: Hero → Controller is filled.</figcaption></figure>
 
 <!-- ======================================================= 9 -->
 <h2 id="step-9"><span class="step">9</span>Create the MainMenu scene</h2>
@@ -557,8 +564,8 @@ namespace GoldRush
   <li>Inspector → <b>Add Component</b> → <b>Gold Rush Menu</b>.</li>
 </ol>
 <p>The camera values are the start values of the script. When you press Play, <code>GoldRushMenu</code> moves the camera itself.</p>
-<figure class="shot todo" data-shot="phase-01/step-09-a" data-window="inspector" data-select="Main Camera"><div class="ph">Inspector of Main Camera: Position -1.3, 1.48, -5.56, Rotation 7, 0, 0, Field of View 40, Near 0.1, Far 400</div><figcaption>Check: Field of View is 40.</figcaption></figure>
-<figure class="shot todo" data-shot="phase-01/step-09-b" data-window="inspector" data-select="GoldRushMenu"><div class="ph">Inspector of GoldRushMenu: Transform 0,0,0 and the Gold Rush Menu component with empty fields (Stage, Screens, Filled in at runtime)</div><figcaption>Check: the Gold Rush Menu component has three groups of fields. Leave them empty for now.</figcaption></figure>
+<figure class="shot"><img src="images/phase-01/step-09-a.png" alt="Inspector of Main Camera: Position -1.3, 1.48, -5.56, Rotation 7, 0, 0, Field of View 40, Near 0.1, Far 400" loading="lazy"><figcaption>Check: Field of View is 40.</figcaption></figure>
+<figure class="shot"><img src="images/phase-01/step-09-b.png" alt="Inspector of GoldRushMenu: Transform 0,0,0 and the Gold Rush Menu component with empty fields (Stage, Screens, Filled in at runtime)" loading="lazy"><figcaption>Check: the Gold Rush Menu component has three groups of fields. Leave them empty for now.</figcaption></figure>
 
 <!-- ======================================================= 10 -->
 <h2 id="step-10"><span class="step">10</span>Build the 3D stage from the kit</h2>
@@ -602,9 +609,9 @@ namespace GoldRush
   <li>Open the <code>LampPost</code> in the Hierarchy and select its child <code>LampLight</code>.</li>
   <li><b>Add Component → Night Light</b>. Set <b>Night Intensity</b> to <code>2.2</code> (the third lamp, at <code>-9.6, 0, 3.2</code>: <code>2</code>).</li>
 </ol>
-<figure class="shot todo" data-shot="phase-01/step-10-a" data-window="hierarchy" data-select="MenuDiorama"><div class="ph">Hierarchy: MenuDiorama with Floor, Walls, Obstacles, Lamps, Decor, Scenery, Dynamic, opened, blue prefab instances inside</div><figcaption>Check: every kit piece is inside its group and its name is blue.</figcaption></figure>
-<figure class="shot todo" data-shot="phase-01/step-10-b" data-window="inspector" data-select="MenuDiorama/Lamps/LampPost/LampLight"><div class="ph">Inspector of LampLight: Light (Point) and Night Light, Night Intensity 2.2</div><figcaption>Check: the lamp light has a Night Light component.</figcaption></figure>
-<figure class="shot todo" data-shot="phase-01/step-10-c" data-window="scene" data-select="MenuDiorama"><div class="ph">Scene view from above/behind the camera: grid floor, walls at the back, blocks, pillars, lamps, two coins on the left</div><figcaption>Check: nothing floats or sinks (except the orange block, which sits on top of a grey block).</figcaption></figure>
+<figure class="shot"><img src="images/phase-01/step-10-a.png" alt="Hierarchy: MenuDiorama with Floor, Walls, Obstacles, Lamps, Decor, Scenery, Dynamic, opened, blue prefab instances inside" loading="lazy"><figcaption>Check: every kit piece is inside its group and its name is blue.</figcaption></figure>
+<figure class="shot"><img src="images/phase-01/step-10-b.png" alt="Inspector of LampLight: Light (Point) and Night Light, Night Intensity 2.2" loading="lazy"><figcaption>Check: the lamp light has a Night Light component.</figcaption></figure>
+<figure class="shot"><img src="images/phase-01/step-10-c.jpg" alt="Scene view from above/behind the camera: grid floor, walls at the back, blocks, pillars, lamps, two coins on the left" loading="lazy"><figcaption>Check: nothing floats or sinks (except the orange block, which sits on top of a grey block).</figcaption></figure>
 
 <!-- ======================================================= 11 -->
 <h2 id="step-11"><span class="step">11</span>Add the hero and the lantern</h2>
@@ -615,7 +622,7 @@ namespace GoldRush
   <li>Select <code>Model</code>. Position <code>0, 0.068, 0</code>, Rotation <code>0, 0, 0</code>, Scale <code>0.337, 0.337, 0.337</code>.</li>
   <li>In its <b>Animator</b> component: <b>Controller</b> = <code>Hero</code>, <b>Apply Root Motion</b> off, <b>Culling Mode</b> = <b>Always Animate</b>.</li>
 </ol>
-<figure class="shot todo" data-shot="phase-01/step-11-a" data-window="inspector" data-select="MenuPlayer/Model"><div class="ph">Inspector of Model: Transform (0, 0.068, 0; scale 0.337) and Animator (Controller Hero, Apply Root Motion off, Culling Mode Always Animate)</div><figcaption>Check: Controller = Hero and Apply Root Motion is off.</figcaption></figure>
+<figure class="shot"><img src="images/phase-01/step-11-a.png" alt="Inspector of Model: Transform (0, 0.068, 0; scale 0.337) and Animator (Controller Hero, Apply Root Motion off, Culling Mode Always Animate)" loading="lazy"><figcaption>Check: Controller = Hero and Apply Root Motion is off.</figcaption></figure>
 <h3>The lantern</h3>
 <p>A warm spot light from above-left shines on the hero, like a lantern.</p>
 <ol>
@@ -623,7 +630,7 @@ namespace GoldRush
   <li>Position <code>-1.5, 5.5, -3.5</code>, Rotation <code>52.7, 23.2, 0</code>.</li>
   <li><b>Light</b>: Colour <code>FFD18C</code>, Intensity <code>20</code>, Range <code>14</code>, Outer Spot Angle <code>55</code>, Shadow Type <b>Soft Shadows</b>.</li>
 </ol>
-<figure class="shot todo" data-shot="phase-01/step-11-b" data-window="inspector" data-select="Lantern"><div class="ph">Inspector of Lantern: Spot light, colour FFD18C, Intensity 20, Range 14, Spot Angle 55, Soft Shadows</div><figcaption>Check: Type = Spot and Intensity = 20.</figcaption></figure>
+<figure class="shot"><img src="images/phase-01/step-11-b.png" alt="Inspector of Lantern: Spot light, colour FFD18C, Intensity 20, Range 14, Spot Angle 55, Soft Shadows" loading="lazy"><figcaption>Check: Type = Spot and Intensity = 20.</figcaption></figure>
 <div class="tip"><b>Optional: the monsters.</b> In the real menu three monsters stand behind the hero. They get their animations in phase 7, so now they would stand in their rest pose. You can skip them: phase 7 adds them. If you want them now, drag each model to the <b>root</b> of the Hierarchy and use these values:
 <div class="table-wrap"><table>
   <tr><th>Name (empty, root)</th><th>Position</th><th>Rotation Y</th><th>Child <code>Model</code> (the .fbx)</th><th>Child <code>Glow</code> (Point Light)</th></tr>
@@ -644,7 +651,7 @@ In step 18 you put the three <code>Glow</code> lights into <b>Menu Glows</b>, so
   <li>Rect Transform → click the anchor preset box → hold <b>Alt</b> and click the bottom-right box (<b>stretch / stretch</b>). Left, Top, Right and Bottom are all <code>0</code>.</li>
   <li><b>Add Component → Canvas Group</b>. (The menu uses it to fade the screen in.)</li>
 </ol>
-<figure class="shot todo" data-shot="phase-01/step-12-a" data-window="inspector" data-select="GoldRushMenu/MenuUI"><div class="ph">Inspector of MenuUI: Canvas (Screen Space - Overlay, Sort Order 10), Canvas Scaler (Scale With Screen Size, 1920 x 1080, Match 0.5), Graphic Raycaster</div><figcaption>Check: Reference Resolution 1920 × 1080 and Match 0.5.</figcaption></figure>
+<figure class="shot"><img src="images/phase-01/step-12-a.png" alt="Inspector of MenuUI: Canvas (Screen Space - Overlay, Sort Order 10), Canvas Scaler (Scale With Screen Size, 1920 x 1080, Match 0.5), Graphic Raycaster" loading="lazy"><figcaption>Check: Reference Resolution 1920 × 1080 and Match 0.5.</figcaption></figure>
 <div class="note"><b>How to read the UI tables in this guide</b>
 <ul>
   <li><b>Create</b>: <i>Empty</i> = right-click the parent → <b>Create Empty</b>. <i>Image</i> = right-click → <b>UI → Image</b>. <i>Text</i> = right-click → <b>UI → Legacy → Text</b>. Rename it at once.</li>
@@ -661,7 +668,7 @@ In step 18 you put the three <code>Glow</code> lights into <b>Menu Glows</b>, so
   <tr><td><code>BackdropTop</code> (Title)</td><td>Image</td><td>top stretch, pivot <code>0.5, 1</code></td><td>Left 0, Right 0, Pos Y 0, Height <code>420</code></td><td><code>fadeD</code>, <code>080D1F · 153</code></td></tr>
   <tr><td><code>BackdropLeft</code> (Title)</td><td>Image</td><td>left stretch, pivot <code>0, 0.5</code></td><td>Pos X 0, Width <code>820</code>, Top 0, Bottom 0</td><td><code>fadeR</code>, <code>080D1F · 153</code></td></tr>
 </table></div>
-<figure class="shot todo" data-shot="phase-01/step-12-b" data-window="inspector" data-select="GoldRushMenu/MenuUI/Title/BackdropTop"><div class="ph">Inspector of BackdropTop: top-stretch anchor, pivot 0.5/1, height 420, Image fadeD navy alpha 153, Raycast Target off</div><figcaption>Check: Raycast Target is off.</figcaption></figure>
+<figure class="shot"><img src="images/phase-01/step-12-b.png" alt="Inspector of BackdropTop: top-stretch anchor, pivot 0.5/1, height 420, Image fadeD navy alpha 153, Raycast Target off" loading="lazy"><figcaption>Check: Raycast Target is off.</figcaption></figure>
 
 <!-- ======================================================= 13 -->
 <h2 id="step-13"><span class="step">13</span>Glass recipe 1: round chips</h2>
@@ -693,8 +700,8 @@ In step 18 you put the three <code>Glow</code> lights into <b>Menu Glows</b>, so
   <li><b>Add Component → Button FX</b>. Tick <b>Flat</b>.</li>
   <li><b>Add Component → Menu Action</b>. Type <code>settings</code> in <b>Action</b>.</li>
 </ol>
-<figure class="shot todo" data-shot="phase-01/step-13-a" data-window="hierarchy" data-select="GoldRushMenu/MenuUI/Title/Btn_Gear"><div class="ph">Hierarchy: Btn_Gear (blue) → Shadow, Tint, Glass → Edge, Icon_Gear → Glyph</div><figcaption>Check: Edge and Icon_Gear are children of Glass.</figcaption></figure>
-<figure class="shot todo" data-shot="phase-01/step-13-b" data-window="inspector" data-select="GoldRushMenu/MenuUI/Title/Btn_Gear"><div class="ph">Inspector of Btn_Gear: Rect Transform (top left, 32, -30, 76 x 76), Button (Target Graphic Glass), Button FX (Flat), Menu Action (settings)</div><figcaption>Check: Menu Action = settings.</figcaption></figure>
+<figure class="shot"><img src="images/phase-01/step-13-a.png" alt="Hierarchy: Btn_Gear (blue) → Shadow, Tint, Glass → Edge, Icon_Gear → Glyph" loading="lazy"><figcaption>Check: Edge and Icon_Gear are children of Glass.</figcaption></figure>
+<figure class="shot"><img src="images/phase-01/step-13-b.png" alt="Inspector of Btn_Gear: Rect Transform (top left, 32, -30, 76 x 76), Button (Target Graphic Glass), Button FX (Flat), Menu Action (settings)" loading="lazy"><figcaption>Check: Menu Action = settings.</figcaption></figure>
 <h3>The day/night button</h3>
 <ol>
   <li>Drag the <code>GlassCircle</code> prefab from <code>Prefabs/UI</code> onto <code>Title</code>. Rename it <code>DayNight</code>. Pos <code>122, -30</code>, size <code>76 × 76</code>.</li>
@@ -712,7 +719,7 @@ In step 18 you put the three <code>Glow</code> lights into <b>Menu Glows</b>, so
   <li>Select <code>DayNight</code>. <b>Add Component → Button</b>, Target Graphic = <code>DayNight/Glass</code>.</li>
   <li><b>Add Component → Day Night Button</b>. Drag <code>Icon_Sun</code> into <b>Sun</b> and <code>Icon_Moon</code> into <b>Moon</b>.</li>
 </ol>
-<figure class="shot todo" data-shot="phase-01/step-13-c" data-window="inspector" data-select="GoldRushMenu/MenuUI/Title/DayNight"><div class="ph">Inspector of DayNight: Rect Transform (122, -30, 76 x 76), Button, Day Night Button (Sun = Icon_Sun, Moon = Icon_Moon)</div><figcaption>Check: Sun and Moon are filled.</figcaption></figure>
+<figure class="shot"><img src="images/phase-01/step-13-c.png" alt="Inspector of DayNight: Rect Transform (122, -30, 76 x 76), Button, Day Night Button (Sun = Icon_Sun, Moon = Icon_Moon)" loading="lazy"><figcaption>Check: Sun and Moon are filled.</figcaption></figure>
 
 <!-- ======================================================= 14 -->
 <h2 id="step-14"><span class="step">14</span>Glass recipe 2: pill chips</h2>
@@ -743,8 +750,8 @@ In step 18 you put the three <code>Glow</code> lights into <b>Menu Glows</b>, so
   <tr><td><code>Shine</code> (Coin)</td><td>Image</td><td>Anchors Min and Max <code>0.32, 0.7</code>, pivot <code>0.5, 0.5</code></td><td><code>0, 0</code> / <code>9.72 × 9.72</code></td><td><code>circle</code>, <code>FFFFFF · 166</code></td></tr>
   <tr><td><code>Label</code> (Gold)</td><td>Text</td><td>stretch</td><td>L 78, B 0, R 12, T 0</td><td><code>0</code>, Poppins-Bold <code>38</code>, Middle Left, <code>FFC233</code>, Outline (1, -1)</td></tr>
 </table></div>
-<figure class="shot todo" data-shot="phase-01/step-14-a" data-window="hierarchy" data-select="GoldRushMenu/MenuUI/Title/Gold"><div class="ph">Hierarchy: Gold (blue) → Shadow, Tint, Glass → Edge, Coin → Rim, Body, Inner, Shine, Label</div><figcaption>Check: Coin and Label are children of Gold (not of Glass).</figcaption></figure>
-<figure class="shot todo" data-shot="phase-01/step-14-b" data-window="inspector" data-select="GoldRushMenu/MenuUI/Title/Gold/Label"><div class="ph">Inspector of Gold/Label: stretch L78 R12, Text "0", Poppins-Bold 38, Middle Left, gold colour, Overflow/Overflow, Outline</div><figcaption>Check: Font is Poppins-Bold and Raycast Target is off.</figcaption></figure>
+<figure class="shot"><img src="images/phase-01/step-14-a.png" alt="Hierarchy: Gold (blue) → Shadow, Tint, Glass → Edge, Coin → Rim, Body, Inner, Shine, Label" loading="lazy"><figcaption>Check: Coin and Label are children of Gold (not of Glass).</figcaption></figure>
+<figure class="shot"><img src="images/phase-01/step-14-b.png" alt="Inspector of Gold/Label: stretch L78 R12, Text &quot;0&quot;, Poppins-Bold 38, Middle Left, gold colour, Overflow/Overflow, Outline" loading="lazy"><figcaption>Check: Font is Poppins-Bold and Raycast Target is off.</figcaption></figure>
 <h3>The stars counter</h3>
 <ol>
   <li>Drag the <code>GlassPill</code> prefab onto <code>Title</code>. Rename it <code>Stars</code>. Pos <code>426, -30</code>, size <code>200 × 76</code>. (Keep the white edge.)</li>
@@ -766,7 +773,7 @@ In step 18 you put the three <code>Glow</code> lights into <b>Menu Glows</b>, so
   <li><code>Tint</code> colour <code>080D1F · 140</code> (darker, so the text reads on a bright day). <code>Glass/Edge</code> colour <code>33C7E6 · 204</code> (cyan).</li>
   <li>Add a child <b>Text</b> named <code>Label</code>: stretch 0, text <code>GRAB   •   DODGE   •   ESCAPE</code> (three spaces around each dot), Poppins-SemiBold <code>24</code>, Middle Center, <code>F2F7FF · 230</code>. No outline.</li>
 </ol>
-<figure class="shot todo" data-shot="phase-01/step-14-c" data-window="game" data-select="GoldRushMenu/MenuUI/Title"><div class="ph">Game view (top-left corner zoomed): gear, sun, gold pill with coin and 0, stars pill with 0 / 12 and a short gold bar; tagline pill with cyan edge</div><figcaption>Check: the round ends of the pills are perfect half circles.</figcaption></figure>
+<figure class="shot"><img src="images/phase-01/step-14-c.jpg" alt="Game view (top-left corner zoomed): gear, sun, gold pill with coin and 0, stars pill with 0 / 12 and a short gold bar; tagline pill with cyan edge" loading="lazy"><figcaption>Check: the round ends of the pills are perfect half circles.</figcaption></figure>
 
 <!-- ======================================================= 15 -->
 <h2 id="step-15"><span class="step">15</span>The logo and the glows</h2>
@@ -778,7 +785,7 @@ In step 18 you put the three <code>Glow</code> lights into <b>Menu Glows</b>, so
 </table></div>
 <p>Put <code>LogoGlow</code> and <code>Logo</code> <b>above</b> <code>Tagline</code> in the Hierarchy (drag them). The order of children is the drawing order: lower in the list = drawn on top.</p>
 <div class="warn">The <code>Logo</code> is empty in the editor. <code>LogoTitle</code> makes its 15 text layers (shadow, 12 depth layers, rim, face) in <code>Awake</code>, when you press Play.</div>
-<figure class="shot todo" data-shot="phase-01/step-15" data-window="inspector" data-select="GoldRushMenu/MenuUI/Title/LogoGlow"><div class="ph">Inspector of LogoGlow: top centre, 0, -60, 1500 x 420, Image soft gold alpha 66, Bob (Speed 1.2, Pulse 0.05)</div><figcaption>Check: Bob has Speed 1.2 and Pulse 0.05; Amplitude and Wobble stay 0.</figcaption></figure>
+<figure class="shot"><img src="images/phase-01/step-15.png" alt="Inspector of LogoGlow: top centre, 0, -60, 1500 x 420, Image soft gold alpha 66, Bob (Speed 1.2, Pulse 0.05)" loading="lazy"><figcaption>Check: Bob has Speed 1.2 and Pulse 0.05; Amplitude and Wobble stay 0.</figcaption></figure>
 
 <!-- ======================================================= 16 -->
 <h2 id="step-16"><span class="step">16</span>Glass recipe 3: the big button</h2>
@@ -816,9 +823,9 @@ In step 18 you put the three <code>Glow</code> lights into <b>Menu Glows</b>, so
   <li>Drag <code>GlassButton</code> into <code>Prefabs/UI</code> (<b>Original Prefab</b>). Rename the object in the Hierarchy to <code>LEVELSBtn</code>.</li>
 </ol>
 <div class="tip">The <b>Mask</b> on <code>Face</code> cuts every child to the rounded shape. That is why the gradient and the light sweep never stick out at the corners.</div>
-<figure class="shot todo" data-shot="phase-01/step-16-a" data-window="hierarchy" data-select="GoldRushMenu/MenuUI/Title/LEVELSBtn"><div class="ph">Hierarchy: LEVELSBtn (blue) → Halo, Shadow, EdgeGlow, Tint, Face → Gradient, Depth, TopLine, Sweep, Edge, IconDisc (Ring, Icon_Levels/Glyph), Content (Label), Chevron</div><figcaption>Check: the names and the order are exactly like this (Button FX looks for these names).</figcaption></figure>
-<figure class="shot todo" data-shot="phase-01/step-16-b" data-window="inspector" data-select="GoldRushMenu/MenuUI/Title/LEVELSBtn"><div class="ph">Inspector of LEVELSBtn: Rect Transform (bottom left, 40, 166, 470 x 90), Button (Transition None, Target Graphic Face), Button FX (Flat, Base Color blue), Menu Action (levels), Canvas Group</div><figcaption>Check: Transition = None and Menu Action = levels.</figcaption></figure>
-<figure class="shot todo" data-shot="phase-01/step-16-c" data-window="inspector" data-select="GoldRushMenu/MenuUI/Title/LEVELSBtn/Face"><div class="ph">Inspector of LEVELSBtn/Face: stretch 0, Image rr blue alpha 107, Sliced, PPU 1.173, Raycast Target on, Mask (Show Mask Graphic)</div><figcaption>Check: Face has a Mask and Raycast Target is on.</figcaption></figure>
+<figure class="shot"><img src="images/phase-01/step-16-a.png" alt="Hierarchy: LEVELSBtn (blue) → Halo, Shadow, EdgeGlow, Tint, Face → Gradient, Depth, TopLine, Sweep, Edge, IconDisc (Ring, Icon_Levels/Glyph), Content (Label), Chevron" loading="lazy"><figcaption>Check: the names and the order are exactly like this (Button FX looks for these names).</figcaption></figure>
+<figure class="shot"><img src="images/phase-01/step-16-b.png" alt="Inspector of LEVELSBtn: Rect Transform (bottom left, 40, 166, 470 x 90), Button (Transition None, Target Graphic Face), Button FX (Flat, Base Color blue), Menu Action (levels), Canvas Group" loading="lazy"><figcaption>Check: Transition = None and Menu Action = levels.</figcaption></figure>
+<figure class="shot"><img src="images/phase-01/step-16-c.png" alt="Inspector of LEVELSBtn/Face: stretch 0, Image rr blue alpha 107, Sliced, PPU 1.173, Raycast Target on, Mask (Show Mask Graphic)" loading="lazy"><figcaption>Check: Face has a Mask and Raycast Target is on.</figcaption></figure>
 
 <!-- ======================================================= 17 -->
 <h2 id="step-17"><span class="step">17</span>SHOP, PLAY and the version label</h2>
@@ -886,10 +893,8 @@ In step 18 you put the three <code>Glow</code> lights into <b>Menu Glows</b>, so
   LEVELSBtn
   SHOPBtn
   Label</code></pre>
-<figure class="shot todo" data-shot="phase-01/step-17-a" data-window="hierarchy" data-select="GoldRushMenu/MenuUI/Title"><div class="ph">Hierarchy of Title in the order above; PLAYBtn, LEVELSBtn and SHOPBtn are blue prefab instances</div><figcaption>Check: PLAYBtn is above LEVELSBtn, the version Label is last.</figcaption></figure>
-<figure class="shot todo" data-shot="phase-01/step-17-b" data-window="inspector" data-select="GoldRushMenu/MenuUI/Title/PLAYBtn"><div class="ph">Inspector of PLAYBtn: bottom left, 40, 272, 470 x 140, Button FX Base Color cyan, Menu Action play, overrides in bold</div><figcaption>Check: Menu Action = play.</figcaption></figure>
-<figure class="shot todo" data-shot="phase-01/step-17-c" data-window="scene" data-select="GoldRushMenu/MenuUI/Title"><div class="ph">Scene view (2D, UI): the title screen layout: chips top left, logo area, tagline, PLAY / LEVELS / SHOP at the bottom left, v1.0 bottom right</div><figcaption>Check: the three buttons are in one column on the left.</figcaption></figure>
-
+<figure class="shot"><img src="images/phase-01/step-17-a.png" alt="Hierarchy of Title in the order above; PLAYBtn, LEVELSBtn and SHOPBtn are blue prefab instances" loading="lazy"><figcaption>Check: PLAYBtn is above LEVELSBtn, the version Label is last.</figcaption></figure>
+<figure class="shot"><img src="images/phase-01/step-17-b.png" alt="Inspector of PLAYBtn: bottom left, 40, 272, 470 x 140, Button FX Base Color cyan, Menu Action play, overrides in bold" loading="lazy"><figcaption>Check: Menu Action = play.</figcaption></figure>
 <!-- ======================================================= 18 -->
 <h2 id="step-18"><span class="step">18</span>Connect GoldRushMenu</h2>
 <p>Select <code>GoldRushMenu</code>. Drag each object from the Hierarchy into its field:</p>
@@ -909,7 +914,7 @@ In step 18 you put the three <code>Glow</code> lights into <b>Menu Glows</b>, so
   <tr><td>Stars Bar</td><td><code>Title/Stars/BarBg/Bar</code></td></tr>
 </table></div>
 <p>The other fields (Level Screen, Shop Screen, Settings, Top Right, Gold Pill, …) stay empty. You fill them in phase 2. Save the scene.</p>
-<figure class="shot todo" data-shot="phase-01/step-18" data-window="inspector" data-select="GoldRushMenu"><div class="ph">Inspector of GoldRushMenu: Stage fields filled, Canvas Rt, Title Screen, Entrance (3) filled, Title Gold Text, Stars Text, Play Subtitle, Stars Bar filled; the rest empty</div><figcaption>Check: Entrance has 3 elements: PLAYBtn, LEVELSBtn, SHOPBtn.</figcaption></figure>
+<figure class="shot"><img src="images/phase-01/step-18.png" alt="Inspector of GoldRushMenu: Stage fields filled, Canvas Rt, Title Screen, Entrance (3) filled, Title Gold Text, Stars Text, Play Subtitle, Stars Bar filled; the rest empty" loading="lazy"><figcaption>Check: Entrance has 3 elements: PLAYBtn, LEVELSBtn, SHOPBtn.</figcaption></figure>
 
 <!-- ======================================================= 19 -->
 <h2 id="step-19"><span class="step">19</span>▶ Press Play</h2>
@@ -920,7 +925,7 @@ In step 18 you put the three <code>Glow</code> lights into <b>Menu Glows</b>, so
   <li>Click the sun / moon button.</li>
   <li>Click <b>▶</b> again to stop.</li>
 </ol>
-<figure class="shot todo" data-shot="phase-01/step-19" data-window="game" data-select="GoldRushMenu"><div class="ph">Game view in Play mode: night stage, hero in the middle, GOLD RUSH logo, tagline, PLAY / LEVELS / SHOP, top-left chips with 0 gold and 0 / 12 stars</div><figcaption>Compare with the picture in step 1.</figcaption></figure>
+<figure class="shot"><img src="images/phase-01/step-19.jpg" alt="Game view in Play mode: night stage, hero in the middle, GOLD RUSH logo, tagline, PLAY / LEVELS / SHOP, top-left chips with 0 gold and 0 / 12 stars" loading="lazy"><figcaption>Compare with the picture in step 1.</figcaption></figure>
 <div class="check">
 <p><b>You should see:</b></p>
 <ul>

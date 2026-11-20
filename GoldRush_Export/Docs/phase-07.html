@@ -34,6 +34,13 @@
 <li><a href="phase-09.html"><span class="num">9</span><span class="label">Gameplay UI</span></a></li>
 <li><a href="phase-10.html"><span class="num">10</span><span class="label">Polish and build</span></a></li>
 </ul>
+<h2>Practice</h2><ul>
+<li><a href="practicals.html"><span class="num">▶</span><span class="label">Practicals overview</span></a></li>
+<li><a href="practical-1.html"><span class="num">P1</span><span class="label">Practical 1</span></a></li>
+<li><a href="practical-2.html"><span class="num">P2</span><span class="label">Practical 2</span></a></li>
+<li><a href="practical-3.html"><span class="num">P3</span><span class="label">Practical 3</span></a></li>
+<li><a href="practical-4.html"><span class="num">P4</span><span class="label">Practical 4</span></a></li>
+</ul>
 <h2>Help</h2><ul>
 <li><a href="troubleshooting.html"><span class="num">?</span><span class="label">Troubleshooting</span></a></li>
 <li><a href="glossary.html"><span class="num">A–Z</span><span class="label">Glossary</span></a></li>
@@ -124,8 +131,8 @@
   <li>Set <b>Use Geometry</b> = <code>Physics Colliders</code> (only objects with a collider count).</li>
   <li>Click <b>Bake</b>.</li>
 </ol>
-<figure class="shot todo" data-shot="phase-07/step-03-a" data-window="inspector" data-select="Level 1 - Training Yard/Static"><div class="ph">Inspector of Static: NavMesh Surface (Agent Type Humanoid, Collect Objects Current Object Hierarchy, Use Geometry Physics Colliders)</div><figcaption>The NavMesh Surface settings.</figcaption></figure>
-<figure class="shot todo" data-shot="phase-07/step-03-b" data-window="scene" data-select="Level 1 - Training Yard/Static"><div class="ph">Scene view of Level1 from above with the blue NavMesh and holes around walls and blocks</div><figcaption>Blue = where monsters can walk.</figcaption></figure>
+<figure class="shot"><img src="images/phase-07/step-03-a.png" alt="" loading="lazy"><figcaption>The NavMesh Surface settings.</figcaption></figure>
+
 <div class="tip">No blue? In the Scene view, open the <b>AI Navigation</b> overlay and tick <b>Show NavMesh</b>. Also turn on <b>Gizmos</b>. When the level starts, the GameManager bakes once more, so the monsters always know your newest walls.</div>
 <div class="note">The Player, the coins and the monsters must <b>not</b> be children of <code>Static</code>.</div>
 
@@ -145,7 +152,6 @@
   <tr><td><code>MushroomKing.fbx</code></td><td>Idle, Walk, Run, Wave, Yes, Jump_Idle</td></tr>
 </table></div>
 <p>All other clips (Death, Bite_Front, Punch …) play only once. A clip name can start with <code>CharacterArmature|</code>. That is fine.</p>
-<figure class="shot todo" data-shot="phase-07/step-04" data-window="inspector" data-select="Assets/GoldRush/Art/Characters/Monsters/Slime.fbx"><div class="ph">Slime.fbx Import Settings, Animation tab: the Walk clip with Loop Time and Loop Pose ticked</div><figcaption>Slime.fbx: Walk loops.</figcaption></figure>
 
 <!-- ======================================================= 5 -->
 <h2 id="step-5"><span class="step">5</span>Three Animator Controllers</h2>
@@ -170,8 +176,6 @@
   <tr><td>Die</td><td>Death</td><td>Death</td><td>Death</td></tr>
 </table></div>
 <p>The Slime and the Ghost have no run clip, so "Run" uses the walk clip again. The code plays it faster when they chase you. The transitions came with the copy: Any State → Attack / Hit / Win / Die (Has Exit Time off, Duration 0.1); Attack and Hit → Locomotion (Exit Time 0.85); Win → Locomotion (Exit Time 3); Die has no way back.</p>
-<figure class="shot todo" data-shot="phase-07/step-05-a" data-window="project" data-select="Assets/GoldRush/Animations/Slime.controller"><div class="ph">Project window: Animations with Hero, Slime, Ghost, MushroomKing controllers</div><figcaption>Four controllers.</figcaption></figure>
-<figure class="shot todo" data-shot="phase-07/step-05-b" data-window="inspector" data-select="Assets/GoldRush/Animations/Slime.controller"><div class="ph">Inspector of the Slime Locomotion blend tree: Idle 0, Walk 0.5, Walk 1</div><figcaption>Slime Locomotion: Idle, Walk, Walk.</figcaption></figure>
 
 <!-- ======================================================= 6 -->
 <h2 id="step-6"><span class="step">6</span>Fill GoldRushAssets: the monsters</h2>
@@ -190,14 +194,13 @@
 </table></div>
 <p>Walk Speed 0 means "guess from the height". The Slime and the Ghost have no feet, so the guess is fine for them.</p>
 <p>Also check the materials at the bottom: <b>Lit</b>, <b>Lit Emissive</b>, <b>Lit Transparent</b> and <b>Particle</b> must be filled (<code>GR_Lit</code>, <code>GR_LitEmissive</code>, <code>GR_LitTransparent</code>, <code>GR_Particle</code>). The badge and the night glow are made from them.</p>
-<figure class="shot todo" data-shot="phase-07/step-06" data-window="inspector" data-select="Assets/GoldRush/Resources/GoldRushAssets.asset"><div class="ph">Inspector of GoldRushAssets: Slime, Ghost and Mushroom King open with Model, Controller and Height filled</div><figcaption>The three monsters in GoldRushAssets.</figcaption></figure>
 
 <!-- ======================================================= 7 -->
 <h2 id="step-7"><span class="step">7</span>Import the helper scripts</h2>
 <p><code>EnemyAI.cs</code> is about 370 lines, so you import it with its helpers instead of typing.</p>
 <ol>
   <li>In Finder or Explorer, open the Resources pack folder <code>Scripts/Helpers/</code>.</li>
-  <li>Drag each file from the table into the same folder in <code>Assets/GoldRush/Scripts/</code>. If Unity asks to replace a file, click <b>Replace</b>.</li>
+  <li>Drag each file from the table into the same folder in <code>Assets/GoldRush/Scripts/</code>. These files are all new. (Unity never replaces a file you drag in: if a file with the same name is already there, it adds a copy such as <code>EnemyAI 1.cs</code>. Delete such a copy at once, or you get "already contains a definition" errors.)</li>
 </ol>
 <div class="table-wrap"><table>
   <tr><th>From Helpers/…</th><th>Into Scripts/…</th><th>What it does</th></tr>
@@ -239,7 +242,6 @@ default: // Guard
   <li>After the switch, the code checks the distance to you. Too close = caught: it calls <code>GameManager.I.OnPlayerCaught(this)</code>. Monsters have no colliders.</li>
 </ul>
 <p>Third, <code>SetupPlaced()</code>. The GameManager calls it for every monster prefab in the scene when the level starts. It reads the type from <code>MonsterSpawn</code>, sets up the NavMeshAgent, puts the monster on the NavMesh (<code>agent.Warp</code>) and builds the body from GoldRushAssets (<code>CharacterFactory.BuildModel</code>). Then <code>Decorate()</code> adds the ITSTEP badge and a coloured glow that shines only at night.</p>
-<figure class="shot todo" data-shot="phase-07/step-07" data-window="project" data-select="Assets/GoldRush/Scripts/Gameplay/EnemyAI.cs"><div class="ph">Project window: Scripts/Gameplay with CharacterFactory.cs, EnemyAI.cs, GameManager.cs, OriginalMaterials.cs, PlayerMotor.cs, ThirdPersonCamera.cs</div><figcaption>The imported helpers.</figcaption></figure>
 
 <!-- ======================================================= 8 -->
 <h2 id="step-8"><span class="step">8</span>Script: MonsterSpawn</h2>
@@ -296,7 +298,6 @@ namespace GoldRush
   <li><code>a ? b : c</code> means "if a, then b, else c".</li>
   <li><code>OnDrawGizmos()</code> draws a wire box in the monster's colour (green, pink or gold), and for the King a circle with a 4.5 m radius: its patrol area.</li>
 </ul>
-<figure class="shot todo" data-shot="phase-07/step-08" data-window="project" data-select="Assets/GoldRush/Scripts/Level/MonsterSpawn.cs"><div class="ph">Project window: Scripts/Level with CoinSpot, LevelScene, MonsterSpawn, PlayerSpawn</div><figcaption>MonsterSpawn.cs is in the Level folder.</figcaption></figure>
 
 <!-- ======================================================= 9 -->
 <h2 id="step-9"><span class="step">9</span>Script: Badge (the ITSTEP patch)</h2>
@@ -442,7 +443,6 @@ namespace GoldRush
   <li><code>TextTexture()</code> paints the letters into a <code>Texture2D</code>. <code>FilterMode.Point</code> keeps the pixels sharp.</li>
   <li><code>FindBodyBone()</code> looks for a bone called "chest", "spine", "torso" or "body" and makes the badge its child.</li>
 </ul>
-<figure class="shot todo" data-shot="phase-07/step-09" data-window="project" data-select="Assets/GoldRush/Scripts/Gameplay/Badge.cs"><div class="ph">Project window: Scripts/Gameplay with Badge.cs</div><figcaption>Badge.cs is in the Gameplay folder.</figcaption></figure>
 
 <!-- ======================================================= 10 -->
 <h2 id="step-10"><span class="step">10</span>Update the GameManager</h2>
@@ -794,7 +794,6 @@ namespace GoldRush
   <li>The test key <b>L</b> is gone. Now the monsters make you lose.</li>
 </ul>
 <div class="check">Save. Wait for Unity to compile. The Console must have <b>no red errors</b> now.</div>
-<figure class="shot todo" data-shot="phase-07/step-10" data-window="project" data-select="Assets/GoldRush/Scripts/Gameplay/GameManager.cs"><div class="ph">Project window: Scripts/Gameplay with GameManager.cs (phase 7 version)</div><figcaption>GameManager.cs is replaced.</figcaption></figure>
 
 <!-- ======================================================= 11 -->
 <h2 id="step-11"><span class="step">11</span>Build the Slime prefab</h2>
@@ -818,7 +817,6 @@ namespace GoldRush
 </table></div>
 <div class="tip"><code>SetupPlaced()</code> sets these same numbers again when the level starts, so a small mistake does not matter. The speed is set by the code for each state.</div>
 <div class="note">Do not add a collider and do not put a model inside. The body, the badge and the glow are added when you press Play.</div>
-<figure class="shot todo" data-shot="phase-07/step-11" data-window="inspector" data-select="Assets/GoldRush/Prefabs/Gameplay/Monster_Slime.prefab"><div class="ph">Inspector of Monster_Slime: Monster Spawn (Type Patroller), Nav Mesh Agent (Radius 0.45, Height 0.95), Enemy AI</div><figcaption>Three components on one object.</figcaption></figure>
 
 <!-- ======================================================= 12 -->
 <h2 id="step-12"><span class="step">12</span>Build the Ghost and Mushroom King prefabs</h2>
@@ -834,7 +832,6 @@ namespace GoldRush
   <tr><td><code>Monster_MushroomKing</code></td><td>Guard</td><td>0.75</td><td>2.6</td></tr>
 </table></div>
 <p>The Mushroom King has a <b>Home</b> field. Leave it empty: the King guards the place where you put it. (The bigger levels in phase 10 use it.)</p>
-<figure class="shot todo" data-shot="phase-07/step-12" data-window="inspector" data-select="Assets/GoldRush/Prefabs/Gameplay/Monster_MushroomKing.prefab"><div class="ph">Inspector of Monster_MushroomKing: Monster Spawn (Type Guard, Home empty), Nav Mesh Agent (Radius 0.75, Height 2.6), Enemy AI</div><figcaption>The Mushroom King prefab.</figcaption></figure>
 
 <!-- ======================================================= 13 -->
 <h2 id="step-13"><span class="step">13</span>Place the monsters in Level1</h2>
@@ -849,8 +846,7 @@ namespace GoldRush
 </ol>
 <div class="note">Each monster must stand on the blue NavMesh (or less than 3 m away). A monster on top of a block or outside the walls can not move.</div>
 <div class="tip">Want to test the Ghost? Drag one <code>Monster_Ghost</code> into <code>Gameplay/Monsters</code> too. It is fast and sees all around. Delete it afterwards, so Level 1 stays easy.</div>
-<figure class="shot todo" data-shot="phase-07/step-13-a" data-window="hierarchy" data-select="Level 1 - Training Yard/Gameplay/Monsters/Slime 1"><div class="ph">Hierarchy: Gameplay › Monsters › Slime 1, Slime 2 (blue prefab icons)</div><figcaption>Two Slime prefabs.</figcaption></figure>
-<figure class="shot todo" data-shot="phase-07/step-13-b" data-window="scene" data-select="Level 1 - Training Yard/Gameplay/Monsters"><div class="ph">Scene view: the two green MonsterSpawn boxes on the blue NavMesh</div><figcaption>The Slimes stand on the NavMesh.</figcaption></figure>
+<figure class="shot"><img src="images/phase-07/step-13-a.png" alt="" loading="lazy"><figcaption>Two Slime prefabs.</figcaption></figure>
 
 <!-- ======================================================= 14 -->
 <h2 id="step-14"><span class="step">14</span>▶ Press Play</h2>
@@ -864,7 +860,7 @@ namespace GoldRush
   <li>Get caught again: slow motion, you fall down, the Slimes dance, and the level starts again.</li>
   <li>Collect all gold: the monsters get faster. Run to the gate!</li>
 </ul>
-<figure class="shot todo" data-shot="phase-07/step-14" data-window="game" data-select=""><div class="ph">Game view: a Slime with its ITSTEP badge chases the hero</div><figcaption>A Slime has seen you.</figcaption></figure>
+<figure class="shot"><img src="images/08_level2.jpg" alt="" loading="lazy"><figcaption>A Slime has seen you.</figcaption></figure>
 <div class="tip">The "!" and "?" bubbles over the monsters and the hearts on the screen come with the HUD in phase 9.</div>
 
 <!-- ======================================================= 15 -->

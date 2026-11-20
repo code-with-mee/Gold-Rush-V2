@@ -34,6 +34,13 @@
 <li><a href="phase-09.html"><span class="num">9</span><span class="label">Gameplay UI</span></a></li>
 <li><a href="phase-10.html" aria-current="page"><span class="num">10</span><span class="label">Polish and build</span></a></li>
 </ul>
+<h2>Practice</h2><ul>
+<li><a href="practicals.html"><span class="num">▶</span><span class="label">Practicals overview</span></a></li>
+<li><a href="practical-1.html"><span class="num">P1</span><span class="label">Practical 1</span></a></li>
+<li><a href="practical-2.html"><span class="num">P2</span><span class="label">Practical 2</span></a></li>
+<li><a href="practical-3.html"><span class="num">P3</span><span class="label">Practical 3</span></a></li>
+<li><a href="practical-4.html"><span class="num">P4</span><span class="label">Practical 4</span></a></li>
+</ul>
 <h2>Help</h2><ul>
 <li><a href="troubleshooting.html"><span class="num">?</span><span class="label">Troubleshooting</span></a></li>
 <li><a href="glossary.html"><span class="num">A–Z</span><span class="label">Glossary</span></a></li>
@@ -124,7 +131,7 @@
   <tr><td>11</td><td><code>M_TealTop</code></td><td><code>6BDED9</code></td><td><code>298FA1</code></td><td>teal tops</td></tr>
 </table></div>
 <p>Glowing materials (<code>M_GlowCyan</code>, <code>M_GlowLamp</code>, gold) are not in the list: they look the same by day and night.</p>
-<figure class="shot todo" data-shot="phase-10/step-03" data-window="inspector" data-select="Assets/GoldRush/Resources/DayNightPalette.asset"><div class="ph">Inspector of Resources/DayNightPalette: Entries with 12 rows (material, day colour, night colour)</div><figcaption>12 rows. The first one is M_Floor, light grey by day and dark blue by night.</figcaption></figure>
+<figure class="shot"><img src="images/phase-10/step-03.png" alt="" loading="lazy"><figcaption>12 rows. The first one is M_Floor, light grey by day and dark blue by night.</figcaption></figure>
 
 <!-- ======================================================= 4 -->
 <h2 id="step-4"><span class="step">4</span>Tint the levels and light the lamps</h2>
@@ -146,9 +153,6 @@
 </ol>
 <p>The menu lamps already have a Night Light (phase 1), and the hero's lantern and the monster glows register themselves in code.</p>
 <div class="note"><b>Why copies?</b> DayNightTint does not change your material files. When the level starts, it makes a copy of each material, puts the copy on every Renderer that used the original, and tints the copy. If it changed the real asset in Play mode, Unity would save the night colour into your project.</div>
-<figure class="shot todo" data-shot="phase-10/step-04-a" data-window="inspector" data-select="Level 1 - Training Yard"><div class="ph">Inspector of Level 1 - Training Yard: Level Scene (Arena Half 16) and Day Night Tint (Entries 0)</div><figcaption>The Entries list stays empty.</figcaption></figure>
-<figure class="shot todo" data-shot="phase-10/step-04-b" data-window="inspector" data-select="Level 1 - Training Yard/Static/Lamps/LampPost/LampLight"><div class="ph">Inspector of a LampLight: Light (Point) and Night Light, Night Intensity 2.4</div><figcaption>Every lamp light has Night Intensity 2.4.</figcaption></figure>
-<figure class="shot todo" data-shot="phase-10/step-04-c" data-window="game" data-select="Level 1 - Training Yard"><div class="ph">Game view in Play mode after pressing N: Level 1 at night, dark blue floor, lamps glowing, lantern light at the gate</div><figcaption>Press N in Play mode: the yard turns dark blue and the lamps shine.</figcaption></figure>
 
 <!-- ======================================================= 5 -->
 <h2 id="step-5"><span class="step">5</span>Touch controls: the look area (right half)</h2>
@@ -178,7 +182,6 @@
   <li><code>TouchLookArea.Consume()</code> gives back the movement since last time and resets it to zero. The ThirdPersonCamera calls it every frame and turns with it.</li>
   <li>The Finger ring follows your finger and fades in while you drag.</li>
 </ul>
-<figure class="shot todo" data-shot="phase-10/step-05" data-window="inspector" data-select="GameUI/LookArea (right half)"><div class="ph">Inspector of LookArea (right half): anchors 0.5/0 – 1/1, Image alpha 0 with Raycast Target on, Touch Look Area (Area, Marker = Finger, Marker Group = Finger)</div><figcaption>Raycast Target is on, alpha is 0.</figcaption></figure>
 
 <!-- ======================================================= 6 -->
 <h2 id="step-6"><span class="step">6</span>Touch controls: the joystick (left half)</h2>
@@ -205,8 +208,7 @@
   <li><code>Value</code> is the stick direction, from -1 to 1. Very small values (under 0.12) count as zero. PlayerMotor moves with it and sprints when <code>Value.magnitude &gt; 0.9</code>.</li>
   <li>The GameManager gives this joystick to the player: <code>Player.joystick = UI.Joystick</code>.</li>
 </ul>
-<figure class="shot todo" data-shot="phase-10/step-06-a" data-window="hierarchy" data-select="GameUI/MoveArea (left half)"><div class="ph">Hierarchy: GameUI → LookArea (right half) → Finger (Ring, Glow), MoveArea (left half) → Stick (Bg, Ring, Knob → Shadow, Face, Dot), WorldMarkers, HUD, Flash, Modal</div><figcaption>The two touch areas are the first children.</figcaption></figure>
-<figure class="shot todo" data-shot="phase-10/step-06-b" data-window="inspector" data-select="GameUI/MoveArea (left half)"><div class="ph">Inspector of MoveArea (left half): anchors 0/0 – 0.5/1, Image alpha 0 raycast, Virtual Joystick (Area, Stick Base = Stick, Knob, Radius 120, Group = Stick, Edge = Ring)</div><figcaption>Radius 120 and all fields filled.</figcaption></figure>
+<figure class="shot"><img src="images/phase-10/step-06-a.png" alt="" loading="lazy"><figcaption>The two touch areas are the first children.</figcaption></figure>
 
 <!-- ======================================================= 7 -->
 <h2 id="step-7"><span class="step">7</span>Test touch in the Device Simulator</h2>
@@ -218,7 +220,6 @@
   <li>When you are done, switch the dropdown back to <b>Game</b>.</li>
 </ol>
 <p>In the Simulator, <code>Application.isMobilePlatform</code> is true. So the game does not lock the mouse, and the hint at the start shows the touch controls.</p>
-<figure class="shot todo" data-shot="phase-10/step-07" data-window="game" data-select="GameUI/MoveArea (left half)" data-manual="true"><div class="ph">Device Simulator (landscape phone) in Play mode: the joystick visible on the left half, the touch hint at the bottom</div><figcaption>The stick appears under the thumb.</figcaption></figure>
 
 <!-- ======================================================= 8 -->
 <h2 id="step-8"><span class="step">8</span>Music</h2>
@@ -234,7 +235,6 @@
   <li>Select <code>Assets/GoldRush/Resources/GoldRushAssets</code>. Check that <b>Sounds</b> has an entry <code>music</code> with the clip <code>Art/Audio/music</code>.</li>
   <li>Press Play in Level1. Let a Slime chase you: the music gets faster. Pause and switch <b>MUSIC OFF</b>: it stops. Stop and start Play: it is still off.</li>
 </ol>
-<figure class="shot todo" data-shot="phase-10/step-08" data-window="inspector" data-select="Assets/GoldRush/Resources/GoldRushAssets.asset"><div class="ph">Inspector of GoldRushAssets: the Sounds list with 16 entries, the last one music = music.wav</div><figcaption>The music clip is in the Sounds list.</figcaption></figure>
 
 <!-- ======================================================= 9 -->
 <h2 id="step-9"><span class="step">9</span>Replace every script with the final version</h2>
@@ -253,7 +253,6 @@
   <tr><td>all other files</td><td>final already</td><td>No change. Replacing them is safe.</td></tr>
 </table></div>
 <p>If you changed a script yourself (for example a speed value), write the change down before you copy. Then put it back in the final file.</p>
-<figure class="shot todo" data-shot="phase-10/step-09" data-window="console" data-select="Assets/GoldRush/Scripts/UI/GoldRushMenu.cs"><div class="ph">Console window after the copy: no red errors</div><figcaption>No red errors after the final scripts.</figcaption></figure>
 
 <!-- ======================================================= 10 -->
 <h2 id="step-10"><span class="step">10</span>Import Levels 2–4</h2>
@@ -272,8 +271,6 @@
   <tr><td><code>Game</code></td><td>Daily Rush</td><td colspan="5">built from code (<code>LevelBuilder</code>) with today's date as the seed: a new level every day</td></tr>
 </table></div>
 <p>These scenes have no Player and no camera: the GameManager makes them from code (<code>PlayerMotor.Create</code>, <code>ThirdPersonCamera.Create</code>). Monsters, coins and power-ups come from the empty markers. Each scene has its own Day Night Tint.</p>
-<figure class="shot todo" data-shot="phase-10/step-10-a" data-window="project" data-select="Assets/GoldRush/Scenes/Level2.unity"><div class="ph">Project window: Scenes with Game, Level1, Level2, Level3, Level4, MainMenu</div><figcaption>Four new scenes.</figcaption></figure>
-<figure class="shot todo" data-shot="phase-10/step-10-b" data-window="scene" data-select="Level 2 - Ghost Alley"><div class="ph">Scene view of Level2 from above: the walls, blocks and markers of Ghost Alley</div><figcaption>Ghost Alley, made of the same kit.</figcaption></figure>
 
 <!-- ======================================================= 11 -->
 <h2 id="step-11"><span class="step">11</span>All scenes in the Scene List</h2>
@@ -289,7 +286,6 @@
   <tr><td>5</td><td><code>Game</code> (Daily Rush)</td></tr>
 </table></div>
 <p>Now <b>NEXT</b> in the LEVEL COMPLETE dialog loads the next level, and every card on the Levels screen works.</p>
-<figure class="shot todo" data-shot="phase-10/step-11" data-window="buildprofiles" data-select="Assets/GoldRush/Scenes/MainMenu.unity"><div class="ph">Build Profiles window, Scene List: MainMenu 0, Level1 1, Level2 2, Level3 3, Level4 4, Game 5, all ticked</div><figcaption>MainMenu is at index 0.</figcaption></figure>
 
 <!-- ======================================================= 12 -->
 <h2 id="step-12"><span class="step">12</span>Final check: is it our game?</h2>
@@ -324,7 +320,6 @@
 </table></div>
 <p>Your Level 1 is built from kit prefabs, so it can look a little different from ours in the details. Everything else is the same game.</p>
 <p>Last, give your game a name and an icon: <b>Edit → Project Settings → Player</b>. Company Name: your name or school. Product Name: <code>Gold Rush</code>. Version: <code>1.0</code>. Default Icon: an icon image (for example <code>Resources/Icons/ic_star</code> or your own picture).</p>
-<figure class="shot todo" data-shot="phase-10/step-12" data-window="inspector" data-select="ProjectSettings/Player" data-manual="true"><div class="ph">Project Settings → Player: Company Name, Product Name Gold Rush, Version 1.0, Default Icon</div><figcaption>Product Name is Gold Rush.</figcaption></figure>
 
 <!-- ======================================================= 13 -->
 <h2 id="step-13"><span class="step">13</span>Build for PC</h2>
@@ -338,7 +333,6 @@
   <li>Wait. When it is done, open the folder and double-click <code>Gold Rush.exe</code> (Mac: <code>Gold Rush.app</code>).</li>
 </ol>
 <p>Press Esc in the game to pause and free the mouse. To close the game, use Alt+F4 (Mac: Cmd+Q).</p>
-<figure class="shot todo" data-shot="phase-10/step-13" data-window="buildprofiles" data-select="ProjectSettings/BuildProfiles/Windows"><div class="ph">Build Profiles window with Windows selected (active), the Scene List and the Build button</div><figcaption>Windows is the active platform.</figcaption></figure>
 
 <!-- ======================================================= 14 -->
 <h2 id="step-14"><span class="step">14</span>Build for Android</h2>
@@ -358,8 +352,6 @@
   <li>Copy the .apk to your phone and open it to install it.</li>
 </ol>
 <div class="tip">Faster: turn on <b>USB debugging</b> on your phone (Settings → Developer options), plug it in, and click <b>Build And Run</b>. Unity installs and starts the game.</div>
-<figure class="shot todo" data-shot="phase-10/step-14-a" data-window="buildprofiles" data-select="ProjectSettings/BuildProfiles/Android"><div class="ph">Build Profiles window with Android selected (active) and the Build / Build And Run buttons</div><figcaption>Android is the active platform.</figcaption></figure>
-<figure class="shot todo" data-shot="phase-10/step-14-b" data-window="inspector" data-select="ProjectSettings/Player" data-manual="true"><div class="ph">Player Settings for Android, Resolution and Presentation: Auto Rotation, only Landscape Left and Landscape Right ticked</div><figcaption>The game is landscape only.</figcaption></figure>
 
 <!-- ======================================================= 15 -->
 <h2 id="step-15"><span class="step">15</span>▶ Press Play</h2>
@@ -371,7 +363,7 @@
   <li>Switch the Game view to <b>Simulator</b> and play with the left and right halves.</li>
   <li>Run your PC build (and your phone build) from the menu to the end of a level.</li>
 </ul>
-<figure class="shot todo" data-shot="phase-10/step-15" data-window="game" data-select="GameUI/HUD"><div class="ph">Game view in Play mode: Level 2 – Ghost Alley at night with the HUD (0 / 8, two hearts, timer PAR 1:00, moon button)</div><figcaption>Level 2 at night, with your HUD.</figcaption></figure>
+<figure class="shot"><img src="images/05b_level1_night.jpg" alt="" loading="lazy"><figcaption>Level 2 at night, with your HUD.</figcaption></figure>
 <p><b>You should see:</b> the complete game = our version. Menu, 4 levels and the Daily Rush, shop, save, day/night, touch controls and music, running as a real PC and Android app.</p>
 
 <!-- ======================================================= 16 -->

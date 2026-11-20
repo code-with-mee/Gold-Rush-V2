@@ -34,6 +34,13 @@
 <li><a href="phase-09.html"><span class="num">9</span><span class="label">Gameplay UI</span></a></li>
 <li><a href="phase-10.html"><span class="num">10</span><span class="label">Polish and build</span></a></li>
 </ul>
+<h2>Practice</h2><ul>
+<li><a href="practicals.html"><span class="num">▶</span><span class="label">Practicals overview</span></a></li>
+<li><a href="practical-1.html"><span class="num">P1</span><span class="label">Practical 1</span></a></li>
+<li><a href="practical-2.html"><span class="num">P2</span><span class="label">Practical 2</span></a></li>
+<li><a href="practical-3.html"><span class="num">P3</span><span class="label">Practical 3</span></a></li>
+<li><a href="practical-4.html"><span class="num">P4</span><span class="label">Practical 4</span></a></li>
+</ul>
 <h2>Help</h2><ul>
 <li><a href="troubleshooting.html"><span class="num">?</span><span class="label">Troubleshooting</span></a></li>
 <li><a href="glossary.html"><span class="num">A–Z</span><span class="label">Glossary</span></a></li>
@@ -84,8 +91,6 @@
   <li>Click <b>Create project</b>. Wait. The first start takes a few minutes.</li>
 </ol>
 <p><b>Universal 3D</b> means the project uses <b>URP</b> (Universal Render Pipeline). URP is the modern Unity renderer. It works on PC and on phones, and it gives us glow (bloom) and soft shadows.</p>
-<figure class="shot todo" data-shot="phase-00/step-02" data-window="project" data-select="Unity Hub/New project" data-manual="true"><div class="ph">Unity Hub, New project: Universal 3D template selected, name GoldRush</div><figcaption>Check: template Universal 3D, name GoldRush.</figcaption></figure>
-
 <!-- ======================================================= 3 -->
 <h2 id="step-3"><span class="step">3</span>Clean up the template</h2>
 <ol>
@@ -119,7 +124,7 @@
   <li>Click <b>Install</b>. Wait until it is done.</li>
   <li>Close the Package Manager.</li>
 </ol>
-<figure class="shot todo" data-shot="phase-00/step-05" data-window="project" data-select="Packages/com.unity.ai.navigation" data-manual="true"><div class="ph">Package Manager, Unity Registry, AI Navigation selected, Install button</div><figcaption>Check: AI Navigation shows a tick (installed).</figcaption></figure>
+<figure class="shot"><img src="images/phase-00/step-05.png" alt="Package Manager, Unity Registry, AI Navigation selected, Install button" loading="lazy"><figcaption>Check: AI Navigation shows a tick (installed).</figcaption></figure>
 
 <!-- ======================================================= 6 -->
 <h2 id="step-6"><span class="step">6</span>Set Active Input Handling to Both</h2>
@@ -131,7 +136,6 @@
   <li>Set <b>Active Input Handling</b> to <b>Both</b>.</li>
   <li>Unity asks to restart. Click <b>Apply</b> (or <b>Yes</b>). Unity closes and opens again.</li>
 </ol>
-<figure class="shot todo" data-shot="phase-00/step-06" data-window="inspector" data-select="ProjectSettings/Player" data-manual="true"><div class="ph">Project Settings → Player → Other Settings → Configuration, Active Input Handling = Both</div><figcaption>Check: Active Input Handling = Both.</figcaption></figure>
 <div class="note">If you forget this step, you get a red error later: <i>"You are trying to read Input using the UnityEngine.Input class, but you have switched active Input handling to Input System package"</i>. Come back here and choose <b>Both</b>.</div>
 
 <!-- ======================================================= 7 -->
@@ -176,7 +180,7 @@
     UI/
     World/</code></pre>
 <div class="tip">If a folder already exists, skip it. Spelling matters: use the exact names, with capital letters.</div>
-<figure class="shot todo" data-shot="phase-00/step-08" data-window="project" data-select="Assets/GoldRush"><div class="ph">Project window with the full Assets/GoldRush folder tree open</div><figcaption>Check: Animations, Prefabs/UI, Scenes and the six Scripts folders exist.</figcaption></figure>
+<figure class="shot"><img src="images/phase-00/step-08.png" alt="Project window with the full Assets/GoldRush folder tree open" loading="lazy"><figcaption>Check: Animations, Prefabs/UI, Scenes and the six Scripts folders exist.</figcaption></figure>
 
 <!-- ======================================================= 9 -->
 <h2 id="step-9"><span class="step">9</span>Make a test scene</h2>
@@ -187,7 +191,7 @@
   <li>Drag <code>Prefabs/Level/Floor_40m</code> from the Project window into the Hierarchy.</li>
   <li>In the Inspector, set its <b>Position</b> to <code>0, 0, 0</code>.</li>
 </ol>
-<figure class="shot todo" data-shot="phase-00/step-09" data-window="hierarchy" data-select="Floor_40m"><div class="ph">Hierarchy of Sandbox: Main Camera, Directional Light, Floor_40m (blue = prefab)</div><figcaption>Check: Floor_40m is blue. Blue means "prefab instance".</figcaption></figure>
+<figure class="shot"><img src="images/phase-00/step-09.png" alt="Hierarchy of Sandbox: Main Camera, Directional Light, Floor_40m (blue = prefab)" loading="lazy"><figcaption>Check: Floor_40m is blue. Blue means "prefab instance".</figcaption></figure>
 <div class="tip">The template also has <code>Assets/Scenes/SampleScene</code>. You do not need it. You can delete the <code>Assets/Scenes</code> folder.</div>
 
 <!-- ======================================================= 10 -->
@@ -206,8 +210,8 @@
   <li>Save the scene (<b>Ctrl+S</b> / <b>Cmd+S</b>).</li>
 </ol>
 <p>Every kit piece has its <b>pivot at the bottom</b>: at <code>Y = 0</code> it stands exactly on the floor. The hero looks north (+Z), so the camera sees his back.</p>
-<figure class="shot todo" data-shot="phase-00/step-10-a" data-window="inspector" data-select="Hero"><div class="ph">Inspector of Hero: Transform Position 0, 0, 0 and Scale 0.337</div><figcaption>Check: Scale is 0.337 on X, Y and Z.</figcaption></figure>
-<figure class="shot todo" data-shot="phase-00/step-10-b" data-window="scene" data-select="Hero"><div class="ph">Scene view: the hero on the grid floor, a grey block, a pillar with a cyan band and a lamp post behind him</div><figcaption>Check: all pieces stand on the floor (none float or sink).</figcaption></figure>
+<figure class="shot"><img src="images/phase-00/step-10-a.png" alt="Inspector of Hero: Transform Position 0, 0, 0 and Scale 0.337" loading="lazy"><figcaption>Check: Scale is 0.337 on X, Y and Z.</figcaption></figure>
+<figure class="shot"><img src="images/phase-00/step-10-b.jpg" alt="Scene view: the hero on the grid floor, a grey block, a pillar with a cyan band and a lamp post behind him" loading="lazy"><figcaption>Check: all pieces stand on the floor (none float or sink).</figcaption></figure>
 
 <!-- ======================================================= 11 -->
 <h2 id="step-11"><span class="step">11</span>▶ Press Play</h2>
@@ -216,7 +220,7 @@
   <li>Look at the <b>Game</b> view.</li>
   <li>Click <b>▶</b> again to stop.</li>
 </ol>
-<figure class="shot todo" data-shot="phase-00/step-11" data-window="game" data-select="Main Camera"><div class="ph">Game view: the hero from behind on the grid floor, with the block, pillar and lamp post</div><figcaption>Check: you see the hero and the kit pieces, no pink materials.</figcaption></figure>
+<figure class="shot"><img src="images/phase-00/step-11.jpg" alt="Game view: the hero from behind on the grid floor, with the block, pillar and lamp post" loading="lazy"><figcaption>Check: you see the hero and the kit pieces, no pink materials.</figcaption></figure>
 <div class="check">
 <p><b>You should see:</b></p>
 <ul>

@@ -34,6 +34,13 @@
 <li><a href="phase-09.html" aria-current="page"><span class="num">9</span><span class="label">Gameplay UI</span></a></li>
 <li><a href="phase-10.html"><span class="num">10</span><span class="label">Polish and build</span></a></li>
 </ul>
+<h2>Practice</h2><ul>
+<li><a href="practicals.html"><span class="num">▶</span><span class="label">Practicals overview</span></a></li>
+<li><a href="practical-1.html"><span class="num">P1</span><span class="label">Practical 1</span></a></li>
+<li><a href="practical-2.html"><span class="num">P2</span><span class="label">Practical 2</span></a></li>
+<li><a href="practical-3.html"><span class="num">P3</span><span class="label">Practical 3</span></a></li>
+<li><a href="practical-4.html"><span class="num">P4</span><span class="label">Practical 4</span></a></li>
+</ul>
 <h2>Help</h2><ul>
 <li><a href="troubleshooting.html"><span class="num">?</span><span class="label">Troubleshooting</span></a></li>
 <li><a href="glossary.html"><span class="num">A–Z</span><span class="label">Glossary</span></a></li>
@@ -116,7 +123,6 @@
 <div class="warn">Never replace a whole folder (on a Mac, Finder deletes the <code>.meta</code> files in it). Without its <code>.meta</code> file, every script in your scenes and prefabs goes missing. Copy only the <code>.cs</code> files.</div>
 <p>Go back to Unity. You see one red error: <code>The type or namespace name 'GameAction' could not be found</code>. That is fine: you type GameAction in the next step.</p>
 <p>The replaced Coin, ExitGate and PowerUp have the same Inspector fields as your phase versions, so your prefabs keep their values. The new files add a <code>Create()</code> function: with it, the game can also build a coin, gate or power-up from code.</p>
-<figure class="shot todo" data-shot="phase-09/step-02" data-window="project" data-select="Assets/GoldRush/Scripts/UI/GameUI.cs"><div class="ph">Project window: Scripts/UI with GameUI, TouchLookArea, VirtualJoystick (and the menu scripts)</div><figcaption>GameUI.cs is in the UI folder.</figcaption></figure>
 
 <!-- ======================================================= 3 -->
 <h2 id="step-3"><span class="step">3</span>Script: GameAction</h2>
@@ -154,7 +160,6 @@ namespace GoldRush
   <li><code>GameManager.I.Run(action)</code> is in the final GameManager: <code>"resume"</code> plays on, <code>"retry"</code> loads the level again, <code>"menu"</code> goes back to the main menu, <code>"next"</code> loads the next level.</li>
 </ul>
 <p>Save. The Console must now show <b>no red errors</b>.</p>
-<figure class="shot todo" data-shot="phase-09/step-03" data-window="console" data-select="Assets/GoldRush/Scripts/UI/GameAction.cs"><div class="ph">Console window: empty, no red errors after typing GameAction</div><figcaption>No red errors: all scripts compile.</figcaption></figure>
 
 <!-- ======================================================= 4 -->
 <h2 id="step-4"><span class="step">4</span>What the final GameManager adds</h2>
@@ -199,9 +204,8 @@ namespace GoldRush
   <tr><td><code>Modal</code> (GameUI)</td><td>Empty</td><td>stretch 0</td><td>–</td><td>the intro and the dialogs go in here</td></tr>
 </table></div>
 <p><b>WorldMarkers</b> moves small UI pieces so they follow 3D objects: the "!" over a monster, the SPEED label over a power-up, the EXIT label, the "+1". The order matters: lower in the list = drawn on top. The dialogs in Modal are drawn over the HUD.</p>
-<figure class="shot todo" data-shot="phase-09/step-05-a" data-window="hierarchy" data-select="GameUI"><div class="ph">Hierarchy: GameUI → WorldMarkers, HUD, Flash, Modal; EventSystem at the root</div><figcaption>Check the order: WorldMarkers, HUD, Flash, Modal.</figcaption></figure>
-<figure class="shot todo" data-shot="phase-09/step-05-b" data-window="inspector" data-select="GameUI"><div class="ph">Inspector of GameUI: Canvas (Overlay, Sort Order 10), Canvas Scaler (1920 x 1080, Match 0.5), Graphic Raycaster, Game UI (fields empty)</div><figcaption>Sort Order 10 and Match 0.5.</figcaption></figure>
-<figure class="shot todo" data-shot="phase-09/step-05-c" data-window="inspector" data-select="GameUI/WorldMarkers"><div class="ph">Inspector of WorldMarkers: stretch 0, World Markers (Root = WorldMarkers)</div><figcaption>Root is the object itself.</figcaption></figure>
+<figure class="shot"><img src="images/phase-09/step-05-a.png" alt="" loading="lazy"><figcaption>Check the order: WorldMarkers, HUD, Flash, Modal.</figcaption></figure>
+<figure class="shot"><img src="images/phase-09/step-05-b.png" alt="" loading="lazy"><figcaption>Sort Order 10 and Match 0.5.</figcaption></figure>
 
 <!-- ======================================================= 6 -->
 <h2 id="step-6"><span class="step">6</span>HUD: the gold counter (and a CoinIcon prefab)</h2>
@@ -232,9 +236,6 @@ namespace GoldRush
   <tr><td><code>Label</code> (CoinPill)</td><td>Text</td><td>stretch L B R T = 76, 0, 8, 0</td><td><code>0 / 0</code>, Poppins-Bold <b>38</b>, Middle Left, <code>F2F7FF</code>, Rich Text on, Outline (1, -1)</td></tr>
 </table></div>
 <p>GameUI writes <code>3 &lt;size=40&gt;&lt;color=#BFD3F2&gt;/ 6&lt;/color&gt;&lt;/size&gt;</code> into this Label: the "/ 6" comes out light blue. That is why Rich Text must be on.</p>
-<figure class="shot todo" data-shot="phase-09/step-06-a" data-window="hierarchy" data-select="GameUI/HUD/CoinPill"><div class="ph">Hierarchy: CoinPill (blue) → Shadow, Tint, Glass → Edge, Coin (blue) → Rim, Body, Inner, Shine, Label</div><figcaption>Coin and Label are children of CoinPill, not of Glass.</figcaption></figure>
-<figure class="shot todo" data-shot="phase-09/step-06-b" data-window="inspector" data-select="GameUI/HUD/CoinPill/Label"><div class="ph">Inspector of CoinPill/Label: stretch L76 R8, Text "0 / 0", Poppins-Bold 38, Middle Left, Rich Text, Outline</div><figcaption>Rich Text is on and Raycast Target is off.</figcaption></figure>
-<figure class="shot todo" data-shot="phase-09/step-06-c" data-window="game" data-select="GameUI/HUD/CoinPill"><div class="ph">Game view (edit mode), top-left corner: dark glass pill with the gold coin and "0 / 0"</div><figcaption>The round ends are perfect half circles.</figcaption></figure>
 
 <!-- ======================================================= 7 -->
 <h2 id="step-7"><span class="step">7</span>HUD: hearts and the stamina bar</h2>
@@ -260,8 +261,6 @@ namespace GoldRush
   <tr><td><code>Label</code> (Stamina)</td><td>Text</td><td>stretch 0</td><td><code>RUN</code>, Poppins-SemiBold <b>16</b>, Middle Center, <code>F2F7FF</code>, Outline (1, -1)</td></tr>
 </table></div>
 <p>GameUI changes the Fill's <b>Anchor Max X</b> from 1 (full) down to 0.04 (empty), and its colour: gold, orange when low, red and <code>TIRED</code> when you are out of breath.</p>
-<figure class="shot todo" data-shot="phase-09/step-07-a" data-window="inspector" data-select="GameUI/HUD/Hearts/Heart1"><div class="ph">Inspector of Heart1: middle left, pivot 0/0.5, Pos 48, 0, 40 x 40, Image heart red</div><figcaption>Heart1 is at Pos X 48.</figcaption></figure>
-<figure class="shot todo" data-shot="phase-09/step-07-b" data-window="inspector" data-select="GameUI/HUD/Stamina"><div class="ph">Inspector of Stamina: top left, 40, -158, 150 x 24, Canvas Group (Alpha 0)</div><figcaption>Canvas Group Alpha is 0.</figcaption></figure>
 
 <!-- ======================================================= 8 -->
 <h2 id="step-8"><span class="step">8</span>HUD: the timer</h2>
@@ -279,8 +278,6 @@ namespace GoldRush
   <tr><td><code>ParLabel</code> (Timer)</td><td>Text</td><td>bottom centre, pivot <b>0, 0.5</b> · Pos -32, 16 · 120 × 22</td><td><code>PAR 0:40</code>, Poppins-SemiBold <b>18</b>, Middle Left, <code>FFC233</code>, no effect</td></tr>
 </table></div>
 <p>When you pass the par time, the star and PAR turn grey: that star is gone.</p>
-<figure class="shot todo" data-shot="phase-09/step-08-a" data-window="inspector" data-select="GameUI/HUD/Timer"><div class="ph">Inspector of Timer: top right, pivot 1/1, Pos -200, -28, 188 x 70</div><figcaption>Anchor and pivot are both top right.</figcaption></figure>
-<figure class="shot todo" data-shot="phase-09/step-08-b" data-window="inspector" data-select="GameUI/HUD/Timer/ParLabel"><div class="ph">Inspector of Timer/ParLabel: bottom centre, pivot 0/0.5, Pos -32, 16, 120 x 22, Text PAR 0:40 SemiBold 18 gold</div><figcaption>PAR starts right of the little star.</figcaption></figure>
 
 <!-- ======================================================= 9 -->
 <h2 id="step-9"><span class="step">9</span>HUD: day/night and pause buttons</h2>
@@ -320,9 +317,6 @@ namespace GoldRush
 </ol>
 <div class="tip">Do not add a Game Action to this button. GameUI connects it in <code>Bind()</code> (click sound + <code>gm.Pause()</code>), because you drag it into the <b>Pause Button</b> field in step 18.</div>
 <p>Check the order in HUD: <code>CoinPill</code>, <code>Hearts</code>, <code>Stamina</code>, <code>Timer</code>, <code>DayNight</code>, <code>Pause</code>. (Any order works for these, they don't overlap.)</p>
-<figure class="shot todo" data-shot="phase-09/step-09-a" data-window="inspector" data-select="GameUI/HUD/DayNight"><div class="ph">Inspector of DayNight: top right, -116, -28, 70 x 70, Button (Target Graphic Glass), Day Night Button (Sun = Icon_Sun, Moon = Icon_Moon)</div><figcaption>Sun and Moon are filled.</figcaption></figure>
-<figure class="shot todo" data-shot="phase-09/step-09-b" data-window="hierarchy" data-select="GameUI/HUD/Pause"><div class="ph">Hierarchy: Pause (blue) → Shadow, Tint, Glass → Edge, Icon_Pause → Glyph</div><figcaption>Icon_Pause is a child of Pause.</figcaption></figure>
-<figure class="shot todo" data-shot="phase-09/step-09-c" data-window="game" data-select="GameUI/HUD"><div class="ph">Game view (edit mode), top-right corner: timer pill 0:00.0 with ★ PAR 0:40, sun button, pause button</div><figcaption>Timer, sun and pause in one row.</figcaption></figure>
 
 <!-- ======================================================= 10 -->
 <h2 id="step-10"><span class="step">10</span>HUD: power-up bars</h2>
@@ -342,8 +336,6 @@ namespace GoldRush
   <li>Select <code>Power0</code> and press <b>Ctrl+D</b> twice. Rename the copies <code>Power1</code> (Pos Y <b>-246</b>) and <code>Power2</code> (Pos Y <b>-296</b>).</li>
   <li>Untick <code>Power0</code>, <code>Power1</code> and <code>Power2</code>. GameUI turns a bar on when you need it.</li>
 </ol>
-<figure class="shot todo" data-shot="phase-09/step-10-a" data-window="inspector" data-select="GameUI/HUD/Power0/Fill"><div class="ph">Inspector of Power0/Fill: stretch 5/5/5/5, pivot 0/0.5, Image pill white, Sliced, PPU 4.267</div><figcaption>The pivot is on the left: the bar shrinks to the left.</figcaption></figure>
-<figure class="shot todo" data-shot="phase-09/step-10-b" data-window="hierarchy" data-select="GameUI/HUD/Power2"><div class="ph">Hierarchy: HUD → CoinPill, Hearts, Stamina, Timer, DayNight, Pause, Power0, Power1, Power2 (greyed out)</div><figcaption>The three bars are unticked.</figcaption></figure>
 
 <!-- ======================================================= 11 -->
 <h2 id="step-11"><span class="step">11</span>HUD: arrow, message and hint</h2>
@@ -383,9 +375,6 @@ namespace GoldRush
   <li>Untick <code>Arrow</code> and <code>Hint</code>.</li>
 </ol>
 <p>On a phone, GameUI writes the touch controls into the Label instead.</p>
-<figure class="shot todo" data-shot="phase-09/step-11-a" data-window="hierarchy" data-select="GameUI/HUD/Toast"><div class="ph">Hierarchy: Toast → DropShadow, Shadow, Tint, Glass → Edge, Title, Sub; Arrow → Tri → Shape, Bg, CoinIcon; Hint (greyed out) → layers + Label</div><figcaption>Toast has no prefab layers left: they are normal objects now.</figcaption></figure>
-<figure class="shot todo" data-shot="phase-09/step-11-b" data-window="inspector" data-select="GameUI/HUD/Toast"><div class="ph">Inspector of Toast: anchors 0.5/0.78, 640 x 96, Canvas Group (Alpha 0, Blocks Raycasts off)</div><figcaption>The toast is invisible until a message comes.</figcaption></figure>
-<figure class="shot todo" data-shot="phase-09/step-11-c" data-window="inspector" data-select="GameUI/HUD/Hint/Label"><div class="ph">Inspector of Hint/Label: stretch 0, the WASD text with colour tags, Poppins-SemiBold 24, Middle Center, Rich Text</div><figcaption>The key names come out gold.</figcaption></figure>
 
 <!-- ======================================================= 12 -->
 <h2 id="step-12"><span class="step">12</span>The level intro and the countdown</h2>
@@ -404,8 +393,6 @@ namespace GoldRush
   <li>Untick <code>Intro</code> and <code>Countdown</code>.</li>
 </ol>
 <p>GameUI writes the real level into the texts, for example <code>Collect all &lt;color=#FFC233&gt;6 gold&lt;/color&gt;, then escape through the &lt;color=#6BE08F&gt;EXIT&lt;/color&gt;!</code>. The band opens from a thin line, then fades after 1.4 s. "GO!" is green.</p>
-<figure class="shot todo" data-shot="phase-09/step-12-a" data-window="game" data-select="GameUI/Modal/Intro"><div class="ph">Game view (edit mode, Intro ticked for the picture): dark band across the screen with LEVEL 1, TRAINING YARD, Collect all gold…</div><figcaption>Tick Intro for a moment to see it, then untick it again.</figcaption></figure>
-<figure class="shot todo" data-shot="phase-09/step-12-b" data-window="inspector" data-select="GameUI/Modal/Countdown"><div class="ph">Inspector of Countdown: middle centre, 800 x 260, Text "3", Poppins-ExtraBold 220, gold, Outline (5, -5)</div><figcaption>Countdown is unticked.</figcaption></figure>
 
 <!-- ======================================================= 13 -->
 <h2 id="step-13"><span class="step">13</span>PAUSE dialog: panel and header</h2>
@@ -434,9 +421,6 @@ namespace GoldRush
   <tr><td><code>Divider</code> (Glass)</td><td>Image</td><td>the same, Pos Y <b>-388</b></td><td>the same</td></tr>
 </table></div>
 <p>The header is 124 high and the footer is 132 high: the two thin lines are at -124 and at -(520 − 132) = -388. GameUI writes the level name into the Subtitle.</p>
-<figure class="shot todo" data-shot="phase-09/step-13-a" data-window="hierarchy" data-select="GameUI/Modal/Pause/Panel/Glass"><div class="ph">Hierarchy: Modal → Intro, Countdown, Pause → Dim, Panel → Shadow, Tint, Glass → Edge, Badge (Ring, Icon_Pause/Glyph), Title, Subtitle, Divider, Divider</div><figcaption>Badge, Title, Subtitle and the dividers are children of Glass.</figcaption></figure>
-<figure class="shot todo" data-shot="phase-09/step-13-b" data-window="inspector" data-select="GameUI/Modal/Pause/Dim"><div class="ph">Inspector of Pause/Dim: stretch 0, Image without sprite, navy alpha 166, Raycast Target ON</div><figcaption>Raycast Target is on (only for Dim and Glass).</figcaption></figure>
-<figure class="shot todo" data-shot="phase-09/step-13-c" data-window="inspector" data-select="GameUI/Modal/Pause/Panel/Glass/Title"><div class="ph">Inspector of Title: top left, 148, -18, 592 x 60, Text PAUSED, Poppins-Bold 50, Lower Left, Shadow (0, -2.083)</div><figcaption>The effect is a Shadow, not an Outline.</figcaption></figure>
 
 <!-- ======================================================= 14 -->
 <h2 id="step-14"><span class="step">14</span>PAUSE dialog: stat cards (StatCard prefab)</h2>
@@ -469,8 +453,6 @@ namespace GoldRush
   <tr><td><code>Glyph</code> (Icon_Heart)</td><td>Image</td><td>stretch 0</td><td><code>ic_favorite</code>, <code>FFC233</code>, Preserve Aspect</td></tr>
 </table></div>
 <p>Each card is (780 − 2 × 40 − 2 × 16) ÷ 3 = 222.667 wide, with a 16 gap. Caption and Value stretch with the card, so the same prefab also fits the wider cards of the LEVEL COMPLETE dialog.</p>
-<figure class="shot todo" data-shot="phase-09/step-14-a" data-window="inspector" data-select="GameUI/Modal/Pause/Panel/Glass/Stat_GOLD/Value"><div class="ph">Inspector of Stat_GOLD/Value: bottom stretch, pivot 0/0, Left 20, Right 10, Pos Y 12, Height 56, Poppins-Bold 40 gold, Best Fit 20–40, Shadow</div><figcaption>Value is anchored to the bottom of the card.</figcaption></figure>
-<figure class="shot todo" data-shot="phase-09/step-14-b" data-window="game" data-select="GameUI/Modal/Pause"><div class="ph">Game view (edit mode, Pause ticked): the PAUSED header and three cards GOLD 0 / 0, TIME 0:00.0, LIVES 2 / 2</div><figcaption>Three cards in one row, the same gap between them.</figcaption></figure>
 
 <!-- ======================================================= 15 -->
 <h2 id="step-15"><span class="step">15</span>PAUSE dialog: toggles and buttons</h2>
@@ -522,9 +504,6 @@ namespace GoldRush
   <li>When the PAUSE dialog is done, untick <code>Pause</code>.</li>
 </ol>
 <p>The widths come from the footer: 780 − 2 × 40 − 2 × 16 = 668 px are shared 1 : 1 : 1.3. Halo and IconDisc keep their alpha (0 and 217): only change the hex value.</p>
-<figure class="shot todo" data-shot="phase-09/step-15-a" data-window="inspector" data-select="GameUI/Modal/Pause/Panel/Glass/RESUME"><div class="ph">Inspector of RESUME: top left, 476.849, -408, 263.152 x 92, Button, Button FX (Flat, green), Canvas Group, Game Action (resume)</div><figcaption>Game Action = resume.</figcaption></figure>
-<figure class="shot todo" data-shot="phase-09/step-15-b" data-window="inspector" data-select="GameUI/Modal/Pause/Panel/Glass/MUSIC  ONBtn"><div class="ph">Inspector of MUSIC ONBtn: top centre, pivot 0.5/1, -150, -286, 260 x 76, Button FX green, no Game Action</div><figcaption>MUSIC and SOUND have no Game Action.</figcaption></figure>
-<figure class="shot todo" data-shot="phase-09/step-15-c" data-window="game" data-select="GameUI/Modal/Pause"><div class="ph">Game view (edit mode, Pause ticked): the full PAUSED dialog like the real one: cards, MUSIC ON / SOUND ON, MENU, RETRY, RESUME</div><figcaption>Compare it with the real pause screen in step 1.</figcaption></figure>
 
 <!-- ======================================================= 16 -->
 <h2 id="step-16"><span class="step">16</span>The CAUGHT dialog</h2>
@@ -558,8 +537,6 @@ namespace GoldRush
 </table></div>
 <p>Each time you lose, GameUI picks one of six tips at random. <b>BANKED</b> is the gold you keep: the coins you took before you were caught.</p>
 <p>Untick <code>Lose</code> when it is done.</p>
-<figure class="shot todo" data-shot="phase-09/step-16-a" data-window="hierarchy" data-select="GameUI/Modal/Lose/Panel/Glass"><div class="ph">Hierarchy: Lose → Dim, Panel → Shadow, Tint, Glass → Edge, Badge, Title, Subtitle, Divider ×2, Stat_COLLECTED, Stat_TIME, Stat_BANKED, MENU, RETRY, Tip</div><figcaption>No toggles and only two buttons.</figcaption></figure>
-<figure class="shot todo" data-shot="phase-09/step-16-b" data-window="game" data-select="GameUI/Modal/Lose"><div class="ph">Game view (edit mode, Lose ticked): CAUGHT! with red badge, COLLECTED / BANKED / TIME cards, cyan tip box, MENU and a wide green RETRY</div><figcaption>Compare it with the real CAUGHT screen in step 1.</figcaption></figure>
 
 <!-- ======================================================= 17 -->
 <h2 id="step-17"><span class="step">17</span>The LEVEL COMPLETE dialog</h2>
@@ -603,9 +580,6 @@ namespace GoldRush
   <tr><td><code>Crit2</code> (Ctrl+D of Crit0)</td><td>–</td><td>Pos -200, <b>-400</b></td><td>Label <code>Don't get caught</code></td></tr>
 </table></div>
 <p>The three rules are the three stars: 1 star for winning, +1 for beating par time, +1 for no hits. GameUI adds the par time to the second rule, for example "Beat par time 0:40". Untick <code>Win</code> when it is done.</p>
-<figure class="shot todo" data-shot="phase-09/step-17-a" data-window="inspector" data-select="GameUI/Modal/Win/Panel/Glass/Stars/Back0"><div class="ph">Inspector of Stars/Back0: middle centre, -160, -6, 118 x 118, Rotation Z 12, Image star white alpha 26</div><figcaption>Back0 and Star0 have the same Rect.</figcaption></figure>
-<figure class="shot todo" data-shot="phase-09/step-17-b" data-window="game" data-select="GameUI/Modal/Win"><div class="ph">Game view (edit mode, Win ticked): LEVEL COMPLETE! with green badge, three gold stars, three rules, TIME / BEST / GOLD EARNED cards, MENU, RETRY, NEXT</div><figcaption>Compare it with the real LEVEL COMPLETE screen in step 1.</figcaption></figure>
-<figure class="shot todo" data-shot="phase-09/step-17-c" data-window="hierarchy" data-select="GameUI/Modal"><div class="ph">Hierarchy: Modal → Intro, Countdown, Pause, Win, Lose (all greyed out)</div><figcaption>All five children of Modal are unticked.</figcaption></figure>
 
 <!-- ======================================================= 18 -->
 <h2 id="step-18"><span class="step">18</span>Connect everything to GameUI</h2>
@@ -656,8 +630,6 @@ namespace GoldRush
 </table></div>
 <p>Click the lock icon again to unlock the Inspector. Save the scene (<b>Ctrl+S</b>).</p>
 <div class="note"><b>Why Width, Height and Weights?</b> After the last level there is no NEXT. Then GameUI hides NEXT and shares the footer between MENU and RETRY again. It needs the panel width and the weights for that.</div>
-<figure class="shot todo" data-shot="phase-09/step-18-a" data-window="inspector" data-select="GameUI"><div class="ph">Inspector of GameUI (locked): Layers and HUD fields all filled, Joystick empty, Power Rows with 3 elements</div><figcaption>Only Joystick is empty.</figcaption></figure>
-<figure class="shot todo" data-shot="phase-09/step-18-b" data-window="inspector" data-select="GameUI"><div class="ph">Inspector of GameUI, Win Dialog opened: Root, Panel, Badge, Title, Subtitle, Values 3, Captions 3, Stars 3, Crit Stars 3, Crit Texts 3, Buttons 3, Weights 1/1/1.3, Width 860, Height 740</div><figcaption>The Win Dialog has every list filled.</figcaption></figure>
 
 <!-- ======================================================= 19 -->
 <h2 id="step-19"><span class="step">19</span>▶ Press Play</h2>
@@ -673,8 +645,8 @@ namespace GoldRush
   <li>Take all gold: "ALL GOLD COLLECTED!" and a green EXIT label over the gate. Run through: confetti and LEVEL COMPLETE with your stars.</li>
   <li>Let the monsters catch you twice: slow motion, then CAUGHT with a tip.</li>
 </ul>
-<figure class="shot todo" data-shot="phase-09/step-19-a" data-window="game" data-select="GameUI/HUD"><div class="ph">Game view in Play mode: Level 1 with the full HUD, hint at the bottom, arrow to a coin</div><figcaption>The HUD in Play mode.</figcaption></figure>
-<figure class="shot todo" data-shot="phase-09/step-19-b" data-window="game" data-select="GameUI/Modal/Pause"><div class="ph">Game view in Play mode after Esc: the PAUSED dialog over the dimmed level, values filled in (TRAINING YARD, 2 / 6, time, 2 / 2)</div><figcaption>The pause dialog with real numbers.</figcaption></figure>
+
+<figure class="shot"><img src="images/07_win.jpg" alt="" loading="lazy"><figcaption>The pause dialog with real numbers.</figcaption></figure>
 <div class="warn">Don't click <b>NEXT</b> yet. Level 2 is not in your project until phase 10, so Unity shows an error. For now use MENU or RETRY.</div>
 <p><b>You should see:</b> the full game in Level 1, with the HUD, the countdown and all three dialogs, just like the pictures in step 1.</p>
 

@@ -34,6 +34,13 @@
 <li><a href="phase-09.html"><span class="num">9</span><span class="label">Gameplay UI</span></a></li>
 <li><a href="phase-10.html"><span class="num">10</span><span class="label">Polish and build</span></a></li>
 </ul>
+<h2>Practice</h2><ul>
+<li><a href="practicals.html"><span class="num">▶</span><span class="label">Practicals overview</span></a></li>
+<li><a href="practical-1.html"><span class="num">P1</span><span class="label">Practical 1</span></a></li>
+<li><a href="practical-2.html"><span class="num">P2</span><span class="label">Practical 2</span></a></li>
+<li><a href="practical-3.html"><span class="num">P3</span><span class="label">Practical 3</span></a></li>
+<li><a href="practical-4.html"><span class="num">P4</span><span class="label">Practical 4</span></a></li>
+</ul>
 <h2>Help</h2><ul>
 <li><a href="troubleshooting.html"><span class="num">?</span><span class="label">Troubleshooting</span></a></li>
 <li><a href="glossary.html"><span class="num">A–Z</span><span class="label">Glossary</span></a></li>
@@ -343,10 +350,11 @@ namespace GoldRush
 <h2 id="step-4"><span class="step">4</span>Import GoldRushMenu (phase 2)</h2>
 <p>The phase 2 menu script is about 400 lines, so you import it.</p>
 <ol>
-  <li>Drag <code>GoldRush_Export/Resources/Scripts/Phases/Phase02/UI/GoldRushMenu.cs</code> into <code>Assets/GoldRush/Scripts/UI/</code>.</li>
-  <li>Unity asks to replace your phase 1 file. Click <b>Replace</b>.</li>
+  <li>Outside Unity, open <code>GoldRush_Export/Resources/Scripts/Phases/Phase02/UI/GoldRushMenu.cs</code> in your code editor (or any text editor). Select all (<b>Ctrl+A</b> / <b>Cmd+A</b>) and copy.</li>
+  <li>In Unity, double-click your own <code>Assets/GoldRush/Scripts/UI/GoldRushMenu.cs</code>. Select all, paste over it and save.</li>
   <li>Wait for the compile. The Console must show <b>no red errors</b>.</li>
 </ol>
+<div class="warn">Do not drag the new file into the Project window. Unity does not replace a file that way: it adds a second file <code>GoldRushMenu 1.cs</code>, and you get the error "already contains a definition for GoldRushMenu". Pasting into your old file keeps its link (the <code>.meta</code> file), so the Gold Rush Menu component in your scene stays connected.</div>
 <p>The fields are the same as in phase 1, so your connections are kept. What is new:</p>
 <ul>
   <li><code>RefreshTitle()</code> now counts your stars (<code>Save.Data.levels</code>), fills the star bar and writes the next level under PLAY.</li>
@@ -459,7 +467,7 @@ public void StartLevel(int index)
   DayNight      ← step 6
   Btn_Gear      ← step 6
   Settings</code></pre>
-<figure class="shot todo" data-shot="phase-02/step-05" data-window="inspector" data-select="GoldRushMenu/MenuUI/Levels"><div class="ph">Inspector of Levels: Rect Transform stretch/stretch, all offsets 0, Canvas Group</div><figcaption>Check: Left, Top, Right, Bottom are 0 and there is a Canvas Group.</figcaption></figure>
+<figure class="shot"><img src="images/phase-02/step-05.png" alt="" loading="lazy"><figcaption>Check: Left, Top, Right, Bottom are 0 and there is a Canvas Group.</figcaption></figure>
 
 <!-- ======================================================= 6 -->
 <h2 id="step-6"><span class="step">6</span>The top-right bar</h2>
@@ -486,8 +494,7 @@ public void StartLevel(int index)
   <tr><td><code>Label</code> (GoldPill)</td><td>stretch</td><td>L 106, B 0, R 16, T 0</td><td>Text <code>0</code>, Poppins-Bold <code>50</code>, Middle Left, <code>FFC233</code>, Outline (1.14, -1.14)</td></tr>
 </table></div>
 <p>Put the three in the order of step 5 (GoldPill, DayNight, Btn_Gear, after Shop).</p>
-<figure class="shot todo" data-shot="phase-02/step-06-a" data-window="hierarchy" data-select="GoldRushMenu/MenuUI/GoldPill"><div class="ph">Hierarchy: MenuUI → Title, Levels, Shop, GoldPill (Shadow, Tint, Glass/Edge, Coin, Label), DayNight, Btn_Gear, Settings</div><figcaption>Check: GoldPill, DayNight and Btn_Gear are children of MenuUI.</figcaption></figure>
-<figure class="shot todo" data-shot="phase-02/step-06-b" data-window="inspector" data-select="GoldRushMenu/MenuUI/GoldPill"><div class="ph">Inspector of GoldPill: top right, pivot 1/1, Pos -40, -34, size 300 x 100</div><figcaption>Check: anchor and pivot are top right.</figcaption></figure>
+<figure class="shot"><img src="images/phase-02/step-06-a.png" alt="" loading="lazy"><figcaption>Check: GoldPill, DayNight and Btn_Gear are children of MenuUI.</figcaption></figure>
 
 <!-- ======================================================= 7 -->
 <h2 id="step-7"><span class="step">7</span>Glass recipe 4: the chip button</h2>
@@ -516,8 +523,6 @@ public void StartLevel(int index)
   <li>Drag <code>ChipButton</code> into <code>Prefabs/UI</code> (<b>Original Prefab</b>). Rename the object in the Hierarchy to <code>BACKBtn</code>.</li>
   <li>On <code>BACKBtn</code> only: <b>Add Component → Menu Action</b>, Action <code>back</code>. (The prefab has no Menu Action, because MUSIC and SOUND do not use one.)</li>
 </ol>
-<figure class="shot todo" data-shot="phase-02/step-07-a" data-window="hierarchy" data-select="GoldRushMenu/MenuUI/Levels/BACKBtn"><div class="ph">Hierarchy: BACKBtn (blue) → Halo, Shadow, Tint, Glass → Edge, IconDisc (Icon_Back/Glyph), Content (Label)</div><figcaption>Check: IconDisc and Content are children of Glass. (MUSIC/SOUND look for <code>Glass/IconDisc</code>.)</figcaption></figure>
-<figure class="shot todo" data-shot="phase-02/step-07-b" data-window="inspector" data-select="GoldRushMenu/MenuUI/Levels/BACKBtn"><div class="ph">Inspector of BACKBtn: top left, 32, -34, 200 x 80, Button (Transition None, Target Graphic Glass), Button FX (Flat, slate), Canvas Group, Menu Action (back)</div><figcaption>Check: Menu Action = back.</figcaption></figure>
 
 <!-- ======================================================= 8 -->
 <h2 id="step-8"><span class="step">8</span>The Levels screen</h2>
@@ -529,8 +534,6 @@ public void StartLevel(int index)
   <tr><td><code>SubHeader</code> (Levels)</td><td>Text</td><td>top centre, pivot <code>0.5, 1</code></td><td><code>0, -118</code> / <code>900 × 34</code></td><td><code>Collect all the gold, then run to the exit!</code>, Poppins-SemiBold <code>24</code>, Middle Center, <code>F2F7FF · 166</code></td></tr>
   <tr><td><code>Cards</code> (Levels)</td><td>Empty</td><td>middle centre</td><td><code>0, -50</code> / <code>1612 × 440</code></td><td>Leave it empty. The menu puts the 5 cards (300 × 440 each) in here.</td></tr>
 </table></div>
-<figure class="shot todo" data-shot="phase-02/step-08-a" data-window="hierarchy" data-select="GoldRushMenu/MenuUI/Levels"><div class="ph">Hierarchy: Levels → Dim, Header, SubHeader, BACKBtn, Cards</div><figcaption>Check: Cards is empty and last.</figcaption></figure>
-<figure class="shot todo" data-shot="phase-02/step-08-b" data-window="inspector" data-select="GoldRushMenu/MenuUI/Levels/Cards"><div class="ph">Inspector of Cards: middle centre, Pos 0, -50, Size 1612 x 440, no components</div><figcaption>Check: size 1612 × 440 (5 cards of 300 + 4 gaps of 28).</figcaption></figure>
 
 <!-- ======================================================= 9 -->
 <h2 id="step-9"><span class="step">9</span>The Shop screen</h2>
@@ -560,8 +563,6 @@ public void StartLevel(int index)
   <tr><td><code>Tabs</code> (Glass)</td><td>Empty</td><td>top centre, pivot <code>0.5, 1</code></td><td><code>0, -150</code> / <code>560 × 76</code></td><td>Leave empty: the COLORS and HATS tabs go here.</td></tr>
   <tr><td><code>Grid</code> (Glass)</td><td>Empty</td><td>top centre, pivot <code>0.5, 1</code></td><td><code>0, -250</code> / <code>820 × 610</code></td><td>Leave empty: the item cards go here (3 per row).</td></tr>
 </table></div>
-<figure class="shot todo" data-shot="phase-02/step-09-a" data-window="hierarchy" data-select="GoldRushMenu/MenuUI/Shop/ShopPanel"><div class="ph">Hierarchy: Shop → BACKBtn, ShopPanel → Shadow, Tint, Glass → Edge, Badge (Ring, Icon_Bag/Glyph), Title, Subtitle, Divider, Tabs, Grid</div><figcaption>Check: Tabs and Grid are children of <code>ShopPanel/Glass</code>.</figcaption></figure>
-<figure class="shot todo" data-shot="phase-02/step-09-b" data-window="scene" data-select="GoldRushMenu/MenuUI/Shop/ShopPanel"><div class="ph">Scene view (2D): the shop panel on the right with the orange bag badge, SHOP, subtitle and a thin divider line; empty below</div><figcaption>Check: the panel sits on the right half; the left half stays free for the hero.</figcaption></figure>
 
 <!-- ======================================================= 10 -->
 <h2 id="step-10"><span class="step">10</span>Settings: the panel and the title</h2>
@@ -587,8 +588,6 @@ public void StartLevel(int index)
   <tr><td><code>Edge</code> (Ribbon/Face)</td><td>Image</td><td><code>pillo</code></td><td><code>FFFFFF · 115</code></td><td>stretch 0</td><td>Sliced, PPU 1.333</td></tr>
   <tr><td><code>Label</code> (Ribbon/Face)</td><td>Text</td><td>–</td><td><code>F2F7FF</code></td><td>stretch 0</td><td><code>SETTINGS</code>, Poppins-Bold <code>44</code>, Middle Center, Outline (1, -1)</td></tr>
 </table></div>
-<figure class="shot todo" data-shot="phase-02/step-10-a" data-window="hierarchy" data-select="GoldRushMenu/MenuUI/Settings/Panel"><div class="ph">Hierarchy: Settings → Dim, Panel → Shadow, Face → Frost, Shine, Edge, Accent, Ribbon (Shadow, Tint, Face → Edge, Label)</div><figcaption>Check: Ribbon is a child of <code>Panel/Face</code>.</figcaption></figure>
-<figure class="shot todo" data-shot="phase-02/step-10-b" data-window="inspector" data-select="GoldRushMenu/MenuUI/Settings/Dim"><div class="ph">Inspector of Settings/Dim: stretch 0, Image without sprite, navy alpha 140, Raycast Target ON</div><figcaption>Check: Raycast Target is on (only for this Dim).</figcaption></figure>
 
 <!-- ======================================================= 11 -->
 <h2 id="step-11"><span class="step">11</span>Settings: MUSIC, SOUND and CLOSE</h2>
@@ -613,7 +612,7 @@ public void StartLevel(int index)
   <li>In the copy: rename <code>Icon_Music</code> to <code>Icon_Sound</code>, Glyph <code>ic_volume_up</code>. Label text <code>SOUND&nbsp;&nbsp;ON</code>.</li>
 </ol>
 <p>When the game runs, a click flips the setting and the menu writes <code>ON</code> or <code>OFF</code> into the Label. The icon disc turns grey when the setting is off.</p>
-<figure class="shot todo" data-shot="phase-02/step-11-a" data-window="inspector" data-select="GoldRushMenu/MenuUI/Settings/Panel/Face/MUSIC  ONBtn"><div class="ph">Inspector of MUSIC  ONBtn: bottom centre, Pos 0, 285, 260 x 76, Button, Button FX (Flat, green), Canvas Group, no Menu Action</div><figcaption>Check: there is <b>no</b> Menu Action on MUSIC and SOUND.</figcaption></figure>
+
 <h3>CLOSE</h3>
 <p>CLOSE is a big glass button with only a text (no icon, no arrow). Start from the <code>GlassButton</code> prefab:</p>
 <ol>
@@ -637,8 +636,6 @@ public void StartLevel(int index)
 <ol start="5">
   <li>At the end, untick <code>Settings</code> (the gear opens it) and tick <code>Title</code> again. <code>Levels</code> and <code>Shop</code> may stay on or off: the menu switches them.</li>
 </ol>
-<figure class="shot todo" data-shot="phase-02/step-11-b" data-window="game" data-select="GoldRushMenu/MenuUI/Settings"><div class="ph">Game view (Settings ticked, before Play): dark screen, glass panel with cyan SETTINGS ribbon, green MUSIC ON and SOUND ON chips, slate CLOSE button</div><figcaption>Check: the ribbon sticks out above the panel.</figcaption></figure>
-<figure class="shot todo" data-shot="phase-02/step-11-c" data-window="hierarchy" data-select="GoldRushMenu/MenuUI/Settings/Panel/Face/CLOSEBtn"><div class="ph">Hierarchy: Panel/Face → Frost, Shine, Edge, Accent, Ribbon, MUSIC  ONBtn, SOUND  ONBtn, CLOSEBtn (Halo, Shadow, EdgeGlow, Tint, Face → Gradient, Depth, TopLine, Sweep, Edge, Content/Label)</div><figcaption>Check: CLOSEBtn has no IconDisc and no Chevron.</figcaption></figure>
 
 <!-- ======================================================= 12 -->
 <h2 id="step-12"><span class="step">12</span>Connect the new fields</h2>
@@ -659,7 +656,6 @@ public void StartLevel(int index)
   <tr><td>Sound Toggle</td><td><code>Settings/Panel/Face/SOUND&nbsp;&nbsp;ONBtn</code></td></tr>
 </table></div>
 <p>Now <b>every</b> field must be filled. Only <b>Menu Glows</b> may stay empty. Save the scene.</p>
-<figure class="shot todo" data-shot="phase-02/step-12" data-window="inspector" data-select="GoldRushMenu"><div class="ph">Inspector of GoldRushMenu: all fields filled (Top Right 3 elements, Entrance 3 elements), Menu Glows empty or 3</div><figcaption>Check: no field says "None" except Menu Glows.</figcaption></figure>
 
 <!-- ======================================================= 13 -->
 <h2 id="step-13"><span class="step">13</span>Test the save with some gold</h2>
@@ -671,7 +667,6 @@ public void StartLevel(int index)
   <li>When you are done, change it back to <code>public int gold;</code> and clear the PlayerPrefs again.</li>
 </ol>
 <div class="note">The default value only counts for a <b>new</b> save. That is why you clear the PlayerPrefs first.</div>
-<figure class="shot todo" data-shot="phase-02/step-13" data-window="game" data-select="GoldRushMenu/MenuUI/Shop"><div class="ph">Game view, Shop screen in Play mode: COLORS tab active, 7 colour cards, Sunset bought and EQUIPPED, gold 470</div><figcaption>Check: the bought card says EQUIPPED and has a gold edge.</figcaption></figure>
 
 <!-- ======================================================= 14 -->
 <h2 id="step-14"><span class="step">14</span>▶ Press Play</h2>
@@ -683,8 +678,8 @@ public void StartLevel(int index)
   <li>Click <b>PLAY</b>. Look at the Console.</li>
   <li>Stop Play mode and press Play again.</li>
 </ol>
-<figure class="shot todo" data-shot="phase-02/step-14-a" data-window="game" data-select="GoldRushMenu/MenuUI/Levels"><div class="ph">Game view, Levels screen in Play mode: SELECT LEVEL, BACK top left, gear / moon / gold top right, five glass cards (1 open, 2–4 locked, Daily Rush)</div><figcaption>Compare with the SELECT LEVEL picture in step 1.</figcaption></figure>
-<figure class="shot todo" data-shot="phase-02/step-14-b" data-window="game" data-select="GoldRushMenu/MenuUI/Settings"><div class="ph">Game view, Settings dialog open in Play mode: MUSIC OFF (grey icon) and SOUND ON</div><figcaption>Check: the label and the icon colour change when you click.</figcaption></figure>
+
+<figure class="shot"><img src="images/03_shop.jpg" alt="" loading="lazy"><figcaption>Check: the label and the icon colour change when you click.</figcaption></figure>
 <div class="check">
 <p><b>You should see:</b></p>
 <ul>

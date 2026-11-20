@@ -36,10 +36,10 @@
 </ul>
 <h2>Practice</h2><ul>
 <li><a href="practicals.html" aria-current="page"><span class="num">▶</span><span class="label">Practicals overview</span></a></li>
-<li><a href="practical-1.html"><span class="num">P1</span><span class="label">Coin Garden</span></a></li>
-<li><a href="practical-2.html"><span class="num">P2</span><span class="label">The Maze</span></a></li>
-<li><a href="practical-3.html"><span class="num">P3</span><span class="label">Guard Tower</span></a></li>
-<li><a href="practical-4.html"><span class="num">P4</span><span class="label">Night Run</span></a></li>
+<li><a href="practical-1.html"><span class="num">P1</span><span class="label">Practical 1</span></a></li>
+<li><a href="practical-2.html"><span class="num">P2</span><span class="label">Practical 2</span></a></li>
+<li><a href="practical-3.html"><span class="num">P3</span><span class="label">Practical 3</span></a></li>
+<li><a href="practical-4.html"><span class="num">P4</span><span class="label">Practical 4</span></a></li>
 </ul>
 <h2>Help</h2><ul>
 <li><a href="troubleshooting.html"><span class="num">?</span><span class="label">Troubleshooting</span></a></li>
@@ -135,7 +135,6 @@
 <li>Look at the title bar of Unity: it says <b>Level5</b>. You now work in the copy. Level1 stays as it was.</li>
 </ol>
 <div class="note">Always check the title bar before you delete things. If it still says <b>Level1</b>, stop and do <b>Save As</b> first.</div>
-<figure class="shot todo" data-shot="practicals/step-03" data-window="project" data-select="Assets/GoldRush/Scenes/Level5.unity"><div class="ph">Project window: Assets/GoldRush/Scenes with MainMenu, Level1 … Level4 and the new Level5</div><figcaption>The new scene file is next to the others.</figcaption></figure>
 
 <p><b>Other ways to start:</b> copy <code>Level2</code>, <code>Level3</code> or <code>Level4</code> the same way (bigger arenas, more monsters). Or make your own <b>template</b> once: a copy of Level1 with all obstacles, coins and monsters deleted, saved as <code>LevelTemplate</code>. Then each new level is <b>Save As</b> from the template. (Do not add the template to the build.)</p>
 
@@ -148,8 +147,6 @@
 <li>Save (<b>Ctrl+S</b> / <b>Cmd+S</b>).</li>
 </ol>
 <p>The yellow square in the Scene view shows the arena. Monsters only wander inside it. Keep it the same size as the inside of your walls.</p>
-<figure class="shot todo" data-shot="practicals/step-04" data-window="inspector" data-select="Level 5 - Coin Garden"><div class="ph">Inspector of Level 5 - Coin Garden: Transform 0,0,0 and Level Scene (Arena Half 12)</div><figcaption>The root has a new name and the right Arena Half.</figcaption></figure>
-
 
 <!-- ======================================================= 5 -->
 <h2 id="step-5"><span class="step">5</span>Clear out what you do not need</h2>
@@ -202,8 +199,6 @@
 <li>Drag <code>Scenes/Level5</code> from the Project window into the list, under <code>Level4</code>.</li>
 <li>Check: <code>MainMenu</code> is number 0, and your scene is ticked.</li>
 </ol>
-<figure class="shot todo" data-shot="practicals/step-07" data-window="buildprofiles" data-select="Assets/GoldRush/Scenes/Level5.unity"><div class="ph">Build Profiles → Scene List: MainMenu (0), Level1 … Level4, Level5 ticked</div><figcaption>Level5 is in the Scene List and ticked.</figcaption></figure>
-
 
 <!-- ======================================================= 8 -->
 <h2 id="step-8"><span class="step">8</span>Find your card in Level Select</h2>
@@ -214,7 +209,6 @@
 <li><b>5 to 9 levels</b> (with your practicals): the cards go into <b>two rows</b> of up to 5 and get a little smaller. Levels 1–5 are in the top row. Level 6 and later and DAILY RUSH (always last) are in the bottom row.</li>
 <li>Your new card shows a <b>lock</b> and "Clear level 4". That is normal: a level opens when you win the level before it.</li>
 </ul>
-<figure class="shot todo" data-shot="practicals/step-08" data-window="game" data-select="GoldRushMenu"><div class="ph">Game view in Play mode: Level Select with the cards Level 1–5 and DAILY RUSH</div><figcaption>Your new card, with a lock until you win Level 4.</figcaption></figure>
 
 <div class="note"><b>Old menu script?</b> The first version of <code>GoldRushMenu.cs</code> has room for exactly 5 cards. Then your Level 5 card hides <b>under</b> the DAILY RUSH card, and Level 6 and later are off the screen. Ask your teacher for the updated <code>GoldRushMenu.cs</code> (two rows of cards). Until then, test your level by pressing Play in its own scene (step 9).</div>
 
@@ -248,8 +242,6 @@
 <li>Solid pieces go into <code>Static</code> (and its groups), so the NavMesh sees them. Coins, monsters and power-ups go into <code>Gameplay</code>.</li>
 <li>Markers stay on the floor (<code>Y = 0</code>). The coin inside a <code>CoinSpot</code> has local position <code>0, 1, 0</code>.</li>
 </ul>
-<figure class="shot todo" data-shot="practicals/step-10" data-window="scene" data-select="Level 5 - Coin Garden/Static/Obstacles"><div class="ph">Scene view toolbar with the Grid and Snap overlay open (Move snap 0.5) and a block being moved with Ctrl held</div><figcaption>Snap steps of 0.5 m.</figcaption></figure>
-
 
 <!-- ======================================================= 11 -->
 <h2 id="step-11"><span class="step">11</span>Walls of any size</h2>
@@ -268,7 +260,6 @@
 <tr><td><code>16</code></td><td>32 × 32 m (Level1)</td><td>4 × Wall_8m</td><td>Wall_8m, Wall_4m · <i>gap</i> · Wall_4m, Wall_8m</td></tr>
 <tr><td><code>18</code></td><td>36 × 36 m</td><td>4 × Wall_8m + 1 × Wall_4m</td><td>Move the gate 2 m to the side (X = -2), see Practical 4</td></tr>
 </table></div>
-
 
 <!-- ======================================================= 12 -->
 <h2 id="step-12"><span class="step">12</span>Level design rules</h2>
@@ -323,7 +314,6 @@
 <tr><td>"Where is the last coin?"</td><td>Make a coin trail to it, or put a lamp next to it.</td></tr>
 <tr><td>"I did not see the gate."</td><td>Leave a free line of sight from the start to the gate. Lamps beside the gate help.</td></tr>
 </table></div>
-
 
 <!-- ======================================================= 15 -->
 <h2 id="step-15"><span class="step">15</span>Common problems</h2>

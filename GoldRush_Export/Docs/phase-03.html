@@ -34,6 +34,13 @@
 <li><a href="phase-09.html"><span class="num">9</span><span class="label">Gameplay UI</span></a></li>
 <li><a href="phase-10.html"><span class="num">10</span><span class="label">Polish and build</span></a></li>
 </ul>
+<h2>Practice</h2><ul>
+<li><a href="practicals.html"><span class="num">▶</span><span class="label">Practicals overview</span></a></li>
+<li><a href="practical-1.html"><span class="num">P1</span><span class="label">Practical 1</span></a></li>
+<li><a href="practical-2.html"><span class="num">P2</span><span class="label">Practical 2</span></a></li>
+<li><a href="practical-3.html"><span class="num">P3</span><span class="label">Practical 3</span></a></li>
+<li><a href="practical-4.html"><span class="num">P4</span><span class="label">Practical 4</span></a></li>
+</ul>
 <h2>Help</h2><ul>
 <li><a href="troubleshooting.html"><span class="num">?</span><span class="label">Troubleshooting</span></a></li>
 <li><a href="glossary.html"><span class="num">A–Z</span><span class="label">Glossary</span></a></li>
@@ -98,7 +105,6 @@
 <p><code>Prefabs/Gameplay</code> has the <b>looks</b> of the coin, the exit gate and the power-ups. They have no scripts yet. You bring them to life in phases 5, 6 and 8.</p>
 <div class="note"><b>Pivot at the bottom.</b> A kit piece at <code>Y = 0</code> stands exactly on the floor. You never lift blocks by half their height.</div>
 <div class="warn">Do not click <b>Overrides → Apply All</b> on a kit piece. That changes the prefab file, so every copy in every scene changes.</div>
-<figure class="shot todo" data-shot="phase-03/step-02" data-window="project" data-select="Assets/GoldRush/Prefabs/Level"><div class="ph">Project window: Assets/GoldRush/Prefabs/Level with the kit thumbnails</div><figcaption>The level kit in the Project window.</figcaption></figure>
 
 <!-- ======================================================= 3 -->
 <h2 id="step-3"><span class="step">3</span>The plan</h2>
@@ -119,7 +125,7 @@
 <li><b>File → Save As…</b> → folder <code>Assets/GoldRush/Scenes</code> → name <code>Level1</code> → <b>Save</b>.</li>
 <li>If the Hierarchy has a <b>Global Volume</b>, delete it. The game adds its own effects later.</li>
 </ol>
-<figure class="shot todo" data-shot="phase-03/step-04" data-window="hierarchy" data-select="Main Camera"><div class="ph">Hierarchy of Level1: Main Camera and Directional Light only</div><figcaption>A new scene with a Main Camera and a Directional Light.</figcaption></figure>
+<figure class="shot"><img src="images/phase-03/step-04.png" alt="" loading="lazy"><figcaption>A new scene with a Main Camera and a Directional Light.</figcaption></figure>
 
 <!-- ======================================================= 5 -->
 <h2 id="step-5"><span class="step">5</span>Make the groups</h2>
@@ -145,7 +151,6 @@
 <tr><td><code>Scenery</code></td><td>Decoration outside the yard.</td></tr>
 <tr><td><code>Gameplay</code></td><td>The markers: where things start or appear.</td></tr>
 </table></div>
-<figure class="shot todo" data-shot="phase-03/step-05" data-window="hierarchy" data-select="Level 1 - Training Yard"><div class="ph">Hierarchy: Level 1 - Training Yard opened, with Static (Floor, Walls, Lamps, Obstacles), Scenery, Gameplay (Coins, Monsters, PowerUps)</div><figcaption>Check the names and the nesting.</figcaption></figure>
 
 <!-- ======================================================= 6 -->
 <h2 id="step-6"><span class="step">6</span>The floor</h2>
@@ -154,7 +159,6 @@
 <li>Drag <code>Prefabs/Level/OuterGround</code> onto <code>Scenery</code>. Position <code>0, 0, 0</code> (the prefab already sits 0.6 m lower inside).</li>
 </ol>
 <p>The floor is bigger than the yard (40 m), so you never see its edge from inside. It stands above the darker outer ground like a stage.</p>
-<figure class="shot todo" data-shot="phase-03/step-06" data-window="scene" data-select="Level 1 - Training Yard/Static/Floor/Floor_40m"><div class="ph">Scene view: the light grid floor on the big dark outer ground</div><figcaption>The floor sits on the outer ground.</figcaption></figure>
 
 <!-- ======================================================= 7 -->
 <h2 id="step-7"><span class="step">7</span>The south wall</h2>
@@ -164,7 +168,6 @@
 <li>Add three more <code>Wall_8m</code> children at X <code>-4</code>, <code>4</code> and <code>12</code> (Y and Z stay <code>0</code>).</li>
 </ol>
 <p>Child positions are <b>local</b>: relative to the parent. The wall now runs from X = -16 to +16 without gaps.</p>
-<figure class="shot todo" data-shot="phase-03/step-07" data-window="scene" data-select="Level 1 - Training Yard/Static/Walls/WallSouth"><div class="ph">Scene view: the south wall, four Wall_8m pieces in a row at the south edge of the floor</div><figcaption>The south wall has no gaps.</figcaption></figure>
 
 <!-- ======================================================= 8 -->
 <h2 id="step-8"><span class="step">8</span>The north wall and the gate opening</h2>
@@ -178,8 +181,8 @@
 <li>Right-click <code>Static/Walls</code> → <b>Create Empty</b>. Name it <code>GateBlocker</code>. Position <code>0, 2.5, 17.25</code>.</li>
 <li><b>Add Component → Box Collider</b>. <b>Size</b> <code>8, 5, 1</code>.</li>
 </ol>
-<figure class="shot todo" data-shot="phase-03/step-08-a" data-window="scene" data-select="Level 1 - Training Yard/Static/Walls/WallNorth"><div class="ph">Scene view: the north wall with the 8 m opening in the middle</div><figcaption>The opening for the gate.</figcaption></figure>
-<figure class="shot todo" data-shot="phase-03/step-08-b" data-window="inspector" data-select="Level 1 - Training Yard/Static/Walls/GateBlocker"><div class="ph">Inspector of GateBlocker: Position 0, 2.5, 17.25; Box Collider Size 8, 5, 1</div><figcaption>GateBlocker has only a Box Collider.</figcaption></figure>
+
+<figure class="shot"><img src="images/phase-03/step-08-b.png" alt="" loading="lazy"><figcaption>GateBlocker has only a Box Collider.</figcaption></figure>
 
 <!-- ======================================================= 9 -->
 <h2 id="step-9"><span class="step">9</span>East and west walls, corners</h2>
@@ -189,7 +192,6 @@
 <li>Right-click <code>Static/Walls</code> → <b>Create Empty</b>. Name it <code>Corners</code>.</li>
 <li>Drag 4 × <code>Pillar</code> into <code>Corners</code>. Positions <code>-16.5, 0, -16.5</code> · <code>16.5, 0, -16.5</code> · <code>-16.5, 0, 16.5</code> · <code>16.5, 0, 16.5</code>.</li>
 </ol>
-<figure class="shot todo" data-shot="phase-03/step-09" data-window="scene" data-select="Level 1 - Training Yard/Static/Walls"><div class="ph">Scene view: the floor with all four walls, four corner pillars and the north opening</div><figcaption>The yard is closed, except the gate opening.</figcaption></figure>
 
 <!-- ======================================================= 10 -->
 <h2 id="step-10"><span class="step">10</span>Lamp posts</h2>
@@ -201,7 +203,6 @@
 <tr><td>7–8</td><td><code>-4.5, 0, -14.5</code> · <code>4.5, 0, -14.5</code></td><td>South, left and right of the start</td></tr>
 </table></div>
 <div class="note">Keep it at <b>8 lamps</b> or fewer. Each lamp has a real light, and many lights make the game slow on phones.</div>
-<figure class="shot todo" data-shot="phase-03/step-10" data-window="scene" data-select="Level 1 - Training Yard/Static/Lamps"><div class="ph">Scene view: 8 lamp posts inside the walls (4 corners, 2 middle, 2 south)</div><figcaption>Eight lamps, all on the floor.</figcaption></figure>
 
 <!-- ======================================================= 11 -->
 <h2 id="step-11"><span class="step">11</span>Obstacles</h2>
@@ -227,7 +228,6 @@
 <tr><td>17</td><td><code>AccentBlock_Red</code></td><td><code>-7.5, 0, 7</code></td><td>0</td><td></td></tr>
 </table></div>
 <div class="tip">You can change the layout later. Keep a free path from the start (south) to the gate (north), and keep obstacles at least 1 m away from the walls, so monsters can walk around them.</div>
-<figure class="shot todo" data-shot="phase-03/step-11" data-window="scene" data-select="Level 1 - Training Yard/Static/Obstacles"><div class="ph">Scene view of the yard with all 17 obstacles (same layout as the top view in step 3)</div><figcaption>Compare with the top view in step 3.</figcaption></figure>
 
 <!-- ======================================================= 12 -->
 <h2 id="step-12"><span class="step">12</span>The markers</h2>
@@ -245,8 +245,6 @@
 <tr><td><code>PowerUp Magnet</code></td><td><code>Gameplay/PowerUps</code></td><td><code>-14.5, 0, -8.5</code></td><td>purple</td><td>Phase 8</td></tr>
 </table></div>
 <div class="note">Put markers on the floor (<code>Y = 0</code>), never inside a block. A monster placed inside a block cannot move.</div>
-<figure class="shot todo" data-shot="phase-03/step-12-a" data-window="hierarchy" data-select="Level 1 - Training Yard/Gameplay"><div class="ph">Hierarchy: Gameplay opened with PlayerSpawn, Coins (CoinSpot 1–6), Monsters (Slime 1, Slime 2), PowerUps (PowerUp Magnet), ExitGateSpot</div><figcaption>11 markers in the Gameplay group.</figcaption></figure>
-<figure class="shot todo" data-shot="phase-03/step-12-b" data-window="scene" data-select="Level 1 - Training Yard/Gameplay/PlayerSpawn"><div class="ph">Scene view from above: the coloured marker labels on the floor</div><figcaption>Blue start, yellow coins, red slimes, purple power-up, green gate.</figcaption></figure>
 
 <!-- ======================================================= 13 -->
 <h2 id="step-13"><span class="step">13</span>The sun</h2>
@@ -258,7 +256,6 @@
 <li><b>Shadow Type</b> <b>Soft Shadows</b>, <b>Strength</b> <code>0.75</code>.</li>
 <li><b>Bias</b> → <b>Custom</b>: <b>Depth</b> <code>0.05</code>, <b>Normal</b> <code>0.4</code>. (This stops dark stripes on the blocks.)</li>
 </ol>
-<figure class="shot todo" data-shot="phase-03/step-13" data-window="inspector" data-select="Sun"><div class="ph">Inspector of Sun: Rotation 30, 35, 0; Light colour FFDEAD, Intensity 1.5, Soft Shadows, Strength 0.75, Bias Custom 0.05 / 0.4</div><figcaption>Check the colour, intensity and shadow values.</figcaption></figure>
 
 <!-- ======================================================= 14 -->
 <h2 id="step-14"><span class="step">14</span>Sky, ambient light and fog</h2>
@@ -276,7 +273,6 @@
 </table></div>
 <p><b>Ambient light</b> is soft light from everywhere, so shadows are not black. <b>Fog</b> fades far things into a warm haze.</p>
 <div class="tip">No fog in the Scene view? Open the Scene view's <b>effects</b> menu (picture icon in the toolbar) and tick <b>Fog</b> and <b>Skybox</b>.</div>
-<figure class="shot todo" data-shot="phase-03/step-14" data-window="scene" data-select="Sun"><div class="ph">Scene view at hero height: sunset sky, warm light, fog in the distance</div><figcaption>Sunset sky and fog.</figcaption></figure>
 
 <!-- ======================================================= 15 -->
 <h2 id="step-15"><span class="step">15</span>Mark the level static</h2>
@@ -287,7 +283,6 @@
 <li>Click <b>Yes, change children</b>.</li>
 </ol>
 <div class="note">Do not mark <code>Gameplay</code> as static. The gate door and the monsters move.</div>
-<figure class="shot todo" data-shot="phase-03/step-15" data-window="inspector" data-select="Level 1 - Training Yard/Static"><div class="ph">Inspector of Static: the Static dropdown with Batching Static ticked</div><figcaption>Batching Static is ticked.</figcaption></figure>
 
 <!-- ======================================================= 16 -->
 <h2 id="step-16"><span class="step">16</span>An overview camera</h2>
@@ -297,8 +292,6 @@
 <li><b>Position</b> <code>0, 22, -30</code>, <b>Rotation</b> <code>35, 0, 0</code>.</li>
 <li>Save the scene.</li>
 </ol>
-<figure class="shot todo" data-shot="phase-03/step-16-a" data-window="inspector" data-select="Main Camera"><div class="ph">Inspector of Main Camera: Position 0, 22, -30; Rotation 35, 0, 0</div><figcaption>The camera is high above the south wall.</figcaption></figure>
-<figure class="shot todo" data-shot="phase-03/step-16-b" data-window="game" data-select="Main Camera"><div class="ph">Game view: the whole yard seen from above the south wall</div><figcaption>You see the whole yard.</figcaption></figure>
 
 <!-- ======================================================= 17 -->
 <h2 id="step-17"><span class="step">17</span>Add Level1 to the build</h2>
@@ -310,7 +303,6 @@
 <li>Check the order: <code>MainMenu</code> is number <b>0</b> (the game starts with it), <code>Level1</code> is number <b>1</b>. Untick any other scene (for example <code>Sandbox</code> or <code>SampleScene</code>).</li>
 <li>Close the window.</li>
 </ol>
-<figure class="shot todo" data-shot="phase-03/step-17" data-window="project" data-select="Assets/GoldRush/Scenes/Level1.unity"><div class="ph">Project window: Assets/GoldRush/Scenes with MainMenu and Level1</div><figcaption>Both scenes are in Scenes. Drag them into the Scene List.</figcaption></figure>
 
 <!-- ======================================================= 18 -->
 <h2 id="step-18"><span class="step">18</span>▶ Press Play</h2>
@@ -338,7 +330,7 @@
 </div>
 <p><b>Press Play: you should be able to fly around Level1, and PLAY in the menu opens it.</b></p>
 <figure class="shot"><img src="images/phase-02/level1-overview.jpg" alt="Level1 seen from the overview camera" loading="lazy"><figcaption>Level1 from the overview camera.</figcaption></figure>
-<figure class="shot todo" data-shot="phase-03/step-18" data-window="game" data-select="Main Camera"><div class="ph">Game view in Play mode after clicking PLAY in the menu: Level1 from the overview camera</div><figcaption>Your level after PLAY.</figcaption></figure>
+<figure class="shot"><img src="images/phase-02/level1-overview.jpg" alt="" loading="lazy"><figcaption>Your level after PLAY.</figcaption></figure>
 <div class="note"><b>Back to the menu.</b> For now there is no button for it: stop Play mode, and you are in MainMenu again. You can also press Play directly in Level1 to test the level. In <a href="phase-06.html">Phase 6</a> the game goes back to the menu by itself after you win or lose. In <a href="phase-09.html">Phase 9</a> the pause dialog (<b>Esc</b>) gets a Home button.</div>
 
 <!-- ======================================================= 19 -->
