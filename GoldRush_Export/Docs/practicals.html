@@ -1,0 +1,356 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>GOLD RUSH – Practicals: design your own levels</title>
+<meta name="description" content="GOLD RUSH Unity tutorial, Practicals: how to add a new level and level design rules.">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+<header class="site-header">
+  <a class="brand" href="index.html"><span class="brand-mark">GR</span>GOLD RUSH <small>Unity tutorial</small></a>
+  <nav class="header-links" aria-label="Quick links">
+    <a class="hide-sm" href="index.html">Course</a>
+    <a href="troubleshooting.html">Help</a>
+    <a href="glossary.html">Glossary</a>
+  </nav>
+</header>
+<div class="layout">
+<aside class="sidebar" aria-label="Site navigation">
+<h2>Start</h2><ul>
+<li><a href="index.html"><span class="num">★</span><span class="label">Overview</span></a></li>
+</ul>
+<h2>Course</h2><ul>
+<li><a href="phase-00.html"><span class="num">0</span><span class="label">Create the project</span></a></li>
+<li><a href="phase-01.html"><span class="num">1</span><span class="label">The main menu</span></a></li>
+<li><a href="phase-02.html"><span class="num">2</span><span class="label">Level select, shop and settings</span></a></li>
+<li><a href="phase-03.html"><span class="num">3</span><span class="label">Level design</span></a></li>
+<li><a href="phase-04.html"><span class="num">4</span><span class="label">Player and camera</span></a></li>
+<li><a href="phase-05.html"><span class="num">5</span><span class="label">Coins</span></a></li>
+<li><a href="phase-06.html"><span class="num">6</span><span class="label">Exit gate, win and lose</span></a></li>
+<li><a href="phase-07.html"><span class="num">7</span><span class="label">Monsters</span></a></li>
+<li><a href="phase-08.html"><span class="num">8</span><span class="label">Power-ups and effects</span></a></li>
+<li><a href="phase-09.html"><span class="num">9</span><span class="label">Gameplay UI</span></a></li>
+<li><a href="phase-10.html"><span class="num">10</span><span class="label">Polish and build</span></a></li>
+</ul>
+<h2>Practice</h2><ul>
+<li><a href="practicals.html" aria-current="page"><span class="num">▶</span><span class="label">Practicals overview</span></a></li>
+<li><a href="practical-1.html"><span class="num">P1</span><span class="label">Coin Garden</span></a></li>
+<li><a href="practical-2.html"><span class="num">P2</span><span class="label">The Maze</span></a></li>
+<li><a href="practical-3.html"><span class="num">P3</span><span class="label">Guard Tower</span></a></li>
+<li><a href="practical-4.html"><span class="num">P4</span><span class="label">Night Run</span></a></li>
+</ul>
+<h2>Help</h2><ul>
+<li><a href="troubleshooting.html"><span class="num">?</span><span class="label">Troubleshooting</span></a></li>
+<li><a href="glossary.html"><span class="num">A–Z</span><span class="label">Glossary</span></a></li>
+<li><a href="exercises.html"><span class="num">✎</span><span class="label">Exercises</span></a></li>
+</ul>
+</aside>
+<main>
+<div class="content">
+<p class="eyebrow">GOLD RUSH · Practice</p>
+<h1>Practicals: design your own levels</h1>
+<p class="lead">You know the whole game now. In these practicals you are the <b>level designer</b>. You build four new levels with the pieces you already have: the kit in <code>Prefabs/Level</code>, the <code>Coin</code>, the <code>ExitGate</code>, the power-ups and the three monster prefabs, plus the markers. No new scripts. This page shows how to add <b>any</b> new level to the game and gives you the rules of good level design. Then the four practicals go from easy to hard.</p>
+<div class="meta"><span><b>New scenes</b><code>Level5</code> … <code>Level8</code></span><span><b>Code to edit</b><code>Scripts/Core/Data.cs</code></span><span><b>Time</b>about 1–2 lessons per practical</span></div>
+<nav class="toc" aria-label="Steps on this page"><strong>Steps on this page</strong><ol>
+<li><a href="#step-1">What you need</a></li>
+<li><a href="#step-2">How a level gets into the game</a></li>
+<li><a href="#step-3">Copy Level1</a></li>
+<li><a href="#step-4">Rename the root, set Arena Half</a></li>
+<li><a href="#step-5">Clear out what you do not need</a></li>
+<li><a href="#step-6">Add a LevelDef in Data.cs</a></li>
+<li><a href="#step-7">Add the scene to Build Profiles</a></li>
+<li><a href="#step-8">Find your card in Level Select</a></li>
+<li><a href="#step-9">Play your level</a></li>
+<li><a href="#step-10">Placing and snapping</a></li>
+<li><a href="#step-11">Walls of any size</a></li>
+<li><a href="#step-12">Level design rules</a></li>
+<li><a href="#step-13">Know your monsters</a></li>
+<li><a href="#step-14">Test-play and tune the par time</a></li>
+<li><a href="#step-15">Common problems</a></li>
+</ol></nav>
+
+<div class="cards">
+<div class="card"><span class="tag">P1 · EASY</span><h3><a href="practical-1.html">Coin Garden</a></h3><p>A small open garden, 8 coins and 1 slime. Learn to place, copy and snap pieces.</p><div class="links"><a href="practical-1.html">Start →</a></div></div>
+<div class="card"><span class="tag">P2 · MEDIUM</span><h3><a href="practical-2.html">The Maze</a></h3><p>A maze of walls, 2 slimes and a ghost. A SPEED power-up and a par time.</p><div class="links"><a href="practical-2.html">Start →</a></div></div>
+<div class="card"><span class="tag">P3 · HARD</span><h3><a href="practical-3.html">Guard Tower</a></h3><p>A vault in the middle with a Mushroom King and its Home. Coins behind cover, a GHOST power-up.</p><div class="links"><a href="practical-3.html">Start →</a></div></div>
+<div class="card"><span class="tag">P4 · FREE</span><h3><a href="practical-4.html">Night Run</a></h3><p>A bigger arena at night, all 3 monsters, MAGNET and lamps. Then add your own idea.</p><div class="links"><a href="practical-4.html">Start →</a></div></div>
+</div>
+
+<!-- ======================================================= 1 -->
+<h2 id="step-1"><span class="step">1</span>What you need</h2>
+
+<ul>
+<li><a href="phase-10.html">Phase 10</a> is finished: Levels 1–4 play, and the menu shows 4 level cards and the <b>DAILY RUSH</b> card.</li>
+<li>Your <code>Level1</code> scene from the course. Every practical starts as a copy of it, so the Player, the camera, the GameManager, the game UI, the sun and the sky are already there.</li>
+<li>The monster prefabs <code>Monster_Slime</code>, <code>Monster_Ghost</code>, <code>Monster_MushroomKing</code> (Phase 7) and the power-up prefabs <code>PowerUp_Speed</code>, <code>PowerUp_Ghost</code>, <code>PowerUp_Magnet</code> (Phase 8) in <code>Prefabs/Gameplay</code>.</li>
+<li>Paper and a pencil. Good levels start as a drawing.</li>
+</ul>
+<div class="tip">This guide uses the scene names <code>Level5</code> to <code>Level8</code> for practicals 1 to 4. If you skip a practical, just use the next free number.</div>
+
+<!-- ======================================================= 2 -->
+<h2 id="step-2"><span class="step">2</span>How a level gets into the game</h2>
+
+<p>A level needs <b>four</b> things. If one is missing, the level does not show up or does not load.</p>
+<figure class="shot">
+<svg viewBox="0 0 760 150" width="760" height="150" role="img" aria-label="Scene, LevelDef, Build Profiles, menu card" style="max-width:100%;height:auto;display:block" font-family="system-ui, -apple-system, Segoe UI, Arial, sans-serif">
+<defs><marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 Z" fill="#4f46e5"/></marker></defs>
+<g font-size="13">
+<rect x="6" y="20" width="160" height="96" rx="12" fill="#eef2ff" stroke="#4f46e5"/>
+<text x="86" y="46" text-anchor="middle" font-weight="800" fill="#1e1b4b">1. The scene</text>
+<text x="86" y="68" text-anchor="middle" fill="#374151">Level5.unity</text>
+<text x="86" y="88" text-anchor="middle" fill="#374151">root has LevelScene</text>
+<text x="86" y="106" text-anchor="middle" fill="#374151">+ markers</text>
+<rect x="200" y="20" width="160" height="96" rx="12" fill="#eef2ff" stroke="#4f46e5"/>
+<text x="280" y="46" text-anchor="middle" font-weight="800" fill="#1e1b4b">2. A LevelDef</text>
+<text x="280" y="68" text-anchor="middle" fill="#374151">in Levels.All</text>
+<text x="280" y="88" text-anchor="middle" fill="#374151">scene = "Level5"</text>
+<text x="280" y="106" text-anchor="middle" fill="#374151">title, coins, par…</text>
+<rect x="394" y="20" width="160" height="96" rx="12" fill="#eef2ff" stroke="#4f46e5"/>
+<text x="474" y="46" text-anchor="middle" font-weight="800" fill="#1e1b4b">3. Build Profiles</text>
+<text x="474" y="68" text-anchor="middle" fill="#374151">Scene List</text>
+<text x="474" y="88" text-anchor="middle" fill="#374151">Level5 ticked</text>
+<rect x="588" y="20" width="166" height="96" rx="12" fill="#dcfce7" stroke="#15803d"/>
+<text x="671" y="46" text-anchor="middle" font-weight="800" fill="#14532d">4. The card</text>
+<text x="671" y="68" text-anchor="middle" fill="#374151">Level Select makes it</text>
+<text x="671" y="88" text-anchor="middle" fill="#374151">from the LevelDef.</text>
+<text x="671" y="106" text-anchor="middle" fill="#374151">Click = load the scene</text>
+<path d="M168 68 H196" stroke="#4f46e5" stroke-width="2.5" marker-end="url(#ar)"/>
+<path d="M362 68 H390" stroke="#4f46e5" stroke-width="2.5" marker-end="url(#ar)"/>
+<path d="M556 68 H584" stroke="#4f46e5" stroke-width="2.5" marker-end="url(#ar)"/>
+<text x="380" y="142" text-anchor="middle" fill="#6b7280" font-size="12">The scene name in the LevelDef must be exactly the file name of the scene.</text>
+</g></svg>
+<figcaption>Scene → LevelDef → Build Profiles → card.</figcaption></figure>
+<p>When the level starts, the <b>GameManager</b> finds the <code>LevelScene</code> component on your level root. It reads everything under it: <code>PlayerSpawn</code>, every <code>CoinSpot</code>, every <code>MonsterSpawn</code> (your monster prefabs), every <code>PowerUpSpot</code> and the <code>ExitGate</code>. It also bakes the NavMesh again, so you can move walls freely. You never write code for a level: you only <b>place objects</b>.</p>
+<div class="note">The GameManager finds the level settings by the <b>scene name</b>. A scene that is not in <code>Levels.All</code> plays with the settings of Level 1 (title "Training Yard", par 40).</div>
+
+<!-- ======================================================= 3 -->
+<h2 id="step-3"><span class="step">3</span>Copy Level1</h2>
+
+<p>The easy way to start a level is to copy one that already works.</p>
+<ol>
+<li>Open <code>Assets/GoldRush/Scenes/Level1</code>.</li>
+<li><b>File → Save As…</b> → folder <code>Assets/GoldRush/Scenes</code> → name <code>Level5</code> → <b>Save</b>.</li>
+<li>Look at the title bar of Unity: it says <b>Level5</b>. You now work in the copy. Level1 stays as it was.</li>
+</ol>
+<div class="note">Always check the title bar before you delete things. If it still says <b>Level1</b>, stop and do <b>Save As</b> first.</div>
+<figure class="shot todo" data-shot="practicals/step-03" data-window="project" data-select="Assets/GoldRush/Scenes/Level5.unity"><div class="ph">Project window: Assets/GoldRush/Scenes with MainMenu, Level1 … Level4 and the new Level5</div><figcaption>The new scene file is next to the others.</figcaption></figure>
+
+<p><b>Other ways to start:</b> copy <code>Level2</code>, <code>Level3</code> or <code>Level4</code> the same way (bigger arenas, more monsters). Or make your own <b>template</b> once: a copy of Level1 with all obstacles, coins and monsters deleted, saved as <code>LevelTemplate</code>. Then each new level is <b>Save As</b> from the template. (Do not add the template to the build.)</p>
+
+<!-- ======================================================= 4 -->
+<h2 id="step-4"><span class="step">4</span>Rename the root, set Arena Half</h2>
+
+<ol>
+<li>In the Hierarchy, select the root <code>Level 1 - Training Yard</code>. Rename it, for example <code>Level 5 - Coin Garden</code>.</li>
+<li>In its <b>Level Scene</b> component, set <b>Arena Half</b> = half the width of your playing area. A 24 × 24 m level has Arena Half <code>12</code>.</li>
+<li>Save (<b>Ctrl+S</b> / <b>Cmd+S</b>).</li>
+</ol>
+<p>The yellow square in the Scene view shows the arena. Monsters only wander inside it. Keep it the same size as the inside of your walls.</p>
+<figure class="shot todo" data-shot="practicals/step-04" data-window="inspector" data-select="Level 5 - Coin Garden"><div class="ph">Inspector of Level 5 - Coin Garden: Transform 0,0,0 and Level Scene (Arena Half 12)</div><figcaption>The root has a new name and the right Arena Half.</figcaption></figure>
+
+
+<!-- ======================================================= 5 -->
+<h2 id="step-5"><span class="step">5</span>Clear out what you do not need</h2>
+
+<p>Delete the things your new level does not use. <b>Keep</b> the things in the right column.</p>
+<div class="table-wrap"><table>
+<tr><th>Usually delete or change</th><th>Always keep</th></tr>
+<tr><td>Children of <code>Static/Obstacles</code> (the old blocks)</td><td><code>GameManager</code>, <code>Player</code>, <code>Main Camera</code>, the game UI canvas, <code>EventSystem</code>, <code>Sun</code></td></tr>
+<tr><td>Extra <code>CoinSpot</code>s in <code>Gameplay/Coins</code> (or move them)</td><td><code>Static/Floor</code> (<code>Floor_40m</code>) and <code>Scenery</code></td></tr>
+<tr><td>Monsters in <code>Gameplay/Monsters</code> (or move them)</td><td>The <code>NavMesh Surface</code> on <code>Static</code></td></tr>
+<tr><td>Power-ups in <code>Gameplay/PowerUps</code></td><td><code>PlayerSpawn</code> (one only), <code>ExitGate</code>, <code>GateBlocker</code></td></tr>
+</table></div>
+
+<div class="tip">Do not delete a <code>CoinSpot</code> you want to use again: move it. A CoinSpot with its <code>Coin</code> inside is easy to copy with <b>Ctrl+D</b> / <b>Cmd+D</b>.</div>
+
+<!-- ======================================================= 6 -->
+<h2 id="step-6"><span class="step">6</span>Add a LevelDef in Data.cs</h2>
+
+<p>The menu and the game read the level settings from <code>Levels.All</code> in <code>Assets/GoldRush/Scripts/Core/Data.cs</code>. Add one line at the end of the list, after Level 4.</p>
+<pre class="long"><code>public static readonly LevelDef[] All =
+{
+    new LevelDef { title = "Training Yard", subtitle = "Learn the ropes",          seed = 101, scene = "Level1", size = 32, coins = 6,  patrollers = 2,                         powerUps = 1, props = 14, bigRocks = 1, enemySpeed = 0.9f,  parTime = 40 },
+    new LevelDef { title = "Ghost Alley",   subtitle = "Watch out for chasers",    seed = 202, scene = "Level2", size = 40, coins = 8,  patrollers = 2, chasers = 1,             powerUps = 2, props = 22, bigRocks = 2, enemySpeed = 1f,    parTime = 60 },
+    new LevelDef { title = "King's Vault",  subtitle = "Guards protect the gold",  seed = 303, scene = "Level3", size = 48, coins = 10, patrollers = 2, chasers = 2, guards = 2, powerUps = 3, props = 30, bigRocks = 3, enemySpeed = 1.05f, parTime = 85, night = true },
+    new LevelDef { title = "Gold Fever",    subtitle = "The final rush",           seed = 404, scene = "Level4", size = 56, coins = 13, patrollers = 3, chasers = 3, guards = 2, powerUps = 4, props = 38, bigRocks = 4, enemySpeed = 1.12f, parTime = 115, night = true },
+    // NEW: practical 1
+    new LevelDef { title = "Coin Garden",   subtitle = "Pick the golden flowers",  seed = 505, scene = "Level5", size = 24, coins = 8,  patrollers = 1,                         enemySpeed = 0.9f,  parTime = 35, lives = 3 },
+};</code></pre>
+<div class="table-wrap"><table>
+<tr><th>Field</th><th>What it does in a hand-made level</th></tr>
+<tr><td><code>title</code></td><td>Big name on the card and in the intro. Keep it short (about 14 letters).</td></tr>
+<tr><td><code>subtitle</code></td><td>Small line under the title on the card.</td></tr>
+<tr><td><code>scene</code></td><td><b>Must be the exact scene file name</b>, for example <code>"Level5"</code>. Capital L, no space.</td></tr>
+<tr><td><code>coins</code></td><td>Shown on the card ("8 GOLD TO FIND") and in the intro ("Collect all 8 gold"). <b>Make it the same as the number of CoinSpots.</b> The game counts the real coins in the scene.</td></tr>
+<tr><td><code>parTime</code></td><td>Seconds. Win faster than this for the ★ "beat par" star. See step 14.</td></tr>
+<tr><td><code>lives</code></td><td>Hearts (1–3, the HUD has 3 hearts). Default 2 = you survive the first hit.</td></tr>
+<tr><td><code>enemySpeed</code></td><td>Multiplies every monster's speed. <code>0.9f</code> = easy, <code>1f</code> = normal, <code>1.1f</code> = hard.</td></tr>
+<tr><td><code>seed</code></td><td>Only picks a power-up type if a PowerUpSpot has none. Use any number, for example 505.</td></tr>
+<tr><td><code>size</code>, <code>patrollers</code>, <code>chasers</code>, <code>guards</code>, <code>powerUps</code></td><td>Not used by hand-made levels. Fill them in anyway (they describe your level).</td></tr>
+<tr><td><code>night</code></td><td>Only the start look for a brand-new save. The player's moon button decides day or night.</td></tr>
+</table></div>
+
+<div class="note">Every line ends with <code>},</code>. A missing comma or quote gives a red error, and nothing works until you fix it. Stars, saving and unlocking grow with the list by themselves.</div>
+
+<!-- ======================================================= 7 -->
+<h2 id="step-7"><span class="step">7</span>Add the scene to Build Profiles</h2>
+
+<ol>
+<li>Open <b>File → Build Profiles</b> → <b>Scene List</b>.</li>
+<li>Drag <code>Scenes/Level5</code> from the Project window into the list, under <code>Level4</code>.</li>
+<li>Check: <code>MainMenu</code> is number 0, and your scene is ticked.</li>
+</ol>
+<figure class="shot todo" data-shot="practicals/step-07" data-window="buildprofiles" data-select="Assets/GoldRush/Scenes/Level5.unity"><div class="ph">Build Profiles → Scene List: MainMenu (0), Level1 … Level4, Level5 ticked</div><figcaption>Level5 is in the Scene List and ticked.</figcaption></figure>
+
+
+<!-- ======================================================= 8 -->
+<h2 id="step-8"><span class="step">8</span>Find your card in Level Select</h2>
+
+<p>Open <code>MainMenu</code>, press <b>▶ Play</b>, click <b>LEVELS</b>. The screen makes <b>one card for every LevelDef</b>, plus the purple <b>DAILY RUSH</b> card at the end. You did not make the card: it comes from your new line in <code>Data.cs</code>.</p>
+<ul>
+<li><b>Up to 4 levels:</b> one row of 5 cards (4 levels + Daily).</li>
+<li><b>5 to 9 levels</b> (with your practicals): the cards go into <b>two rows</b> of up to 5 and get a little smaller. Levels 1–5 are in the top row. Level 6 and later and DAILY RUSH (always last) are in the bottom row.</li>
+<li>Your new card shows a <b>lock</b> and "Clear level 4". That is normal: a level opens when you win the level before it.</li>
+</ul>
+<figure class="shot todo" data-shot="practicals/step-08" data-window="game" data-select="GoldRushMenu"><div class="ph">Game view in Play mode: Level Select with the cards Level 1–5 and DAILY RUSH</div><figcaption>Your new card, with a lock until you win Level 4.</figcaption></figure>
+
+<div class="note"><b>Old menu script?</b> The first version of <code>GoldRushMenu.cs</code> has room for exactly 5 cards. Then your Level 5 card hides <b>under</b> the DAILY RUSH card, and Level 6 and later are off the screen. Ask your teacher for the updated <code>GoldRushMenu.cs</code> (two rows of cards). Until then, test your level by pressing Play in its own scene (step 9).</div>
+
+<!-- ======================================================= 9 -->
+<h2 id="step-9"><span class="step">9</span>Play your level</h2>
+
+<p>There are two ways to play:</p>
+<ol>
+<li><b>Fast test while you build:</b> open your scene (<code>Level5</code>) and press <b>▶ Play</b>. The GameManager sees the scene name and uses your LevelDef. You do not need the menu or an unlocked card.</li>
+<li><b>Real test:</b> open <code>MainMenu</code>, press Play, click <b>LEVELS</b> and your card. Win Level 4 first to unlock it.</li>
+</ol>
+<div class="tip">To see the "new player" view again (all levels locked, 0 gold), use <b>Edit → Clear All PlayerPrefs</b> while Unity is not in Play mode. Careful: it also deletes your stars and gold.</div>
+
+<!-- ======================================================= 10 -->
+<h2 id="step-10"><span class="step">10</span>Placing and snapping</h2>
+
+<p>You place every piece by dragging a prefab into the right group and typing the position. These tricks make it faster:</p>
+<div class="table-wrap"><table>
+<tr><th>Do this</th><th>To</th></tr>
+<tr><td>Drag a prefab from <code>Prefabs/Level</code> onto a group in the <b>Hierarchy</b></td><td>Put it inside the group (Static/Obstacles, …). Then type the Position.</td></tr>
+<tr><td>Select, then <b>Ctrl+D</b> / <b>Cmd+D</b></td><td>Copy it in the same place. Change only one number.</td></tr>
+<tr><td>Hold <b>Ctrl</b> / <b>Cmd</b> while you drag the Move arrows (<b>W</b>)</td><td>Snap: it moves in fixed steps. Set the step in the Scene view toolbar → <b>Grid and Snap</b> → Move = <code>0.5</code>.</td></tr>
+<tr><td>Hold <b>Ctrl</b> / <b>Cmd</b> while you rotate (<b>E</b>)</td><td>Rotate in 15° steps. Walls only use Y = <code>0</code> or <code>90</code>.</td></tr>
+<tr><td>Hold <b>V</b> and drag a corner</td><td>Vertex snap: the corner sticks to the corner of another wall. No gaps.</td></tr>
+<tr><td>Click the <b>Top</b> view on the Scene gizmo (the green Y cone)</td><td>Look straight down, like the maps in the practicals.</td></tr>
+<tr><td>Select a group, press <b>F</b></td><td>Zoom to it.</td></tr>
+</table></div>
+
+<div class="note">Pivot at the bottom: every kit piece at <b>Y = 0</b> stands on the floor. Only stacked blocks get a Y above 0.</div>
+<ul>
+<li>Solid pieces go into <code>Static</code> (and its groups), so the NavMesh sees them. Coins, monsters and power-ups go into <code>Gameplay</code>.</li>
+<li>Markers stay on the floor (<code>Y = 0</code>). The coin inside a <code>CoinSpot</code> has local position <code>0, 1, 0</code>.</li>
+</ul>
+<figure class="shot todo" data-shot="practicals/step-10" data-window="scene" data-select="Level 5 - Coin Garden/Static/Obstacles"><div class="ph">Scene view toolbar with the Grid and Snap overlay open (Move snap 0.5) and a block being moved with Ctrl held</div><figcaption>Snap steps of 0.5 m.</figcaption></figure>
+
+
+<!-- ======================================================= 11 -->
+<h2 id="step-11"><span class="step">11</span>Walls of any size</h2>
+
+<p>The outer walls are built like in <a href="phase-03.html">Phase 3</a>. For an arena with <b>Arena Half = H</b>:</p>
+<ul>
+<li>Wall groups stand at <code>±(H + 0.5)</code>: <code>WallSouth</code> at Z <code>-(H+0.5)</code>, <code>WallNorth</code> at Z <code>H+0.5</code>, <code>WallEast</code> / <code>WallWest</code> at X <code>±(H+0.5)</code> with Rotation <code>0, 90, 0</code>.</li>
+<li>Each side is <code>2H</code> long. Fill it with <code>Wall_8m</code> and <code>Wall_4m</code> pieces, end to end. The north wall also needs the 8 m gap. With the gate in the middle, <b>H = 12 or 16</b> works with these pieces.</li>
+<li>The gate needs an <b>8 m gap</b> in the north wall. The gate stands in the gap at Z = <code>H</code>. The <code>GateBlocker</code> (Box Collider <code>8, 5, 1</code>) stands at Z = <code>H + 1.25</code>, Y <code>2.5</code>.</li>
+<li>Corner pillars at <code>(±(H+0.5), 0, ±(H+0.5))</code>.</li>
+<li><code>Floor_40m</code> is 40 × 40 m. Keep <b>H at 18 or less</b>, so the walls stay on the floor.</li>
+</ul>
+<div class="table-wrap"><table>
+<tr><th>Arena Half</th><th>Size</th><th>Each side</th><th>North wall (gate in the middle)</th></tr>
+<tr><td><code>12</code></td><td>24 × 24 m</td><td>3 × Wall_8m</td><td>Wall_8m · <i>gap</i> · Wall_8m</td></tr>
+<tr><td><code>16</code></td><td>32 × 32 m (Level1)</td><td>4 × Wall_8m</td><td>Wall_8m, Wall_4m · <i>gap</i> · Wall_4m, Wall_8m</td></tr>
+<tr><td><code>18</code></td><td>36 × 36 m</td><td>4 × Wall_8m + 1 × Wall_4m</td><td>Move the gate 2 m to the side (X = -2), see Practical 4</td></tr>
+</table></div>
+
+
+<!-- ======================================================= 12 -->
+<h2 id="step-12"><span class="step">12</span>Level design rules</h2>
+
+<p>A good beginner level is <b>clear</b>, <b>fair</b> and has <b>one good idea</b>. Check these rules for every level you make.</p>
+<div class="table-wrap"><table>
+<tr><th>Rule</th><th>What it means</th><th>How to check</th></tr>
+<tr><td><b>1. A clear path to the gate</b></td><td>The player always knows where the exit is. There is at least one free path from the start to the gate, 3 m wide or more.</td><td>Top view: draw the path with your finger. Monsters (radius 0.45 m, King 0.75 m) must fit too.</td></tr>
+<tr><td><b>2. Sight lines</b></td><td>From the start the player sees the level and the way to the gate, but <b>no monster sees the player</b>.</td><td>Play: stand still at the start for 5 seconds. Nobody comes? Good.</td></tr>
+<tr><td><b>3. Cover</b></td><td>Tall pieces (walls 2.3 m, <code>Block_2x2x2</code>, pillars) <b>hide</b> you: monsters cannot see through them. Low pieces (<code>Barrier_Orange</code>, <code>Block_4x1x2</code>, <code>Block_1x1x1</code>) only block the way, monsters see over them.</td><td>Hide behind a piece while a monster walks past.</td></tr>
+<tr><td><b>4. Coin trails</b></td><td>Coins show the way. A line of coins pulls the player along a path. One coin alone in a corner is a reward for exploring.</td><td>Can you see the next coin from the last one?</td></tr>
+<tr><td><b>5. Risk and reward</b></td><td>Easy coins near the start, risky coins near monsters. Power-ups sit just before the hard part.</td><td>Is the most dangerous coin worth it?</td></tr>
+<tr><td><b>6. Difficulty curve</b></td><td>Start easy, end hard. After the last coin the monsters get 10 % faster and the run to the gate begins.</td><td>The gate should not be next to the last coin.</td></tr>
+<tr><td><b>7. Landmarks</b></td><td>Coloured accent blocks, a terminal or lamps help the player remember places.</td><td>Ask a friend: "Where was the red block?"</td></tr>
+<tr><td><b>8. Not too much</b></td><td>Max <b>8 lamps</b> (each is a real light, slow on phones). Keep pieces 1 m away from walls, so monsters can walk around them.</td><td>The game runs smoothly; monsters never get stuck.</td></tr>
+</table></div>
+
+<div class="tip"><b>Draw first.</b> Use squared paper: 1 square = 2 m, like the floor tiles. Draw walls, the start, the gate and the coins. Then build it.</div>
+
+<!-- ======================================================= 13 -->
+<h2 id="step-13"><span class="step">13</span>Know your monsters</h2>
+
+<p>These are the real numbers from <code>EnemyAI.cs</code> (at <code>enemySpeed = 1</code>). Use them to place monsters fairly.</p>
+<div class="table-wrap"><table>
+<tr><th>Monster</th><th>Walks / chases</th><th>Sees you</th><th>Where it goes</th></tr>
+<tr><td><b>Slime</b> (Patroller)<br><code>Monster_Slime</code></td><td>1.5 / 3.6 m/s</td><td>8.5 m, only in front (130°)</td><td>Wanders up to 9 m around where it is.</td></tr>
+<tr><td><b>Ghost</b> (Chaser)<br><code>Monster_Ghost</code></td><td>2.1 / 4.6 m/s</td><td>12 m, <b>all around</b></td><td>Wanders up to 14 m. Very dangerous in open space.</td></tr>
+<tr><td><b>Mushroom King</b> (Guard)<br><code>Monster_MushroomKing</code></td><td>1.2 / 4.2 m/s</td><td>9.5 m, wide (200°)</td><td>Stays within 4.5 m of its <b>Home</b>. Gives up when you are 13 m from Home.</td></tr>
+</table></div>
+
+<ul>
+<li>Every monster sees you when you are closer than <b>3.2 m</b>, from any side.</li>
+<li>No monster sees through walls or blocks (but over low ones).</li>
+<li>The hero walks at 5 m/s and sprints at 8.2 m/s (for a few seconds). He is faster than every monster, but not for long.</li>
+<li>Power-ups: <b>SPEED</b> 6 s faster, <b>GHOST</b> 6 s invisible, <b>MAGNET</b> 8 s, pulls coins from up to 11 m.</li>
+<li><b>Rule of thumb:</b> start every monster at least <b>10 m</b> from <code>PlayerSpawn</code>, and not in a straight line to it.</li>
+</ul>
+
+<!-- ======================================================= 14 -->
+<h2 id="step-14"><span class="step">14</span>Test-play and tune the par time</h2>
+
+<ol>
+<li>Play your level <b>3 times</b>. Write down your time each time you win (the win dialog shows it).</li>
+<li>Take your <b>best</b> time and add about <b>25 %</b>. Round it to 5 seconds. Example: best 28 s → 28 × 1.25 = 35 → <code>parTime = 35</code>.</li>
+<li>Let a friend play <b>without help</b>. Watch, do not talk. Where do they get lost? Where are they caught?</li>
+<li>Fix <b>one</b> thing, then test again.</li>
+</ol>
+<div class="table-wrap"><table>
+<tr><th>The friend says…</th><th>Try this</th></tr>
+<tr><td>"Too hard, I get caught all the time."</td><td>Move a monster 3 m further away, add tall cover, or <code>enemySpeed</code> −0.1. Or <code>lives = 3</code>.</td></tr>
+<tr><td>"Too easy, boring."</td><td>Move a coin closer to a monster, add a Ghost, or lower the par time.</td></tr>
+<tr><td>"Where is the last coin?"</td><td>Make a coin trail to it, or put a lamp next to it.</td></tr>
+<tr><td>"I did not see the gate."</td><td>Leave a free line of sight from the start to the gate. Lamps beside the gate help.</td></tr>
+</table></div>
+
+
+<!-- ======================================================= 15 -->
+<h2 id="step-15"><span class="step">15</span>Common problems</h2>
+
+<div class="table-wrap"><table>
+<tr><th>Problem</th><th>Fix</th></tr>
+<tr><td>My card is not in Level Select.</td><td>Check the new line in <code>Data.cs</code> (no red errors in the Console). The menu only shows levels from <code>Levels.All</code>.</td></tr>
+<tr><td>My card hides under the DAILY RUSH card.</td><td>Your <code>GoldRushMenu.cs</code> is the old version (room for 5 cards). Ask for the updated one. Test from your scene for now.</td></tr>
+<tr><td>The card is locked.</td><td>Normal. Win the level before it. Or press Play in your scene to test.</td></tr>
+<tr><td>Clicking the card: <i>"Scene 'Level5' couldn't be loaded…"</i></td><td>Add the scene to <b>Build Profiles → Scene List</b> (step 7).</td></tr>
+<tr><td>The intro says "Training Yard" in my level.</td><td>The <code>scene</code> text in the LevelDef is not the scene file name. Check capital letters and spaces.</td></tr>
+<tr><td>The intro says "Collect all 6 gold" but I have 8 coins.</td><td>Set <code>coins = 8</code> in the LevelDef.</td></tr>
+<tr><td>The gate opens at once / never opens.</td><td>The game counts the coins in the scene. No coins → check that each <code>CoinSpot</code> is inside the level root. Never opens → a coin is inside a block or out of reach.</td></tr>
+<tr><td>A monster does not move.</td><td>It stands on a block, outside the walls, or more than 3 m from the blue NavMesh. Move it onto free floor.</td></tr>
+<tr><td>Monsters walk through my new walls.</td><td>The walls are not under <code>Static</code>. Drag them into <code>Static/Obstacles</code>. (The NavMesh is baked again when the level starts.)</td></tr>
+<tr><td>I changed Level1 by mistake.</td><td>You forgot <b>Save As</b>. <b>Edit → Undo</b>, or close the scene without saving.</td></tr>
+<tr><td>Red errors after editing Data.cs.</td><td>Look for a missing <code>,</code> <code>}</code> or <code>"</code> in your new line. Compare it with the line above.</td></tr>
+</table></div>
+
+<nav class="pager" aria-label="Previous and next page">
+<a class="prev" href="phase-10.html"><small>← Previous</small>Phase 10: Polish and build</a>
+<a class="next" href="practical-1.html"><small>Next →</small>Practical 1: Coin Garden</a>
+</nav>
+
+<footer class="site-footer">GOLD RUSH – a Unity 6 tutorial project. Characters: Quaternius (CC0). Font: Poppins (SIL Open Font License). Icons: Material Icons by Google (Apache 2.0).</footer>
+</div>
+</main>
+</div>
+</body>
+</html>

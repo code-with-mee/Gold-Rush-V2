@@ -23,15 +23,15 @@
 </ul>
 <h2>Course</h2><ul>
 <li><a href="phase-00.html"><span class="num">0</span><span class="label">Create the project</span></a></li>
-<li><a href="phase-01.html"><span class="num">1</span><span class="label">The prefab kit</span></a></li>
-<li><a href="phase-02.html"><span class="num">2</span><span class="label">Level design</span></a></li>
-<li><a href="phase-03.html"><span class="num">3</span><span class="label">The player</span></a></li>
-<li><a href="phase-04.html"><span class="num">4</span><span class="label">The camera</span></a></li>
-<li><a href="phase-05.html"><span class="num">5</span><span class="label">Coins and the HUD</span></a></li>
+<li><a href="phase-01.html"><span class="num">1</span><span class="label">The main menu</span></a></li>
+<li><a href="phase-02.html"><span class="num">2</span><span class="label">Level select, shop and settings</span></a></li>
+<li><a href="phase-03.html"><span class="num">3</span><span class="label">Level design</span></a></li>
+<li><a href="phase-04.html"><span class="num">4</span><span class="label">Player and camera</span></a></li>
+<li><a href="phase-05.html"><span class="num">5</span><span class="label">Coins</span></a></li>
 <li><a href="phase-06.html"><span class="num">6</span><span class="label">Exit gate, win and lose</span></a></li>
 <li><a href="phase-07.html"><span class="num">7</span><span class="label">Monsters</span></a></li>
 <li><a href="phase-08.html"><span class="num">8</span><span class="label">Power-ups and effects</span></a></li>
-<li><a href="phase-09.html"><span class="num">9</span><span class="label">Menu, levels, shop, save</span></a></li>
+<li><a href="phase-09.html"><span class="num">9</span><span class="label">Gameplay UI</span></a></li>
 <li><a href="phase-10.html" aria-current="page"><span class="num">10</span><span class="label">Polish and build</span></a></li>
 </ul>
 <h2>Help</h2><ul>
@@ -44,1081 +44,290 @@
 <div class="content">
 <p class="eyebrow">GOLD RUSH · Phase 10</p>
 <h1>Polish and build</h1>
-<p class="lead">The last phase. You add a real-time day/night switch, touch controls for phones (left half = move, right half = look) and background music. Then you replace every script with its final version, check the whole game, and build it for PC and Android.</p>
+<p class="lead">The last phase. Night now changes the colour of the whole level and turns the lamps on. You add touch controls for phones (left half = move, right half = look), check the music, put every script in its final version and import our Levels 2–4. Then you check that your game is the same as ours, and build it for PC and Android.</p>
 <div class="meta"><span><b>Checkpoint package</b><code>GoldRush_Phase10_Final.unitypackage</code></span><span><b>Scene</b><code>Assets/GoldRush/Scenes/MainMenu.unity</code></span><a class="btn secondary" href="phase-10.pdf">Download PDF</a></div>
 
 <nav class="toc" aria-label="Steps on this page"><strong>Steps on this page</strong><ol>
   <li><a href="#step-1">What you need</a></li>
   <li><a href="#step-2">How day and night work</a></li>
-  <li><a href="#step-3">Script: DayNight</a></li>
-  <li><a href="#step-4">Script: NightLight</a></li>
-  <li><a href="#step-5">Scripts: DayNightTint and DayNightPalette</a></li>
-  <li><a href="#step-6">Create the day/night palette</a></li>
-  <li><a href="#step-7">Script: EnvironmentSetup</a></li>
-  <li><a href="#step-8">Script: DayNightButton (and add it to the menu)</a></li>
-  <li><a href="#step-9">Script: VirtualJoystick (left half)</a></li>
-  <li><a href="#step-10">Script: TouchLookArea (right half)</a></li>
-  <li><a href="#step-11">Test touch in the Device Simulator</a></li>
-  <li><a href="#step-12">Script: AudioFX (music)</a></li>
-  <li><a href="#step-13">Replace every script with the final version</a></li>
-  <li><a href="#step-14">Final checks</a></li>
-  <li><a href="#step-15">Build for PC</a></li>
-  <li><a href="#step-16">Build for Android</a></li>
-  <li><a href="#step-17">▶ Press Play</a></li>
-  <li><a href="#step-18">Common problems</a></li>
+  <li><a href="#step-3">Create the day/night palette</a></li>
+  <li><a href="#step-4">Tint the levels and light the lamps</a></li>
+  <li><a href="#step-5">Touch controls: the look area (right half)</a></li>
+  <li><a href="#step-6">Touch controls: the joystick (left half)</a></li>
+  <li><a href="#step-7">Test touch in the Device Simulator</a></li>
+  <li><a href="#step-8">Music</a></li>
+  <li><a href="#step-9">Replace every script with the final version</a></li>
+  <li><a href="#step-10">Import Levels 2–4</a></li>
+  <li><a href="#step-11">All scenes in the Scene List</a></li>
+  <li><a href="#step-12">Final check: is it our game?</a></li>
+  <li><a href="#step-13">Build for PC</a></li>
+  <li><a href="#step-14">Build for Android</a></li>
+  <li><a href="#step-15">▶ Press Play</a></li>
+  <li><a href="#step-16">Common problems</a></li>
 </ol></nav>
 
 <!-- ======================================================= 1 -->
 <h2 id="step-1"><span class="step">1</span>What you need</h2>
 <ul>
-  <li>Your project from <a href="phase-09.html">Phase 9</a>: the menu, Levels 1–4 and the Game scene work.</li>
-  <li>Or import <code>GoldRush_Phase09_Menu.unitypackage</code> into a new project made in <a href="phase-00.html">Phase 0</a>.</li>
-  <li>For Android: the <b>Android Build Support</b> module (step 16).</li>
+  <li>Phase 9 is finished: Level 1 has the HUD, the countdown and the PAUSE, LEVEL COMPLETE and CAUGHT dialogs.
+    If you start here, import <code>GoldRush_Phase09_GameUI.unitypackage</code> (and add <code>MainMenu</code> and <code>Level1</code> to the Scene List again).</li>
+  <li>The Resources pack folder <code>Scripts/Final/</code>.</li>
+  <li>The package <code>GoldRush_Levels2to4.unitypackage</code> (from the Packages folder): our scenes Level 2, 3, 4 and the Daily Rush.</li>
+  <li>For the phone build: the Unity module <b>Android Build Support</b> (step 14).</li>
 </ul>
-<div class="note">Most scripts on this page already exist in your project as an older, shorter version. For each one: open the file, select all, and <b>replace the whole file</b> with the code shown here.</div>
+<p>Nothing on this page needs new typed code. You add components, fill in values and copy files.</p>
 
 <!-- ======================================================= 2 -->
 <h2 id="step-2"><span class="step">2</span>How day and night work</h2>
 <p>Press <b>N</b> (or the sun/moon button) and the level turns from day to night in 1.5 seconds. Nothing is loaded. One number does the job:</p>
 <ul>
-  <li><code>DayNight.Value</code> goes from <code>0</code> (day) to <code>1</code> (night).</li>
-  <li>Every frame, <code>DayNight</code> mixes the day colour and the night colour with this number: sky, fog, sun, ambient light, bloom, vignette.</li>
-  <li>Other objects <b>register</b> (sign up) with <code>DayNight</code>:
-    <ul>
-      <li>a <b>material</b> with a day colour and a night colour (floor, walls, blocks),</li>
-      <li>a <b>night light</b> that is off by day and fades in at night (lamps, the hero's lantern, monster glows).</li>
-    </ul>
-  </li>
+  <li><code>DayNight.Value</code> goes from <b>0</b> (day) to <b>1</b> (night).</li>
+  <li>Every frame, DayNight mixes the day colour and the night colour with this number: sky, fog, sun, ambient light, bloom, vignette.</li>
+  <li>Other things <b>register</b> (sign up) with DayNight:
+    <ul><li>a <b>material</b> with a day colour and a night colour (floor, walls, blocks),</li>
+        <li>a <b>night light</b> that is off by day and fades in at night (lamps, the hero's lantern, monster glows).</li></ul></li>
 </ul>
+<p>The sky, fog and sun already change since phase 9 (try N in Level 1). The floor and walls keep their day colour, and the lamps stay dark. You fix that in steps 3 and 4. All scripts are already in your project:</p>
 <div class="table-wrap"><table>
-  <tr><th>Script</th><th>Job</th></tr>
-  <tr><td><code>DayNight</code></td><td>The blend. Mixes all colours and lights.</td></tr>
-  <tr><td><code>NightLight</code></td><td>Put it on a Light: it only shines at night.</td></tr>
-  <tr><td><code>DayNightTint</code></td><td>Put it on the level root: a list of materials with day/night colours.</td></tr>
-  <tr><td><code>DayNightPalette</code></td><td>One asset with the colours for <b>all</b> levels, so prefabs change colour everywhere.</td></tr>
-  <tr><td><code>EnvironmentSetup</code></td><td>Makes the sky, fog, sun and post-processing, then creates <code>DayNight</code>.</td></tr>
-  <tr><td><code>DayNightButton</code></td><td>The round sun/moon button (and the N key).</td></tr>
+  <tr><th>Script</th><th>Job</th><th>Since</th></tr>
+  <tr><td><code>DayNight</code></td><td>The blend. Mixes all colours and lights.</td><td>phase 1</td></tr>
+  <tr><td><code>EnvironmentSetup</code></td><td>Makes the sky, fog, sun and post-processing, then creates DayNight.</td><td>phase 1</td></tr>
+  <tr><td><code>NightLight</code></td><td>Put it on a Light: it only shines at night.</td><td>phase 1</td></tr>
+  <tr><td><code>DayNightButton</code></td><td>The round sun/moon button and the N key.</td><td>phase 1</td></tr>
+  <tr><td><code>DayNightTint</code></td><td>Put it on the level root: it gives the materials their day and night colours.</td><td>phase 9</td></tr>
+  <tr><td><code>DayNightPalette</code></td><td>One asset with the colours for all levels, so you type them only once.</td><td>phase 9</td></tr>
 </table></div>
+<div class="note"><b>One saved setting.</b> Day or night is <b>one</b> choice for the whole game: <code>Save.Data.night</code>. When a scene starts, <code>DayNight.Create</code> reads it, so the menu and every level start the way you left them. <code>DayNight.Set()</code> (used by the button and N) saves the new choice with <code>Save.Persist()</code>. A brand-new save starts at night. It uses <code>Time.unscaledDeltaTime</code>, so it also works while the game is paused.</div>
 
 <!-- ======================================================= 3 -->
-<h2 id="step-3"><span class="step">3</span>Script: DayNight</h2>
-<p><code>Assets/GoldRush/Scripts/World/DayNight.cs</code> – replace the whole file.</p>
-<pre class="long"><code>using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.Rendering.Universal;
-
-namespace GoldRush
-{
-    /// &lt;summary&gt;
-    /// Real-time day/night blend (0 = day, 1 = night). Everything that should look different at night
-    /// registers here: material colours (floor, walls), lights that only shine at night (lanterns,
-    /// monster glows, lamps). Call &lt;see cref="Toggle"/&gt; to switch smoothly at any time.
-    /// &lt;/summary&gt;
-    public class DayNight : MonoBehaviour
-    {
-        public static DayNight I { get; private set; }
-
-        /// &lt;summary&gt;Current blend value, 0 = full day, 1 = full night.&lt;/summary&gt;
-        public static float Value =&gt; I ? I.value : 0f;
-        /// &lt;summary&gt;True when heading to (or at) night.&lt;/summary&gt;
-        public static bool IsNight =&gt; I &amp;&amp; I.target &gt; 0.5f;
-        public static event System.Action&lt;bool&gt; Changed;
-
-        [Tooltip("Seconds for a full day &lt;-&gt; night transition.")]
-        public float transitionTime = 1.5f;
-
-        float value, target;
-        Light sun;
-        Camera cam;
-        Material sky;
-        Bloom bloom;
-        Vignette vignette;
-
-        struct Tint { public Material mat; public Color day, night; }
-        struct NightLight { public Light light; public float intensity; }
-        readonly List&lt;Tint&gt; tints = new List&lt;Tint&gt;();
-        readonly List&lt;NightLight&gt; nightLights = new List&lt;NightLight&gt;();
-
-        // registrations made before DayNight exists (e.g. scene objects whose Start runs first)
-        static readonly List&lt;Tint&gt; pendingTints = new List&lt;Tint&gt;();
-        static readonly List&lt;NightLight&gt; pendingLights = new List&lt;NightLight&gt;();
-
-        // ---- presets
-        static readonly Color DaySky = new Color(0.78f, 0.82f, 0.9f), NightSky = new Color(0.2f, 0.22f, 0.42f);
-        static readonly Color DayEquator = new Color(0.62f, 0.65f, 0.72f), NightEquator = new Color(0.12f, 0.13f, 0.27f);
-        static readonly Color DayGround = new Color(0.4f, 0.4f, 0.45f), NightGround = new Color(0.05f, 0.05f, 0.1f);
-        static readonly Color DayFog = new Color(0.72f, 0.78f, 0.88f), NightFog = new Color(0.05f, 0.06f, 0.14f);
-        static readonly Color DaySun = new Color(1f, 0.95f, 0.86f), NightSun = new Color(0.5f, 0.6f, 1f);
-        static readonly Quaternion DaySunRot = Quaternion.Euler(50f, 35f, 0f), NightSunRot = Quaternion.Euler(40f, -35f, 0f);
-
-        [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
-        static void ResetStatics() { I = null; Changed = null; pendingTints.Clear(); pendingLights.Clear(); }
-
-        public static DayNight Create(GameObject host, Camera cam, Light sun, Material skyboxAsset, Bloom bloom, Vignette vignette, bool night)
-        {
-            var d = host.AddComponent&lt;DayNight&gt;();
-            I = d;
-            d.cam = cam;
-            d.sun = sun;
-            d.bloom = bloom;
-            d.vignette = vignette;
-            if (skyboxAsset)
-            {
-                d.sky = new Material(skyboxAsset) { name = "Sky (runtime)" };
-                RenderSettings.skybox = d.sky;
-            }
-            night = Save.Data.night; // the player's saved choice wins over the scene default
-            d.value = d.target = night ? 1f : 0f;
-            d.tints.AddRange(pendingTints);
-            d.nightLights.AddRange(pendingLights);
-            pendingTints.Clear();
-            pendingLights.Clear();
-            d.ApplyNow();
-            return d;
-        }
-
-        void OnDestroy() { if (I == this) I = null; }
-
-        // ------------------------------------------------------------------ public API
-
-        public static void Toggle() { if (I) Set(!IsNight); }
-
-        public static void Set(bool night, bool instant = false)
-        {
-            if (!I) return;
-            I.target = night ? 1f : 0f;
-            if (Save.Data.night != night) { Save.Data.night = night; Save.Persist(); } // remembered everywhere
-            if (instant) { I.value = I.target; I.ApplyNow(); }
-            Changed?.Invoke(night);
-        }
-
-        /// &lt;summary&gt;Material whose _BaseColor blends between day and night colours.&lt;/summary&gt;
-        public static void RegisterTint(Material m, Color day, Color night)
-        {
-            if (!m) return;
-            var tint = new Tint { mat = m, day = day, night = night };
-            if (!I) { pendingTints.Add(tint); m.SetColor("_BaseColor", day); return; }
-            I.tints.Add(tint);
-            m.SetColor("_BaseColor", Color.Lerp(day, night, Smooth(I.value)));
-        }
-
-        /// &lt;summary&gt;Light that fades in at night (to the given intensity) and switches off by day.&lt;/summary&gt;
-        public static void RegisterNightLight(Light l, float nightIntensity = -1f)
-        {
-            if (!l) return;
-            float k = nightIntensity &gt;= 0 ? nightIntensity : l.intensity;
-            var nl = new NightLight { light = l, intensity = k };
-            if (!I) { pendingLights.Add(nl); return; }
-            I.nightLights.Add(nl);
-            I.ApplyLight(I.nightLights[I.nightLights.Count - 1], Smooth(I.value));
-        }
-
-        // ------------------------------------------------------------------ blending
-
-        static float Smooth(float t) =&gt; t * t * (3f - 2f * t);
-
-        void Update()
-        {
-            if (Mathf.Approximately(value, target)) return;
-            value = Mathf.MoveTowards(value, target, Time.unscaledDeltaTime / Mathf.Max(0.05f, transitionTime));
-            ApplyNow();
-        }
-
-        void ApplyNow()
-        {
-            float t = Smooth(value);
-            RenderSettings.ambientMode = UnityEngine.Rendering.AmbientMode.Trilight;
-            RenderSettings.ambientSkyColor = Color.Lerp(DaySky, NightSky, t);
-            RenderSettings.ambientEquatorColor = Color.Lerp(DayEquator, NightEquator, t);
-            RenderSettings.ambientGroundColor = Color.Lerp(DayGround, NightGround, t);
-            RenderSettings.fog = true;
-            RenderSettings.fogMode = FogMode.Linear;
-            RenderSettings.fogColor = Color.Lerp(DayFog, NightFog, t);
-            RenderSettings.fogStartDistance = Mathf.Lerp(40f, 18f, t);
-            RenderSettings.fogEndDistance = Mathf.Lerp(140f, 75f, t);
-
-            if (sun)
-            {
-                sun.color = Color.Lerp(DaySun, NightSun, t);
-                sun.intensity = Mathf.Lerp(1.35f, 0.45f, t);
-                sun.transform.rotation = Quaternion.Slerp(DaySunRot, NightSunRot, t);
-            }
-            if (sky)
-            {
-                sky.SetFloat("_Exposure", Mathf.Lerp(1.1f, 0.06f, t));
-                sky.SetFloat("_AtmosphereThickness", Mathf.Lerp(0.7f, 0.4f, t));
-                sky.SetColor("_SkyTint", Color.Lerp(new Color(0.5f, 0.55f, 0.65f), new Color(0.2f, 0.22f, 0.5f), t));
-                sky.SetColor("_GroundColor", Color.Lerp(new Color(0.62f, 0.66f, 0.74f), new Color(0.05f, 0.06f, 0.14f), t));
-                sky.SetFloat("_SunSize", 0.035f);
-            }
-            if (cam)
-            {
-                cam.backgroundColor = Color.Lerp(DayFog, NightFog, t);
-                cam.clearFlags = sky ? CameraClearFlags.Skybox : CameraClearFlags.SolidColor;
-            }
-            if (bloom != null)
-            {
-                bloom.intensity.Override(Mathf.Lerp(0.6f, 1.1f, t));
-                bloom.threshold.Override(Mathf.Lerp(0.95f, 0.8f, t));
-            }
-            if (vignette != null) vignette.intensity.Override(Mathf.Lerp(0.25f, 0.38f, t));
-
-            for (int i = tints.Count - 1; i &gt;= 0; i--)
-            {
-                if (!tints[i].mat) { tints.RemoveAt(i); continue; }
-                tints[i].mat.SetColor("_BaseColor", Color.Lerp(tints[i].day, tints[i].night, t));
-            }
-            for (int i = nightLights.Count - 1; i &gt;= 0; i--)
-            {
-                if (!nightLights[i].light) { nightLights.RemoveAt(i); continue; }
-                ApplyLight(nightLights[i], t);
-            }
-        }
-
-        void ApplyLight(NightLight n, float t)
-        {
-            n.light.intensity = n.intensity * t;
-            n.light.enabled = t &gt; 0.01f;
-        }
-    }
-}</code></pre>
-<ul>
-  <li><code>value</code> moves toward <code>target</code> in <code>Update</code>. <code>Toggle()</code> only changes <code>target</code>, so the change is smooth.</li>
-  <li><code>Smooth(t)</code> makes the blend start and end slowly (no hard jump).</li>
-  <li><code>Color.Lerp(day, night, t)</code> mixes two colours: <code>t = 0</code> gives the day colour, <code>t = 1</code> the night colour.</li>
-  <li><code>RegisterTint</code> and <code>RegisterNightLight</code> add objects to the lists. If <code>DayNight</code> does not exist yet, they wait in the <b>pending</b> lists.</li>
-  <li><code>Changed</code> is an <b>event</b>: the day/night button listens to it to swap its icon.</li>
-  <li><code>Save.Data.night</code> is ONE day/night setting for the menu and every level. When a scene starts, the saved choice wins over the scene default; <code>Set()</code> (used by <code>Toggle()</code>) saves a new choice with <code>Save.Persist()</code>.</li>
-  <li>It uses <code>Time.unscaledDeltaTime</code>, so it still works when the game is paused.</li>
-</ul>
+<h2 id="step-3"><span class="step">3</span>Create the day/night palette</h2>
+<p>A <b>palette</b> is a list: for each material, its colour by day and by night. Every <code>DayNightTint</code> reads it, so all kit prefabs change colour in every level.</p>
+<ol>
+  <li>In the Project window, open <code>Assets/GoldRush/Resources</code>.</li>
+  <li>Right-click → <b>Create → Gold Rush → Day Night Palette</b>. Keep the name <code>DayNightPalette</code>. (The name and the Resources folder must be exact: the code loads it with <code>Resources.Load("DayNightPalette")</code>.)</li>
+  <li>Select it. Under <b>Entries</b>, click <b>+</b> once for each row below (12 rows).</li>
+  <li>Drag the material from <code>Assets/GoldRush/Materials</code> into <b>Material</b>. Click a colour box and type the Hex value.</li>
+</ol>
+<div class="table-wrap"><table>
+  <tr><th>#</th><th>Material</th><th>Day</th><th>Night</th><th>Used by</th></tr>
+  <tr><td>0</td><td><code>M_Floor</code></td><td><code>DBDEE6</code></td><td><code>212B52</code></td><td>Floor_40m</td></tr>
+  <tr><td>1</td><td><code>M_Trim</code></td><td><code>6B7385</code></td><td><code>262E4C</code></td><td>edges, lamp posts, pillars</td></tr>
+  <tr><td>2</td><td><code>M_BlockTop</code></td><td><code>EDF0F7</code></td><td><code>7080AD</code></td><td>tops of blocks and walls</td></tr>
+  <tr><td>3</td><td><code>M_OuterGround</code></td><td><code>99A1B0</code></td><td><code>121730</code></td><td>OuterGround</td></tr>
+  <tr><td>4</td><td><code>M_Block</code></td><td><code>CCD1DB</code></td><td><code>525C80</code></td><td>blocks, walls</td></tr>
+  <tr><td>5</td><td><code>M_Orange</code></td><td><code>FF9938</code></td><td><code>B86133</code></td><td>AccentBlock_Orange</td></tr>
+  <tr><td>6</td><td><code>M_OrangeTop</code></td><td><code>FFBD6B</code></td><td><code>D98047</code></td><td>orange tops, Barrier_Orange</td></tr>
+  <tr><td>7</td><td><code>M_Pad</code></td><td><code>B2B8C7</code></td><td><code>171F40</code></td><td>FloorPad_Cyan</td></tr>
+  <tr><td>8</td><td><code>M_Red</code></td><td><code>ED4C4C</code></td><td><code>9E2B42</code></td><td>AccentBlock_Red</td></tr>
+  <tr><td>9</td><td><code>M_RedTop</code></td><td><code>FF7870</code></td><td><code>C24254</code></td><td>red tops</td></tr>
+  <tr><td>10</td><td><code>M_Teal</code></td><td><code>33BDBD</code></td><td><code>1A6B85</code></td><td>AccentBlock_Teal</td></tr>
+  <tr><td>11</td><td><code>M_TealTop</code></td><td><code>6BDED9</code></td><td><code>298FA1</code></td><td>teal tops</td></tr>
+</table></div>
+<p>Glowing materials (<code>M_GlowCyan</code>, <code>M_GlowLamp</code>, gold) are not in the list: they look the same by day and night.</p>
+<figure class="shot todo" data-shot="phase-10/step-03" data-window="inspector" data-select="Assets/GoldRush/Resources/DayNightPalette.asset"><div class="ph">Inspector of Resources/DayNightPalette: Entries with 12 rows (material, day colour, night colour)</div><figcaption>12 rows. The first one is M_Floor, light grey by day and dark blue by night.</figcaption></figure>
 
 <!-- ======================================================= 4 -->
-<h2 id="step-4"><span class="step">4</span>Script: NightLight</h2>
-<p><code>Assets/GoldRush/Scripts/World/NightLight.cs</code> – replace the whole file (or create it).</p>
-<pre class="long"><code>using UnityEngine;
-
-namespace GoldRush
-{
-    /// &lt;summary&gt;Put this on any Light: it fades in at night and switches off during the day.&lt;/summary&gt;
-    [RequireComponent(typeof(Light))]
-    public class NightLight : MonoBehaviour
-    {
-        [Tooltip("Brightness of the light at full night.")]
-        public float nightIntensity = 2f;
-
-        void Start()
-        {
-            if (Application.isPlaying) DayNight.RegisterNightLight(GetComponent&lt;Light&gt;(), nightIntensity);
-        }
-
-        void Reset() { nightIntensity = GetComponent&lt;Light&gt;().intensity; }
-    }
-}</code></pre>
-<ul>
-  <li>In <code>Start</code> it registers its Light with <code>DayNight</code>. By day the light is off. At night it fades in to <code>nightIntensity</code>.</li>
-  <li><code>Reset()</code> runs when you add the component: it copies the light's current intensity.</li>
-</ul>
-<p>Add it to the lamp prefab:</p>
+<h2 id="step-4"><span class="step">4</span>Tint the levels and light the lamps</h2>
+<h3>Level 1</h3>
 <ol>
-  <li>Open <code>Prefabs/Level/LampPost</code> in prefab mode (double-click).</li>
-  <li>Select the child <code>LampLight</code> (Point light, colour <code>FFE0B3</code>, range <code>9</code>).</li>
-  <li><b>Add Component → Night Light</b>. Set <b>Night Intensity</b> to <code>2.4</code>.</li>
-  <li>Save the prefab. All lamps in all levels now turn on at night.</li>
+  <li>Open <code>Level1.unity</code>. Select the level root <code>Level 1 - Training Yard</code>.</li>
+  <li><b>Add Component → Day Night Tint</b>. Leave its <b>Entries</b> list empty: the palette is added to it when the level starts.</li>
+  <li>In the Hierarchy search box, type <code>LampLight</code>. You see the 8 lamp lights.</li>
+  <li>Click the first one, Shift-click the last one (all 8 are selected).</li>
+  <li><b>Add Component → Night Light</b>. Set <b>Night Intensity</b> to <b>2.4</b>.</li>
+  <li>Clear the search box. Select <code>Level 1 - Training Yard/Static/ExitGate/LanternLight</code> (the warm light over the gate). <b>Add Component → Night Light</b>, Night Intensity <b>1.8</b>.</li>
+  <li>Save the scene.</li>
 </ol>
+<p>Want this level to look different from the others? Add a row to its own Day Night Tint. It is used together with the palette.</p>
+<h3>The main menu</h3>
+<ol>
+  <li>Open <code>MainMenu.unity</code>. Select <code>MenuDiorama</code>.</li>
+  <li><b>Add Component → Day Night Tint</b>. Leave the list empty. Save the scene.</li>
+</ol>
+<p>The menu lamps already have a Night Light (phase 1), and the hero's lantern and the monster glows register themselves in code.</p>
+<div class="note"><b>Why copies?</b> DayNightTint does not change your material files. When the level starts, it makes a copy of each material, puts the copy on every Renderer that used the original, and tints the copy. If it changed the real asset in Play mode, Unity would save the night colour into your project.</div>
+<figure class="shot todo" data-shot="phase-10/step-04-a" data-window="inspector" data-select="Level 1 - Training Yard"><div class="ph">Inspector of Level 1 - Training Yard: Level Scene (Arena Half 16) and Day Night Tint (Entries 0)</div><figcaption>The Entries list stays empty.</figcaption></figure>
+<figure class="shot todo" data-shot="phase-10/step-04-b" data-window="inspector" data-select="Level 1 - Training Yard/Static/Lamps/LampPost/LampLight"><div class="ph">Inspector of a LampLight: Light (Point) and Night Light, Night Intensity 2.4</div><figcaption>Every lamp light has Night Intensity 2.4.</figcaption></figure>
+<figure class="shot todo" data-shot="phase-10/step-04-c" data-window="game" data-select="Level 1 - Training Yard"><div class="ph">Game view in Play mode after pressing N: Level 1 at night, dark blue floor, lamps glowing, lantern light at the gate</div><figcaption>Press N in Play mode: the yard turns dark blue and the lamps shine.</figcaption></figure>
 
 <!-- ======================================================= 5 -->
-<h2 id="step-5"><span class="step">5</span>Scripts: DayNightTint and DayNightPalette</h2>
-<p><code>Assets/GoldRush/Scripts/World/DayNightTint.cs</code> – replace the whole file (or create it).</p>
-<pre class="long"><code>using System.Collections.Generic;
-using UnityEngine;
-
-namespace GoldRush
-{
-    /// &lt;summary&gt;Lists materials whose colour changes between day and night (e.g. floor: light grey by day,
-    /// navy blue by night). Put one on the level root and edit the colours in the Inspector.&lt;/summary&gt;
-    public class DayNightTint : MonoBehaviour
-    {
-        [System.Serializable]
-        public class Entry
-        {
-            public Material material;
-            public Color day = Color.white;
-            public Color night = Color.gray;
-        }
-
-        public List&lt;Entry&gt; entries = new List&lt;Entry&gt;();
-
-        public void Add(Material m, Color day, Color night)
-        {
-            if (!m) return;
-            foreach (var e in entries) if (e.material == m) { e.day = day; e.night = night; return; }
-            entries.Add(new Entry { material = m, day = day, night = night });
-        }
-
-        void Start()
-        {
-            if (!Application.isPlaying) return;
-            // Tint runtime COPIES: changing a material asset in Play mode would save the change into the
-            // project. Swap the copies onto every renderer in the scene that uses an original.
-            var copies = new Dictionary&lt;Material, Material&gt;();
-            var all = new List&lt;Entry&gt;(entries);
-            var palette = DayNightPalette.Load();
-            if (palette) all.AddRange(palette.entries);
-            foreach (var e in all)
-            {
-                if (!e.material || copies.ContainsKey(e.material)) continue;
-                var copy = new Material(e.material) { name = e.material.name + " (day/night)" };
-                copies[e.material] = copy;
-                DayNight.RegisterTint(copy, e.day, e.night);
-            }
-            foreach (var r in FindObjectsByType&lt;Renderer&gt;())
-            {
-                var mats = r.sharedMaterials;
-                bool changed = false;
-                for (int i = 0; i &lt; mats.Length; i++)
-                    if (mats[i] &amp;&amp; copies.TryGetValue(mats[i], out var c)) { mats[i] = c; changed = true; }
-                if (changed) r.sharedMaterials = mats;
-            }
-        }
-    }
-}</code></pre>
-<p><code>Assets/GoldRush/Scripts/World/DayNightPalette.cs</code> – replace the whole file (or create it). You imported both files in phase 7; check that they are the same as this code.</p>
-<pre class="long"><code>using System.Collections.Generic;
-using UnityEngine;
-
-namespace GoldRush
-{
-    /// &lt;summary&gt;
-    /// Project-wide list of block materials and their day/night colours
-    /// (Assets/GoldRush/Resources/DayNightPalette.asset). Every DayNightTint also applies these,
-    /// so prefabs dragged into a level change colour at night automatically.
-    /// &lt;/summary&gt;
-    [CreateAssetMenu(fileName = "DayNightPalette", menuName = "Gold Rush/Day Night Palette")]
-    public class DayNightPalette : ScriptableObject
-    {
-        public List&lt;DayNightTint.Entry&gt; entries = new List&lt;DayNightTint.Entry&gt;();
-
-        public void Add(Material m, Color day, Color night)
-        {
-            if (!m) return;
-            foreach (var e in entries) if (e.material == m) { e.day = day; e.night = night; return; }
-            entries.Add(new DayNightTint.Entry { material = m, day = day, night = night });
-        }
-
-        public static DayNightPalette Load() =&gt; Resources.Load&lt;DayNightPalette&gt;("DayNightPalette");
-    }
-}</code></pre>
-<ul>
-  <li><code>DayNightTint</code> makes a <b>copy</b> of each material. If it changed the real material asset in Play mode, Unity would save the night colour into your project.</li>
-  <li>Then it puts the copy on every Renderer in the scene that used the original.</li>
-  <li><code>DayNightPalette.Load()</code> reads the asset <code>Resources/DayNightPalette</code>. Its colours are added to every level, so you only enter them once.</li>
-  <li><code>[CreateAssetMenu]</code> adds the palette to the <b>Assets → Create</b> menu.</li>
-</ul>
-
-<!-- ======================================================= 6 -->
-<h2 id="step-6"><span class="step">6</span>Create the day/night palette</h2>
-<ol>
-  <li>In the Project window, open <code>Assets/GoldRush</code>. Make a folder <code>Resources</code> if it is not there.</li>
-  <li>Right-click <code>Resources</code> → <b>Create → Gold Rush → Day Night Palette</b>. Keep the name <code>DayNightPalette</code>.</li>
-  <li>Select it. In <b>Entries</b>, click <b>+</b> once for each row below.</li>
-  <li>Drag your material into <b>Material</b>. Click the colour boxes and type the <b>Hex</b> value.</li>
-</ol>
-<div class="table-wrap"><table>
-  <tr><th>Material (from Phase 1)</th><th>Day</th><th>Night</th></tr>
-  <tr><td><code>M_Floor</code></td><td><code>DBDEE6</code></td><td><code>212B52</code></td></tr>
-  <tr><td><code>M_Wall</code></td><td><code>CCD1DB</code></td><td><code>525C80</code></td></tr>
-  <tr><td><code>M_Block</code></td><td><code>B2BAC9</code></td><td><code>303859</code></td></tr>
-  <tr><td>Red accent</td><td><code>ED4C4C</code></td><td><code>9E2B42</code></td></tr>
-  <tr><td>Orange accent</td><td><code>FF9938</code></td><td><code>B86133</code></td></tr>
-  <tr><td>Teal accent</td><td><code>33BDBD</code></td><td><code>1A6B85</code></td></tr>
-</table></div>
-<ol start="5">
-  <li>Open each level (<code>Level1</code> … <code>Level4</code>). Select the level root → <b>Add Component → Day Night Tint</b>. Leave its list empty. Save the scene.</li>
-</ol>
-<div class="tip">Want one level to look different? Add an entry to that level's <b>Day Night Tint</b>. It is used together with the palette.</div>
-<figure class="shot todo"><div class="ph">Screenshot: Inspector of Resources/DayNightPalette with 6 entries (material, day colour, night colour)</div><figcaption>The palette: one row per material.</figcaption></figure>
-
-<!-- ======================================================= 7 -->
-<h2 id="step-7"><span class="step">7</span>Script: EnvironmentSetup</h2>
-<p><code>Assets/GoldRush/Scripts/World/EnvironmentSetup.cs</code> – replace the whole file.</p>
-<pre class="long"><code>using UnityEngine;
-using UnityEngine.Rendering;
-using UnityEngine.Rendering.Universal;
-
-namespace GoldRush
-{
-    /// &lt;summary&gt;Lighting moods (sunset day / moonlit night), fog, skybox and URP post-processing.&lt;/summary&gt;
-    public static class EnvironmentSetup
-    {
-        /// &lt;summary&gt;The global vignette override (gameplay may pulse it red on hit).&lt;/summary&gt;
-        public static Vignette Vignette { get; private set; }
-
-        /// &lt;summary&gt;True when the scene is (heading to) night. See &lt;see cref="DayNight"/&gt;.&lt;/summary&gt;
-        public static bool IsNight =&gt; DayNight.IsNight;
-
-        [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
-        static void ResetStatics() { Vignette = null; }
-
-        public static void Apply(Camera cam, bool menu, bool night = false)
-        {
-            // ---- sky / ambient / fog
-            var assets = GameAssets.I;
-            if (assets != null &amp;&amp; assets.skybox != null) RenderSettings.skybox = assets.skybox;
-
-            RenderSettings.ambientMode = AmbientMode.Trilight;
-            RenderSettings.ambientSkyColor = new Color(0.8f, 0.7f, 0.62f);
-            RenderSettings.ambientEquatorColor = new Color(0.74f, 0.56f, 0.42f);
-            RenderSettings.ambientGroundColor = new Color(0.46f, 0.33f, 0.24f);
-
-            RenderSettings.fog = true;
-            RenderSettings.fogMode = FogMode.Linear;
-            RenderSettings.fogColor = new Color(0.96f, 0.79f, 0.6f);
-            RenderSettings.fogStartDistance = menu ? 25f : 35f;
-            RenderSettings.fogEndDistance = menu ? 80f : 120f;
-
-            // ---- sun
-            Light sun = null;
-            var lights = Object.FindObjectsByType&lt;Light&gt;();
-            for (int i = 0; i &lt; lights.Length; i++)
-                if (lights[i].type == LightType.Directional) { sun = lights[i]; break; }
-            if (sun == null)
-            {
-                var go = new GameObject("Sun");
-                sun = go.AddComponent&lt;Light&gt;();
-                sun.type = LightType.Directional;
-                sun.color = new Color(1f, 0.87f, 0.68f);
-                sun.intensity = 1.5f;
-                sun.shadows = LightShadows.Soft;
-                sun.shadowStrength = 0.75f;
-                sun.shadowBias = 0.05f;
-                sun.shadowNormalBias = 0.4f;
-                // low sunset sun behind/left of the default camera direction (+Z)
-                go.transform.rotation = Quaternion.Euler(30f, 35f, 0f);
-            }
-            RenderSettings.sun = sun;
-            DynamicGI.UpdateEnvironment();
-
-            // ---- post-processing volume
-            var vgo = new GameObject("PostFX");
-            var vol = vgo.AddComponent&lt;Volume&gt;();
-            vol.isGlobal = true;
-            vol.priority = 10f;
-            var profile = ScriptableObject.CreateInstance&lt;VolumeProfile&gt;();
-            profile.name = "GoldRushPost";
-
-            var bloom = profile.Add&lt;Bloom&gt;(true);
-            bloom.intensity.Override(night ? 1.1f : 0.7f);
-            bloom.threshold.Override(night ? 0.8f : 0.95f);
-            bloom.scatter.Override(0.65f);
-
-            var vig = profile.Add&lt;Vignette&gt;(true);
-            vig.intensity.Override(night ? 0.38f : 0.28f);
-            vig.smoothness.Override(0.45f);
-            vig.color.Override(Color.black);
-
-            var tone = profile.Add&lt;Tonemapping&gt;(true);
-            tone.mode.Override(TonemappingMode.Neutral);
-
-            var ca = profile.Add&lt;ColorAdjustments&gt;(true);
-            ca.contrast.Override(8f);
-            ca.saturation.Override(12f);
-            ca.postExposure.Override(0.05f);
-
-            vol.sharedProfile = profile;
-            Vignette = vig;
-
-            // ---- real-time day/night blend (colours, fog, sun, sky, bloom, night lights)
-            DayNight.Create(vgo, cam, sun, assets != null ? assets.skybox : null, bloom, vig, night);
-
-            // ---- camera
-            if (cam != null)
-            {
-                cam.allowHDR = true;
-                cam.clearFlags = CameraClearFlags.Skybox;
-                var data = cam.GetUniversalAdditionalCameraData();
-                if (data != null) data.renderPostProcessing = true;
-            }
-        }
-    }
-}</code></pre>
-<ul>
-  <li>It finds the scene's <b>Directional Light</b> (the sun). If there is none (menu, Game scene), it makes one.</li>
-  <li>It makes a global <b>Volume</b> with Bloom, Vignette, Tonemapping and Color Adjustments. This is the post-processing.</li>
-  <li>The last part calls <code>DayNight.Create(...)</code>. <code>night</code> comes from the level (<code>LevelDef.night</code>), so Levels 3 and 4 start at night.</li>
-  <li>GameManager calls <code>EnvironmentSetup.Apply(camera, false, Def.night)</code>. The menu calls it with <code>menu = true</code>.</li>
-</ul>
-
-<!-- ======================================================= 8 -->
-<h2 id="step-8"><span class="step">8</span>Script: DayNightButton (and add it to the menu)</h2>
-<p><code>Assets/GoldRush/Scripts/UI/DayNightButton.cs</code> – replace the whole file.</p>
-<pre class="long"><code>using UnityEngine;
-using UnityEngine.UI;
-
-namespace GoldRush
-{
-    /// &lt;summary&gt;Round HUD button that switches day ↔ night in real time (also the N key).
-    /// Shows a sun by day and a crescent moon by night.&lt;/summary&gt;
-    public class DayNightButton : MonoBehaviour
-    {
-        [SerializeField] RectTransform sun, moon;
-
-        public static DayNightButton Create(Transform parent, Vector2 anchor, Vector2 pos, float size = 100f, bool glass = false)
-        {
-            float k = size / 100f;
-            var root = UIKit.Rect("DayNight", parent).At(anchor, pos, new Vector2(size, size));
-            var face = glass ? UIKit.Glass(root, Sprites.Circle) : UIKit.Chip3D(root, Sprites.Circle, UIKit.HudBg);
-            var b = root.gameObject.AddComponent&lt;DayNightButton&gt;();
-
-            // sun: disc + 8 rays
-            // Material Icons: light_mode (sun) / dark_mode (moon)
-            float g = size * 0.56f;
-            b.sun = UIKit.IconGraphic(face.transform, UIKit.Icon.Sun, g, UIKit.Gold);
-            b.sun.At(new Vector2(0.5f, 0.5f), Vector2.zero, new Vector2(g, g), new Vector2(0.5f, 0.5f));
-            b.moon = UIKit.IconGraphic(face.transform, UIKit.Icon.Moon, g, UIKit.Cream);
-            b.moon.At(new Vector2(0.5f, 0.5f), Vector2.zero, new Vector2(g, g), new Vector2(0.5f, 0.5f));
-
-            var btn = root.gameObject.AddComponent&lt;Button&gt;();
-            btn.targetGraphic = face;
-            b.Refresh(DayNight.IsNight);
-            return b;
-        }
-
-        void OnChanged(bool night)
-        {
-            if (!this) return;
-            Refresh(night);
-            Tween.Punch(transform, 0.2f, 0.3f);
-        }
-
-        void Refresh(bool night)
-        {
-            // the icon shows the current time of day
-            sun.gameObject.SetActive(!night);
-            moon.gameObject.SetActive(night);
-        }
-
-        void Update()
-        {
-            if (Input.GetKeyDown(KeyCode.N)) { AudioFX.Play("whoosh", 0.7f); DayNight.Toggle(); }
-            if (sun.gameObject.activeSelf) sun.localRotation = Quaternion.Euler(0, 0, Time.unscaledTime * 12f);
-        }
-
-        void Awake()
-        {
-            // connected here (not in Create) so it also works when saved in a scene
-            var btn = GetComponent&lt;Button&gt;();
-            if (btn) btn.onClick.AddListener(() =&gt; { AudioFX.Play("whoosh", 0.7f); DayNight.Toggle(); });
-        }
-
-        void OnEnable() { DayNight.Changed += OnChanged; }
-        void OnDisable() { DayNight.Changed -= OnChanged; }
-        void Start() { Refresh(DayNight.IsNight); }
-    }
-}</code></pre>
-<ul>
-  <li>The <b>game</b> HUD makes this button from code with <code>Create(...)</code> (next to the pause button).</li>
-  <li>In <code>Awake</code> it connects the click. So it also works on a button that you saved in a scene.</li>
-  <li>It listens to <code>DayNight.Changed</code> and shows the sun by day, the moon by night. The sun turns slowly.</li>
-</ul>
-<p>Now add one to the <b>menu</b> by hand:</p>
-<ol>
-  <li>Open <code>MainMenu.unity</code>. Right-click <code>MenuUI/Title</code> → <b>UI → Legacy → Button</b>. Name it <code>DayNight</code>. Delete its Text child.</li>
-  <li>Anchor <b>top left</b>, pivot <code>0, 1</code>. Pos <code>122, -30</code>. Size <code>76 × 76</code>. Image: <code>circle.png</code> from <code>Resources/UISprites</code>, slate <code>616B85</code>.</li>
-  <li>Right-click <code>DayNight</code> → <b>UI → Image</b>. Name it <code>Sun</code>. Size <code>43 × 43</code>. Source Image <code>ic_light_mode</code>, colour gold <code>FFC233</code>.</li>
-  <li>Again: <b>UI → Image</b>, name <code>Moon</code>, size <code>43 × 43</code>, Source Image <code>ic_dark_mode</code>, colour cream <code>F2F7FF</code>.</li>
-  <li>Select <code>DayNight</code> → <b>Add Component → Day Night Button</b>. Drag <code>Sun</code> into <b>Sun</b> and <code>Moon</code> into <b>Moon</b>.</li>
-  <li><b>Add Component → Button FX</b>, tick <b>Flat</b>.</li>
-  <li>Optional: copy it to the top-right bar (child of <code>MenuUI</code>, anchor top right, pos <code>-362, -34</code>, size <code>100 × 100</code>, icons <code>56 × 56</code>). Add the copy to <b>GoldRushMenu → Top Right</b> (size 3). Save the scene.</li>
-</ol>
-<div class="note">Do not add a Menu Action to this button. <b>Day Night Button</b> handles the click itself.</div>
-
-<!-- ======================================================= 9 -->
-<h2 id="step-9"><span class="step">9</span>Script: VirtualJoystick (left half)</h2>
-<p>On a phone there is no keyboard or mouse. The screen is split in two:</p>
+<h2 id="step-5"><span class="step">5</span>Touch controls: the look area (right half)</h2>
+<p>A phone has no keyboard and no mouse. The screen is split in two invisible areas:</p>
 <ul>
   <li><b>Left half</b>: touch and drag to move. A stick appears under your thumb. Push it to the edge to sprint (the ring turns orange).</li>
-  <li><b>Right half</b>: drag to turn the camera.</li>
+  <li><b>Right half</b>: drag to turn the camera. A small ring shows under your finger.</li>
 </ul>
-<p>Both are invisible UI areas that <code>GameUI</code> makes at the bottom of the HUD: <code>TouchLookArea.Create(...)</code>, then <code>VirtualJoystick.Create(...)</code>. You do not place them in the scene.</p>
-<p><code>Assets/GoldRush/Scripts/UI/VirtualJoystick.cs</code> – replace the whole file.</p>
-<pre class="long"><code>using UnityEngine;
-using UnityEngine.EventSystems;
-using UnityEngine.UI;
-
-namespace GoldRush
-{
-    /// &lt;summary&gt;
-    /// Touch movement for the LEFT half of the screen. Invisible until a finger touches down;
-    /// then a stick appears under the thumb. Pushing the stick to the outer edge = sprint.
-    /// &lt;/summary&gt;
-    public class VirtualJoystick : MonoBehaviour, IPointerDownHandler, IDragHandler, IPointerUpHandler
-    {
-        public RectTransform area, stickBase, knob;
-        public float radius = 120f;
-        public Vector2 Value { get; private set; }
-        /// &lt;summary&gt;True while a finger is on the stick.&lt;/summary&gt;
-        public bool Held =&gt; pointer != int.MinValue;
-
-        CanvasGroup group;
-        Image edge;
-        int pointer = int.MinValue;
-        float shown;
-
-        public static VirtualJoystick Create(Transform parent)
-        {
-            var area = UIKit.Rect("MoveArea (left half)", parent);
-            area.anchorMin = Vector2.zero; area.anchorMax = new Vector2(0.5f, 1f);
-            area.pivot = Vector2.zero; area.offsetMin = area.offsetMax = Vector2.zero;
-            area.gameObject.AddComponent&lt;Image&gt;().color = new Color(0, 0, 0, 0); // invisible touch target
-
-            var b = UIKit.Rect("Stick", area);
-            b.anchorMin = b.anchorMax = Vector2.zero;
-            b.pivot = new Vector2(0.5f, 0.5f);
-            b.sizeDelta = new Vector2(300, 300);
-            var bg = UIKit.Img(b, Sprites.Circle, UIKit.WithAlpha(UIKit.HudBg, 0.45f), "Bg"); bg.rectTransform.Fill();
-            var ring = UIKit.Img(b, Sprites.Ring, UIKit.WithAlpha(UIKit.Cyan, 0.6f), "Ring"); ring.rectTransform.Fill();
-            var k = UIKit.Rect("Knob", b);
-            k.At(new Vector2(0.5f, 0.5f), Vector2.zero, new Vector2(130, 130));
-            var ks = UIKit.Img(k, Sprites.Circle, new Color(0, 0, 0, 0.25f), "Shadow"); ks.rectTransform.Fill(-4, -10, -4, 2);
-            var kf = UIKit.Img(k, Sprites.Circle, UIKit.Cream, "Face"); kf.rectTransform.Fill();
-            var kg = UIKit.Img(k, Sprites.Circle, UIKit.Cyan, "Dot"); kg.rectTransform.Fill(34, 34, 34, 34);
-
-            var j = area.gameObject.AddComponent&lt;VirtualJoystick&gt;();
-            j.area = area; j.stickBase = b; j.knob = k; j.edge = ring;
-            j.group = b.gameObject.AddComponent&lt;CanvasGroup&gt;();
-            j.group.blocksRaycasts = false;
-            j.group.alpha = 0f; // hidden until touched
-            return j;
-        }
-
-        Vector2 Local(PointerEventData e)
-        {
-            RectTransformUtility.ScreenPointToLocalPointInRectangle(area, e.position, e.pressEventCamera, out var p);
-            return p;
-        }
-
-        public void OnPointerDown(PointerEventData e)
-        {
-            if (Held) return;
-            pointer = e.pointerId;
-            stickBase.anchoredPosition = Local(e);
-            knob.anchoredPosition = Vector2.zero;
-            OnDrag(e);
-        }
-
-        public void OnDrag(PointerEventData e)
-        {
-            if (e.pointerId != pointer) return;
-            Vector2 d = Local(e) - stickBase.anchoredPosition;
-            // the stick follows the thumb if it drags far away
-            if (d.magnitude &gt; radius * 1.6f)
-            {
-                stickBase.anchoredPosition += d.normalized * (d.magnitude - radius * 1.6f);
-                d = Local(e) - stickBase.anchoredPosition;
-            }
-            Vector2 c = Vector2.ClampMagnitude(d, radius);
-            knob.anchoredPosition = c;
-            Vector2 v = c / radius;
-            Value = v.magnitude &lt; 0.12f ? Vector2.zero : v;
-        }
-
-        public void OnPointerUp(PointerEventData e)
-        {
-            if (e.pointerId != pointer) return;
-            Release();
-        }
-
-        public void Release()
-        {
-            pointer = int.MinValue;
-            Value = Vector2.zero;
-            if (knob) knob.anchoredPosition = Vector2.zero;
-        }
-
-        void Update()
-        {
-            shown = Mathf.MoveTowards(shown, Held ? 1f : 0f, Time.unscaledDeltaTime * 8f);
-            group.alpha = shown;
-            // the outer ring lights up orange while sprinting (stick pushed to the edge)
-            if (edge) edge.color = Held &amp;&amp; Value.magnitude &gt; 0.9f ? UIKit.WithAlpha(UIKit.Orange, 0.9f) : UIKit.WithAlpha(UIKit.Cyan, 0.6f);
-        }
-
-        void OnDisable() { Release(); }
-    }
-}</code></pre>
-<ul>
-  <li><code>IPointerDownHandler</code>, <code>IDragHandler</code>, <code>IPointerUpHandler</code>: Unity UI calls these when a finger (or mouse) goes down, moves and goes up on the area.</li>
-  <li><code>pointer</code> remembers <b>which finger</b> owns the stick, so a second finger on the right half does not move it.</li>
-  <li><code>Value</code> is the stick direction, from <code>-1</code> to <code>1</code>. Very small values (under <code>0.12</code>) count as zero.</li>
-  <li><code>PlayerMotor</code> reads <code>joystick.Value</code> to move, and sprints when <code>Value.magnitude &gt; 0.9</code>.</li>
-</ul>
-
-<!-- ======================================================= 10 -->
-<h2 id="step-10"><span class="step">10</span>Script: TouchLookArea (right half)</h2>
-<p><code>Assets/GoldRush/Scripts/UI/TouchLookArea.cs</code> – replace the whole file.</p>
-<pre class="long"><code>using UnityEngine;
-using UnityEngine.EventSystems;
-using UnityEngine.UI;
-
-namespace GoldRush
-{
-    /// &lt;summary&gt;Touch camera control for the RIGHT half of the screen: drag to look around.
-    /// A small ring appears under the finger while dragging.&lt;/summary&gt;
-    public class TouchLookArea : MonoBehaviour, IDragHandler, IPointerDownHandler, IPointerUpHandler
-    {
-        static Vector2 accumulated;
-        int pointer = int.MinValue;
-        RectTransform area, marker;
-        CanvasGroup markerGroup;
-
-        [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
-        static void ResetStatics() { accumulated = Vector2.zero; }
-
-        /// &lt;summary&gt;Returns and clears the drag delta (screen pixels) since the last call.&lt;/summary&gt;
-        public static Vector2 Consume()
-        {
-            var a = accumulated;
-            accumulated = Vector2.zero;
-            return a;
-        }
-
-        public static TouchLookArea Create(Transform parent)
-        {
-            var rt = UIKit.Rect("LookArea (right half)", parent);
-            rt.anchorMin = new Vector2(0.5f, 0f);
-            rt.anchorMax = new Vector2(1f, 1f);
-            rt.pivot = Vector2.zero;
-            rt.offsetMin = rt.offsetMax = Vector2.zero;
-            rt.gameObject.AddComponent&lt;Image&gt;().color = new Color(0, 0, 0, 0);
-            var t = rt.gameObject.AddComponent&lt;TouchLookArea&gt;();
-            t.area = rt;
-            t.marker = UIKit.Rect("Finger", rt);
-            t.marker.anchorMin = t.marker.anchorMax = Vector2.zero;
-            t.marker.sizeDelta = new Vector2(150, 150);
-            UIKit.Img(t.marker, Sprites.Ring, UIKit.WithAlpha(UIKit.Cyan, 0.5f), "Ring").rectTransform.Fill();
-            UIKit.Img(t.marker, Sprites.Soft, UIKit.WithAlpha(UIKit.Cyan, 0.25f), "Glow").rectTransform.Fill(-30, -30, -30, -30);
-            t.markerGroup = t.marker.gameObject.AddComponent&lt;CanvasGroup&gt;();
-            t.markerGroup.alpha = 0f;
-            t.markerGroup.blocksRaycasts = false;
-            return t;
-        }
-
-        void Place(PointerEventData e)
-        {
-            RectTransformUtility.ScreenPointToLocalPointInRectangle(area, e.position, e.pressEventCamera, out var p);
-            marker.anchoredPosition = p;
-        }
-
-        public void OnPointerDown(PointerEventData e)
-        {
-            if (pointer != int.MinValue) return;
-            pointer = e.pointerId;
-            Place(e);
-        }
-
-        public void OnPointerUp(PointerEventData e) { if (e.pointerId == pointer) pointer = int.MinValue; }
-
-        public void OnDrag(PointerEventData e)
-        {
-            if (e.pointerId != pointer) return;
-            accumulated += e.delta;
-            Place(e);
-        }
-
-        void Update()
-        {
-            if (markerGroup) markerGroup.alpha = Mathf.MoveTowards(markerGroup.alpha, pointer != int.MinValue ? 1f : 0f, Time.unscaledDeltaTime * 8f);
-        }
-
-        void OnDisable() { pointer = int.MinValue; }
-    }
-}</code></pre>
-<ul>
-  <li><code>OnDrag</code> adds the finger movement (<code>e.delta</code>, in pixels) to <code>accumulated</code>.</li>
-  <li><code>Consume()</code> gives back the movement since last time and resets it to zero.</li>
-  <li><code>ThirdPersonCamera</code> calls <code>TouchLookArea.Consume()</code> in <code>LateUpdate</code> and turns the camera with it (<code>touchSensitivity = 0.16</code>).</li>
-</ul>
-
-<!-- ======================================================= 11 -->
-<h2 id="step-11"><span class="step">11</span>Test touch in the Device Simulator</h2>
+<p>Both areas are Images with alpha 0 and Raycast Target on: you can't see them, but they catch the touches. They must be the <b>first</b> children of GameUI, so every HUD button is drawn on top of them and still gets its click.</p>
 <ol>
   <li>Open <code>Level1.unity</code>.</li>
+  <li>Build the table. Then drag <code>LookArea (right half)</code> to the top of GameUI's children.</li>
+</ol>
+<div class="table-wrap"><table>
+  <tr><th>Object (parent)</th><th>Create</th><th>Rect</th><th>Look</th><th>Other</th></tr>
+  <tr><td><code>LookArea (right half)</code> (GameUI)</td><td>Image</td><td>Anchors Min <b>0.5, 0</b>, Max <b>1, 1</b>, pivot 0, 0 · Left, Bottom, Right, Top 0</td><td>no sprite, <code>000000 · 0</code>, <b>raycast</b></td><td>the right half</td></tr>
+  <tr><td><code>Finger</code> (LookArea)</td><td>Empty</td><td><b>bottom left</b>, pivot 0.5, 0.5 · Pos 0, 0 · 150 × 150</td><td>–</td><td>Canvas Group: Alpha <b>0</b>, untick Blocks Raycasts</td></tr>
+  <tr><td><code>Ring</code> (Finger)</td><td>Image</td><td>stretch 0</td><td><code>ring</code>, <code>33C7E6 · 128</code></td><td></td></tr>
+  <tr><td><code>Glow</code> (Finger)</td><td>Image</td><td>stretch L B R T = -30, -30, -30, -30</td><td><code>soft</code>, <code>33C7E6 · 64</code></td><td></td></tr>
+</table></div>
+<ol start="3">
+  <li>Select <code>LookArea (right half)</code>. <b>Add Component → Touch Look Area</b>.</li>
+  <li>Drag <code>LookArea (right half)</code> into <b>Area</b>, <code>Finger</code> into <b>Marker</b> and <b>Marker Group</b>.</li>
+</ol>
+<ul>
+  <li><code>OnDrag</code> adds the finger movement (<code>e.delta</code>, in pixels) to a total.</li>
+  <li><code>TouchLookArea.Consume()</code> gives back the movement since last time and resets it to zero. The ThirdPersonCamera calls it every frame and turns with it.</li>
+  <li>The Finger ring follows your finger and fades in while you drag.</li>
+</ul>
+<figure class="shot todo" data-shot="phase-10/step-05" data-window="inspector" data-select="GameUI/LookArea (right half)"><div class="ph">Inspector of LookArea (right half): anchors 0.5/0 – 1/1, Image alpha 0 with Raycast Target on, Touch Look Area (Area, Marker = Finger, Marker Group = Finger)</div><figcaption>Raycast Target is on, alpha is 0.</figcaption></figure>
+
+<!-- ======================================================= 6 -->
+<h2 id="step-6"><span class="step">6</span>Touch controls: the joystick (left half)</h2>
+<div class="table-wrap"><table>
+  <tr><th>Object (parent)</th><th>Create</th><th>Rect</th><th>Look</th><th>Other</th></tr>
+  <tr><td><code>MoveArea (left half)</code> (GameUI)</td><td>Image</td><td>Anchors Min <b>0, 0</b>, Max <b>0.5, 1</b>, pivot 0, 0 · Left, Bottom, Right, Top 0</td><td>no sprite, <code>000000 · 0</code>, <b>raycast</b></td><td>the left half</td></tr>
+  <tr><td><code>Stick</code> (MoveArea)</td><td>Empty</td><td><b>bottom left</b>, pivot 0.5, 0.5 · Pos 0, 0 · 300 × 300</td><td>–</td><td>Canvas Group: Alpha <b>0</b>, untick Blocks Raycasts</td></tr>
+  <tr><td><code>Bg</code> (Stick)</td><td>Image</td><td>stretch 0</td><td><code>circle</code>, <code>121A33 · 115</code></td><td></td></tr>
+  <tr><td><code>Ring</code> (Stick)</td><td>Image</td><td>stretch 0</td><td><code>ring</code>, <code>33C7E6 · 153</code></td><td>turns orange when you sprint</td></tr>
+  <tr><td><code>Knob</code> (Stick)</td><td>Empty</td><td>middle centre · Pos 0, 0 · 130 × 130</td><td>–</td><td>follows the thumb</td></tr>
+  <tr><td><code>Shadow</code> (Knob)</td><td>Image</td><td>stretch L B R T = -4, -10, -4, 2</td><td><code>circle</code>, <code>000000 · 64</code></td><td></td></tr>
+  <tr><td><code>Face</code> (Knob)</td><td>Image</td><td>stretch 0</td><td><code>circle</code>, <code>F2F7FF</code></td><td></td></tr>
+  <tr><td><code>Dot</code> (Knob)</td><td>Image</td><td>stretch L B R T = 34, 34, 34, 34</td><td><code>circle</code>, <code>33C7E6</code></td><td></td></tr>
+</table></div>
+<ol>
+  <li>Build the table. Put <code>MoveArea (left half)</code> right under <code>LookArea (right half)</code>. The order of GameUI's children is now: <code>LookArea</code>, <code>MoveArea</code>, <code>WorldMarkers</code>, <code>HUD</code>, <code>Flash</code>, <code>Modal</code>.</li>
+  <li>Select <code>MoveArea (left half)</code>. <b>Add Component → Virtual Joystick</b>.</li>
+  <li>Fill it: <b>Area</b> = MoveArea, <b>Stick Base</b> = <code>Stick</code>, <b>Knob</b> = <code>Knob</code>, <b>Radius</b> <b>120</b>, <b>Group</b> = <code>Stick</code>, <b>Edge</b> = <code>Stick/Ring</code>.</li>
+  <li>Select <code>GameUI</code>. Drag <code>MoveArea (left half)</code> into the <b>Joystick</b> field (the last empty field from phase 9). Save the scene.</li>
+</ol>
+<ul>
+  <li><code>IPointerDownHandler</code>, <code>IDragHandler</code>, <code>IPointerUpHandler</code>: Unity UI calls these when a finger (or the mouse) goes down, moves and goes up on the area.</li>
+  <li>The stick appears where the thumb touches down, and follows it if it drags far away.</li>
+  <li><code>Value</code> is the stick direction, from -1 to 1. Very small values (under 0.12) count as zero. PlayerMotor moves with it and sprints when <code>Value.magnitude &gt; 0.9</code>.</li>
+  <li>The GameManager gives this joystick to the player: <code>Player.joystick = UI.Joystick</code>.</li>
+</ul>
+<figure class="shot todo" data-shot="phase-10/step-06-a" data-window="hierarchy" data-select="GameUI/MoveArea (left half)"><div class="ph">Hierarchy: GameUI → LookArea (right half) → Finger (Ring, Glow), MoveArea (left half) → Stick (Bg, Ring, Knob → Shadow, Face, Dot), WorldMarkers, HUD, Flash, Modal</div><figcaption>The two touch areas are the first children.</figcaption></figure>
+<figure class="shot todo" data-shot="phase-10/step-06-b" data-window="inspector" data-select="GameUI/MoveArea (left half)"><div class="ph">Inspector of MoveArea (left half): anchors 0/0 – 0.5/1, Image alpha 0 raycast, Virtual Joystick (Area, Stick Base = Stick, Knob, Radius 120, Group = Stick, Edge = Ring)</div><figcaption>Radius 120 and all fields filled.</figcaption></figure>
+
+<!-- ======================================================= 7 -->
+<h2 id="step-7"><span class="step">7</span>Test touch in the Device Simulator</h2>
+<ol>
   <li>At the top of the Game view, click the <b>Game</b> dropdown → <b>Simulator</b>.</li>
   <li>Pick a phone, for example <b>Samsung Galaxy S10</b>. Click the rotate button to make it <b>landscape</b>.</li>
-  <li>Press <b>Play</b>. Click and drag on the <b>left half</b>: the stick appears and the hero walks.</li>
+  <li>Press <b>Play</b>. Click and drag on the <b>left half</b>: the stick appears and the hero walks. Drag to the edge: the ring turns orange and the hero runs.</li>
   <li>Click and drag on the <b>right half</b>: the camera turns.</li>
+  <li>When you are done, switch the dropdown back to <b>Game</b>.</li>
 </ol>
-<div class="note">In the Simulator, <code>Application.isMobilePlatform</code> is true. So the game does not lock the mouse, and the hint at the start shows the touch controls.</div>
-<figure class="shot todo"><div class="ph">Screenshot: Device Simulator (landscape phone) with the joystick visible on the left half</div><figcaption>The stick appears under the thumb.</figcaption></figure>
+<p>In the Simulator, <code>Application.isMobilePlatform</code> is true. So the game does not lock the mouse, and the hint at the start shows the touch controls.</p>
+<figure class="shot todo" data-shot="phase-10/step-07" data-window="game" data-select="GameUI/MoveArea (left half)" data-manual="true"><div class="ph">Device Simulator (landscape phone) in Play mode: the joystick visible on the left half, the touch hint at the bottom</div><figcaption>The stick appears under the thumb.</figcaption></figure>
+
+<!-- ======================================================= 8 -->
+<h2 id="step-8"><span class="step">8</span>Music</h2>
+<p>The music plays since phase 1. Its clip is the <code>music</code> entry in the <b>Sounds</b> list of <code>GoldRushAssets</code>. <code>AudioFX</code> does more than play it:</p>
+<div class="table-wrap"><table>
+  <tr><th>Function</th><th>What it does</th><th>Who calls it</th></tr>
+  <tr><td><code>AudioFX.StartMusic()</code></td><td>Plays the music on a loop at volume 0.3. If it already plays, nothing happens, so it does not restart when the scene changes.</td><td>menu, every level</td></tr>
+  <tr><td><code>AudioFX.SetTension(true)</code></td><td>A monster is chasing you: the music gets a bit faster (pitch 1.07) and louder.</td><td>GameManager</td></tr>
+  <tr><td><code>AudioFX.Duck(amount, seconds)</code></td><td>Makes the music quiet for a moment, so you hear the win or lose sound.</td><td>Win, Lose</td></tr>
+  <tr><td><code>AudioFX.RefreshMute()</code></td><td>Reads <code>Save.Data.music</code> and <code>Save.Data.sfx</code>.</td><td>Settings, PAUSE toggles</td></tr>
+</table></div>
+<ol>
+  <li>Select <code>Assets/GoldRush/Resources/GoldRushAssets</code>. Check that <b>Sounds</b> has an entry <code>music</code> with the clip <code>Art/Audio/music</code>.</li>
+  <li>Press Play in Level1. Let a Slime chase you: the music gets faster. Pause and switch <b>MUSIC OFF</b>: it stops. Stop and start Play: it is still off.</li>
+</ol>
+<figure class="shot todo" data-shot="phase-10/step-08" data-window="inspector" data-select="Assets/GoldRush/Resources/GoldRushAssets.asset"><div class="ph">Inspector of GoldRushAssets: the Sounds list with 16 entries, the last one music = music.wav</div><figcaption>The music clip is in the Sounds list.</figcaption></figure>
+
+<!-- ======================================================= 9 -->
+<h2 id="step-9"><span class="step">9</span>Replace every script with the final version</h2>
+<p>Some scripts got a short phase version earlier, so the project could compile and play after every phase. Now every script becomes the real one from the finished game.</p>
+<ol>
+  <li>In Finder or Explorer, open the Resources pack folder <code>Scripts/Final/</code>. It has the same folders as <code>Assets/GoldRush/Scripts</code>: <code>Audio</code>, <code>Core</code>, <code>Gameplay</code>, <code>Level</code>, <code>UI</code>, <code>World</code>.</li>
+  <li>Open <code>Final/Audio</code>, select all files in it (Ctrl+A, Mac: Cmd+A) and copy them into <code>Assets/GoldRush/Scripts/Audio</code>. Click <b>Replace</b>.</li>
+  <li>Do the same for the other five folders.</li>
+  <li>Go back to Unity and wait for the compile. The Console must show <b>no red errors</b>.</li>
+</ol>
+<div class="warn">Copy the files, not the folders. If you replace a whole folder, its <code>.meta</code> files are deleted and the scripts go missing from your scenes.</div>
+<p>Most files are already final since phase 9. The ones that really change:</p>
+<div class="table-wrap"><table>
+  <tr><th>File</th><th>Was</th><th>New in the final file</th></tr>
+  <tr><td><code>UI/GoldRushMenu.cs</code></td><td>phase 2 version</td><td>The hero in the menu wears the colour and hat you bought in the shop (<code>Cosmetics.Apply</code>). Confetti when you buy something. It can also build the whole menu from code if a scene has none.</td></tr>
+  <tr><td>all other files</td><td>final already</td><td>No change. Replacing them is safe.</td></tr>
+</table></div>
+<p>If you changed a script yourself (for example a speed value), write the change down before you copy. Then put it back in the final file.</p>
+<figure class="shot todo" data-shot="phase-10/step-09" data-window="console" data-select="Assets/GoldRush/Scripts/UI/GoldRushMenu.cs"><div class="ph">Console window after the copy: no red errors</div><figcaption>No red errors after the final scripts.</figcaption></figure>
+
+<!-- ======================================================= 10 -->
+<h2 id="step-10"><span class="step">10</span>Import Levels 2–4</h2>
+<p>You built Level 1 by hand. Levels 2, 3 and 4 are bigger, so you import <b>our</b> scenes. They work with your scripts: every level has a <code>LevelScene</code> root with markers, a GameManager and a saved GameUI, like your Level 1. The package also has the <b>Daily Rush</b> scene (<code>Game</code>), which builds a new level from code every day.</p>
+<ol>
+  <li><b>Assets → Import Package → Custom Package…</b>. Pick <code>GoldRush_Levels2to4.unitypackage</code>.</li>
+  <li>Keep everything ticked and click <b>Import</b>.</li>
+  <li>Click <b>Gold Rush → Fix Script Links</b> in the top menu. It connects the scripts in the new scenes to <b>your</b> scripts. The Console says how many it fixed.</li>
+  <li>Open <code>Level2.unity</code>. Click a few objects: no component may say <b>Missing (Mono Script)</b>.</li>
+</ol>
+<div class="table-wrap"><table>
+  <tr><th>Scene</th><th>Name</th><th>Arena</th><th>Gold</th><th>Monsters</th><th>Power-ups</th><th>Par</th></tr>
+  <tr><td><code>Level2</code></td><td>Ghost Alley</td><td>40 × 40 m</td><td>8</td><td>2 Slimes, 1 Ghost</td><td>2</td><td>1:00</td></tr>
+  <tr><td><code>Level3</code></td><td>King's Vault</td><td>48 × 48 m</td><td>10</td><td>2 Slimes, 2 Ghosts, 2 Mushroom Kings</td><td>3</td><td>1:25</td></tr>
+  <tr><td><code>Level4</code></td><td>Gold Fever</td><td>56 × 56 m</td><td>13</td><td>3 Slimes, 3 Ghosts, 2 Mushroom Kings</td><td>4</td><td>1:55</td></tr>
+  <tr><td><code>Game</code></td><td>Daily Rush</td><td colspan="5">built from code (<code>LevelBuilder</code>) with today's date as the seed: a new level every day</td></tr>
+</table></div>
+<p>These scenes have no Player and no camera: the GameManager makes them from code (<code>PlayerMotor.Create</code>, <code>ThirdPersonCamera.Create</code>). Monsters, coins and power-ups come from the empty markers. Each scene has its own Day Night Tint.</p>
+<figure class="shot todo" data-shot="phase-10/step-10-a" data-window="project" data-select="Assets/GoldRush/Scenes/Level2.unity"><div class="ph">Project window: Scenes with Game, Level1, Level2, Level3, Level4, MainMenu</div><figcaption>Four new scenes.</figcaption></figure>
+<figure class="shot todo" data-shot="phase-10/step-10-b" data-window="scene" data-select="Level 2 - Ghost Alley"><div class="ph">Scene view of Level2 from above: the walls, blocks and markers of Ghost Alley</div><figcaption>Ghost Alley, made of the same kit.</figcaption></figure>
+
+<!-- ======================================================= 11 -->
+<h2 id="step-11"><span class="step">11</span>All scenes in the Scene List</h2>
+<ol>
+  <li><b>File → Build Profiles</b>. Click <b>Scene List</b>.</li>
+  <li>Drag in <code>Level2</code>, <code>Level3</code>, <code>Level4</code> and <code>Game</code> from <code>Assets/GoldRush/Scenes</code>.</li>
+  <li>Check the order and that all six are ticked:</li>
+</ol>
+<div class="table-wrap"><table>
+  <tr><th>Index</th><th>Scene</th></tr>
+  <tr><td>0</td><td><code>MainMenu</code> (the game starts here)</td></tr>
+  <tr><td>1–4</td><td><code>Level1</code>, <code>Level2</code>, <code>Level3</code>, <code>Level4</code></td></tr>
+  <tr><td>5</td><td><code>Game</code> (Daily Rush)</td></tr>
+</table></div>
+<p>Now <b>NEXT</b> in the LEVEL COMPLETE dialog loads the next level, and every card on the Levels screen works.</p>
+<figure class="shot todo" data-shot="phase-10/step-11" data-window="buildprofiles" data-select="Assets/GoldRush/Scenes/MainMenu.unity"><div class="ph">Build Profiles window, Scene List: MainMenu 0, Level1 1, Level2 2, Level3 3, Level4 4, Game 5, all ticked</div><figcaption>MainMenu is at index 0.</figcaption></figure>
 
 <!-- ======================================================= 12 -->
-<h2 id="step-12"><span class="step">12</span>Script: AudioFX (music)</h2>
-<p>The final AudioFX can make its sounds in code when the <code>.wav</code> files are missing. That code is in a helper. Drag <code>Synth.cs</code> from <code>GoldRush_Export/Resources/Scripts/Helpers/Audio/</code> into <code>Assets/GoldRush/Scripts/Audio/</code> first.</p>
-<p><code>Assets/GoldRush/Scripts/Audio/AudioFX.cs</code> – replace the whole file with this final version.</p>
-<pre class="long"><code>using System.Collections.Generic;
-using UnityEngine;
-
-namespace GoldRush
-{
-    /// &lt;summary&gt;Global audio player for synthesized sound effects and background music.&lt;/summary&gt;
-    public class AudioFX : MonoBehaviour
-    {
-        const int PoolSize = 8;
-        const float MusicVolume = 0.3f;
-        const float TensionPitch = 1.07f;
-        const float TensionVolume = 1.15f;
-
-        static AudioFX inst;
-        static bool quitting;
-
-        Dictionary&lt;string, AudioClip&gt; clips;
-        AudioSource[] pool;
-        int next;
-        AudioSource music;
-
-        bool tension;
-        float tensionVolCur = 1f;
-        float duckAmount;
-        float duckTimer;
-        float duckCur;
-
-        [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
-        static void ResetStatics()
-        {
-            inst = null;
-            quitting = false;
-        }
-
-        static AudioFX I
-        {
-            get
-            {
-                if (inst != null) return inst;
-                if (quitting || !Application.isPlaying) return null;
-                var go = new GameObject("[AudioFX]");
-                DontDestroyOnLoad(go);
-                go.AddComponent&lt;AudioFX&gt;(); // Awake assigns inst
-                return inst;
-            }
-        }
-
-        void Awake()
-        {
-            if (inst != null &amp;&amp; inst != this)
-            {
-                Destroy(gameObject);
-                return;
-            }
-            inst = this;
-            Init();
-        }
-
-        void Init()
-        {
-            if (clips != null) return;
-            // the sound files (Art/Audio/*.wav) are listed in the GoldRushAssets asset; "coin.wav" -&gt; id "coin"
-            clips = new Dictionary&lt;string, AudioClip&gt;();
-            var assets = GameAssets.I;
-            if (assets &amp;&amp; assets.sounds != null)
-                foreach (var clip in assets.sounds)
-                    if (clip) clips[clip.name] = clip;
-            if (clips.Count == 0) clips = Synth.BuildAll(); // no sound files yet: make them from code
-
-            pool = new AudioSource[PoolSize];
-            for (int i = 0; i &lt; PoolSize; i++)
-            {
-                var s = gameObject.AddComponent&lt;AudioSource&gt;();
-                s.playOnAwake = false;
-                s.loop = false;
-                s.spatialBlend = 0f;
-                s.priority = 64;
-                pool[i] = s;
-            }
-
-            music = gameObject.AddComponent&lt;AudioSource&gt;();
-            music.playOnAwake = false;
-            music.loop = true;
-            music.spatialBlend = 0f;
-            music.priority = 0;
-            music.volume = MusicVolume;
-            music.mute = !Save.Data.music;
-        }
-
-        void OnApplicationQuit() { quitting = true; }
-
-        void OnDestroy()
-        {
-            if (inst == this) inst = null;
-        }
-
-        // ------------------------------------------------------------------ public API
-
-        public static void Play(string id, float volume = 1f, float pitch = 1f)
-        {
-            if (!Save.Data.sfx || string.IsNullOrEmpty(id)) return;
-            var i = I;
-            if (i == null) return;
-            i.PlayInternal(id, volume, pitch);
-        }
-
-        public static void StartMusic()
-        {
-            var i = I;
-            if (i == null) return;
-            i.music.mute = !Save.Data.music;
-            if (i.music.isPlaying) return;
-            AudioClip clip;
-            if (!i.clips.TryGetValue("music", out clip) || clip == null) return;
-            i.music.clip = clip;
-            i.music.loop = true;
-            i.music.pitch = i.tension ? TensionPitch : 1f;
-            i.music.volume = i.ComputeMusicVolume();
-            i.music.Play();
-        }
-
-        public static void RefreshMute()
-        {
-            var i = I;
-            if (i == null) return;
-            i.music.mute = !Save.Data.music;
-            if (!Save.Data.sfx)
-            {
-                for (int k = 0; k &lt; i.pool.Length; k++)
-                    if (i.pool[k] != null &amp;&amp; i.pool[k].isPlaying) i.pool[k].Stop();
-            }
-        }
-
-        public static void SetTension(bool chased)
-        {
-            var i = I;
-            if (i == null) return;
-            i.tension = chased;
-        }
-
-        public static void Duck(float amount, float seconds)
-        {
-            var i = I;
-            if (i == null) return;
-            amount = Mathf.Clamp01(amount);
-            if (i.duckTimer &gt; 0f) i.duckAmount = Mathf.Max(i.duckAmount, amount);
-            else i.duckAmount = amount;
-            i.duckTimer = Mathf.Max(i.duckTimer, seconds);
-        }
-
-        // ------------------------------------------------------------------ internals
-
-        void PlayInternal(string id, float volume, float pitch)
-        {
-            AudioClip clip;
-            if (clips == null || !clips.TryGetValue(id, out clip) || clip == null)
-            {
-                Debug.LogWarning("[AudioFX] Unknown sound id: " + id);
-                return;
-            }
-
-            AudioSource src = null;
-            for (int k = 0; k &lt; PoolSize; k++)
-            {
-                var s = pool[(next + k) % PoolSize];
-                if (!s.isPlaying) { src = s; next = (next + k + 1) % PoolSize; break; }
-            }
-            if (src == null)
-            {
-                src = pool[next];
-                next = (next + 1) % PoolSize;
-            }
-
-            src.Stop();
-            src.clip = clip;
-            src.volume = Mathf.Clamp01(volume);
-            src.pitch = Mathf.Clamp(pitch, 0.1f, 3f);
-            src.Play();
-        }
-
-        float ComputeMusicVolume()
-        {
-            return MusicVolume * tensionVolCur * (1f - duckCur);
-        }
-
-        void Update()
-        {
-            if (music == null) return;
-            float dt = Time.unscaledDeltaTime;
-
-            float targetPitch = tension ? TensionPitch : 1f;
-            float targetVol = tension ? TensionVolume : 1f;
-            float k = 1f - Mathf.Exp(-dt * 1.5f);
-            music.pitch = Mathf.Lerp(music.pitch, targetPitch, k);
-            if (Mathf.Abs(music.pitch - targetPitch) &lt; 0.0005f) music.pitch = targetPitch;
-            tensionVolCur = Mathf.Lerp(tensionVolCur, targetVol, k);
-
-            if (duckTimer &gt; 0f) duckTimer -= dt;
-            float targetDuck = duckTimer &gt; 0f ? duckAmount : 0f;
-            float rate = targetDuck &gt; duckCur ? 10f : 2f;
-            duckCur = Mathf.Lerp(duckCur, targetDuck, 1f - Mathf.Exp(-dt * rate));
-            if (targetDuck == 0f &amp;&amp; duckCur &lt; 0.001f) { duckCur = 0f; duckAmount = 0f; }
-
-            music.volume = ComputeMusicVolume();
-        }
-    }
-}</code></pre>
-<ul>
-  <li><code>StartMusic()</code> plays the <code>music</code> clip on a loop. The menu and every level call it. If it already plays, nothing happens, so the music does not restart when the scene changes.</li>
-  <li><code>SetTension(true)</code>: a monster is chasing you. The music gets a bit faster (pitch <code>1.07</code>) and louder.</li>
-  <li><code>Duck(amount, seconds)</code> makes the music quieter for a moment, so you hear the win or lose sound.</li>
-  <li><code>RefreshMute()</code> reads <code>Save.Data.music</code> and <code>Save.Data.sfx</code>. The menu Settings and the pause menu call it.</li>
-  <li>Music volume is <code>0.3</code>. Eight <b>AudioSources</b> play sound effects, so several sounds can play at once.</li>
-  <li>The sounds still come from the <b>Sounds</b> list of <code>GoldRushAssets</code>. Only if that list is empty, <code>Synth.BuildAll()</code> makes every sound in code (a fallback).</li>
-</ul>
+<h2 id="step-12"><span class="step">12</span>Final check: is it our game?</h2>
+<ol>
+  <li><b>Edit → Clear All PlayerPrefs</b>. Now you play like a new player: 0 gold, only Level 1 open, night.</li>
+  <li>Open <code>MainMenu</code>, press Play and play the whole game once. Compare each screen with ours:</li>
+</ol>
+<div class="shots">
+  <figure><img src="images/01_title.jpg" alt="Title screen at night" loading="lazy">Title (night)</figure>
+  <figure><img src="images/01b_title_day.jpg" alt="Title screen by day" loading="lazy">Title (day)</figure>
+  <figure><img src="images/02_levels.jpg" alt="Level select" loading="lazy">Levels</figure>
+  <figure><img src="images/03_shop.jpg" alt="Shop" loading="lazy">Shop</figure>
+  <figure><img src="images/04_level1_start.jpg" alt="Level 1 start with HUD" loading="lazy">Level 1</figure>
+  <figure><img src="images/05b_level1_night.jpg" alt="Level 1 at night" loading="lazy">Level 1 at night</figure>
+  <figure><img src="images/06_gate_open.jpg" alt="The gate is open" loading="lazy">Gate open</figure>
+  <figure><img src="images/07_win.jpg" alt="Level complete" loading="lazy">Win</figure>
+  <figure><img src="images/08_level2.jpg" alt="Level 2" loading="lazy">Level 2</figure>
+  <figure><img src="images/11_level4.jpg" alt="Level 4" loading="lazy">Level 4</figure>
+  <figure><img src="images/12_daily.jpg" alt="Daily Rush" loading="lazy">Daily Rush</figure>
+</div>
+<div class="table-wrap"><table>
+  <tr><th>Check</th><th>It is right when…</th></tr>
+  <tr><td>Console</td><td>No red errors, no yellow Gold Rush warnings.</td></tr>
+  <tr><td>Menu</td><td>The hero waves. PLAY, LEVELS, SHOP work. Gold and stars count up. Buy a colour: the hero changes colour, confetti.</td></tr>
+  <tr><td>Day / night</td><td>The sun/moon button (menu and HUD) and N switch it in 1.5 s. Floor, walls and blocks change colour, the lamps turn on. Load another level: it keeps your choice.</td></tr>
+  <tr><td>Levels</td><td>Level 1 → NEXT → Level 2 → … → Level 4. After Level 4 there is no NEXT (MENU and RETRY share the footer).</td></tr>
+  <tr><td>Save</td><td>Stars, best times, gold and unlocked levels are still there after you stop and start Play.</td></tr>
+  <tr><td>Settings</td><td>MUSIC OFF in the menu is also OFF in the PAUSE dialog, and the other way round.</td></tr>
+  <tr><td>Daily Rush</td><td>The Daily card loads a level built from code. Clear it once: +50 bonus gold.</td></tr>
+  <tr><td>Touch</td><td>In the Simulator: left half moves, right half looks.</td></tr>
+  <tr><td>Input</td><td><b>Edit → Project Settings → Player → Other Settings → Active Input Handling</b> = <b>Both</b>.</td></tr>
+</table></div>
+<p>Your Level 1 is built from kit prefabs, so it can look a little different from ours in the details. Everything else is the same game.</p>
+<p>Last, give your game a name and an icon: <b>Edit → Project Settings → Player</b>. Company Name: your name or school. Product Name: <code>Gold Rush</code>. Version: <code>1.0</code>. Default Icon: an icon image (for example <code>Resources/Icons/ic_star</code> or your own picture).</p>
+<figure class="shot todo" data-shot="phase-10/step-12" data-window="inspector" data-select="ProjectSettings/Player" data-manual="true"><div class="ph">Project Settings → Player: Company Name, Product Name Gold Rush, Version 1.0, Default Icon</div><figcaption>Product Name is Gold Rush.</figcaption></figure>
 
 <!-- ======================================================= 13 -->
-<h2 id="step-13"><span class="step">13</span>Replace every script with the final version</h2>
-<p>Some scripts got a short <b>phase version</b> earlier, so the project could compile. Now every script becomes the real one from the finished game.</p>
-<ol>
-  <li>Open <code>GoldRush_Export/Resources/Scripts/Final/</code>. It has the same folders as <code>Assets/GoldRush/Scripts</code>.</li>
-  <li>Drag the folders <code>Core</code>, <code>Audio</code>, <code>World</code>, <code>Level</code>, <code>Gameplay</code>, <code>UI</code> onto <code>Assets/GoldRush/Scripts</code>.</li>
-  <li>When Unity asks, click <b>Replace</b> for every file.</li>
-  <li>Wait for the compile. The Console must show <b>no red errors</b>.</li>
-</ol>
-<p>These are the files that had a phase version or got new features since you first made them. Replacing the other files too is safe: they are already final.</p>
-<div class="table-wrap"><table>
-  <tr><th>Folder</th><th>Replace with the final version</th></tr>
-  <tr><td><code>Gameplay</code></td><td><code>GameManager.cs</code>, <code>PlayerMotor.cs</code>, <code>ThirdPersonCamera.cs</code>, <code>EnemyAI.cs</code></td></tr>
-  <tr><td><code>World</code></td><td><code>DayNight.cs</code>, <code>NightLight.cs</code>, <code>DayNightTint.cs</code>, <code>DayNightPalette.cs</code>, <code>EnvironmentSetup.cs</code>, <code>ExitGate.cs</code>, <code>PowerUp.cs</code>, <code>Coin.cs</code></td></tr>
-  <tr><td><code>UI</code></td><td><code>GameUI.cs</code>, <code>GoldRushMenu.cs</code>, <code>DayNightButton.cs</code>, <code>VirtualJoystick.cs</code>, <code>TouchLookArea.cs</code>, <code>ButtonFX.cs</code>, <code>LogoTitle.cs</code>, <code>MenuAction.cs</code></td></tr>
-  <tr><td><code>Audio</code></td><td><code>AudioFX.cs</code></td></tr>
-  <tr><td><code>Core</code></td><td><code>Data.cs</code>, <code>Fader.cs</code></td></tr>
-</table></div>
-<p>What the final <code>GameManager</code> does that you can now test:</p>
-<ul>
-  <li><b>Pressing Play in any level scene plays that level.</b> <code>Awake</code> finds the level whose <code>scene</code> name matches the open scene.</li>
-  <li>It hides and locks the mouse while you play on a computer, but never on a phone (<code>UseMouseLook</code>).</li>
-  <li>It pauses the game when the phone app goes to the background (<code>OnApplicationPause</code>).</li>
-  <li>It turns on the tension music while a monster chases you, and saves gold, stars, best times and unlocks when you win.</li>
-</ul>
-<div class="warn">If you changed a script yourself (for example a speed value), write the change down before you replace it. Then put it back in the final file.</div>
-
-<!-- ======================================================= 14 -->
-<h2 id="step-14"><span class="step">14</span>Final checks</h2>
-<p>Go through this list before you build.</p>
-<ol>
-  <li>Console: <b>no red errors</b> and no yellow warnings from Gold Rush.</li>
-  <li><b>Edit → Project Settings → Player → Other Settings → Active Input Handling</b> = <b>Both</b>.</li>
-  <li><b>File → Build Profiles → Scene List</b>: <code>MainMenu</code> (0), <code>Level1</code>–<code>Level4</code>, <code>Game</code>. All ticked.</li>
-  <li><b>Edit → Clear All PlayerPrefs</b>. Then play the whole game from the menu once, like a new player.</li>
-  <li>Press <b>N</b> in a level: day turns to night. The lamps, the hero's lantern and the monster glows turn on.</li>
-  <li>Settings → <b>MUSIC OFF</b>: the music stops. Stop and start Play: it is still off.</li>
-  <li>Daily Rush card: the level is built from code and is different tomorrow.</li>
-</ol>
-<p>Set the game's name and icon:</p>
-<ol>
-  <li><b>Edit → Project Settings → Player</b>.</li>
-  <li>Company Name: your name or school. Product Name: <code>Gold Rush</code>. Version: <code>1.0</code>.</li>
-  <li>Default Icon: drag in an icon image (for example a gold coin from <code>Art/UI</code>).</li>
-</ol>
-
-<!-- ======================================================= 15 -->
-<h2 id="step-15"><span class="step">15</span>Build for PC</h2>
+<h2 id="step-13"><span class="step">13</span>Build for PC</h2>
 <ol>
   <li><b>File → Build Profiles</b>.</li>
   <li>On the left, under <b>Platforms</b>, click <b>Windows</b> (on a Mac: <b>macOS</b>).</li>
@@ -1126,65 +335,70 @@ namespace GoldRush
   <li>Click <b>Player Settings</b> → <b>Resolution and Presentation</b> → Fullscreen Mode <b>Fullscreen Window</b>.</li>
   <li>Back in Build Profiles, click <b>Build</b>.</li>
   <li>Make a new folder <code>Builds/PC</code> next to the <code>Assets</code> folder (not inside it). Select it.</li>
-  <li>Wait. When it is done, open the folder and double-click <code>GoldRush.exe</code> (Mac: <code>GoldRush.app</code>).</li>
+  <li>Wait. When it is done, open the folder and double-click <code>Gold Rush.exe</code> (Mac: <code>Gold Rush.app</code>).</li>
 </ol>
-<figure class="shot todo"><div class="ph">Screenshot: Build Profiles window with Windows selected, Scene List and the Build button</div><figcaption>Build Profiles for PC.</figcaption></figure>
-<div class="tip">Press <b>Esc</b> in the game to pause and free the mouse. To close the game, use <b>Alt+F4</b> (Mac: <b>Cmd+Q</b>).</div>
+<p>Press Esc in the game to pause and free the mouse. To close the game, use Alt+F4 (Mac: Cmd+Q).</p>
+<figure class="shot todo" data-shot="phase-10/step-13" data-window="buildprofiles" data-select="ProjectSettings/BuildProfiles/Windows"><div class="ph">Build Profiles window with Windows selected (active), the Scene List and the Build button</div><figcaption>Windows is the active platform.</figcaption></figure>
 
-<!-- ======================================================= 16 -->
-<h2 id="step-16"><span class="step">16</span>Build for Android</h2>
+<!-- ======================================================= 14 -->
+<h2 id="step-14"><span class="step">14</span>Build for Android</h2>
 <p>First install the Android tools (only once):</p>
 <ol>
-  <li>Close Unity. Open <b>Unity Hub → Installs</b>.</li>
+  <li>Close Unity. Open Unity Hub → <b>Installs</b>.</li>
   <li>Click the gear next to your Unity version → <b>Add modules</b>.</li>
   <li>Tick <b>Android Build Support</b> with <b>OpenJDK</b> and <b>Android SDK &amp; NDK Tools</b>. Click <b>Install</b>.</li>
   <li>Open the project again.</li>
 </ol>
 <p>Then set up and build:</p>
-<ol>
-  <li><b>File → Build Profiles</b> → <b>Android</b> → <b>Switch Platform</b>. This can take a few minutes.</li>
-  <li><b>Player Settings → Resolution and Presentation</b>: Default Orientation <b>Auto Rotation</b>. Tick only <b>Landscape Left</b> and <b>Landscape Right</b>.</li>
+<ol start="5">
+  <li><b>File → Build Profiles → Android → Switch Platform</b>. This can take a few minutes.</li>
+  <li><b>Player Settings → Resolution and Presentation</b>: Default Orientation <b>Auto Rotation</b>. Tick only <b>Landscape Left</b> and <b>Landscape Right</b> (untick both Portrait boxes).</li>
   <li><b>Other Settings</b>: Scripting Backend <b>IL2CPP</b>, Target Architectures <b>ARM64</b>.</li>
   <li>Back in Build Profiles, click <b>Build</b>. Save as <code>Builds/Android/GoldRush.apk</code>.</li>
-  <li>Copy the <code>.apk</code> to your phone and open it to install it.</li>
+  <li>Copy the .apk to your phone and open it to install it.</li>
 </ol>
 <div class="tip">Faster: turn on <b>USB debugging</b> on your phone (Settings → Developer options), plug it in, and click <b>Build And Run</b>. Unity installs and starts the game.</div>
-<figure class="shot todo"><div class="ph">Screenshot: Player Settings for Android, Resolution and Presentation with only Landscape Left/Right ticked</div><figcaption>The game is landscape only.</figcaption></figure>
+<figure class="shot todo" data-shot="phase-10/step-14-a" data-window="buildprofiles" data-select="ProjectSettings/BuildProfiles/Android"><div class="ph">Build Profiles window with Android selected (active) and the Build / Build And Run buttons</div><figcaption>Android is the active platform.</figcaption></figure>
+<figure class="shot todo" data-shot="phase-10/step-14-b" data-window="inspector" data-select="ProjectSettings/Player" data-manual="true"><div class="ph">Player Settings for Android, Resolution and Presentation: Auto Rotation, only Landscape Left and Landscape Right ticked</div><figcaption>The game is landscape only.</figcaption></figure>
 
-<!-- ======================================================= 17 -->
-<h2 id="step-17"><span class="step">17</span>▶ Press Play</h2>
-<ol>
+<!-- ======================================================= 15 -->
+<h2 id="step-15"><span class="step">15</span>▶ Press Play</h2>
+<ul>
   <li>Open <code>MainMenu.unity</code> and press <b>Play</b>. Music plays.</li>
-  <li>Click the sun/moon button: the menu turns from night to day.</li>
+  <li>Click the sun/moon button: the menu turns from night to day. The stage changes colour.</li>
   <li>Play Level 1. Press <b>N</b>: the level turns to night, the lamps turn on.</li>
-  <li>Let a Ghost chase you: the music gets faster.</li>
+  <li>Win Level 1 and click <b>NEXT</b>: Level 2 – Ghost Alley loads with the same HUD. Let the Ghost chase you: the music gets faster.</li>
   <li>Switch the Game view to <b>Simulator</b> and play with the left and right halves.</li>
   <li>Run your PC build (and your phone build) from the menu to the end of a level.</li>
-</ol>
-<div class="check">You should see: <b>the complete game</b>. Menu, 4 levels and the Daily Rush, shop, save, day/night, touch controls and music, running as a real PC and Android app.</div>
+</ul>
+<figure class="shot todo" data-shot="phase-10/step-15" data-window="game" data-select="GameUI/HUD"><div class="ph">Game view in Play mode: Level 2 – Ghost Alley at night with the HUD (0 / 8, two hearts, timer PAR 1:00, moon button)</div><figcaption>Level 2 at night, with your HUD.</figcaption></figure>
+<p><b>You should see:</b> the complete game = our version. Menu, 4 levels and the Daily Rush, shop, save, day/night, touch controls and music, running as a real PC and Android app.</p>
 
-<!-- ======================================================= 18 -->
-<h2 id="step-18"><span class="step">18</span>Common problems</h2>
+<!-- ======================================================= 16 -->
+<h2 id="step-16"><span class="step">16</span>Common problems</h2>
 <div class="table-wrap"><table>
   <tr><th>Problem</th><th>Fix</th></tr>
-  <tr><td>Pressing N does nothing.</td><td>The level has no <code>DayNight</code>. Check that <code>EnvironmentSetup.cs</code> is the final version (it calls <code>DayNight.Create</code>).</td></tr>
-  <tr><td>Floor and walls do not change colour at night.</td><td>The palette must be at <code>Assets/GoldRush/Resources/DayNightPalette.asset</code> (exact name, in a <b>Resources</b> folder). The level root needs a <b>Day Night Tint</b>. The material in the palette must be the one the renderer uses.</td></tr>
-  <tr><td>After Play, my material stays dark blue.</td><td>Something changed the material asset itself. Use <b>Day Night Tint</b> (it uses copies). Set the colour back by hand.</td></tr>
-  <tr><td>Lamps shine during the day.</td><td>Add <b>Night Light</b> to <code>LampLight</code> in the LampPost prefab (step 4).</td></tr>
-  <tr><td>"Create → Gold Rush → Day Night Palette" is missing.</td><td><code>DayNightPalette.cs</code> needs the <code>[CreateAssetMenu]</code> line from step 5. Wait for the compile.</td></tr>
-  <tr><td>Touch does nothing in the Simulator.</td><td>You need an <b>EventSystem</b> (GameUI makes one). Click on the Simulator screen, not outside it. Check Active Input Handling = <b>Both</b>.</td></tr>
-  <tr><td>No music.</td><td>Settings → MUSIC must be ON. The Game view's <b>Mute Audio</b> button must be off.</td></tr>
-  <tr><td>Build: "No scenes in build" or the build starts in a level.</td><td>Build Profiles → Scene List: <code>MainMenu</code> must be ticked and at index 0.</td></tr>
-  <tr><td>Android: "Android SDK not found" or Switch Platform is grey.</td><td>Install Android Build Support with OpenJDK and SDK &amp; NDK in Unity Hub (step 16), then restart Unity.</td></tr>
-  <tr><td>The phone game is portrait.</td><td>Player Settings → only Landscape Left and Right ticked.</td></tr>
-  <tr><td>Red errors after replacing the scripts.</td><td>A file from the Final folder is missing. Copy all six folders again and click Replace for every file.</td></tr>
+  <tr><td>Pressing N does nothing.</td><td>The scene needs a DayNightButton: the HUD <code>DayNight</code> button (phase 9) or the menu one. Only one per scene: two buttons switch twice.</td></tr>
+  <tr><td>The sky turns dark, but the floor and walls do not.</td><td>The palette must be at <code>Assets/GoldRush/Resources/DayNightPalette.asset</code> (exact name). The level root needs a <b>Day Night Tint</b> (step 4). The material in the palette must be the one the Renderer uses.</td></tr>
+  <tr><td>After Play, a material stays dark blue.</td><td>Something changed the material file itself. Day Night Tint uses copies. Set the colour back by hand (Materials folder).</td></tr>
+  <tr><td>"Create → Gold Rush → Day Night Palette" is missing.</td><td><code>DayNightPalette.cs</code> must be in <code>Scripts/World</code> (phase 9). Wait for the compile.</td></tr>
+  <tr><td>Lamps shine during the day.</td><td>Add <b>Night Light</b> to every <code>LampLight</code> (step 4).</td></tr>
+  <tr><td>Touch does nothing in the Simulator.</td><td>The two areas need an Image with <b>Raycast Target</b> on and must be the first children of GameUI. The <b>Joystick</b> field of GameUI must be filled. Check Active Input Handling = Both. Click on the phone screen, not outside it.</td></tr>
+  <tr><td>The HUD buttons don't react any more.</td><td>The touch areas are drawn over them. Move <code>LookArea</code> and <code>MoveArea</code> to the top of GameUI's children.</td></tr>
+  <tr><td>The stick never appears.</td><td>Virtual Joystick → Group must be the Canvas Group on <code>Stick</code>, and Stick Base / Knob must be filled.</td></tr>
+  <tr><td>No music.</td><td>Settings → MUSIC must be ON. The Game view's <b>Mute Audio</b> must be off. GoldRushAssets → Sounds needs <code>music</code>.</td></tr>
+  <tr><td>After the import, Level 2 shows "Missing (Mono Script)".</td><td>Click <b>Gold Rush → Fix Script Links</b> (step 10). Your script files must have the real names (for example <code>GameManager.cs</code> in <code>Scripts/Gameplay</code>).</td></tr>
+  <tr><td>NEXT or a level card: "Scene 'Level2' couldn't be loaded".</td><td>Add the scene to the Scene List (step 11).</td></tr>
+  <tr><td>Red errors after copying the final scripts.</td><td>A file is missing or there are two copies (for example <code>GameManager 1.cs</code>). Delete the copy and copy the Final files again.</td></tr>
+  <tr><td>Build: "No scenes in build", or the build starts in a level.</td><td>Build Profiles → Scene List: <code>MainMenu</code> must be ticked and at index 0.</td></tr>
+  <tr><td>Android: "Android SDK not found" or Switch Platform is grey.</td><td>Install Android Build Support with OpenJDK and SDK &amp; NDK in Unity Hub (step 14), then restart Unity.</td></tr>
+  <tr><td>The phone game is portrait.</td><td>Player Settings → only Landscape Left and Landscape Right ticked.</td></tr>
 </table></div>
-
-<p><b>Checkpoint package:</b> <code>GoldRush_Phase10_Final.unitypackage</code></p>
-<div class="note">Well done! You built the whole game. Ideas to go further: add a Level 5 to <code>Levels.All</code>, a new hat in <code>Catalog.Hats</code>, or a new monster colour.</div>
+<p><b>Checkpoint package:</b> <code>GoldRush_Phase10_Final.unitypackage</code> – the complete game.</p>
+<div class="check">Well done! You built the whole game. Ideas to go further: add a Level 5 to <code>Levels.All</code> in <code>Data.cs</code>, a new hat in <code>Catalog.Hats</code>, or a new monster colour. See the <a href="exercises.html">Exercises</a>.</div>
 
 <nav class="pager" aria-label="Previous and next page">
-<a class="prev" href="phase-09.html"><small>← Previous</small>Phase 9: Menu, levels, shop, save</a>
+<a class="prev" href="phase-09.html"><small>← Previous</small>Phase 9: Gameplay UI</a>
 <a class="next" href="index.html"><small>Next →</small>Course overview</a>
 </nav>
 <footer class="site-footer">GOLD RUSH – a Unity 6 tutorial project. Characters: Quaternius (CC0). Font: Poppins (SIL Open Font License). Icons: Material Icons by Google (Apache 2.0).</footer>

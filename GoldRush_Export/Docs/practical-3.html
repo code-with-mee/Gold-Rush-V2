@@ -1,0 +1,468 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>GOLD RUSH – Practical 3: Guard Tower</title>
+<meta name="description" content="GOLD RUSH Unity tutorial, Practical 3: Guard Tower (level design).">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+<header class="site-header">
+  <a class="brand" href="index.html"><span class="brand-mark">GR</span>GOLD RUSH <small>Unity tutorial</small></a>
+  <nav class="header-links" aria-label="Quick links">
+    <a class="hide-sm" href="index.html">Course</a>
+    <a href="troubleshooting.html">Help</a>
+    <a href="glossary.html">Glossary</a>
+  </nav>
+</header>
+<div class="layout">
+<aside class="sidebar" aria-label="Site navigation">
+<h2>Start</h2><ul>
+<li><a href="index.html"><span class="num">★</span><span class="label">Overview</span></a></li>
+</ul>
+<h2>Course</h2><ul>
+<li><a href="phase-00.html"><span class="num">0</span><span class="label">Create the project</span></a></li>
+<li><a href="phase-01.html"><span class="num">1</span><span class="label">The main menu</span></a></li>
+<li><a href="phase-02.html"><span class="num">2</span><span class="label">Level select, shop and settings</span></a></li>
+<li><a href="phase-03.html"><span class="num">3</span><span class="label">Level design</span></a></li>
+<li><a href="phase-04.html"><span class="num">4</span><span class="label">Player and camera</span></a></li>
+<li><a href="phase-05.html"><span class="num">5</span><span class="label">Coins</span></a></li>
+<li><a href="phase-06.html"><span class="num">6</span><span class="label">Exit gate, win and lose</span></a></li>
+<li><a href="phase-07.html"><span class="num">7</span><span class="label">Monsters</span></a></li>
+<li><a href="phase-08.html"><span class="num">8</span><span class="label">Power-ups and effects</span></a></li>
+<li><a href="phase-09.html"><span class="num">9</span><span class="label">Gameplay UI</span></a></li>
+<li><a href="phase-10.html"><span class="num">10</span><span class="label">Polish and build</span></a></li>
+</ul>
+<h2>Practice</h2><ul>
+<li><a href="practicals.html"><span class="num">▶</span><span class="label">Practicals overview</span></a></li>
+<li><a href="practical-1.html"><span class="num">P1</span><span class="label">Coin Garden</span></a></li>
+<li><a href="practical-2.html"><span class="num">P2</span><span class="label">The Maze</span></a></li>
+<li><a href="practical-3.html" aria-current="page"><span class="num">P3</span><span class="label">Guard Tower</span></a></li>
+<li><a href="practical-4.html"><span class="num">P4</span><span class="label">Night Run</span></a></li>
+</ul>
+<h2>Help</h2><ul>
+<li><a href="troubleshooting.html"><span class="num">?</span><span class="label">Troubleshooting</span></a></li>
+<li><a href="glossary.html"><span class="num">A–Z</span><span class="label">Glossary</span></a></li>
+<li><a href="exercises.html"><span class="num">✎</span><span class="label">Exercises</span></a></li>
+</ul>
+</aside>
+<main>
+<div class="content">
+<p class="eyebrow">GOLD RUSH · Practical 3 · Hard</p>
+<h1>Guard Tower</h1>
+<p class="lead">In the middle of the yard stands a vault: four walls with a front door and a back door. Inside, the Mushroom King guards three coins around his Home. The other coins hide behind corner walls and blocks, and a Slime walks outside. Take the GHOST power-up, and you have 6 seconds to sneak in, grab the gold and get out.</p>
+<div class="meta"><span><b>Scene</b><code>Assets/GoldRush/Scenes/Level7.unity</code></span><span><b>Size</b>32 × 32 m</span><span><b>Time</b>about 2 lessons</span></div>
+<nav class="toc" aria-label="Steps on this page"><strong>Steps on this page</strong><ol>
+<li><a href="#step-1">Goal and values</a></li>
+<li><a href="#step-2">The map</a></li>
+<li><a href="#step-3">Make the scene</a></li>
+<li><a href="#step-4">Clear out</a></li>
+<li><a href="#step-5">Lamps</a></li>
+<li><a href="#step-6">Build the vault and the cover</a></li>
+<li><a href="#step-7">Coins</a></li>
+<li><a href="#step-8">Monsters</a></li>
+<li><a href="#step-9">Power-up</a></li>
+<li><a href="#step-10">Start, gate and NavMesh</a></li>
+<li><a href="#step-11">LevelDef and Build Profiles</a></li>
+<li><a href="#step-12">▶ Play test</a></li>
+<li><a href="#step-13">Make it harder</a></li>
+<li><a href="#step-14">Self-check</a></li>
+</ol></nav>
+
+
+<!-- ======================================================= 1 -->
+<h2 id="step-1"><span class="step">1</span>Goal and values</h2>
+<div class="panel"><h3>Goal</h3><p>Build a vault level with <b>9 coins</b> (3 inside the vault), <b>1 Mushroom King</b> with a <b>Home marker</b>, <b>1 Slime</b> and a <b>GHOST</b> power-up.</p><p>You learn: a closed room with two exits, a Guard and its Home, tall and low cover, coins behind cover, a power-up as a tool.</p></div>
+<p><b>What you need:</b> <a href="practical-2.html">Practical 2</a> (walls with rotation 90) and a working <code>Level1</code>.</p>
+<p><b>The LevelDef values</b> (you type them in step 11):</p>
+<div class="table-wrap"><table>
+<tr><th>Field</th><th>Value</th></tr>
+<tr><td><code>title</code></td><td><code>"Guard Tower"</code></td></tr>
+<tr><td><code>subtitle</code></td><td><code>"Sneak past the King"</code></td></tr>
+<tr><td><code>scene</code></td><td><code>"Level7"</code></td></tr>
+<tr><td><code>size</code></td><td><code>32</code> (32 × 32 m, Arena Half 16)</td></tr>
+<tr><td><code>coins</code></td><td><code>9</code></td></tr>
+<tr><td>monsters</td><td><code>patrollers = 1</code> (Slimes) · <code>guards = 1</code> (Mushroom Kings)</td></tr>
+<tr><td><code>powerUps</code></td><td><code>1</code></td></tr>
+<tr><td><code>enemySpeed</code></td><td><code>1f</code></td></tr>
+<tr><td><code>parTime</code></td><td><code>70</code> seconds (tune it in the play test)</td></tr>
+<tr><td><code>lives</code></td><td><code>2</code> (the default, you can leave it out)</td></tr>
+</table></div>
+
+
+<!-- ======================================================= 2 -->
+<h2 id="step-2"><span class="step">2</span>The map</h2>
+<p>This is your level from above. North (+Z) is up. One grid square is 2 m, like the floor tiles. The numbers on the coins are the CoinSpot numbers.</p>
+<figure class="shot">
+<svg viewBox="0 0 540 652" width="540" height="652" role="img" aria-label="Top view of Guard Tower" style="max-width:100%;height:auto;display:block" font-family="system-ui, -apple-system, Segoe UI, Arial, sans-serif">
+<rect x="0" y="0" width="540" height="652" fill="#f8fafc"/>
+<rect x="42.631578947368425" y="42.631578947368425" width="454.7368421052632" height="454.7368421052632" fill="#ffffff" stroke="#cbd5e1"/>
+<line x1="42.631578947368425" y1="42.631578947368425" x2="42.631578947368425" y2="497.3684210526316" stroke="#cbd5e1" stroke-width="0.8"/>
+<line x1="42.631578947368425" y1="497.3684210526316" x2="497.3684210526316" y2="497.3684210526316" stroke="#cbd5e1" stroke-width="0.8"/>
+<text x="42.631578947368425" y="528.6315789473684" font-size="10" fill="#64748b" text-anchor="middle">-16</text>
+<text x="19.894736842105264" y="500.8684210526316" font-size="10" fill="#64748b" text-anchor="middle">-16</text>
+<line x1="71.05263157894737" y1="42.631578947368425" x2="71.05263157894737" y2="497.3684210526316" stroke="#e2e8f0" stroke-width="0.8"/>
+<line x1="42.631578947368425" y1="468.94736842105266" x2="497.3684210526316" y2="468.94736842105266" stroke="#e2e8f0" stroke-width="0.8"/>
+<line x1="99.47368421052632" y1="42.631578947368425" x2="99.47368421052632" y2="497.3684210526316" stroke="#cbd5e1" stroke-width="0.8"/>
+<line x1="42.631578947368425" y1="440.5263157894737" x2="497.3684210526316" y2="440.5263157894737" stroke="#cbd5e1" stroke-width="0.8"/>
+<text x="99.47368421052632" y="528.6315789473684" font-size="10" fill="#64748b" text-anchor="middle">-12</text>
+<text x="19.894736842105264" y="444.0263157894737" font-size="10" fill="#64748b" text-anchor="middle">-12</text>
+<line x1="127.89473684210527" y1="42.631578947368425" x2="127.89473684210527" y2="497.3684210526316" stroke="#e2e8f0" stroke-width="0.8"/>
+<line x1="42.631578947368425" y1="412.10526315789474" x2="497.3684210526316" y2="412.10526315789474" stroke="#e2e8f0" stroke-width="0.8"/>
+<line x1="156.31578947368422" y1="42.631578947368425" x2="156.31578947368422" y2="497.3684210526316" stroke="#cbd5e1" stroke-width="0.8"/>
+<line x1="42.631578947368425" y1="383.6842105263158" x2="497.3684210526316" y2="383.6842105263158" stroke="#cbd5e1" stroke-width="0.8"/>
+<text x="156.31578947368422" y="528.6315789473684" font-size="10" fill="#64748b" text-anchor="middle">-8</text>
+<text x="19.894736842105264" y="387.1842105263158" font-size="10" fill="#64748b" text-anchor="middle">-8</text>
+<line x1="184.73684210526318" y1="42.631578947368425" x2="184.73684210526318" y2="497.3684210526316" stroke="#e2e8f0" stroke-width="0.8"/>
+<line x1="42.631578947368425" y1="355.2631578947369" x2="497.3684210526316" y2="355.2631578947369" stroke="#e2e8f0" stroke-width="0.8"/>
+<line x1="213.1578947368421" y1="42.631578947368425" x2="213.1578947368421" y2="497.3684210526316" stroke="#cbd5e1" stroke-width="0.8"/>
+<line x1="42.631578947368425" y1="326.8421052631579" x2="497.3684210526316" y2="326.8421052631579" stroke="#cbd5e1" stroke-width="0.8"/>
+<text x="213.1578947368421" y="528.6315789473684" font-size="10" fill="#64748b" text-anchor="middle">-4</text>
+<text x="19.894736842105264" y="330.3421052631579" font-size="10" fill="#64748b" text-anchor="middle">-4</text>
+<line x1="241.57894736842107" y1="42.631578947368425" x2="241.57894736842107" y2="497.3684210526316" stroke="#e2e8f0" stroke-width="0.8"/>
+<line x1="42.631578947368425" y1="298.42105263157896" x2="497.3684210526316" y2="298.42105263157896" stroke="#e2e8f0" stroke-width="0.8"/>
+<line x1="270.0" y1="42.631578947368425" x2="270.0" y2="497.3684210526316" stroke="#cbd5e1" stroke-width="0.8"/>
+<line x1="42.631578947368425" y1="270.0" x2="497.3684210526316" y2="270.0" stroke="#cbd5e1" stroke-width="0.8"/>
+<text x="270.0" y="528.6315789473684" font-size="10" fill="#64748b" text-anchor="middle">0</text>
+<text x="19.894736842105264" y="273.5" font-size="10" fill="#64748b" text-anchor="middle">0</text>
+<line x1="298.42105263157896" y1="42.631578947368425" x2="298.42105263157896" y2="497.3684210526316" stroke="#e2e8f0" stroke-width="0.8"/>
+<line x1="42.631578947368425" y1="241.57894736842107" x2="497.3684210526316" y2="241.57894736842107" stroke="#e2e8f0" stroke-width="0.8"/>
+<line x1="326.8421052631579" y1="42.631578947368425" x2="326.8421052631579" y2="497.3684210526316" stroke="#cbd5e1" stroke-width="0.8"/>
+<line x1="42.631578947368425" y1="213.1578947368421" x2="497.3684210526316" y2="213.1578947368421" stroke="#cbd5e1" stroke-width="0.8"/>
+<text x="326.8421052631579" y="528.6315789473684" font-size="10" fill="#64748b" text-anchor="middle">4</text>
+<text x="19.894736842105264" y="216.6578947368421" font-size="10" fill="#64748b" text-anchor="middle">4</text>
+<line x1="355.2631578947369" y1="42.631578947368425" x2="355.2631578947369" y2="497.3684210526316" stroke="#e2e8f0" stroke-width="0.8"/>
+<line x1="42.631578947368425" y1="184.73684210526318" x2="497.3684210526316" y2="184.73684210526318" stroke="#e2e8f0" stroke-width="0.8"/>
+<line x1="383.6842105263158" y1="42.631578947368425" x2="383.6842105263158" y2="497.3684210526316" stroke="#cbd5e1" stroke-width="0.8"/>
+<line x1="42.631578947368425" y1="156.31578947368422" x2="497.3684210526316" y2="156.31578947368422" stroke="#cbd5e1" stroke-width="0.8"/>
+<text x="383.6842105263158" y="528.6315789473684" font-size="10" fill="#64748b" text-anchor="middle">8</text>
+<text x="19.894736842105264" y="159.81578947368422" font-size="10" fill="#64748b" text-anchor="middle">8</text>
+<line x1="412.10526315789474" y1="42.631578947368425" x2="412.10526315789474" y2="497.3684210526316" stroke="#e2e8f0" stroke-width="0.8"/>
+<line x1="42.631578947368425" y1="127.89473684210527" x2="497.3684210526316" y2="127.89473684210527" stroke="#e2e8f0" stroke-width="0.8"/>
+<line x1="440.5263157894737" y1="42.631578947368425" x2="440.5263157894737" y2="497.3684210526316" stroke="#cbd5e1" stroke-width="0.8"/>
+<line x1="42.631578947368425" y1="99.47368421052632" x2="497.3684210526316" y2="99.47368421052632" stroke="#cbd5e1" stroke-width="0.8"/>
+<text x="440.5263157894737" y="528.6315789473684" font-size="10" fill="#64748b" text-anchor="middle">12</text>
+<text x="19.894736842105264" y="102.97368421052632" font-size="10" fill="#64748b" text-anchor="middle">12</text>
+<line x1="468.94736842105266" y1="42.631578947368425" x2="468.94736842105266" y2="497.3684210526316" stroke="#e2e8f0" stroke-width="0.8"/>
+<line x1="42.631578947368425" y1="71.05263157894737" x2="497.3684210526316" y2="71.05263157894737" stroke="#e2e8f0" stroke-width="0.8"/>
+<line x1="497.3684210526316" y1="42.631578947368425" x2="497.3684210526316" y2="497.3684210526316" stroke="#cbd5e1" stroke-width="0.8"/>
+<line x1="42.631578947368425" y1="42.631578947368425" x2="497.3684210526316" y2="42.631578947368425" stroke="#cbd5e1" stroke-width="0.8"/>
+<text x="497.3684210526316" y="528.6315789473684" font-size="10" fill="#64748b" text-anchor="middle">16</text>
+<text x="19.894736842105264" y="46.131578947368425" font-size="10" fill="#64748b" text-anchor="middle">16</text>
+<text x="270.0" y="540.6315789473684" font-size="10" fill="#64748b" text-anchor="middle">X (metres) →</text>
+<text x="19.894736842105264" y="25.578947368421055" font-size="10" fill="#64748b" text-anchor="middle">Z ↑</text>
+<g transform="translate(518.6842105263158,21.315789473684212)"><path d="M0 -9 L6 6 L0 2 L-6 6 Z" fill="#1e1b4b"/><text x="0" y="18" font-size="10" font-weight="700" fill="#1e1b4b" text-anchor="middle">N</text></g>
+<rect x="42.6" y="497.4" width="113.7" height="14.2" fill="#334155" stroke="#1e293b" stroke-width="1"/>
+<rect x="156.3" y="497.4" width="113.7" height="14.2" fill="#334155" stroke="#1e293b" stroke-width="1"/>
+<rect x="270.0" y="497.4" width="113.7" height="14.2" fill="#334155" stroke="#1e293b" stroke-width="1"/>
+<rect x="383.7" y="497.4" width="113.7" height="14.2" fill="#334155" stroke="#1e293b" stroke-width="1"/>
+<rect x="42.6" y="28.4" width="113.7" height="14.2" fill="#334155" stroke="#1e293b" stroke-width="1"/>
+<rect x="156.3" y="28.4" width="56.8" height="14.2" fill="#334155" stroke="#1e293b" stroke-width="1"/>
+<rect x="326.8" y="28.4" width="113.7" height="14.2" fill="#334155" stroke="#1e293b" stroke-width="1"/>
+<rect x="440.5" y="28.4" width="56.8" height="14.2" fill="#334155" stroke="#1e293b" stroke-width="1"/>
+<rect x="497.4" y="42.6" width="14.2" height="113.7" fill="#334155" stroke="#1e293b" stroke-width="1"/>
+<rect x="497.4" y="156.3" width="14.2" height="113.7" fill="#334155" stroke="#1e293b" stroke-width="1"/>
+<rect x="497.4" y="270.0" width="14.2" height="113.7" fill="#334155" stroke="#1e293b" stroke-width="1"/>
+<rect x="497.4" y="383.7" width="14.2" height="113.7" fill="#334155" stroke="#1e293b" stroke-width="1"/>
+<rect x="28.4" y="42.6" width="14.2" height="113.7" fill="#334155" stroke="#1e293b" stroke-width="1"/>
+<rect x="28.4" y="156.3" width="14.2" height="113.7" fill="#334155" stroke="#1e293b" stroke-width="1"/>
+<rect x="28.4" y="270.0" width="14.2" height="113.7" fill="#334155" stroke="#1e293b" stroke-width="1"/>
+<rect x="28.4" y="383.7" width="14.2" height="113.7" fill="#334155" stroke="#1e293b" stroke-width="1"/>
+<rect x="28.4" y="497.4" width="14.2" height="14.2" fill="#1e293b" stroke="#22d3ee" stroke-width="1.6"/>
+<rect x="28.4" y="28.4" width="14.2" height="14.2" fill="#1e293b" stroke="#22d3ee" stroke-width="1.6"/>
+<rect x="497.4" y="497.4" width="14.2" height="14.2" fill="#1e293b" stroke="#22d3ee" stroke-width="1.6"/>
+<rect x="497.4" y="28.4" width="14.2" height="14.2" fill="#1e293b" stroke="#22d3ee" stroke-width="1.6"/>
+<rect x="170.5" y="355.3" width="14.2" height="14.2" fill="#1e293b" stroke="#22d3ee" stroke-width="1.6"/>
+<rect x="355.3" y="355.3" width="14.2" height="14.2" fill="#1e293b" stroke="#22d3ee" stroke-width="1.6"/>
+<rect x="170.5" y="170.5" width="14.2" height="14.2" fill="#1e293b" stroke="#22d3ee" stroke-width="1.6"/>
+<rect x="355.3" y="170.5" width="14.2" height="14.2" fill="#1e293b" stroke="#22d3ee" stroke-width="1.6"/>
+<rect x="184.7" y="170.5" width="113.7" height="14.2" fill="#334155" stroke="#1e293b" stroke-width="1"/>
+<rect x="298.4" y="170.5" width="56.8" height="14.2" fill="#334155" stroke="#1e293b" stroke-width="1"/>
+<rect x="184.7" y="355.3" width="56.8" height="14.2" fill="#334155" stroke="#1e293b" stroke-width="1"/>
+<rect x="298.4" y="355.3" width="56.8" height="14.2" fill="#334155" stroke="#1e293b" stroke-width="1"/>
+<rect x="355.3" y="241.6" width="14.2" height="113.7" fill="#334155" stroke="#1e293b" stroke-width="1"/>
+<rect x="355.3" y="184.7" width="14.2" height="56.8" fill="#334155" stroke="#1e293b" stroke-width="1"/>
+<rect x="170.5" y="298.4" width="14.2" height="56.8" fill="#334155" stroke="#1e293b" stroke-width="1"/>
+<rect x="170.5" y="184.7" width="14.2" height="56.8" fill="#334155" stroke="#1e293b" stroke-width="1"/>
+<rect x="262.2" y="200.7" width="15.6" height="10.7" fill="#475569" stroke="#22d3ee" stroke-width="1.6"/>
+<rect x="248.7" y="248.7" width="42.6" height="42.6" fill="#cffafe" stroke="#06b6d4" stroke-width="1" stroke-dasharray="3 2" fill-opacity="0.8"/>
+<rect x="99.5" y="383.7" width="28.4" height="28.4" fill="#94a3b8" stroke="#475569" stroke-width="1"/>
+<rect x="412.1" y="383.7" width="28.4" height="28.4" fill="#94a3b8" stroke="#475569" stroke-width="1"/>
+<rect x="85.3" y="135.0" width="56.8" height="14.2" fill="#334155" stroke="#1e293b" stroke-width="1"/>
+<rect x="142.1" y="92.4" width="14.2" height="56.8" fill="#334155" stroke="#1e293b" stroke-width="1"/>
+<rect x="397.9" y="135.0" width="56.8" height="14.2" fill="#334155" stroke="#1e293b" stroke-width="1"/>
+<rect x="383.7" y="92.4" width="14.2" height="56.8" fill="#334155" stroke="#1e293b" stroke-width="1"/>
+<rect x="248.7" y="407.8" width="42.6" height="8.5" fill="#fb923c" stroke="#c2410c" stroke-width="1"/>
+<rect x="206.1" y="419.2" width="14.2" height="14.2" fill="#1e293b" stroke="#22d3ee" stroke-width="1.6"/>
+<rect x="319.7" y="419.2" width="14.2" height="14.2" fill="#1e293b" stroke="#22d3ee" stroke-width="1.6"/>
+<rect x="415.7" y="259.3" width="21.3" height="21.3" fill="#ef4444" stroke="#991b1b" stroke-width="1"/>
+<rect x="103.0" y="259.3" width="21.3" height="21.3" fill="#14b8a6" stroke="#115e59" stroke-width="1"/>
+<rect x="213.1578947368421" y="28.42105263157895" width="113.6842105263158" height="14.210526315789474" fill="#22c55e" stroke="#15803d"/>
+<text x="270.0" y="37.921052631578945" font-size="9.5" font-weight="800" fill="#fff" text-anchor="middle">EXIT</text>
+<circle cx="63.94736842105264" cy="476.0526315789474" r="9" fill="#fde047" fill-opacity="0.35"/><rect x="60.44736842105264" y="472.5526315789474" width="7" height="7" fill="#1e293b" stroke="#facc15" stroke-width="1.5"/>
+<circle cx="476.0526315789474" cy="476.0526315789474" r="9" fill="#fde047" fill-opacity="0.35"/><rect x="472.5526315789474" y="472.5526315789474" width="7" height="7" fill="#1e293b" stroke="#facc15" stroke-width="1.5"/>
+<circle cx="63.94736842105264" cy="63.94736842105264" r="9" fill="#fde047" fill-opacity="0.35"/><rect x="60.44736842105264" y="60.44736842105264" width="7" height="7" fill="#1e293b" stroke="#facc15" stroke-width="1.5"/>
+<circle cx="476.0526315789474" cy="63.94736842105264" r="9" fill="#fde047" fill-opacity="0.35"/><rect x="472.5526315789474" y="60.44736842105264" width="7" height="7" fill="#1e293b" stroke="#facc15" stroke-width="1.5"/>
+<circle cx="63.94736842105264" cy="270.0" r="9" fill="#fde047" fill-opacity="0.35"/><rect x="60.44736842105264" y="266.5" width="7" height="7" fill="#1e293b" stroke="#facc15" stroke-width="1.5"/>
+<circle cx="476.0526315789474" cy="270.0" r="9" fill="#fde047" fill-opacity="0.35"/><rect x="472.5526315789474" y="266.5" width="7" height="7" fill="#1e293b" stroke="#facc15" stroke-width="1.5"/>
+<circle cx="206.05263157894737" cy="476.0526315789474" r="9" fill="#fde047" fill-opacity="0.35"/><rect x="202.55263157894737" y="472.5526315789474" width="7" height="7" fill="#1e293b" stroke="#facc15" stroke-width="1.5"/>
+<circle cx="333.94736842105266" cy="476.0526315789474" r="9" fill="#fde047" fill-opacity="0.35"/><rect x="330.44736842105266" y="472.5526315789474" width="7" height="7" fill="#1e293b" stroke="#facc15" stroke-width="1.5"/>
+<circle cx="270.0" cy="270.0" r="63.94736842105264" fill="#b45309" fill-opacity="0.06" stroke="#b45309" stroke-width="1.4" stroke-dasharray="5 4"/>
+<path d="M265.0 270.0 h10 M270.0 265.0 v10" stroke="#b45309" stroke-width="2"/>
+<path d="M270.0 465.0526315789474 L278.0 483.0526315789474 L270.0 479.0526315789474 L262.0 483.0526315789474 Z" fill="#2563eb" stroke="#1e3a8a"/>
+<text x="270.0" y="495.0526315789474" font-size="9" font-weight="700" fill="#1e3a8a" text-anchor="middle">START</text>
+<circle cx="213.1578947368421" cy="213.1578947368421" r="6.5" fill="#fbbf24" stroke="#b45309" stroke-width="1.5"/>
+<text x="213.1578947368421" y="216.1578947368421" font-size="8" font-weight="800" fill="#78350f" text-anchor="middle">1</text>
+<circle cx="326.8421052631579" cy="213.1578947368421" r="6.5" fill="#fbbf24" stroke="#b45309" stroke-width="1.5"/>
+<text x="326.8421052631579" y="216.1578947368421" font-size="8" font-weight="800" fill="#78350f" text-anchor="middle">2</text>
+<circle cx="270.0" cy="319.7368421052632" r="6.5" fill="#fbbf24" stroke="#b45309" stroke-width="1.5"/>
+<text x="270.0" y="322.7368421052632" font-size="8" font-weight="800" fill="#78350f" text-anchor="middle">3</text>
+<circle cx="113.6842105263158" cy="99.47368421052632" r="6.5" fill="#fbbf24" stroke="#b45309" stroke-width="1.5"/>
+<text x="113.6842105263158" y="102.47368421052632" font-size="8" font-weight="800" fill="#78350f" text-anchor="middle">4</text>
+<circle cx="426.3157894736842" cy="99.47368421052632" r="6.5" fill="#fbbf24" stroke="#b45309" stroke-width="1.5"/>
+<text x="426.3157894736842" y="102.47368421052632" font-size="8" font-weight="800" fill="#78350f" text-anchor="middle">5</text>
+<circle cx="113.6842105263158" cy="433.42105263157896" r="6.5" fill="#fbbf24" stroke="#b45309" stroke-width="1.5"/>
+<text x="113.6842105263158" y="436.42105263157896" font-size="8" font-weight="800" fill="#78350f" text-anchor="middle">6</text>
+<circle cx="426.3157894736842" cy="433.42105263157896" r="6.5" fill="#fbbf24" stroke="#b45309" stroke-width="1.5"/>
+<text x="426.3157894736842" y="436.42105263157896" font-size="8" font-weight="800" fill="#78350f" text-anchor="middle">7</text>
+<circle cx="454.7368421052632" cy="227.3684210526316" r="6.5" fill="#fbbf24" stroke="#b45309" stroke-width="1.5"/>
+<text x="454.7368421052632" y="230.3684210526316" font-size="8" font-weight="800" fill="#78350f" text-anchor="middle">8</text>
+<circle cx="85.26315789473685" cy="312.63157894736844" r="6.5" fill="#fbbf24" stroke="#b45309" stroke-width="1.5"/>
+<text x="85.26315789473685" y="315.63157894736844" font-size="8" font-weight="800" fill="#78350f" text-anchor="middle">9</text>
+<rect x="136.10526315789474" y="306.63157894736844" width="12" height="12" transform="rotate(45 142.10526315789474 312.63157894736844)" fill="#8b5cf6" stroke="#1e1b4b" stroke-width="1"/>
+<text x="142.10526315789474" y="301.63157894736844" font-size="9" font-weight="800" fill="#8b5cf6" text-anchor="middle">GHOST</text>
+<circle cx="270.0" cy="241.57894736842107" r="9.5" fill="#b45309" stroke="#fff" stroke-width="1.5"/>
+<text x="270.0" y="245.57894736842107" font-size="11" font-weight="800" fill="#fff" text-anchor="middle">K</text>
+<circle cx="440.5263157894737" cy="326.8421052631579" r="9.5" fill="#16a34a" stroke="#fff" stroke-width="1.5"/>
+<text x="440.5263157894737" y="330.8421052631579" font-size="11" font-weight="800" fill="#fff" text-anchor="middle">S</text>
+<rect x="10.0" y="551.0" width="14" height="8" fill="#334155"/>
+<text x="30.0" y="559.5" font-size="10.5" fill="#374151">Wall / Pillar</text>
+<rect x="184.66666666666666" y="550.0" width="11" height="11" fill="#94a3b8" stroke="#475569"/>
+<text x="204.66666666666666" y="559.5" font-size="10.5" fill="#374151">Grey block</text>
+<rect x="359.3333333333333" y="550.0" width="5" height="11" fill="#ef4444"/><rect x="364.3333333333333" y="550.0" width="5" height="11" fill="#14b8a6"/>
+<text x="379.3333333333333" y="559.5" font-size="10.5" fill="#374151">Accent block</text>
+<rect x="10.0" y="573.0" width="14" height="5" fill="#fb923c" stroke="#c2410c"/>
+<text x="30.0" y="579.5" font-size="10.5" fill="#374151">Barrier</text>
+<rect x="184.66666666666666" y="570.0" width="12" height="12" fill="#cffafe" stroke="#06b6d4" stroke-dasharray="3 2"/>
+<text x="204.66666666666666" y="579.5" font-size="10.5" fill="#374151">Floor pad</text>
+<circle cx="365.3333333333333" cy="576.0" r="8" fill="#fde047" fill-opacity="0.35"/><rect x="361.8333333333333" y="572.5" width="7" height="7" fill="#1e293b" stroke="#facc15" stroke-width="1.5"/>
+<text x="379.3333333333333" y="579.5" font-size="10.5" fill="#374151">Lamp post</text>
+<circle cx="16.0" cy="596.0" r="6" fill="#fbbf24" stroke="#b45309" stroke-width="1.5"/>
+<text x="30.0" y="599.5" font-size="10.5" fill="#374151">Coin (CoinSpot)</text>
+<path d="M190.66666666666666 588.0 L196.66666666666666 602.0 L190.66666666666666 599.0 L184.66666666666666 602.0 Z" fill="#2563eb"/>
+<text x="204.66666666666666" y="599.5" font-size="10.5" fill="#374151">PlayerSpawn</text>
+<rect x="359.3333333333333" y="592.0" width="14" height="8" fill="#22c55e"/>
+<text x="379.3333333333333" y="599.5" font-size="10.5" fill="#374151">Exit gate</text>
+<circle cx="17.0" cy="616.0" r="7.5" fill="#16a34a"/><text x="17.0" y="619.5" font-size="9.5" font-weight="800" fill="#fff" text-anchor="middle">S</text>
+<text x="30.0" y="619.5" font-size="10.5" fill="#374151">Slime</text>
+<circle cx="191.66666666666666" cy="616.0" r="7.5" fill="#db2777"/><text x="191.66666666666666" y="619.5" font-size="9.5" font-weight="800" fill="#fff" text-anchor="middle">G</text>
+<text x="204.66666666666666" y="619.5" font-size="10.5" fill="#374151">Ghost</text>
+<circle cx="366.3333333333333" cy="616.0" r="7.5" fill="#b45309"/><text x="366.3333333333333" y="619.5" font-size="9.5" font-weight="800" fill="#fff" text-anchor="middle">K</text>
+<text x="379.3333333333333" y="619.5" font-size="10.5" fill="#374151">Mushroom King + Home</text>
+<rect x="12.0" y="631.0" width="9" height="9" transform="rotate(45 16.5 635.5)" fill="#8b5cf6"/>
+<text x="30.0" y="639.5" font-size="10.5" fill="#374151">Power-up</text>
+</svg>
+<figcaption>Guard Tower: the vault in the middle, the King's 4.5 m circle (dashed), coins behind cover.</figcaption></figure>
+<p>The dashed circle is where the King walks. The vault walls hide you from him until you stand in a door. The coins outside are each <b>behind</b> something, seen from the vault.</p>
+
+
+<!-- ======================================================= 3 -->
+<h2 id="step-3"><span class="step">3</span>Make the scene</h2>
+<ol>
+<li>Open <code>Scenes/Level1</code>. <b>File → Save As…</b> → <code>Assets/GoldRush/Scenes</code> → name <code>Level7</code> → <b>Save</b>.</li>
+<li>Check the title bar: it says <b>Level7</b>.</li>
+<li>Rename the root <code>Level 1 - Training Yard</code> to <code>Level 7 - Guard Tower</code>.</li>
+<li>In its <b>Level Scene</b> component, set <b>Arena Half</b> = <code>16</code>.</li>
+<li>Save.</li>
+</ol>
+<figure class="shot todo" data-shot="practical-3/step-03" data-window="inspector" data-select="Level 7 - Guard Tower"><div class="ph">Inspector of Level 7 - Guard Tower: Level Scene with Arena Half 16</div><figcaption>Arena Half is 16. The yellow square matches the walls.</figcaption></figure>
+
+
+<!-- ======================================================= 4 -->
+<h2 id="step-4"><span class="step">4</span>Clear out</h2>
+<ol>
+<li>Delete all 17 children of <code>Static/Obstacles</code>.</li>
+<li>Delete <code>Gameplay/PowerUps/PowerUp Magnet</code> and <code>Gameplay/Monsters/Slime 2</code>.</li>
+<li>Keep <code>Slime 1</code> and the 6 CoinSpots: you move them and add 3 more.</li>
+</ol>
+<figure class="shot todo" data-shot="practical-3/step-04" data-window="hierarchy" data-select="Level 7 - Guard Tower"><div class="ph">Hierarchy: Level 7 - Guard Tower with empty Obstacles, Slime 1, 6 CoinSpots, empty PowerUps</div><figcaption>A clean start.</figcaption></figure>
+
+
+<!-- ======================================================= 5 -->
+<h2 id="step-5"><span class="step">5</span>Lamps</h2>
+<p>The 8 lamps stay where they are in Level1. They are not in the way of the new pieces.</p>
+<p>Check one thing: lamp 6 at <code>14.5, 0, 0</code> and the red landmark at <code>11, 0, 0</code> leave a passage of about 2 m. That is OK for the hero.</p>
+
+
+<!-- ======================================================= 6 -->
+<h2 id="step-6"><span class="step">6</span>Build the vault and the cover</h2>
+<ol>
+<li>Right-click <code>Static</code> → <b>Create Empty</b>. Name it <code>Vault</code>. Position <code>0, 0, 0</code>.</li>
+<li>Build the vault first (pieces 1–13): pillars, then the walls between them. Then the outside cover (15–25).</li>
+</ol>
+<p>The vault is 13 × 13 m. Its walls leave two doors, each <b>4 m</b> wide: one in the south (X −2…2) and one in the west (Z −2…2). The King is big (radius 0.75 m), so doors must be wide.</p>
+<p>Drag each prefab onto its parent in the Hierarchy and type the values. Scale stays <code>1, 1, 1</code>.</p>
+<div class="table-wrap"><table>
+<tr><th>#</th><th>Prefab</th><th>Parent</th><th>Position</th><th>Rot Y</th><th>Note</th></tr>
+<tr><td>1</td><td><code>Pillar</code></td><td><code>Static/Vault</code></td><td><code>-6.5, 0, -6.5</code></td><td>0</td><td>Vault corner</td></tr>
+<tr><td>2</td><td><code>Pillar</code></td><td><code>Static/Vault</code></td><td><code>6.5, 0, -6.5</code></td><td>0</td><td>Vault corner</td></tr>
+<tr><td>3</td><td><code>Pillar</code></td><td><code>Static/Vault</code></td><td><code>-6.5, 0, 6.5</code></td><td>0</td><td>Vault corner</td></tr>
+<tr><td>4</td><td><code>Pillar</code></td><td><code>Static/Vault</code></td><td><code>6.5, 0, 6.5</code></td><td>0</td><td>Vault corner</td></tr>
+<tr><td>5</td><td><code>Wall_8m</code></td><td><code>Static/Vault</code></td><td><code>-2, 0, 6.5</code></td><td>0</td><td>North side</td></tr>
+<tr><td>6</td><td><code>Wall_4m</code></td><td><code>Static/Vault</code></td><td><code>4, 0, 6.5</code></td><td>0</td><td>North side</td></tr>
+<tr><td>7</td><td><code>Wall_4m</code></td><td><code>Static/Vault</code></td><td><code>-4, 0, -6.5</code></td><td>0</td><td>South side, left of the door</td></tr>
+<tr><td>8</td><td><code>Wall_4m</code></td><td><code>Static/Vault</code></td><td><code>4, 0, -6.5</code></td><td>0</td><td>South side, right of the door</td></tr>
+<tr><td>9</td><td><code>Wall_8m</code></td><td><code>Static/Vault</code></td><td><code>6.5, 0, -2</code></td><td>90</td><td>East side</td></tr>
+<tr><td>10</td><td><code>Wall_4m</code></td><td><code>Static/Vault</code></td><td><code>6.5, 0, 4</code></td><td>90</td><td>East side</td></tr>
+<tr><td>11</td><td><code>Wall_4m</code></td><td><code>Static/Vault</code></td><td><code>-6.5, 0, -4</code></td><td>90</td><td>West side, below the back door</td></tr>
+<tr><td>12</td><td><code>Wall_4m</code></td><td><code>Static/Vault</code></td><td><code>-6.5, 0, 4</code></td><td>90</td><td>West side, above the back door</td></tr>
+<tr><td>13</td><td><code>Terminal</code></td><td><code>Static/Vault</code></td><td><code>0, 0, 4.5</code></td><td>0</td><td>The King's computer, screen faces the door</td></tr>
+<tr><td>14</td><td><code>FloorPad_Cyan</code></td><td><code>Static/Floor</code></td><td><code>0, 0, 0</code></td><td>0</td><td>The King's pad (no collider)</td></tr>
+<tr><td>15</td><td><code>Block_2x2x2</code></td><td><code>Static/Obstacles</code></td><td><code>-11, 0, -9</code></td><td>0</td><td>Tall cover</td></tr>
+<tr><td>16</td><td><code>Block_2x2x2</code></td><td><code>Static/Obstacles</code></td><td><code>11, 0, -9</code></td><td>0</td><td>Tall cover</td></tr>
+<tr><td>17</td><td><code>Wall_4m</code></td><td><code>Static/Obstacles</code></td><td><code>-11, 0, 9</code></td><td>0</td><td>NW corner wall</td></tr>
+<tr><td>18</td><td><code>Wall_4m</code></td><td><code>Static/Obstacles</code></td><td><code>-8.5, 0, 10.5</code></td><td>90</td><td>NW corner wall</td></tr>
+<tr><td>19</td><td><code>Wall_4m</code></td><td><code>Static/Obstacles</code></td><td><code>11, 0, 9</code></td><td>0</td><td>NE corner wall</td></tr>
+<tr><td>20</td><td><code>Wall_4m</code></td><td><code>Static/Obstacles</code></td><td><code>8.5, 0, 10.5</code></td><td>90</td><td>NE corner wall</td></tr>
+<tr><td>21</td><td><code>Barrier_Orange</code></td><td><code>Static/Obstacles</code></td><td><code>0, 0, -10</code></td><td>0</td><td>Low: does not hide you!</td></tr>
+<tr><td>22</td><td><code>Pillar</code></td><td><code>Static/Obstacles</code></td><td><code>-4, 0, -11</code></td><td>0</td><td></td></tr>
+<tr><td>23</td><td><code>Pillar</code></td><td><code>Static/Obstacles</code></td><td><code>4, 0, -11</code></td><td>0</td><td></td></tr>
+<tr><td>24</td><td><code>AccentBlock_Red</code></td><td><code>Static/Obstacles</code></td><td><code>11, 0, 0</code></td><td>0</td><td>Landmark east</td></tr>
+<tr><td>25</td><td><code>AccentBlock_Teal</code></td><td><code>Static/Obstacles</code></td><td><code>-11, 0, 0</code></td><td>0</td><td>Landmark west</td></tr>
+</table></div>
+<div class="note">Two doors are important. With one door the vault is a trap: the King stands in the door and you can not get out. That is not fair.</div>
+<div class="tip"><b>Tall cover</b> (walls, Block_2x2x2, pillars) hides you. The orange barrier in front of the vault is <b>low</b>: the King sees over it.</div>
+<figure class="shot todo" data-shot="practical-3/step-06" data-window="scene" data-select="Level 7 - Guard Tower/Static/Obstacles"><div class="ph">Scene view from the top: Guard Tower with all walls and obstacles (same as the map)</div><figcaption>Compare with the map in step 2.</figcaption></figure>
+
+
+<!-- ======================================================= 7 -->
+<h2 id="step-7"><span class="step">7</span>Coins</h2>
+<p>You need <b>9</b> CoinSpots, each with a <code>Coin</code> inside (local position <code>0, 1, 0</code>).</p>
+<ol>
+<li>Open <code>Gameplay/Coins</code>. Keep the CoinSpots you have and move them to the new positions.</li>
+<li>Need more? Select a CoinSpot (with its Coin) and press <b>Ctrl+D</b> / <b>Cmd+D</b>. Rename it with the next number.</li>
+<li>Delete CoinSpots you do not need.</li>
+</ol>
+<div class="table-wrap"><table>
+<tr><th>Marker</th><th>Position</th><th>Why here</th></tr>
+<tr><td><code>CoinSpot 1</code></td><td><code>-4, 0, 4</code></td><td>Inside the vault, near the King</td></tr>
+<tr><td><code>CoinSpot 2</code></td><td><code>4, 0, 4</code></td><td>Inside the vault, near the King</td></tr>
+<tr><td><code>CoinSpot 3</code></td><td><code>0, 0, -3.5</code></td><td>Inside, just behind the front door</td></tr>
+<tr><td><code>CoinSpot 4</code></td><td><code>-11, 0, 12</code></td><td>Behind the NW corner wall</td></tr>
+<tr><td><code>CoinSpot 5</code></td><td><code>11, 0, 12</code></td><td>Behind the NE corner wall</td></tr>
+<tr><td><code>CoinSpot 6</code></td><td><code>-11, 0, -11.5</code></td><td>Behind the west block</td></tr>
+<tr><td><code>CoinSpot 7</code></td><td><code>11, 0, -11.5</code></td><td>Behind the east block</td></tr>
+<tr><td><code>CoinSpot 8</code></td><td><code>13, 0, 3</code></td><td>Behind the red landmark</td></tr>
+<tr><td><code>CoinSpot 9</code></td><td><code>-13, 0, -3</code></td><td>Behind the teal landmark</td></tr>
+</table></div>
+<figure class="shot todo" data-shot="practical-3/step-07" data-window="hierarchy" data-select="Level 7 - Guard Tower/Gameplay/Coins"><div class="ph">Hierarchy: Gameplay › Coins with CoinSpot 1 … 9, each with a Coin child</div><figcaption>9 CoinSpots, one Coin in each.</figcaption></figure>
+
+
+<!-- ======================================================= 8 -->
+<h2 id="step-8"><span class="step">8</span>Monsters</h2>
+<p>Monsters go into <code>Gameplay/Monsters</code>. Drag the prefab from <code>Prefabs/Gameplay</code> onto the group, type the position, and rename it. Delete the old Slimes you do not need.</p>
+<div class="table-wrap"><table>
+<tr><th>Name</th><th>Prefab</th><th>Position</th><th>Note</th></tr>
+<tr><td><code>Mushroom King 1</code></td><td><code>Monster_MushroomKing</code></td><td><code>0, 0, 2</code></td><td>Inside the vault. Home = <code>KingHome</code> (see below).</td></tr>
+<tr><td><code>Slime 1</code></td><td><code>Monster_Slime</code></td><td><code>12, 0, -4</code></td><td>Outside, east. Delete <code>Slime 2</code> from Level1.</td></tr>
+</table></div>
+<p><b>Give the King a Home.</b> A Guard stays within 4.5 m of its Home and gives up the chase 13 m from it.</p>
+<ol>
+<li>Right-click <code>Gameplay/Monsters</code> → <b>Create Empty</b>. Name it <code>KingHome</code>. Position <code>0, 0, 0</code> (the centre of the vault).</li>
+<li>Select <code>Mushroom King 1</code>. In <b>Monster Spawn</b>, drag <code>KingHome</code> from the Hierarchy into the <b>Home</b> field.</li>
+<li>In the Scene view you see a dashed circle (4.5 m) around KingHome and a line to the King. The circle must stay inside the vault.</li>
+</ol>
+<figure class="shot todo" data-shot="practical-3/step-08-b" data-window="inspector" data-select="Level 7 - Guard Tower/Gameplay/Monsters/Mushroom King 1"><div class="ph">Inspector of Mushroom King 1: Monster Spawn (Type Guard, Home = KingHome), Nav Mesh Agent (Radius 0.75, Height 2.6), Enemy AI</div><figcaption>Home is KingHome.</figcaption></figure>
+<figure class="shot todo" data-shot="practical-3/step-08" data-window="scene" data-select="Level 7 - Guard Tower/Gameplay/Monsters"><div class="ph">Scene view from the top: the monster boxes (MonsterSpawn gizmos) on the blue NavMesh</div><figcaption>Every monster stands on the blue NavMesh.</figcaption></figure>
+
+
+<!-- ======================================================= 9 -->
+<h2 id="step-9"><span class="step">9</span>Power-up</h2>
+<p>A power-up is a <code>PowerUpSpot</code> marker with the matching prefab inside (like in <a href="phase-08.html">Phase 8</a>).</p>
+<ol>
+<li>Right-click <code>Gameplay/PowerUps</code> → <b>Create Empty</b>. Name it <code>PowerUp Ghost</code>. Position <code>-9, 0, -3</code>.</li>
+<li><b>Add Component → Power Up Spot</b>. <b>Type</b> = <b>Ghost</b>.</li>
+<li>Drag <code>PowerUp_Ghost</code> onto the marker. Set the child's Position to <code>0, 0, 0</code>.</li>
+</ol>
+<p>The GHOST orb is 4 m from the back door. Plan: grab it, run in through the back door, take coins 1–3, and leave through the front door. 6 seconds is short: try it!</p>
+<figure class="shot todo" data-shot="practical-3/step-09" data-window="inspector" data-select="Level 7 - Guard Tower/Gameplay/PowerUps/PowerUp Ghost"><div class="ph">Inspector of PowerUp Ghost: Position and Power Up Spot (Type Ghost)</div><figcaption>The marker type and the prefab inside are the same.</figcaption></figure>
+
+
+<!-- ======================================================= 10 -->
+<h2 id="step-10"><span class="step">10</span>Start, gate and NavMesh</h2>
+<ol>
+<li>Select <code>Gameplay/PlayerSpawn</code>. Position <code>0, 0, -14.5</code>, Rotation <code>0, 0, 0</code> (looks north, to the gate).</li>
+<li>Select <code>Static/ExitGate</code>. Position <code>0, 0, 16</code>, Rotation <code>0, 0, 0</code>.</li>
+<li>Select <code>Static/Walls/GateBlocker</code>. Position <code>0, 2.5, 17.25</code>. Box Collider Size <code>8, 5, 1</code>.</li>
+<li>Select <code>Static</code>. In <b>NavMesh Surface</b>, click <b>Bake</b>. Look at the blue area: it must reach every coin and the gate.</li>
+<li>Save.</li>
+</ol>
+<p>From the start you look straight at the vault's front door. The start moves to Z <code>-14.5</code>. The King's circle ends 10 m from it, and he sees only 9.5 m, so he can not see you at the start. Do not move the start closer.</p>
+<figure class="shot todo" data-shot="practical-3/step-10" data-window="scene" data-select="Level 7 - Guard Tower/Static"><div class="ph">Scene view from the top: the blue NavMesh with holes around the walls and blocks, reaching every coin and the gate</div><figcaption>Blue everywhere the hero must go.</figcaption></figure>
+
+
+<!-- ======================================================= 11 -->
+<h2 id="step-11"><span class="step">11</span>LevelDef and Build Profiles</h2>
+<ol>
+<li>Open <code>Assets/GoldRush/Scripts/Core/Data.cs</code>. Find <code>Levels.All</code>.</li>
+<li>Add this line at the end of the list (after the last level you have):</li>
+</ol>
+<pre class="long"><code>new LevelDef { title = &quot;Guard Tower&quot;, subtitle = &quot;Sneak past the King&quot;, seed = 707, scene = &quot;Level7&quot;, size = 32, coins = 9, patrollers = 1, guards = 1, powerUps = 1, enemySpeed = 1f, parTime = 70 },</code></pre>
+<ol start="3">
+<li>Save the file. Wait for Unity to compile. No red errors.</li>
+<li><b>File → Build Profiles → Scene List</b>: drag in <code>Scenes/Level7</code>. Check it is ticked.</li>
+</ol>
+<p>Not sure? Read <a href="practicals.html#step-6">Practicals, step 6 and 7</a>.</p>
+<figure class="shot todo" data-shot="practical-3/step-11" data-window="buildprofiles" data-select="Assets/GoldRush/Scenes/Level7.unity"><div class="ph">Build Profiles → Scene List with Level7 ticked at the end</div><figcaption>Level7 is in the build.</figcaption></figure>
+
+
+<!-- ======================================================= 12 -->
+<h2 id="step-12"><span class="step">12</span>▶ Play test</h2>
+<ol>
+<li>Open <code>Level7</code> and press <b>▶ Play</b>.</li>
+<li>Play the level to the end. Then play it 2 more times and write down your times.</li>
+<li>Open <code>MainMenu</code> → Play → <b>LEVELS</b>. Find the <b>GUARD TOWER</b> card.</li>
+</ol>
+<div class="check">
+<p><b>▶ Play test: check these</b></p>
+<ul>
+<li>The King walks around inside the vault and does not leave it, except to chase you.</li><li>Both doors let you (and the King) through.</li><li>When the King chases you and you run 13 m from KingHome, he turns back.</li><li>With GHOST active, the King walks past you.</li><li>Every coin outside is hidden from the vault doors.</li>
+<li>The intro says <b>GUARD TOWER</b> and "Collect all 9 gold".</li>
+<li>The gate opens after the last coin, and you win when you run through it.</li>
+<li>No red errors in the Console.</li>
+</ul>
+</div>
+<p><b>The card:</b> it shows <b>GUARD TOWER</b>, "Sneak past the King" and "9 GOLD TO FIND". It is locked until you win the level before it. With the updated menu the cards are in two rows; with the old menu it hides under DAILY RUSH (see <a href="practicals.html#step-8">Practicals, step 8</a>).</p>
+<p><b>Tune the par time:</b> best time + 25 %, rounded to 5 s. Change <code>parTime</code> in <code>Data.cs</code>.</p>
+<figure class="shot todo" data-shot="practical-3/step-12" data-window="game" data-select="Player"><div class="ph">Game view: the vault front door with the Mushroom King inside, the GHOST orb glowing on the left</div><figcaption>Your level in Play mode.</figcaption></figure>
+
+
+<!-- ======================================================= 13 -->
+<h2 id="step-13"><span class="step">13</span>Make it harder</h2>
+<div class="tip"><b>Make it harder</b> (pick one or two, test after each):<ul><li>Add a second King: <code>Monster_MushroomKing</code> at <code>11, 0, 12</code> with its own Home <code>KingHome 2</code> at <code>11, 0, 12</code> (it guards coin 5).</li><li>Close the back door with a <code>Wall_4m</code> rot 90 at <code>-6.5, 0, 0</code>, and move the GHOST orb next to the front door.</li><li>Change the Slime to a <code>Monster_Ghost</code>.</li><li>Set <code>enemySpeed = 1.1f</code> and <code>lives = 1</code>: one hit and you lose.</li></ul></div>
+
+
+<!-- ======================================================= 14 -->
+<h2 id="step-14"><span class="step">14</span>Self-check</h2>
+<p>Be honest. Better: let a friend play and fill it in for you.</p>
+<div class="table-wrap"><table>
+<tr><th>Check</th><th>1 point: OK</th><th>2 points: good</th><th>3 points: great</th></tr>
+<tr><td><b>Works</b></td><td>The level loads from the menu card. The gate opens after the last coin.</td><td>All coins can be reached. No red errors in the Console. The King has a Home and stays in his circle.</td><td>The par time and the coin number in <code>Data.cs</code> match the level.</td></tr>
+<tr><td><b>Fun</b></td><td>There is something to do on the way to every coin.</td><td>The vault is exciting: you plan when to go in.</td><td>You want to play it again to beat the par time.</td></tr>
+<tr><td><b>Fair</b></td><td>No monster can see you at the start.</td><td>There are two ways out of the vault. The GHOST power-up is easy to find.</td><td>A friend can win it on the 2nd or 3rd try, without your help.</td></tr>
+<tr><td><b>Looks good</b></td><td>Nothing floats or sinks into the floor.</td><td>The vault is a clear landmark. Nothing overlaps or has gaps.</td><td>The level has a clear theme. Lamps and colours point the way.</td></tr>
+</table></div>
+<p>Give yourself 1–3 points per row. <b>8 points or more</b>: well done. Less? Fix the lowest row first, then test again.</p>
+
+<nav class="pager" aria-label="Previous and next page">
+<a class="prev" href="practical-2.html"><small>← Previous</small>Practical 2: The Maze</a>
+<a class="next" href="practical-4.html"><small>Next →</small>Practical 4: Night Run</a>
+</nav>
+
+<footer class="site-footer">GOLD RUSH – a Unity 6 tutorial project. Characters: Quaternius (CC0). Font: Poppins (SIL Open Font License). Icons: Material Icons by Google (Apache 2.0).</footer>
+</div>
+</main>
+</div>
+</body>
+</html>

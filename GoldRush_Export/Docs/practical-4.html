@@ -1,0 +1,521 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>GOLD RUSH – Practical 4: Night Run</title>
+<meta name="description" content="GOLD RUSH Unity tutorial, Practical 4: Night Run (level design).">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+<header class="site-header">
+  <a class="brand" href="index.html"><span class="brand-mark">GR</span>GOLD RUSH <small>Unity tutorial</small></a>
+  <nav class="header-links" aria-label="Quick links">
+    <a class="hide-sm" href="index.html">Course</a>
+    <a href="troubleshooting.html">Help</a>
+    <a href="glossary.html">Glossary</a>
+  </nav>
+</header>
+<div class="layout">
+<aside class="sidebar" aria-label="Site navigation">
+<h2>Start</h2><ul>
+<li><a href="index.html"><span class="num">★</span><span class="label">Overview</span></a></li>
+</ul>
+<h2>Course</h2><ul>
+<li><a href="phase-00.html"><span class="num">0</span><span class="label">Create the project</span></a></li>
+<li><a href="phase-01.html"><span class="num">1</span><span class="label">The main menu</span></a></li>
+<li><a href="phase-02.html"><span class="num">2</span><span class="label">Level select, shop and settings</span></a></li>
+<li><a href="phase-03.html"><span class="num">3</span><span class="label">Level design</span></a></li>
+<li><a href="phase-04.html"><span class="num">4</span><span class="label">Player and camera</span></a></li>
+<li><a href="phase-05.html"><span class="num">5</span><span class="label">Coins</span></a></li>
+<li><a href="phase-06.html"><span class="num">6</span><span class="label">Exit gate, win and lose</span></a></li>
+<li><a href="phase-07.html"><span class="num">7</span><span class="label">Monsters</span></a></li>
+<li><a href="phase-08.html"><span class="num">8</span><span class="label">Power-ups and effects</span></a></li>
+<li><a href="phase-09.html"><span class="num">9</span><span class="label">Gameplay UI</span></a></li>
+<li><a href="phase-10.html"><span class="num">10</span><span class="label">Polish and build</span></a></li>
+</ul>
+<h2>Practice</h2><ul>
+<li><a href="practicals.html"><span class="num">▶</span><span class="label">Practicals overview</span></a></li>
+<li><a href="practical-1.html"><span class="num">P1</span><span class="label">Coin Garden</span></a></li>
+<li><a href="practical-2.html"><span class="num">P2</span><span class="label">The Maze</span></a></li>
+<li><a href="practical-3.html"><span class="num">P3</span><span class="label">Guard Tower</span></a></li>
+<li><a href="practical-4.html" aria-current="page"><span class="num">P4</span><span class="label">Night Run</span></a></li>
+</ul>
+<h2>Help</h2><ul>
+<li><a href="troubleshooting.html"><span class="num">?</span><span class="label">Troubleshooting</span></a></li>
+<li><a href="glossary.html"><span class="num">A–Z</span><span class="label">Glossary</span></a></li>
+<li><a href="exercises.html"><span class="num">✎</span><span class="label">Exercises</span></a></li>
+</ul>
+</aside>
+<main>
+<div class="content">
+<p class="eyebrow">GOLD RUSH · Practical 4 · Free design</p>
+<h1>Night Run</h1>
+<p class="lead">The final test. A bigger 36 × 36 m arena at night, with four corner buildings, a plaza with the Mushroom King, two Slimes and a Ghost near the exit. The MAGNET power-up lets you pull the King's coins from a safe distance. Lamps light the way in the dark. First you build the base level from the map, then you change it with your own idea.</p>
+<div class="meta"><span><b>Scene</b><code>Assets/GoldRush/Scenes/Level8.unity</code></span><span><b>Size</b>36 × 36 m</span><span><b>Time</b>2 lessons or more</span></div>
+<nav class="toc" aria-label="Steps on this page"><strong>Steps on this page</strong><ol>
+<li><a href="#step-1">Goal and values</a></li>
+<li><a href="#step-2">The map</a></li>
+<li><a href="#step-3">Make the scene</a></li>
+<li><a href="#step-4">Clear out</a></li>
+<li><a href="#step-5">Make the arena bigger</a></li>
+<li><a href="#step-6">Lamps</a></li>
+<li><a href="#step-7">Buildings and plaza</a></li>
+<li><a href="#step-8">Coins</a></li>
+<li><a href="#step-9">Monsters</a></li>
+<li><a href="#step-10">Power-up</a></li>
+<li><a href="#step-11">Start, gate and NavMesh</a></li>
+<li><a href="#step-12">LevelDef and Build Profiles</a></li>
+<li><a href="#step-13">▶ Play test</a></li>
+<li><a href="#step-14">Make it harder</a></li>
+<li><a href="#step-15">Your own idea</a></li>
+<li><a href="#step-16">Self-check</a></li>
+</ol></nav>
+
+
+<!-- ======================================================= 1 -->
+<h2 id="step-1"><span class="step">1</span>Goal and values</h2>
+<div class="panel"><h3>Goal</h3><p>Build a <b>36 × 36 m</b> night level with <b>12 coins</b>, <b>all 3 monster types</b> (2 Slimes, 1 Ghost, 1 Mushroom King with Home), a <b>MAGNET</b> and <b>8 lamps</b>. Then change at least 3 things to make it your own design.</p><p>You learn: a bigger arena, an off-centre gate, lights at night, combining monsters, using a power-up as a tool, designing on your own.</p></div>
+<p><b>What you need:</b> <a href="practical-3.html">Practical 3</a> (Guard and Home) and Phase 10 (the lamps have a <code>NightLight</code>, the HUD has the moon button).</p>
+<p><b>The LevelDef values</b> (you type them in step 12):</p>
+<div class="table-wrap"><table>
+<tr><th>Field</th><th>Value</th></tr>
+<tr><td><code>title</code></td><td><code>"Night Run"</code></td></tr>
+<tr><td><code>subtitle</code></td><td><code>"Gold under the moon"</code></td></tr>
+<tr><td><code>scene</code></td><td><code>"Level8"</code></td></tr>
+<tr><td><code>size</code></td><td><code>36</code> (36 × 36 m, Arena Half 18)</td></tr>
+<tr><td><code>coins</code></td><td><code>12</code></td></tr>
+<tr><td>monsters</td><td><code>patrollers = 2</code> (Slimes) · <code>chasers = 1</code> (Ghosts) · <code>guards = 1</code> (Mushroom Kings)</td></tr>
+<tr><td><code>powerUps</code></td><td><code>1</code></td></tr>
+<tr><td><code>enemySpeed</code></td><td><code>1.08f</code></td></tr>
+<tr><td><code>parTime</code></td><td><code>100</code> seconds (tune it in the play test)</td></tr>
+<tr><td><code>lives</code></td><td><code>2</code> (the default, you can leave it out)</td></tr>
+<tr><td><code>night</code></td><td><code>true</code></td></tr>
+</table></div>
+
+
+<!-- ======================================================= 2 -->
+<h2 id="step-2"><span class="step">2</span>The map</h2>
+<p>This is your level from above. North (+Z) is up. One grid square is 2 m, like the floor tiles. The numbers on the coins are the CoinSpot numbers.</p>
+<figure class="shot">
+<svg viewBox="0 0 540 652" width="540" height="652" role="img" aria-label="Top view of Night Run" style="max-width:100%;height:auto;display:block" font-family="system-ui, -apple-system, Segoe UI, Arial, sans-serif">
+<rect x="0" y="0" width="540" height="652" fill="#f8fafc"/>
+<rect x="38.57142857142857" y="38.57142857142857" width="462.8571428571429" height="462.8571428571429" fill="#ffffff" stroke="#cbd5e1"/>
+<line x1="38.57142857142857" y1="38.57142857142857" x2="38.57142857142857" y2="501.42857142857144" stroke="#e2e8f0" stroke-width="0.8"/>
+<line x1="38.57142857142857" y1="501.42857142857144" x2="501.42857142857144" y2="501.42857142857144" stroke="#e2e8f0" stroke-width="0.8"/>
+<line x1="64.28571428571429" y1="38.57142857142857" x2="64.28571428571429" y2="501.42857142857144" stroke="#cbd5e1" stroke-width="0.8"/>
+<line x1="38.57142857142857" y1="475.7142857142857" x2="501.42857142857144" y2="475.7142857142857" stroke="#cbd5e1" stroke-width="0.8"/>
+<text x="64.28571428571429" y="529.7142857142858" font-size="10" fill="#64748b" text-anchor="middle">-16</text>
+<text x="17.999999999999996" y="479.2142857142857" font-size="10" fill="#64748b" text-anchor="middle">-16</text>
+<line x1="90.0" y1="38.57142857142857" x2="90.0" y2="501.42857142857144" stroke="#e2e8f0" stroke-width="0.8"/>
+<line x1="38.57142857142857" y1="450.0" x2="501.42857142857144" y2="450.0" stroke="#e2e8f0" stroke-width="0.8"/>
+<line x1="115.71428571428572" y1="38.57142857142857" x2="115.71428571428572" y2="501.42857142857144" stroke="#cbd5e1" stroke-width="0.8"/>
+<line x1="38.57142857142857" y1="424.2857142857143" x2="501.42857142857144" y2="424.2857142857143" stroke="#cbd5e1" stroke-width="0.8"/>
+<text x="115.71428571428572" y="529.7142857142858" font-size="10" fill="#64748b" text-anchor="middle">-12</text>
+<text x="17.999999999999996" y="427.7857142857143" font-size="10" fill="#64748b" text-anchor="middle">-12</text>
+<line x1="141.42857142857144" y1="38.57142857142857" x2="141.42857142857144" y2="501.42857142857144" stroke="#e2e8f0" stroke-width="0.8"/>
+<line x1="38.57142857142857" y1="398.5714285714286" x2="501.42857142857144" y2="398.5714285714286" stroke="#e2e8f0" stroke-width="0.8"/>
+<line x1="167.14285714285714" y1="38.57142857142857" x2="167.14285714285714" y2="501.42857142857144" stroke="#cbd5e1" stroke-width="0.8"/>
+<line x1="38.57142857142857" y1="372.8571428571429" x2="501.42857142857144" y2="372.8571428571429" stroke="#cbd5e1" stroke-width="0.8"/>
+<text x="167.14285714285714" y="529.7142857142858" font-size="10" fill="#64748b" text-anchor="middle">-8</text>
+<text x="17.999999999999996" y="376.3571428571429" font-size="10" fill="#64748b" text-anchor="middle">-8</text>
+<line x1="192.85714285714286" y1="38.57142857142857" x2="192.85714285714286" y2="501.42857142857144" stroke="#e2e8f0" stroke-width="0.8"/>
+<line x1="38.57142857142857" y1="347.14285714285717" x2="501.42857142857144" y2="347.14285714285717" stroke="#e2e8f0" stroke-width="0.8"/>
+<line x1="218.57142857142858" y1="38.57142857142857" x2="218.57142857142858" y2="501.42857142857144" stroke="#cbd5e1" stroke-width="0.8"/>
+<line x1="38.57142857142857" y1="321.42857142857144" x2="501.42857142857144" y2="321.42857142857144" stroke="#cbd5e1" stroke-width="0.8"/>
+<text x="218.57142857142858" y="529.7142857142858" font-size="10" fill="#64748b" text-anchor="middle">-4</text>
+<text x="17.999999999999996" y="324.92857142857144" font-size="10" fill="#64748b" text-anchor="middle">-4</text>
+<line x1="244.2857142857143" y1="38.57142857142857" x2="244.2857142857143" y2="501.42857142857144" stroke="#e2e8f0" stroke-width="0.8"/>
+<line x1="38.57142857142857" y1="295.7142857142857" x2="501.42857142857144" y2="295.7142857142857" stroke="#e2e8f0" stroke-width="0.8"/>
+<line x1="270.0" y1="38.57142857142857" x2="270.0" y2="501.42857142857144" stroke="#cbd5e1" stroke-width="0.8"/>
+<line x1="38.57142857142857" y1="270.0" x2="501.42857142857144" y2="270.0" stroke="#cbd5e1" stroke-width="0.8"/>
+<text x="270.0" y="529.7142857142858" font-size="10" fill="#64748b" text-anchor="middle">0</text>
+<text x="17.999999999999996" y="273.5" font-size="10" fill="#64748b" text-anchor="middle">0</text>
+<line x1="295.7142857142857" y1="38.57142857142857" x2="295.7142857142857" y2="501.42857142857144" stroke="#e2e8f0" stroke-width="0.8"/>
+<line x1="38.57142857142857" y1="244.2857142857143" x2="501.42857142857144" y2="244.2857142857143" stroke="#e2e8f0" stroke-width="0.8"/>
+<line x1="321.42857142857144" y1="38.57142857142857" x2="321.42857142857144" y2="501.42857142857144" stroke="#cbd5e1" stroke-width="0.8"/>
+<line x1="38.57142857142857" y1="218.57142857142858" x2="501.42857142857144" y2="218.57142857142858" stroke="#cbd5e1" stroke-width="0.8"/>
+<text x="321.42857142857144" y="529.7142857142858" font-size="10" fill="#64748b" text-anchor="middle">4</text>
+<text x="17.999999999999996" y="222.07142857142858" font-size="10" fill="#64748b" text-anchor="middle">4</text>
+<line x1="347.14285714285717" y1="38.57142857142857" x2="347.14285714285717" y2="501.42857142857144" stroke="#e2e8f0" stroke-width="0.8"/>
+<line x1="38.57142857142857" y1="192.85714285714286" x2="501.42857142857144" y2="192.85714285714286" stroke="#e2e8f0" stroke-width="0.8"/>
+<line x1="372.8571428571429" y1="38.57142857142857" x2="372.8571428571429" y2="501.42857142857144" stroke="#cbd5e1" stroke-width="0.8"/>
+<line x1="38.57142857142857" y1="167.14285714285714" x2="501.42857142857144" y2="167.14285714285714" stroke="#cbd5e1" stroke-width="0.8"/>
+<text x="372.8571428571429" y="529.7142857142858" font-size="10" fill="#64748b" text-anchor="middle">8</text>
+<text x="17.999999999999996" y="170.64285714285714" font-size="10" fill="#64748b" text-anchor="middle">8</text>
+<line x1="398.5714285714286" y1="38.57142857142857" x2="398.5714285714286" y2="501.42857142857144" stroke="#e2e8f0" stroke-width="0.8"/>
+<line x1="38.57142857142857" y1="141.42857142857144" x2="501.42857142857144" y2="141.42857142857144" stroke="#e2e8f0" stroke-width="0.8"/>
+<line x1="424.2857142857143" y1="38.57142857142857" x2="424.2857142857143" y2="501.42857142857144" stroke="#cbd5e1" stroke-width="0.8"/>
+<line x1="38.57142857142857" y1="115.71428571428572" x2="501.42857142857144" y2="115.71428571428572" stroke="#cbd5e1" stroke-width="0.8"/>
+<text x="424.2857142857143" y="529.7142857142858" font-size="10" fill="#64748b" text-anchor="middle">12</text>
+<text x="17.999999999999996" y="119.21428571428572" font-size="10" fill="#64748b" text-anchor="middle">12</text>
+<line x1="450.0" y1="38.57142857142857" x2="450.0" y2="501.42857142857144" stroke="#e2e8f0" stroke-width="0.8"/>
+<line x1="38.57142857142857" y1="90.0" x2="501.42857142857144" y2="90.0" stroke="#e2e8f0" stroke-width="0.8"/>
+<line x1="475.7142857142857" y1="38.57142857142857" x2="475.7142857142857" y2="501.42857142857144" stroke="#cbd5e1" stroke-width="0.8"/>
+<line x1="38.57142857142857" y1="64.28571428571429" x2="501.42857142857144" y2="64.28571428571429" stroke="#cbd5e1" stroke-width="0.8"/>
+<text x="475.7142857142857" y="529.7142857142858" font-size="10" fill="#64748b" text-anchor="middle">16</text>
+<text x="17.999999999999996" y="67.78571428571429" font-size="10" fill="#64748b" text-anchor="middle">16</text>
+<line x1="501.42857142857144" y1="38.57142857142857" x2="501.42857142857144" y2="501.42857142857144" stroke="#e2e8f0" stroke-width="0.8"/>
+<line x1="38.57142857142857" y1="38.57142857142857" x2="501.42857142857144" y2="38.57142857142857" stroke="#e2e8f0" stroke-width="0.8"/>
+<text x="270.0" y="541.7142857142858" font-size="10" fill="#64748b" text-anchor="middle">X (metres) →</text>
+<text x="17.999999999999996" y="23.14285714285714" font-size="10" fill="#64748b" text-anchor="middle">Z ↑</text>
+<g transform="translate(520.7142857142858,19.285714285714285)"><path d="M0 -9 L6 6 L0 2 L-6 6 Z" fill="#1e1b4b"/><text x="0" y="18" font-size="10" font-weight="700" fill="#1e1b4b" text-anchor="middle">N</text></g>
+<rect x="38.6" y="501.4" width="102.9" height="12.9" fill="#334155" stroke="#1e293b" stroke-width="1"/>
+<rect x="141.4" y="501.4" width="102.9" height="12.9" fill="#334155" stroke="#1e293b" stroke-width="1"/>
+<rect x="244.3" y="501.4" width="102.9" height="12.9" fill="#334155" stroke="#1e293b" stroke-width="1"/>
+<rect x="347.1" y="501.4" width="102.9" height="12.9" fill="#334155" stroke="#1e293b" stroke-width="1"/>
+<rect x="450.0" y="501.4" width="51.4" height="12.9" fill="#334155" stroke="#1e293b" stroke-width="1"/>
+<rect x="38.6" y="25.7" width="102.9" height="12.9" fill="#334155" stroke="#1e293b" stroke-width="1"/>
+<rect x="141.4" y="25.7" width="51.4" height="12.9" fill="#334155" stroke="#1e293b" stroke-width="1"/>
+<rect x="295.7" y="25.7" width="102.9" height="12.9" fill="#334155" stroke="#1e293b" stroke-width="1"/>
+<rect x="398.6" y="25.7" width="102.9" height="12.9" fill="#334155" stroke="#1e293b" stroke-width="1"/>
+<rect x="501.4" y="38.6" width="12.9" height="102.9" fill="#334155" stroke="#1e293b" stroke-width="1"/>
+<rect x="501.4" y="141.4" width="12.9" height="102.9" fill="#334155" stroke="#1e293b" stroke-width="1"/>
+<rect x="501.4" y="244.3" width="12.9" height="102.9" fill="#334155" stroke="#1e293b" stroke-width="1"/>
+<rect x="501.4" y="347.1" width="12.9" height="102.9" fill="#334155" stroke="#1e293b" stroke-width="1"/>
+<rect x="501.4" y="450.0" width="12.9" height="51.4" fill="#334155" stroke="#1e293b" stroke-width="1"/>
+<rect x="25.7" y="38.6" width="12.9" height="102.9" fill="#334155" stroke="#1e293b" stroke-width="1"/>
+<rect x="25.7" y="141.4" width="12.9" height="102.9" fill="#334155" stroke="#1e293b" stroke-width="1"/>
+<rect x="25.7" y="244.3" width="12.9" height="102.9" fill="#334155" stroke="#1e293b" stroke-width="1"/>
+<rect x="25.7" y="347.1" width="12.9" height="102.9" fill="#334155" stroke="#1e293b" stroke-width="1"/>
+<rect x="25.7" y="450.0" width="12.9" height="51.4" fill="#334155" stroke="#1e293b" stroke-width="1"/>
+<rect x="25.7" y="501.4" width="12.9" height="12.9" fill="#1e293b" stroke="#22d3ee" stroke-width="1.6"/>
+<rect x="25.7" y="25.7" width="12.9" height="12.9" fill="#1e293b" stroke="#22d3ee" stroke-width="1.6"/>
+<rect x="501.4" y="501.4" width="12.9" height="12.9" fill="#1e293b" stroke="#22d3ee" stroke-width="1.6"/>
+<rect x="501.4" y="25.7" width="12.9" height="12.9" fill="#1e293b" stroke="#22d3ee" stroke-width="1.6"/>
+<rect x="77.1" y="353.6" width="102.9" height="12.9" fill="#334155" stroke="#1e293b" stroke-width="1"/>
+<rect x="167.1" y="366.4" width="12.9" height="51.4" fill="#334155" stroke="#1e293b" stroke-width="1"/>
+<rect x="360.0" y="353.6" width="102.9" height="12.9" fill="#334155" stroke="#1e293b" stroke-width="1"/>
+<rect x="360.0" y="366.4" width="12.9" height="51.4" fill="#334155" stroke="#1e293b" stroke-width="1"/>
+<rect x="77.1" y="147.9" width="102.9" height="12.9" fill="#334155" stroke="#1e293b" stroke-width="1"/>
+<rect x="167.1" y="96.4" width="12.9" height="51.4" fill="#334155" stroke="#1e293b" stroke-width="1"/>
+<rect x="360.0" y="147.9" width="102.9" height="12.9" fill="#334155" stroke="#1e293b" stroke-width="1"/>
+<rect x="360.0" y="96.4" width="12.9" height="51.4" fill="#334155" stroke="#1e293b" stroke-width="1"/>
+<rect x="205.7" y="295.7" width="12.9" height="12.9" fill="#1e293b" stroke="#22d3ee" stroke-width="1.6"/>
+<rect x="321.4" y="295.7" width="12.9" height="12.9" fill="#1e293b" stroke="#22d3ee" stroke-width="1.6"/>
+<rect x="205.7" y="180.0" width="12.9" height="12.9" fill="#1e293b" stroke="#22d3ee" stroke-width="1.6"/>
+<rect x="321.4" y="180.0" width="12.9" height="12.9" fill="#1e293b" stroke="#22d3ee" stroke-width="1.6"/>
+<rect x="262.9" y="143.0" width="14.1" height="9.6" fill="#475569" stroke="#22d3ee" stroke-width="1.6"/>
+<rect x="276.4" y="394.7" width="38.6" height="7.7" fill="#fb923c" stroke="#c2410c" stroke-width="1"/>
+<rect x="250.7" y="225.0" width="38.6" height="38.6" fill="#cffafe" stroke="#06b6d4" stroke-width="1" stroke-dasharray="3 2" fill-opacity="0.8"/>
+<rect x="192.85714285714286" y="25.714285714285715" width="102.85714285714286" height="12.857142857142858" fill="#22c55e" stroke="#15803d"/>
+<text x="244.2857142857143" y="35.214285714285715" font-size="9.5" font-weight="800" fill="#fff" text-anchor="middle">EXIT</text>
+<circle cx="57.85714285714286" cy="482.14285714285717" r="9" fill="#fde047" fill-opacity="0.35"/><rect x="54.35714285714286" y="478.64285714285717" width="7" height="7" fill="#1e293b" stroke="#facc15" stroke-width="1.5"/>
+<circle cx="482.14285714285717" cy="482.14285714285717" r="9" fill="#fde047" fill-opacity="0.35"/><rect x="478.64285714285717" y="478.64285714285717" width="7" height="7" fill="#1e293b" stroke="#facc15" stroke-width="1.5"/>
+<circle cx="57.85714285714286" cy="57.85714285714286" r="9" fill="#fde047" fill-opacity="0.35"/><rect x="54.35714285714286" y="54.35714285714286" width="7" height="7" fill="#1e293b" stroke="#facc15" stroke-width="1.5"/>
+<circle cx="482.14285714285717" cy="57.85714285714286" r="9" fill="#fde047" fill-opacity="0.35"/><rect x="478.64285714285717" y="54.35714285714286" width="7" height="7" fill="#1e293b" stroke="#facc15" stroke-width="1.5"/>
+<circle cx="57.85714285714286" cy="244.2857142857143" r="9" fill="#fde047" fill-opacity="0.35"/><rect x="54.35714285714286" y="240.7857142857143" width="7" height="7" fill="#1e293b" stroke="#facc15" stroke-width="1.5"/>
+<circle cx="482.14285714285717" cy="244.2857142857143" r="9" fill="#fde047" fill-opacity="0.35"/><rect x="478.64285714285717" y="240.7857142857143" width="7" height="7" fill="#1e293b" stroke="#facc15" stroke-width="1.5"/>
+<circle cx="180.0" cy="64.28571428571429" r="9" fill="#fde047" fill-opacity="0.35"/><rect x="176.5" y="60.78571428571429" width="7" height="7" fill="#1e293b" stroke="#facc15" stroke-width="1.5"/>
+<circle cx="308.57142857142856" cy="64.28571428571429" r="9" fill="#fde047" fill-opacity="0.35"/><rect x="305.07142857142856" y="60.78571428571429" width="7" height="7" fill="#1e293b" stroke="#facc15" stroke-width="1.5"/>
+<circle cx="270.0" cy="244.2857142857143" r="57.85714285714286" fill="#b45309" fill-opacity="0.06" stroke="#b45309" stroke-width="1.4" stroke-dasharray="5 4"/>
+<path d="M265.0 244.2857142857143 h10 M270.0 239.2857142857143 v10" stroke="#b45309" stroke-width="2"/>
+<path d="M295.7142857142857 451.8571428571429 L303.7142857142857 469.8571428571429 L295.7142857142857 465.8571428571429 L287.7142857142857 469.8571428571429 Z" fill="#2563eb" stroke="#1e3a8a"/>
+<text x="295.7142857142857" y="481.8571428571429" font-size="9" font-weight="700" fill="#1e3a8a" text-anchor="middle">START</text>
+<circle cx="128.57142857142858" cy="398.5714285714286" r="6.5" fill="#fbbf24" stroke="#b45309" stroke-width="1.5"/>
+<text x="128.57142857142858" y="401.5714285714286" font-size="8" font-weight="800" fill="#78350f" text-anchor="middle">1</text>
+<circle cx="411.42857142857144" cy="398.5714285714286" r="6.5" fill="#fbbf24" stroke="#b45309" stroke-width="1.5"/>
+<text x="411.42857142857144" y="401.5714285714286" font-size="8" font-weight="800" fill="#78350f" text-anchor="middle">2</text>
+<circle cx="128.57142857142858" cy="115.71428571428572" r="6.5" fill="#fbbf24" stroke="#b45309" stroke-width="1.5"/>
+<text x="128.57142857142858" y="118.71428571428572" font-size="8" font-weight="800" fill="#78350f" text-anchor="middle">3</text>
+<circle cx="411.42857142857144" cy="115.71428571428572" r="6.5" fill="#fbbf24" stroke="#b45309" stroke-width="1.5"/>
+<text x="411.42857142857144" y="118.71428571428572" font-size="8" font-weight="800" fill="#78350f" text-anchor="middle">4</text>
+<circle cx="244.2857142857143" cy="244.2857142857143" r="6.5" fill="#fbbf24" stroke="#b45309" stroke-width="1.5"/>
+<text x="244.2857142857143" y="247.2857142857143" font-size="8" font-weight="800" fill="#78350f" text-anchor="middle">5</text>
+<circle cx="295.7142857142857" cy="244.2857142857143" r="6.5" fill="#fbbf24" stroke="#b45309" stroke-width="1.5"/>
+<text x="295.7142857142857" y="247.2857142857143" font-size="8" font-weight="800" fill="#78350f" text-anchor="middle">6</text>
+<circle cx="77.14285714285714" cy="295.7142857142857" r="6.5" fill="#fbbf24" stroke="#b45309" stroke-width="1.5"/>
+<text x="77.14285714285714" y="298.7142857142857" font-size="8" font-weight="800" fill="#78350f" text-anchor="middle">7</text>
+<circle cx="77.14285714285714" cy="218.57142857142858" r="6.5" fill="#fbbf24" stroke="#b45309" stroke-width="1.5"/>
+<text x="77.14285714285714" y="221.57142857142858" font-size="8" font-weight="800" fill="#78350f" text-anchor="middle">8</text>
+<circle cx="462.8571428571429" cy="321.42857142857144" r="6.5" fill="#fbbf24" stroke="#b45309" stroke-width="1.5"/>
+<text x="462.8571428571429" y="324.42857142857144" font-size="8" font-weight="800" fill="#78350f" text-anchor="middle">9</text>
+<circle cx="462.8571428571429" cy="192.85714285714286" r="6.5" fill="#fbbf24" stroke="#b45309" stroke-width="1.5"/>
+<text x="462.8571428571429" y="195.85714285714286" font-size="8" font-weight="800" fill="#78350f" text-anchor="middle">10</text>
+<circle cx="102.85714285714286" cy="462.8571428571429" r="6.5" fill="#fbbf24" stroke="#b45309" stroke-width="1.5"/>
+<text x="102.85714285714286" y="465.8571428571429" font-size="8" font-weight="800" fill="#78350f" text-anchor="middle">11</text>
+<circle cx="437.14285714285717" cy="462.8571428571429" r="6.5" fill="#fbbf24" stroke="#b45309" stroke-width="1.5"/>
+<text x="437.14285714285717" y="465.8571428571429" font-size="8" font-weight="800" fill="#78350f" text-anchor="middle">12</text>
+<rect x="456.8571428571429" y="251.14285714285717" width="12" height="12" transform="rotate(45 462.8571428571429 257.14285714285717)" fill="#ef4444" stroke="#1e1b4b" stroke-width="1"/>
+<text x="462.8571428571429" y="246.14285714285717" font-size="9" font-weight="800" fill="#ef4444" text-anchor="middle">MAGNET</text>
+<circle cx="102.85714285714286" cy="270.0" r="9.5" fill="#16a34a" stroke="#fff" stroke-width="1.5"/>
+<text x="102.85714285714286" y="274.0" font-size="11" font-weight="800" fill="#fff" text-anchor="middle">S</text>
+<circle cx="424.2857142857143" cy="231.42857142857144" r="9.5" fill="#16a34a" stroke="#fff" stroke-width="1.5"/>
+<text x="424.2857142857143" y="235.42857142857144" font-size="11" font-weight="800" fill="#fff" text-anchor="middle">S</text>
+<circle cx="270.0" cy="90.0" r="9.5" fill="#db2777" stroke="#fff" stroke-width="1.5"/>
+<text x="270.0" y="94.0" font-size="11" font-weight="800" fill="#fff" text-anchor="middle">G</text>
+<circle cx="270.0" cy="231.42857142857144" r="9.5" fill="#b45309" stroke="#fff" stroke-width="1.5"/>
+<text x="270.0" y="235.42857142857144" font-size="11" font-weight="800" fill="#fff" text-anchor="middle">K</text>
+<rect x="10.0" y="551.0" width="14" height="8" fill="#334155"/>
+<text x="30.0" y="559.5" font-size="10.5" fill="#374151">Wall / Pillar</text>
+<rect x="184.66666666666666" y="550.0" width="11" height="11" fill="#94a3b8" stroke="#475569"/>
+<text x="204.66666666666666" y="559.5" font-size="10.5" fill="#374151">Grey block</text>
+<rect x="359.3333333333333" y="550.0" width="5" height="11" fill="#ef4444"/><rect x="364.3333333333333" y="550.0" width="5" height="11" fill="#14b8a6"/>
+<text x="379.3333333333333" y="559.5" font-size="10.5" fill="#374151">Accent block</text>
+<rect x="10.0" y="573.0" width="14" height="5" fill="#fb923c" stroke="#c2410c"/>
+<text x="30.0" y="579.5" font-size="10.5" fill="#374151">Barrier</text>
+<rect x="184.66666666666666" y="570.0" width="12" height="12" fill="#cffafe" stroke="#06b6d4" stroke-dasharray="3 2"/>
+<text x="204.66666666666666" y="579.5" font-size="10.5" fill="#374151">Floor pad</text>
+<circle cx="365.3333333333333" cy="576.0" r="8" fill="#fde047" fill-opacity="0.35"/><rect x="361.8333333333333" y="572.5" width="7" height="7" fill="#1e293b" stroke="#facc15" stroke-width="1.5"/>
+<text x="379.3333333333333" y="579.5" font-size="10.5" fill="#374151">Lamp post</text>
+<circle cx="16.0" cy="596.0" r="6" fill="#fbbf24" stroke="#b45309" stroke-width="1.5"/>
+<text x="30.0" y="599.5" font-size="10.5" fill="#374151">Coin (CoinSpot)</text>
+<path d="M190.66666666666666 588.0 L196.66666666666666 602.0 L190.66666666666666 599.0 L184.66666666666666 602.0 Z" fill="#2563eb"/>
+<text x="204.66666666666666" y="599.5" font-size="10.5" fill="#374151">PlayerSpawn</text>
+<rect x="359.3333333333333" y="592.0" width="14" height="8" fill="#22c55e"/>
+<text x="379.3333333333333" y="599.5" font-size="10.5" fill="#374151">Exit gate</text>
+<circle cx="17.0" cy="616.0" r="7.5" fill="#16a34a"/><text x="17.0" y="619.5" font-size="9.5" font-weight="800" fill="#fff" text-anchor="middle">S</text>
+<text x="30.0" y="619.5" font-size="10.5" fill="#374151">Slime</text>
+<circle cx="191.66666666666666" cy="616.0" r="7.5" fill="#db2777"/><text x="191.66666666666666" y="619.5" font-size="9.5" font-weight="800" fill="#fff" text-anchor="middle">G</text>
+<text x="204.66666666666666" y="619.5" font-size="10.5" fill="#374151">Ghost</text>
+<circle cx="366.3333333333333" cy="616.0" r="7.5" fill="#b45309"/><text x="366.3333333333333" y="619.5" font-size="9.5" font-weight="800" fill="#fff" text-anchor="middle">K</text>
+<text x="379.3333333333333" y="619.5" font-size="10.5" fill="#374151">Mushroom King + Home</text>
+<rect x="12.0" y="631.0" width="9" height="9" transform="rotate(45 16.5 635.5)" fill="#8b5cf6"/>
+<text x="30.0" y="639.5" font-size="10.5" fill="#374151">Power-up</text>
+</svg>
+<figcaption>Night Run: 36 × 36 m, 12 coins, 2 Slimes, a Ghost, the Mushroom King, a MAGNET. The gate is at X -2.</figcaption></figure>
+<p>The safe way goes round the outside (alleys), the fast way goes through the plaza. The Ghost guards the exit, so the last run is the hardest part.</p>
+
+
+<!-- ======================================================= 3 -->
+<h2 id="step-3"><span class="step">3</span>Make the scene</h2>
+<ol>
+<li>Open <code>Scenes/Level1</code>. <b>File → Save As…</b> → <code>Assets/GoldRush/Scenes</code> → name <code>Level8</code> → <b>Save</b>.</li>
+<li>Check the title bar: it says <b>Level8</b>.</li>
+<li>Rename the root <code>Level 1 - Training Yard</code> to <code>Level 8 - Night Run</code>.</li>
+<li>In its <b>Level Scene</b> component, set <b>Arena Half</b> = <code>18</code>.</li>
+<li>Save.</li>
+</ol>
+<figure class="shot todo" data-shot="practical-4/step-03" data-window="inspector" data-select="Level 8 - Night Run"><div class="ph">Inspector of Level 8 - Night Run: Level Scene with Arena Half 18</div><figcaption>Arena Half is 18. The yellow square matches the walls.</figcaption></figure>
+
+
+<!-- ======================================================= 4 -->
+<h2 id="step-4"><span class="step">4</span>Clear out</h2>
+<ol>
+<li>Delete all 17 children of <code>Static/Obstacles</code>.</li>
+<li>Keep <code>PowerUp Magnet</code>, both Slimes and the 6 CoinSpots: you move them and add more.</li>
+</ol>
+<figure class="shot todo" data-shot="practical-4/step-04" data-window="hierarchy" data-select="Level 8 - Night Run"><div class="ph">Hierarchy: Level 8 - Night Run with empty Obstacles, Slime 1, Slime 2, 6 CoinSpots, PowerUp Magnet</div><figcaption>Ready to grow.</figcaption></figure>
+
+
+<!-- ======================================================= 5 -->
+<h2 id="step-5"><span class="step">5</span>Make the arena bigger</h2>
+<p>The arena grows from 32 to 36 m. 36 m is not "8 m pieces + an 8 m gap in the middle", so the gate moves <b>2 m west</b> (X <code>-2</code>). Change the wall groups from Level1 like this:</p>
+<ol>
+<li><code>WallSouth</code>: Position <code>0, 0, -18.5</code>. Move its four <code>Wall_8m</code> to X <code>-14</code>, <code>-6</code>, <code>2</code>, <code>10</code>. Add one <code>Wall_4m</code> at X <code>16</code>.</li>
+<li><code>WallEast</code> (<code>18.5, 0, 0</code>) and <code>WallWest</code> (<code>-18.5, 0, 0</code>), Rotation <code>0, 90, 0</code>: the same children as WallSouth.</li>
+<li><code>WallNorth</code>: Position <code>0, 0, 18.5</code>. Children: <code>Wall_8m</code> at <code>-14</code>, <code>Wall_4m</code> at <code>-8</code>, then the gap, then <code>Wall_8m</code> at <code>6</code> and <code>14</code>. (Delete the Wall_4m at X 6 and add a Wall_8m.)</li>
+<li><code>Corners</code>: pillars at <code>±18.5, 0, ±18.5</code>.</li>
+</ol>
+<div class="table-wrap"><table>
+<tr><th>Group</th><th>Position</th><th>Rotation</th><th>Children (local X)</th></tr>
+<tr><td><code>WallSouth</code></td><td><code>0, 0, -18.5</code></td><td><code>0, 0, 0</code></td><td>Wall_8m at X <code>-14</code> · Wall_8m at X <code>-6</code> · Wall_8m at X <code>2</code> · Wall_8m at X <code>10</code> · Wall_4m at X <code>16</code></td></tr>
+<tr><td><code>WallNorth</code></td><td><code>0, 0, 18.5</code></td><td><code>0, 0, 0</code></td><td>Wall_8m at X <code>-14</code> · Wall_4m at X <code>-8</code> · Wall_8m at X <code>6</code> · Wall_8m at X <code>14</code></td></tr>
+<tr><td><code>WallEast</code></td><td><code>18.5, 0, 0</code></td><td><code>0, 90, 0</code></td><td>Wall_8m at X <code>-14</code> · Wall_8m at X <code>-6</code> · Wall_8m at X <code>2</code> · Wall_8m at X <code>10</code> · Wall_4m at X <code>16</code></td></tr>
+<tr><td><code>WallWest</code></td><td><code>-18.5, 0, 0</code></td><td><code>0, 90, 0</code></td><td>Wall_8m at X <code>-14</code> · Wall_8m at X <code>-6</code> · Wall_8m at X <code>2</code> · Wall_8m at X <code>10</code> · Wall_4m at X <code>16</code></td></tr>
+<tr><td><code>Corners</code></td><td>4 × <code>Pillar</code></td><td>–</td><td><code>-18.5, 0, -18.5</code> · <code>18.5, 0, -18.5</code> · <code>-18.5, 0, 18.5</code> · <code>18.5, 0, 18.5</code></td></tr>
+<tr><td><code>GateBlocker</code></td><td><code>-2, 2.5, 19.25</code></td><td>–</td><td>Box Collider, Size <code>8, 5, 1</code></td></tr>
+<tr><td><code>ExitGate</code></td><td><code>-2, 0, 18</code></td><td><code>0, 0, 0</code></td><td>In the middle of the gap. Not static.</td></tr>
+</table></div>
+<div class="note">The walls stand at ±18.5 and the floor ends at ±20. Do not make the arena bigger than this: the walls would stand off the floor.</div>
+<figure class="shot todo" data-shot="practical-4/step-05" data-window="scene" data-select="Level 8 - Night Run/Static/Walls"><div class="ph">Scene view from the top: the 36 × 36 m arena, the gate gap from X -6 to 2 in the north wall</div><figcaption>The gap is 2 m left of the middle.</figcaption></figure>
+
+
+<!-- ======================================================= 6 -->
+<h2 id="step-6"><span class="step">6</span>Lamps</h2>
+<p>At night the lamps are the main light (their <code>NightLight</code> from Phase 10 turns them on). Place the 8 lamps so they show the way:</p>
+<div class="table-wrap"><table>
+<tr><th>#</th><th>Position</th><th>Why</th></tr>
+<tr><td>1–4</td><td><code>-16.5, 0, -16.5</code> · <code>16.5, 0, -16.5</code> · <code>-16.5, 0, 16.5</code> · <code>16.5, 0, 16.5</code></td><td>Corners: you see the size of the arena</td></tr>
+<tr><td>5–6</td><td><code>-16.5, 0, 2</code> · <code>16.5, 0, 2</code></td><td>Light the side alleys</td></tr>
+<tr><td>7–8</td><td><code>-7, 0, 16</code> · <code>3, 0, 16</code></td><td>Left and right of the gate: "the exit is here"</td></tr>
+</table></div>
+<div class="note">Still only 8 lamps. More lights make the game slow on phones.</div>
+
+
+<!-- ======================================================= 7 -->
+<h2 id="step-7"><span class="step">7</span>Buildings and plaza</h2>
+<p>Each corner building is an <b>L</b>: one <code>Wall_8m</code> and one <code>Wall_4m</code>. Inside each L hides a coin. The plaza in the middle has 4 pillars around the King's pad.</p>
+<p>Drag each prefab onto its parent in the Hierarchy and type the values. Scale stays <code>1, 1, 1</code>.</p>
+<div class="table-wrap"><table>
+<tr><th>#</th><th>Prefab</th><th>Parent</th><th>Position</th><th>Rot Y</th><th>Note</th></tr>
+<tr><td>1</td><td><code>Wall_8m</code></td><td><code>Static/Obstacles</code></td><td><code>-11, 0, -7</code></td><td>0</td><td>SW building</td></tr>
+<tr><td>2</td><td><code>Wall_4m</code></td><td><code>Static/Obstacles</code></td><td><code>-7.5, 0, -9.5</code></td><td>90</td><td>SW building</td></tr>
+<tr><td>3</td><td><code>Wall_8m</code></td><td><code>Static/Obstacles</code></td><td><code>11, 0, -7</code></td><td>0</td><td>SE building</td></tr>
+<tr><td>4</td><td><code>Wall_4m</code></td><td><code>Static/Obstacles</code></td><td><code>7.5, 0, -9.5</code></td><td>90</td><td>SE building</td></tr>
+<tr><td>5</td><td><code>Wall_8m</code></td><td><code>Static/Obstacles</code></td><td><code>-11, 0, 9</code></td><td>0</td><td>NW building</td></tr>
+<tr><td>6</td><td><code>Wall_4m</code></td><td><code>Static/Obstacles</code></td><td><code>-7.5, 0, 11.5</code></td><td>90</td><td>NW building</td></tr>
+<tr><td>7</td><td><code>Wall_8m</code></td><td><code>Static/Obstacles</code></td><td><code>11, 0, 9</code></td><td>0</td><td>NE building</td></tr>
+<tr><td>8</td><td><code>Wall_4m</code></td><td><code>Static/Obstacles</code></td><td><code>7.5, 0, 11.5</code></td><td>90</td><td>NE building</td></tr>
+<tr><td>9</td><td><code>Pillar</code></td><td><code>Static/Obstacles</code></td><td><code>-4.5, 0, -2.5</code></td><td>0</td><td>Plaza</td></tr>
+<tr><td>10</td><td><code>Pillar</code></td><td><code>Static/Obstacles</code></td><td><code>4.5, 0, -2.5</code></td><td>0</td><td>Plaza</td></tr>
+<tr><td>11</td><td><code>Pillar</code></td><td><code>Static/Obstacles</code></td><td><code>-4.5, 0, 6.5</code></td><td>0</td><td>Plaza</td></tr>
+<tr><td>12</td><td><code>Pillar</code></td><td><code>Static/Obstacles</code></td><td><code>4.5, 0, 6.5</code></td><td>0</td><td>Plaza</td></tr>
+<tr><td>13</td><td><code>Terminal</code></td><td><code>Static/Obstacles</code></td><td><code>0, 0, 9.5</code></td><td>0</td><td>Screen faces the plaza</td></tr>
+<tr><td>14</td><td><code>Barrier_Orange</code></td><td><code>Static/Obstacles</code></td><td><code>2, 0, -10</code></td><td>0</td><td>In front of the start</td></tr>
+<tr><td>15</td><td><code>FloorPad_Cyan</code></td><td><code>Static/Floor</code></td><td><code>0, 0, 2</code></td><td>0</td><td>The King's pad (glows at night)</td></tr>
+</table></div>
+<div class="tip">Build one L, then select both walls, <b>Ctrl+D</b>, and change only the signs of X and/or Z for the other three.</div>
+<figure class="shot todo" data-shot="practical-4/step-07" data-window="scene" data-select="Level 8 - Night Run/Static/Obstacles"><div class="ph">Scene view from the top: Night Run with all walls and obstacles (same as the map)</div><figcaption>Compare with the map in step 2.</figcaption></figure>
+
+
+<!-- ======================================================= 8 -->
+<h2 id="step-8"><span class="step">8</span>Coins</h2>
+<p>Twelve coins: four in the building pockets, two in the King's plaza, two trails in the side alleys and two easy ones at the start.</p><p>You need <b>12</b> CoinSpots, each with a <code>Coin</code> inside (local position <code>0, 1, 0</code>).</p>
+<ol>
+<li>Open <code>Gameplay/Coins</code>. Keep the CoinSpots you have and move them to the new positions.</li>
+<li>Need more? Select a CoinSpot (with its Coin) and press <b>Ctrl+D</b> / <b>Cmd+D</b>. Rename it with the next number.</li>
+<li>Delete CoinSpots you do not need.</li>
+</ol>
+<div class="table-wrap"><table>
+<tr><th>Marker</th><th>Position</th><th>Why here</th></tr>
+<tr><td><code>CoinSpot 1</code></td><td><code>-11, 0, -10</code></td><td>Pocket of the SW building</td></tr>
+<tr><td><code>CoinSpot 2</code></td><td><code>11, 0, -10</code></td><td>Pocket of the SE building</td></tr>
+<tr><td><code>CoinSpot 3</code></td><td><code>-11, 0, 12</code></td><td>Pocket of the NW building</td></tr>
+<tr><td><code>CoinSpot 4</code></td><td><code>11, 0, 12</code></td><td>Pocket of the NE building</td></tr>
+<tr><td><code>CoinSpot 5</code></td><td><code>-2, 0, 2</code></td><td>Plaza, next to the King: use the MAGNET</td></tr>
+<tr><td><code>CoinSpot 6</code></td><td><code>2, 0, 2</code></td><td>Plaza, next to the King: use the MAGNET</td></tr>
+<tr><td><code>CoinSpot 7</code></td><td><code>-15, 0, -2</code></td><td>West alley trail</td></tr>
+<tr><td><code>CoinSpot 8</code></td><td><code>-15, 0, 4</code></td><td>West alley trail</td></tr>
+<tr><td><code>CoinSpot 9</code></td><td><code>15, 0, -4</code></td><td>East alley trail</td></tr>
+<tr><td><code>CoinSpot 10</code></td><td><code>15, 0, 6</code></td><td>East alley trail</td></tr>
+<tr><td><code>CoinSpot 11</code></td><td><code>-13, 0, -15</code></td><td>South, easy start</td></tr>
+<tr><td><code>CoinSpot 12</code></td><td><code>13, 0, -15</code></td><td>South, easy start</td></tr>
+</table></div>
+<figure class="shot todo" data-shot="practical-4/step-08" data-window="hierarchy" data-select="Level 8 - Night Run/Gameplay/Coins"><div class="ph">Hierarchy: Gameplay › Coins with CoinSpot 1 … 12, each with a Coin child</div><figcaption>12 CoinSpots, one Coin in each.</figcaption></figure>
+
+
+<!-- ======================================================= 9 -->
+<h2 id="step-9"><span class="step">9</span>Monsters</h2>
+<p>Monsters go into <code>Gameplay/Monsters</code>. Drag the prefab from <code>Prefabs/Gameplay</code> onto the group, type the position, and rename it. Delete the old Slimes you do not need.</p>
+<div class="table-wrap"><table>
+<tr><th>Name</th><th>Prefab</th><th>Position</th><th>Note</th></tr>
+<tr><td><code>Slime 1</code></td><td><code>Monster_Slime</code></td><td><code>-13, 0, 0</code></td><td>West alley</td></tr>
+<tr><td><code>Slime 2</code></td><td><code>Monster_Slime</code></td><td><code>12, 0, 3</code></td><td>East alley, near the MAGNET</td></tr>
+<tr><td><code>Ghost 1</code></td><td><code>Monster_Ghost</code></td><td><code>0, 0, 14</code></td><td>North, between you and the gate</td></tr>
+<tr><td><code>Mushroom King 1</code></td><td><code>Monster_MushroomKing</code></td><td><code>0, 0, 3</code></td><td>Plaza. Home = <code>KingHome</code> at <code>0, 0, 2</code></td></tr>
+</table></div>
+<ol>
+<li>Right-click <code>Gameplay/Monsters</code> → <b>Create Empty</b>. Name it <code>KingHome</code>. Position <code>0, 0, 2</code>.</li>
+<li>Drag <code>KingHome</code> into the <b>Home</b> field of <code>Mushroom King 1</code> (Monster Spawn).</li>
+</ol>
+<figure class="shot todo" data-shot="practical-4/step-09" data-window="scene" data-select="Level 8 - Night Run/Gameplay/Monsters"><div class="ph">Scene view from the top: the monster boxes (MonsterSpawn gizmos) on the blue NavMesh</div><figcaption>Every monster stands on the blue NavMesh.</figcaption></figure>
+
+
+<!-- ======================================================= 10 -->
+<h2 id="step-10"><span class="step">10</span>Power-up</h2>
+<p>A power-up is a <code>PowerUpSpot</code> marker with the matching prefab inside (like in <a href="phase-08.html">Phase 8</a>).</p>
+<ol>
+<li>Right-click <code>Gameplay/PowerUps</code> → <b>Create Empty</b>. Name it <code>PowerUp Magnet</code>. Position <code>15, 0, 1</code>.</li>
+<li><b>Add Component → Power Up Spot</b>. <b>Type</b> = <b>Magnet</b>.</li>
+<li>Drag <code>PowerUp_Magnet</code> onto the marker. Set the child's Position to <code>0, 0, 0</code>.</li>
+</ol>
+<p>The MAGNET pulls coins from up to 11 m for 8 seconds. From the east alley you can pull the two plaza coins without going near the King, if you are fast.</p>
+<figure class="shot todo" data-shot="practical-4/step-10" data-window="inspector" data-select="Level 8 - Night Run/Gameplay/PowerUps/PowerUp Magnet"><div class="ph">Inspector of PowerUp Magnet: Position and Power Up Spot (Type Magnet)</div><figcaption>The marker type and the prefab inside are the same.</figcaption></figure>
+
+
+<!-- ======================================================= 11 -->
+<h2 id="step-11"><span class="step">11</span>Start, gate and NavMesh</h2>
+<ol>
+<li>Select <code>Gameplay/PlayerSpawn</code>. Position <code>2, 0, -15</code>, Rotation <code>0, 0, 0</code> (looks north, to the gate).</li>
+<li>Select <code>Static/ExitGate</code>. Position <code>-2, 0, 18</code>, Rotation <code>0, 0, 0</code>.</li>
+<li>Select <code>Static/Walls/GateBlocker</code>. Position <code>-2, 2.5, 19.25</code>. Box Collider Size <code>8, 5, 1</code>.</li>
+<li>Select <code>Static</code>. In <b>NavMesh Surface</b>, click <b>Bake</b>. Look at the blue area: it must reach every coin and the gate.</li>
+<li>Save.</li>
+</ol>
+<p>The start is at X <code>2</code>, a bit right of the middle, so the barrier and the plaza pillars do not block the first view.</p>
+<figure class="shot todo" data-shot="practical-4/step-11" data-window="scene" data-select="Level 8 - Night Run/Static"><div class="ph">Scene view from the top: the blue NavMesh with holes around the walls and blocks, reaching every coin and the gate</div><figcaption>Blue everywhere the hero must go.</figcaption></figure>
+
+
+<!-- ======================================================= 12 -->
+<h2 id="step-12"><span class="step">12</span>LevelDef and Build Profiles</h2>
+<ol>
+<li>Open <code>Assets/GoldRush/Scripts/Core/Data.cs</code>. Find <code>Levels.All</code>.</li>
+<li>Add this line at the end of the list (after the last level you have):</li>
+</ol>
+<pre class="long"><code>new LevelDef { title = &quot;Night Run&quot;, subtitle = &quot;Gold under the moon&quot;, seed = 808, scene = &quot;Level8&quot;, size = 36, coins = 12, patrollers = 2, chasers = 1, guards = 1, powerUps = 1, enemySpeed = 1.08f, parTime = 100, night = true },</code></pre>
+<ol start="3">
+<li>Save the file. Wait for Unity to compile. No red errors.</li>
+<li><b>File → Build Profiles → Scene List</b>: drag in <code>Scenes/Level8</code>. Check it is ticked.</li>
+</ol>
+<p>Not sure? Read <a href="practicals.html#step-6">Practicals, step 6 and 7</a>.</p>
+<figure class="shot todo" data-shot="practical-4/step-12" data-window="buildprofiles" data-select="Assets/GoldRush/Scenes/Level8.unity"><div class="ph">Build Profiles → Scene List with Level8 ticked at the end</div><figcaption>Level8 is in the build.</figcaption></figure>
+
+
+<!-- ======================================================= 13 -->
+<h2 id="step-13"><span class="step">13</span>▶ Play test</h2>
+<ol>
+<li>Open <code>Level8</code> and press <b>▶ Play</b>.</li>
+<li>Play the level to the end. Then play it 2 more times and write down your times.</li>
+<li>Open <code>MainMenu</code> → Play → <b>LEVELS</b>. Find the <b>NIGHT RUN</b> card.</li>
+</ol>
+<div class="check">
+<p><b>▶ Play test: check these</b></p>
+<ul>
+<li>Switch to night with the moon button in the HUD: the lamps and the King's pad glow, and you can still see the way.</li><li>Each L pocket has a coin you can reach.</li><li>The King stays in the plaza. With the MAGNET you can take coins 5 and 6 from outside the pillars.</li><li>The Ghost does not see the start.</li><li>Your best time is under the par time (100 s).</li>
+<li>The intro says <b>NIGHT RUN</b> and "Collect all 12 gold".</li>
+<li>The gate opens after the last coin, and you win when you run through it.</li>
+<li>No red errors in the Console.</li>
+</ul>
+</div>
+<p><b>The card:</b> it shows <b>NIGHT RUN</b>, "Gold under the moon" and "12 GOLD TO FIND". It is locked until you win the level before it. With the updated menu the cards are in two rows; with the old menu it hides under DAILY RUSH (see <a href="practicals.html#step-8">Practicals, step 8</a>).</p>
+<p><b>Tune the par time:</b> best time + 25 %, rounded to 5 s. Change <code>parTime</code> in <code>Data.cs</code>.</p>
+<figure class="shot todo" data-shot="practical-4/step-13" data-window="game" data-select="Player"><div class="ph">Game view at night: lamps lighting the alleys, the King on the glowing pad in the plaza, the EXIT sign in the distance</div><figcaption>Your level in Play mode.</figcaption></figure>
+
+
+<!-- ======================================================= 14 -->
+<h2 id="step-14"><span class="step">14</span>Make it harder</h2>
+<div class="tip"><b>Make it harder</b> (pick one or two, test after each):<ul><li>A second Ghost at <code>-12, 0, 15</code>.</li><li>Set <code>enemySpeed = 1.12f</code> (like Gold Fever) and <code>parTime = 85</code>.</li><li>Move the MAGNET into the SE pocket (and that coin to the alley): you must risk the pocket first.</li><li>Put a second Mushroom King with its own Home in front of the gate, at <code>-2, 0, 13</code>.</li></ul></div>
+
+
+<!-- ======================================================= 15 -->
+<h2 id="step-15"><span class="step">15</span>Your own idea</h2>
+<p>Now make the level <b>yours</b>. Change at least <b>three</b> things. Write them down first, like a designer: <i>"I want … because …"</i>.</p>
+<p><b>Ideas:</b></p>
+<ul>
+<li><b>A theme.</b> A night market (floor pads as stalls, terminals as shops), a mine (long low blocks as rails), a ruined city (stacked blocks: a <code>Block_1x1x1</code> at Y <code>2</code> on a <code>Block_2x2x2</code>).</li>
+<li><b>A lamp trail.</b> At night only the lamps light the way. Move the 8 lamps to show the path to the gate, or to mark the risky coins.</li>
+<li><b>A second route.</b> A fast, dangerous path past the King and a slow, safe path round the buildings.</li>
+<li><b>A secret.</b> A coin in a pocket you can only see from one place.</li>
+<li><b>A last chase.</b> After the last coin the monsters get 10 % faster. Put the last coin far from the gate, with the Ghost in between.</li>
+</ul>
+<div class="check">
+<p><b>Checklist for your own design</b></p>
+<ul>
+<li>☐ My plan is drawn on paper (1 square = 2 m) and the level matches it.</li>
+<li>☐ There is a free path, 3 m wide or more, from the start to the gate.</li>
+<li>☐ No monster sees the start. Every monster starts 10 m or more away.</li>
+<li>☐ Every coin is on the blue NavMesh, and I picked up every coin in a test.</li>
+<li>☐ The Mushroom King has a Home, and the circle is not on top of the start or the gate.</li>
+<li>☐ 8 lamps or fewer. Nothing floats, nothing sinks into the floor.</li>
+<li>☐ <code>coins</code> in Data.cs = the number of CoinSpots. The par time is tuned (best time + 25 %).</li>
+<li>☐ A friend played it and I fixed at least one thing they found.</li>
+<li>☐ I changed the title and subtitle in Data.cs to fit my idea.</li>
+</ul>
+</div>
+<figure class="shot todo" data-shot="practical-4/step-15" data-window="scene" data-select="Level 8 - Night Run"><div class="ph">Scene view from above: the student's own version of Night Run at night, lamps showing the way</div><figcaption>Your own design.</figcaption></figure>
+
+
+<!-- ======================================================= 16 -->
+<h2 id="step-16"><span class="step">16</span>Self-check</h2>
+<p>Be honest. Better: let a friend play and fill it in for you.</p>
+<div class="table-wrap"><table>
+<tr><th>Check</th><th>1 point: OK</th><th>2 points: good</th><th>3 points: great</th></tr>
+<tr><td><b>Works</b></td><td>The level loads from the menu card. The gate opens after the last coin.</td><td>All coins can be reached. No red errors in the Console. Every item on the checklist in step 15 is ticked.</td><td>The par time and the coin number in <code>Data.cs</code> match the level.</td></tr>
+<tr><td><b>Fun</b></td><td>There is something to do on the way to every coin.</td><td>Your 3 changes make the level more fun, not just different.</td><td>You want to play it again to beat the par time.</td></tr>
+<tr><td><b>Fair</b></td><td>No monster can see you at the start.</td><td>The 4 monsters leave the player a choice of routes.</td><td>A friend can win it on the 2nd or 3rd try, without your help.</td></tr>
+<tr><td><b>Looks good</b></td><td>Nothing floats or sinks into the floor.</td><td>At night the lamps show the way. The level has one clear theme.</td><td>The level has a clear theme. Lamps and colours point the way.</td></tr>
+</table></div>
+<p>Give yourself 1–3 points per row. <b>8 points or more</b>: well done. Less? Fix the lowest row first, then test again.</p>
+
+<nav class="pager" aria-label="Previous and next page">
+<a class="prev" href="practical-3.html"><small>← Previous</small>Practical 3: Guard Tower</a>
+<a class="next" href="practicals.html"><small>Next →</small>Back to the Practicals overview</a>
+</nav>
+
+<footer class="site-footer">GOLD RUSH – a Unity 6 tutorial project. Characters: Quaternius (CC0). Font: Poppins (SIL Open Font License). Icons: Material Icons by Google (Apache 2.0).</footer>
+</div>
+</main>
+</div>
+</body>
+</html>

@@ -388,11 +388,18 @@ namespace GoldRush
         void BuildLevels()
         {
             foreach (Transform c in levelCards) Destroy(c.gameObject);
-            var row = levelCards;
             var d = Save.Data;
-            float x0 = -2f * (CardW + CardGap);
-            for (int i = 0; i < Levels.All.Length; i++) LevelCard(row, i, new Vector2(x0 + i * (CardW + CardGap), 0), d);
-            DailyCard(row, new Vector2(x0 + 4 * (CardW + CardGap), 0), d);
+            int n = Levels.All.Length + 1;                       // + the Daily card (always last)
+            const int PerRow = 5;
+            int rows = Mathf.CeilToInt(n / (float)PerRow);
+            levelCards.localScale = Vector3.one * Mathf.Min(1f, 1.7f / rows); // two rows: a bit smaller
+            float step = CardW + CardGap, rowStep = CardH + CardGap;
+            for (int k = 0; k < n; k++)
+            {
+                int r = k / PerRow, inRow = Mathf.Min(PerRow, n - r * PerRow);
+                var p = new Vector2((k % PerRow - (inRow - 1) * 0.5f) * step, ((rows - 1) * 0.5f - r) * rowStep);
+                if (k < Levels.All.Length) LevelCard(levelCards, k, p, d); else DailyCard(levelCards, p, d);
+            }
         }
 
         static RectTransform CardBadge(Transform card, Color color, string number, UIKit.Icon? icon)
