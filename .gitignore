@@ -58,3 +58,6 @@ Thumbs.db
 # ---- videos: too big for git, share separately ----
 GoldRush_Export/Videos/**/*.mp4
 GoldRush_Export/Videos/*.mp4
+
+# ---- course packages for students (the teacher solutions stay out of git) ----
+!GoldRush_Export/Packages/*.unitypackage
