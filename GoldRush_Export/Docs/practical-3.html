@@ -73,7 +73,8 @@
 <!-- ======================================================= 1 -->
 <h2 id="step-1"><span class="step">1</span>Goal and values</h2>
 <div class="panel"><h3>Goal</h3><p>Build a vault level with <b>9 coins</b> (3 inside the vault), <b>1 Mushroom King</b> with a <b>Home marker</b>, <b>1 Slime</b> and a <b>GHOST</b> power-up.</p><p>You learn: a closed room with two exits, a Guard and its Home, tall and low cover, coins behind cover, a power-up as a tool.</p></div>
-<p><b>What you need:</b> <a href="practical-2.html">Practical 2</a> (walls with rotation 90) and a working <code>Level1</code>.</p>
+<p><b>What you need:</b> <a href="practical-2.html">Practical 2</a> (walls with rotation 90) and your project with the <a href="phase-10.html">Phase 10</a> package. You start from its <code>Level1</code>.</p>
+<div class="tip"><b>A challenge.</b> This practical has no screenshots. You work the same way as in Practicals 1 and 2: copy Level1, clear it out, drag kit pieces from <code>Prefabs/Level</code> and markers from <code>Prefabs/Markers</code>, then add the LevelDef. Stuck on a step? Look at the same step in <a href="practical-2.html">Practical 2</a>.</div>
 <p><b>The LevelDef values</b> (you type them in step 11):</p>
 <div class="table-wrap"><table>
 <tr><th>Field</th><th>Value</th></tr>
@@ -277,7 +278,8 @@
 <!-- ======================================================= 4 -->
 <h2 id="step-4"><span class="step">4</span>Clear out</h2>
 <ol>
-<li>Delete all 17 children of <code>Static/Obstacles</code>.</li>
+<li>Delete all 12 children of <code>Static/Obstacles</code> and <code>Static/Structures/LCover</code>.</li>
+<li>Delete the three <code>FloorPad</code>s in <code>Decor</code> (one of them would lie inside the vault). Keep the <code>FloorStrip</code> lines.</li>
 <li>Delete <code>Gameplay/PowerUps/PowerUp Magnet</code> and <code>Gameplay/Monsters/Slime 2</code>.</li>
 <li>Keep <code>Slime 1</code> and the 6 CoinSpots: you move them and add 3 more.</li>
 </ol>
@@ -285,7 +287,7 @@
 <!-- ======================================================= 5 -->
 <h2 id="step-5"><span class="step">5</span>Lamps</h2>
 <p>The 8 lamps stay where they are in Level1. They are not in the way of the new pieces.</p>
-<p>Check one thing: lamp 6 at <code>14.5, 0, 0</code> and the red landmark at <code>11, 0, 0</code> leave a passage of about 2 m. That is OK for the hero.</p>
+<p>Check one thing: lamp 6 at <code>14.4, 0, 0</code> and the red landmark at <code>11, 0, 0</code> leave a passage of about 2 m. That is OK for the hero.</p>
 
 <!-- ======================================================= 6 -->
 <h2 id="step-6"><span class="step">6</span>Build the vault and the cover</h2>
@@ -328,10 +330,10 @@
 
 <!-- ======================================================= 7 -->
 <h2 id="step-7"><span class="step">7</span>Coins</h2>
-<p>You need <b>9</b> CoinSpots, each with a <code>Coin</code> inside (local position <code>0, 1, 0</code>).</p>
+<p>You need <b>9</b> CoinSpots. A CoinSpot is an empty marker: the game makes the coin 1 m above it.</p>
 <ol>
 <li>Open <code>Gameplay/Coins</code>. Keep the CoinSpots you have and move them to the new positions.</li>
-<li>Need more? Select a CoinSpot (with its Coin) and press <b>Ctrl+D</b> / <b>Cmd+D</b>. Rename it with the next number.</li>
+<li>Need more? Select a CoinSpot and press <b>Ctrl+D</b> / <b>Cmd+D</b> (or drag <code>Prefabs/Markers/CoinSpot</code> onto <code>Gameplay/Coins</code>). Rename it with the next number.</li>
 <li>Delete CoinSpots you do not need.</li>
 </ol>
 <div class="table-wrap"><table>
@@ -349,11 +351,11 @@
 
 <!-- ======================================================= 8 -->
 <h2 id="step-8"><span class="step">8</span>Monsters</h2>
-<p>Monsters go into <code>Gameplay/Monsters</code>. Drag the prefab from <code>Prefabs/Gameplay</code> onto the group, type the position, and rename it. Delete the old Slimes you do not need.</p>
+<p>Monsters go into <code>Gameplay/Monsters</code>. To add one, drag a marker from <code>Prefabs/Markers</code> onto the group, type the position, and rename it. Delete the old Slimes you do not need.</p>
 <div class="table-wrap"><table>
-<tr><th>Name</th><th>Prefab</th><th>Position</th><th>Note</th></tr>
-<tr><td><code>Mushroom King 1</code></td><td><code>Monster_MushroomKing</code></td><td><code>0, 0, 2</code></td><td>Inside the vault. Home = <code>KingHome</code> (see below).</td></tr>
-<tr><td><code>Slime 1</code></td><td><code>Monster_Slime</code></td><td><code>12, 0, -4</code></td><td>Outside, east. Delete <code>Slime 2</code> from Level1.</td></tr>
+<tr><th>Name</th><th>Marker</th><th>Position</th><th>Note</th></tr>
+<tr><td><code>Mushroom King 1</code></td><td><code>Monster_MushroomKing</code> (new)</td><td><code>0, 0, 2</code></td><td>Inside the vault. Home = <code>KingHome</code> (see below).</td></tr>
+<tr><td><code>Slime 1</code></td><td><code>Monster_Slime</code></td><td><code>12, 0, -4</code></td><td>Outside, east. Keep <code>Slime 1</code> from Level1 and move it (you deleted <code>Slime 2</code> in step 4).</td></tr>
 </table></div>
 <p><b>Give the King a Home.</b> A Guard stays within 4.5 m of its Home and gives up the chase 13 m from it.</p>
 <ol>
@@ -364,11 +366,11 @@
 
 <!-- ======================================================= 9 -->
 <h2 id="step-9"><span class="step">9</span>Power-up</h2>
-<p>A power-up is a <code>PowerUpSpot</code> marker with the matching prefab inside (like in <a href="phase-08.html">Phase 8</a>).</p>
+<p>A power-up is a <code>PowerUpSpot</code> marker (<a href="phase-08.html">Phase 8</a>). The game makes the orb above it at Play.</p>
 <ol>
-<li>Right-click <code>Gameplay/PowerUps</code> → <b>Create Empty</b>. Name it <code>PowerUp Ghost</code>. Position <code>-9, 0, -3</code>.</li>
-<li><b>Add Component → Power Up Spot</b>. <b>Type</b> = <b>Ghost</b>.</li>
-<li>Drag <code>PowerUp_Ghost</code> onto the marker. Set the child's Position to <code>0, 0, 0</code>.</li>
+<li>Drag <code>Prefabs/Markers/PowerUp_Ghost</code> onto <code>Gameplay/PowerUps</code>.</li>
+<li>Rename it <code>PowerUp Ghost</code>. Position <code>-9, 0, -3</code>.</li>
+<li>Check its <b>Power Up Spot</b>: <b>Type</b> = <b>Ghost</b>.</li>
 </ol>
 <p>The GHOST orb is 4 m from the back door. Plan: grab it, run in through the back door, take coins 1–3, and leave through the front door. 6 seconds is short: try it!</p>
 
@@ -377,7 +379,7 @@
 <ol>
 <li>Select <code>Gameplay/PlayerSpawn</code>. Position <code>0, 0, -14.5</code>, Rotation <code>0, 0, 0</code> (looks north, to the gate).</li>
 <li>Select <code>Static/ExitGate</code>. Position <code>0, 0, 16</code>, Rotation <code>0, 0, 0</code>.</li>
-<li>Select <code>Static/Walls/GateBlocker</code>. Position <code>0, 2.5, 17.25</code>. Box Collider Size <code>8, 5, 1</code>.</li>
+<li>Select <code>Static/Walls/PerimeterWall/GateBlocker</code>. It stays at <code>0, 2.5, 17.25</code> (Box Collider <code>7.5, 5, 1</code>). Do not change it.</li>
 <li>Select <code>Static</code>. In <b>NavMesh Surface</b>, click <b>Bake</b>. Look at the blue area: it must reach every coin and the gate.</li>
 <li>Save.</li>
 </ol>
@@ -412,12 +414,12 @@
 <li>No red errors in the Console.</li>
 </ul>
 </div>
-<p><b>The card:</b> it shows <b>GUARD TOWER</b>, "Sneak past the King" and "9 GOLD TO FIND". It is locked until you win the level before it. With the updated menu the cards are in two rows; with the old menu it hides under DAILY RUSH (see <a href="practicals.html#step-8">Practicals, step 8</a>).</p>
+<p><b>The card:</b> it shows <b>GUARD TOWER</b>, "Sneak past the King" and "9 GOLD TO FIND". It is locked until you win the level before it. With 6 or more levels the cards are in two rows (see <a href="practicals.html#step-8">Practicals, step 8</a>).</p>
 <p><b>Tune the par time:</b> best time + 25 %, rounded to 5 s. Change <code>parTime</code> in <code>Data.cs</code>.</p>
 
 <!-- ======================================================= 13 -->
 <h2 id="step-13"><span class="step">13</span>Make it harder</h2>
-<div class="tip"><b>Make it harder</b> (pick one or two, test after each):<ul><li>Add a second King: <code>Monster_MushroomKing</code> at <code>11, 0, 12</code> with its own Home <code>KingHome 2</code> at <code>11, 0, 12</code> (it guards coin 5).</li><li>Close the back door with a <code>Wall_4m</code> rot 90 at <code>-6.5, 0, 0</code>, and move the GHOST orb next to the front door.</li><li>Change the Slime to a <code>Monster_Ghost</code>.</li><li>Set <code>enemySpeed = 1.1f</code> and <code>lives = 1</code>: one hit and you lose.</li></ul></div>
+<div class="tip"><b>Make it harder</b> (pick one or two, test after each):<ul><li>Add a second King: a <code>Monster_MushroomKing</code> marker at <code>11, 0, 12</code> with its own Home <code>KingHome 2</code> at <code>11, 0, 12</code> (it guards coin 5).</li><li>Close the back door with a <code>Wall_4m</code> rot 90 at <code>-6.5, 0, 0</code>, and move the GHOST orb next to the front door.</li><li>Change the Slime into a Ghost: <b>Monster Spawn → Type</b> = <code>Chaser</code>.</li><li>Set <code>enemySpeed = 1.1f</code> and <code>lives = 1</code>: one hit and you lose.</li></ul></div>
 
 <!-- ======================================================= 14 -->
 <h2 id="step-14"><span class="step">14</span>Self-check</h2>

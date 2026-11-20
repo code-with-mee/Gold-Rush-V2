@@ -73,7 +73,7 @@
 <!-- ======================================================= 1 -->
 <h2 id="step-1"><span class="step">1</span>Goal and values</h2>
 <div class="panel"><h3>Goal</h3><p>Turn the Level1 yard into a <b>maze</b> with <b>8 coins</b>, <b>2 Slimes</b>, <b>1 Ghost</b> and a <b>SPEED</b> power-up. Every corridor is at least 3 m wide. Two dead ends hold a reward coin.</p><p>You learn: walls as maze pieces, rotation 90, passage width, sight lines (walls hide you), PowerUpSpot, par time.</p></div>
-<p><b>What you need:</b> <a href="practical-1.html">Practical 1</a> (or the <a href="practicals.html">overview</a>) and a working <code>Level1</code>.</p>
+<p><b>What you need:</b> <a href="practical-1.html">Practical 1</a> (or the <a href="practicals.html">overview</a>) and your project with the <a href="phase-10.html">Phase 10</a> package. You start from its <code>Level1</code>.</p>
 <p><b>The LevelDef values</b> (you type them in step 11):</p>
 <div class="table-wrap"><table>
 <tr><th>Field</th><th>Value</th></tr>
@@ -269,21 +269,22 @@
 <!-- ======================================================= 4 -->
 <h2 id="step-4"><span class="step">4</span>Clear out</h2>
 <ol>
-<li>Delete all 17 children of <code>Static/Obstacles</code>. Keep the group (two blocks go back in later).</li>
+<li>Delete all 12 children of <code>Static/Obstacles</code>. Keep the group (two blocks go back in later).</li>
+<li>Delete <code>Static/Structures/LCover</code> (the L-shaped cover).</li>
 <li>Delete <code>Gameplay/PowerUps/PowerUp Magnet</code>.</li>
 <li>Keep both Slimes and the 6 CoinSpots: you move them.</li>
 </ol>
-<p>The outer walls, the gate and the floor stay exactly as in Level1.</p>
+<p>The outer walls (<code>Static/Walls/PerimeterWall</code>), the gate, the floor and <code>Decor</code> stay exactly as in Level1.</p>
 
-<figure class="shot"><img src="images/practical-2/step-04.png" alt="" loading="lazy"><figcaption>Cleared: <code>Obstacles</code> and <code>PowerUps</code> are empty. Both Slimes and the 6 CoinSpots stay.</figcaption></figure>
+<figure class="shot"><img src="images/practical-2/step-04.png" alt="" loading="lazy"><figcaption>Cleared: <code>Obstacles</code> and <code>PowerUps</code> are empty. Both Slimes and the 6 CoinSpots stay. (This picture is from an older Level1: yours has no Player, Main Camera and Sun in the Hierarchy.)</figcaption></figure>
 
 <!-- ======================================================= 5 -->
 <h2 id="step-5"><span class="step">5</span>Lamps</h2>
 <p>Six lamps stay where they are. Lamp 5 (middle west) would stand inside the row B wall, and lamp 6 (middle east) would stand in the east gap of row B and block the way. Move them:</p>
 <div class="table-wrap"><table>
 <tr><th>Lamp</th><th>Old position</th><th>New position</th></tr>
-<tr><td>5</td><td><code>-14.5, 0, 0</code></td><td><code>-10, 0, 12</code></td></tr>
-<tr><td>6</td><td><code>14.5, 0, 0</code></td><td><code>10, 0, 12</code></td></tr>
+<tr><td>5</td><td><code>-14.4, 0, 0</code></td><td><code>-10, 0, 12</code></td></tr>
+<tr><td>6</td><td><code>14.4, 0, 0</code></td><td><code>10, 0, 12</code></td></tr>
 </table></div>
 <p>Now two lamps light the last area in front of the gate.</p>
 
@@ -325,10 +326,10 @@
 
 <!-- ======================================================= 7 -->
 <h2 id="step-7"><span class="step">7</span>Coins</h2>
-<p>You need <b>8</b> CoinSpots, each with a <code>Coin</code> inside (local position <code>0, 1, 0</code>).</p>
+<p>You need <b>8</b> CoinSpots. A CoinSpot is an empty marker: the game makes the coin 1 m above it.</p>
 <ol>
 <li>Open <code>Gameplay/Coins</code>. Keep the CoinSpots you have and move them to the new positions.</li>
-<li>Need more? Select a CoinSpot (with its Coin) and press <b>Ctrl+D</b> / <b>Cmd+D</b>. Rename it with the next number.</li>
+<li>Need more? Select a CoinSpot and press <b>Ctrl+D</b> / <b>Cmd+D</b> (or drag <code>Prefabs/Markers/CoinSpot</code> onto <code>Gameplay/Coins</code>). Rename it with the next number.</li>
 <li>Delete CoinSpots you do not need.</li>
 </ol>
 <div class="table-wrap"><table>
@@ -343,17 +344,17 @@
 <tr><td><code>CoinSpot 8</code></td><td><code>12, 0, 12</code></td><td>Last coin, top right: then run to the gate</td></tr>
 </table></div>
 
-<figure class="shot"><img src="images/practical-2/step-07-a.png" alt="" loading="lazy"><figcaption>8 CoinSpots, each with a <code>Coin</code> inside.</figcaption></figure>
+<figure class="shot"><img src="images/practical-2/step-07-a.png" alt="" loading="lazy"><figcaption>8 CoinSpots in <code>Gameplay/Coins</code>. (In the older Level1 of this picture each CoinSpot had a Coin inside. Yours are empty markers: that is right.)</figcaption></figure>
 <figure class="shot"><img src="images/practical-2/step-07-b.png" alt="" loading="lazy"><figcaption>Top view: the coins follow the path, two of them in the dead ends.</figcaption></figure>
 
 <!-- ======================================================= 8 -->
 <h2 id="step-8"><span class="step">8</span>Monsters</h2>
-<p>Move <code>Slime 1</code> and <code>Slime 2</code> from Level1 to the new places. Add one <code>Monster_Ghost</code>. The first corridor (the start) has <b>no</b> monster: Slimes wander all the time, also during the intro, and a Slime in the start corridor finds you before you can move (we tested it: caught after 2 seconds).</p><p>Monsters go into <code>Gameplay/Monsters</code>. Drag the prefab from <code>Prefabs/Gameplay</code> onto the group, type the position, and rename it. Delete the old Slimes you do not need.</p>
+<p>Move <code>Slime 1</code> and <code>Slime 2</code> from Level1 to the new places. Add one <code>Monster_Ghost</code>. The first corridor (the start) has <b>no</b> monster: Slimes wander all the time, also during the intro, and a Slime in the start corridor finds you before you can move (we tested it: caught after 2 seconds).</p><p>Monsters go into <code>Gameplay/Monsters</code>. To add one, drag a marker from <code>Prefabs/Markers</code> (<code>Monster_Slime</code>, <code>Monster_Ghost</code> or <code>Monster_MushroomKing</code>) onto the group, type the position, and rename it.</p>
 <div class="table-wrap"><table>
-<tr><th>Name</th><th>Prefab</th><th>Position</th><th>Note</th></tr>
+<tr><th>Name</th><th>Marker</th><th>Position</th><th>Note</th></tr>
 <tr><td><code>Slime 1</code></td><td><code>Monster_Slime</code></td><td><code>10, 0, -4</code></td><td>In the second corridor, behind the splitter. Guards coin 4. Use the SPEED power-up to run past it.</td></tr>
 <tr><td><code>Slime 2</code></td><td><code>Monster_Slime</code></td><td><code>-10, 0, 4</code></td><td>In the third corridor. Guards coin 6 and the gap in row C.</td></tr>
-<tr><td><code>Ghost 1</code></td><td><code>Monster_Ghost</code></td><td><code>4, 0, 12</code></td><td>Near the gate. It sees all around (12 m), so use the row C wall as cover.</td></tr>
+<tr><td><code>Ghost 1</code></td><td><code>Monster_Ghost</code> (new)</td><td><code>4, 0, 12</code></td><td>Near the gate. It sees all around (12 m), so use the row C wall as cover.</td></tr>
 </table></div>
 
 <figure class="shot"><img src="images/practical-2/step-08-a.png" alt="" loading="lazy"><figcaption><code>Gameplay/Monsters</code>: <code>Slime 1</code>, <code>Slime 2</code> and <code>Ghost 1</code>.</figcaption></figure>
@@ -361,11 +362,11 @@
 
 <!-- ======================================================= 9 -->
 <h2 id="step-9"><span class="step">9</span>Power-up</h2>
-<p>A power-up is a <code>PowerUpSpot</code> marker with the matching prefab inside (like in <a href="phase-08.html">Phase 8</a>).</p>
+<p>A power-up is a <code>PowerUpSpot</code> marker, like <code>PowerUp Magnet</code> in Level1 (<a href="phase-08.html">Phase 8</a>). The game makes the orb above it at Play.</p>
 <ol>
-<li>Right-click <code>Gameplay/PowerUps</code> → <b>Create Empty</b>. Name it <code>PowerUp Speed</code>. Position <code>-14, 0, -12</code>.</li>
-<li><b>Add Component → Power Up Spot</b>. <b>Type</b> = <b>Speed</b>.</li>
-<li>Drag <code>PowerUp_Speed</code> onto the marker. Set the child's Position to <code>0, 0, 0</code>.</li>
+<li>Drag <code>Prefabs/Markers/PowerUp_Speed</code> onto <code>Gameplay/PowerUps</code>.</li>
+<li>Rename it <code>PowerUp Speed</code>. Position <code>-14, 0, -12</code>.</li>
+<li>Check its <b>Power Up Spot</b>: <b>Type</b> = <b>Speed</b>.</li>
 </ol>
 <p>The SPEED orb sits right before the first long corridor. 6 seconds of speed is just enough to run past Slime 1 in the second corridor.</p>
 
@@ -377,7 +378,7 @@
 <ol>
 <li>Select <code>Gameplay/PlayerSpawn</code>. Position <code>0, 0, -13</code>, Rotation <code>0, -90, 0</code> (looks west, down the first corridor to coin 1 and the SPEED orb).</li>
 <li>Select <code>Static/ExitGate</code>. Position <code>0, 0, 16</code>, Rotation <code>0, 0, 0</code>.</li>
-<li>Select <code>Static/Walls/GateBlocker</code>. Position <code>0, 2.5, 17.25</code>. Box Collider Size <code>8, 5, 1</code>.</li>
+<li>Select <code>Static/Walls/PerimeterWall/GateBlocker</code>. It stays at <code>0, 2.5, 17.25</code> (Box Collider <code>7.5, 5, 1</code>). Do not change it.</li>
 <li>Select <code>Static</code>. In <b>NavMesh Surface</b>, click <b>Bake</b>. Look at the blue area: it must reach every coin and the gate.</li>
 <li>Save.</li>
 </ol>
@@ -421,13 +422,13 @@
 <li>No red errors in the Console.</li>
 </ul>
 </div>
-<p><b>The card:</b> it is card 6, the first one in the second row. While it is locked, it shows <b>THE MAZE</b>, a lock and "Clear level 5". You unlock it when you win Level 5. Then it shows "Find the way out" and "8 GOLD TO FIND". With the updated menu the cards are in two rows; with the old menu it hides under DAILY RUSH (see <a href="practicals.html#step-8">Practicals, step 8</a>).</p>
+<p><b>The card:</b> it is card 6, the first one in the second row. While it is locked, it shows <b>THE MAZE</b>, a lock and "Clear level 5". You unlock it when you win Level 5. Then it shows "Find the way out" and "8 GOLD TO FIND". With 6 or more levels the cards are in two rows (see <a href="practicals.html#step-8">Practicals, step 8</a>).</p>
 <figure class="shot"><img src="images/practical-2/step-12-e.png" alt="" loading="lazy"><figcaption>Level Select with 6 levels: two rows. THE MAZE is card 6 in the bottom row, next to DAILY RUSH.</figcaption></figure>
 <p><b>Tune the par time:</b> best time + 25 %, rounded to 5 s. Change <code>parTime</code> in <code>Data.cs</code>.</p>
 
 <!-- ======================================================= 13 -->
 <h2 id="step-13"><span class="step">13</span>Make it harder</h2>
-<div class="tip"><b>Make it harder</b> (pick one or two, test after each):<ul><li>Change Slime 2 to a <code>Monster_Ghost</code>.</li><li>Put a third <code>Monster_Slime</code> at <code>13, 0, -12</code>, next to coin 2 in the first corridor. Does it find you at the start? Then move it.</li><li>Move the SPEED power-up to the dead end of coin 6 (risk for reward).</li><li>Set <code>enemySpeed = 1.1f</code> and <code>parTime = 50</code>.</li><li>Add a second gap in row B at the west end (delete the <code>Wall_4m</code> at <code>-14, 0, 0</code>): two ways to go, which is faster?</li></ul></div>
+<div class="tip"><b>Make it harder</b> (pick one or two, test after each):<ul><li>Change Slime 2 into a Ghost: set its <b>Monster Spawn → Type</b> to <code>Chaser</code> (and update <code>patrollers</code> / <code>chasers</code>).</li><li>Put a third <code>Monster_Slime</code> marker at <code>13, 0, -12</code>, next to coin 2 in the first corridor. Does it find you at the start? Then move it.</li><li>Move the SPEED power-up to the dead end of coin 6 (risk for reward).</li><li>Set <code>enemySpeed = 1.1f</code> and <code>parTime = 50</code>.</li><li>Add a second gap in row B at the west end (delete the <code>Wall_4m</code> at <code>-14, 0, 0</code>): two ways to go, which is faster?</li></ul></div>
 
 <!-- ======================================================= 14 -->
 <h2 id="step-14"><span class="step">14</span>Self-check</h2>

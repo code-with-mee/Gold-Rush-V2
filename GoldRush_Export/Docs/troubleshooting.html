@@ -54,306 +54,201 @@
 <p class="lead">Something does not work? Find the symptom below. Each answer links to the step that fixes it. Every phase also has its own “Common problems” table at the end.</p>
 
 <div class="check"><b>Try these first</b><ul>
-  <li>Look at the <b>Console</b> (<b>Window → General → Console</b>). The <b>first</b> red error is usually the real cause. Double-click it to open the script at that line.</li>
-  <li>Stop Play mode before you change anything, and wait for Unity to finish compiling (the spinner in the bottom-right corner).</li>
-  <li>Go back to the step and check every value: names, positions, ticked boxes. One wrong letter is enough to break it.</li>
-  <li>Still stuck? Import the <a href="index.html#packages">checkpoint package</a> of the phase you finished last from <code>GoldRush_Export/Packages/</code> into a <b>new, empty project</b> and continue from there. Or open it to compare with your project.</li>
+<li>Look at the <b>Console</b> (<b>Window → General → Console</b>). The <b>first</b> red error is usually the real cause. Double-click it to open the script at that line.</li>
+<li>Stop Play mode before you change anything, and wait for Unity to finish compiling (the spinner in the bottom-right corner).</li>
+<li>Many objects (the Player, the camera, coins, monsters, orbs) exist <b>only in Play mode</b>. The GameManager makes them from the markers when the level starts. Look for them while the game runs.</li>
+<li>Broke something in a “Try it” step? Import the <a href="index.html#packages">phase package</a> again into a <b>new, empty project</b> (or delete <code>Assets/GoldRush</code> first) and add the scenes to the Scene List.</li>
 </ul></div>
-
 <nav class="toc" aria-label="Topics on this page"><strong>Topics</strong><ol>
-  <li><a href="#setup">Project and packages</a> (phase 0)</li>
-  <li><a href="#code">Scripts and compile errors</a></li>
-  <li><a href="#menu">Main menu and UI</a> (phases 1–2)</li>
-  <li><a href="#level">Prefabs and the level</a> (phase 3)</li>
-  <li><a href="#player">Player and animation</a> (phase 4)</li>
-  <li><a href="#camera">Camera and mouse</a> (phase 4)</li>
-  <li><a href="#coins">Coins, gate, win and lose</a> (phases 5–6)</li>
-  <li><a href="#monsters">Monsters</a> (phase 7)</li>
-  <li><a href="#powerups">Power-ups and effects</a> (phase 8)</li>
-  <li><a href="#gameui">HUD and dialogs</a> (phase 9)</li>
-  <li><a href="#polish">Day/night, touch, sound and build</a> (phase 10)</li>
+<li><a href="#setup">Project and import</a> (every phase)</li>
+<li><a href="#code">Scripts and compile errors</a></li>
+<li><a href="#menu">Main menu and UI</a> (phases 1–2)</li>
+<li><a href="#level">The level and the Scene List</a> (phase 3)</li>
+<li><a href="#player">Player and camera</a> (phase 4)</li>
+<li><a href="#coins">Coins, gate, win and lose</a> (phases 5–6)</li>
+<li><a href="#monsters">Monsters</a> (phase 7)</li>
+<li><a href="#powerups">Power-ups and effects</a> (phase 8)</li>
+<li><a href="#gameui">HUD and dialogs</a> (phase 9)</li>
+<li><a href="#polish">Day/night, touch, sound and build</a> (phase 10)</li>
+<li><a href="#practicals">Your own levels</a> (Practicals)</li>
 </ol></nav>
 
-<h2 id="setup">Project and packages</h2>
+<h2 id="setup">Project and import</h2>
 <h3>Everything is pink</h3>
-<p>The material uses a shader that URP can't draw. Do not delete the <code>Settings</code> folder of the template. Check <b>Edit → Project Settings → Graphics</b>: Default Render Pipeline must be a URP asset (for example <code>PC_RPAsset</code>). If you made a <b>3D (Built-In)</b> project by mistake, make a new project with <b>Universal 3D</b> (<a href="phase-00.html#step-2">Phase 0, step 2</a>). One pink material? Set its Shader to <b>Universal Render Pipeline/Lit</b>. A pink model? Select the FBX → <b>Materials</b> tab → <b>Apply</b>.</p>
+<p>The project is not URP. Make a new project with the <b>Universal 3D</b> template, and do not delete the <code>Settings</code> folder (<a href="phase-00.html#step-2">Phase 0, step 2</a>, <a href="phase-00.html#step-3">step 3</a>).</p>
 <h3>The template Universal 3D is not in the list</h3>
 <p>Scroll down in Unity Hub, or click the download icon next to it. Use Unity <b>6000.6.10f1</b> or newer (<a href="phase-00.html#step-2">Phase 0, step 2</a>).</p>
-<h3>I chose Active Input Handling = Both, but nothing happened</h3>
-<p>Unity must restart. Close Unity yourself and open the project again from Unity Hub (<a href="phase-00.html#step-6">Phase 0, step 6</a>).</p>
-<h3>“You are trying to read Input using the UnityEngine.Input class…”, or input stopped working</h3>
-<p>Set <b>Edit → Project Settings → Player → Other Settings → Active Input Handling</b> to <b>Both</b>. The game uses the classic <code>Input</code> class, which does not work with “Input System Package (New)” only (<a href="phase-00.html#step-6">Phase 0, step 6</a>).</p>
-<h3>Red errors right after importing the starter package</h3>
-<p>Check that <b>AI Navigation</b> is installed (<a href="phase-00.html#step-5">Phase 0, step 5</a>), then import the package again (<a href="phase-00.html#step-7">step 7</a>).</p>
 <h3>I cannot find Package Management in the Window menu</h3>
 <p>In some Unity 6 versions it is <b>Window → Package Manager</b> directly (<a href="phase-00.html#step-4">Phase 0, step 4</a>).</p>
-<h3>The hero in the test scene is huge or tiny</h3>
-<p>Scale must be <b>0.337</b> on all three axes (<a href="phase-00.html#step-10">Phase 0, step 10</a>).</p>
+<h3>Red errors about <code>Unity.AI.Navigation</code> right after the import</h3>
+<p>Install <b>AI Navigation</b> in the Package Manager (<a href="phase-00.html#step-4">Phase 0, step 4</a>). The errors go away by themselves.</p>
+<h3>“You are trying to read Input using the UnityEngine.Input class…”</h3>
+<p>Set <b>Edit → Project Settings → Player → Other Settings → Active Input Handling</b> to <b>Both</b> and let Unity restart (<a href="phase-00.html#step-5">Phase 0, step 5</a>).</p>
+<h3>I chose Active Input Handling = Both, but nothing happened</h3>
+<p>Unity must restart. Close Unity yourself and open the project again from Unity Hub (<a href="phase-00.html#step-5">Phase 0, step 5</a>).</p>
+<h3>After the import I have files like <code>GoldRushMenu 1.cs</code> or <code>FX 1.cs</code></h3>
+<p>You imported a package into a project that already had the files. Every package has all the scripts. Make a new, empty project, or delete the folder <code>Assets/GoldRush</code> before you import (<a href="phase-01.html#step-2">Phase 1, step 2</a>).</p>
+<h3>I opened the scene, but PLAY (or MENU, NEXT) cannot load a scene</h3>
+<p>A package does not bring the Scene List. After every import, add the scenes to <b>File → Build Profiles → Scene List</b>, with <code>MainMenu</code> first (<a href="phase-03.html#step-2">Phase 3, step 2</a>, <a href="phase-10.html#step-1">Phase 10, step 1</a>).</p>
 <h3>A kit piece floats above the floor or sinks into it</h3>
-<p>Set its Position Y to 0. The pivot of every kit piece is at the bottom (<a href="phase-03.html#step-2">Phase 3, step 2</a>).</p>
+<p>Set its Position Y to 0. The pivot of every kit piece is at the bottom (<a href="phase-00.html#step-10">Phase 0, step 10</a>).</p>
 
 <h2 id="code">Scripts and compile errors</h2>
-<h3>Red errors right after importing the helper scripts</h3>
-<p>Often normal for a moment: the helpers need scripts that you type in the next steps. In phase 1 the errors about <code>Save</code> and <code>GoldRushMenu</code> go away after steps 4–6 (<a href="phase-01.html#step-3">Phase 1, step 3</a>). In phase 7 they go away after you replace the GameManager (<a href="phase-07.html#step-7">Phase 7, step 7</a>).</p>
-<h3>“The type or namespace name '…' could not be found”</h3>
-<ul>
-  <li>The script is missing. Each phase lists the scripts to type or import. Small stubs: <code>VirtualJoystick</code> and <code>TouchLookArea</code> (<a href="phase-04.html#step-7">Phase 4, step 7</a>).</li>
-  <li>A helper is missing: <code>UIKit</code>, <code>Tween</code>, <code>AudioFX</code>, <code>ButtonFX</code> (<a href="phase-01.html#step-3">Phase 1, step 3</a>), <code>EnemyAI</code>, <code>Mats</code>, <code>CharacterFactory</code>, <code>WorldMarkers</code> (<a href="phase-07.html#step-7">Phase 7, step 7</a>), <code>FX</code> (<a href="phase-08.html#step-3">Phase 8, step 3</a>), <code>GameUI</code> and <code>GameAction</code> (<a href="phase-09.html">Phase 9</a>).</li>
-  <li>The file name and the class name must be the same (<code>PlayerMotor.cs</code> → <code>class PlayerMotor</code>), and the code must be inside <code>namespace GoldRush</code>.</li>
-</ul>
+<h3>Red errors after I changed a script in “Try it”</h3>
+<p>Look at the first error: it names the file and the line. Often a missing <code>;</code>, <code>f</code> after a number (<code>8f</code>) or <code>"</code>. Press <b>Ctrl+Z</b> / <b>Cmd+Z</b> in your code editor, or import the phase package again.</p>
 <h3>“The namespace 'GoldRush' already contains a definition for …”</h3>
-<p>A script exists twice, for example two <code>Data.cs</code> or two <code>PowerUp.cs</code>. Search the Project window for the name and delete the extra copy.</p>
-<h3>“'GameManager' (or 'PlayerMotor') does not contain a definition for …”</h3>
-<p>You still have an older <b>phase version</b> of the file. Many scripts grow phase by phase. When a step says <b>Replace the whole file</b>, select all the old code and paste the new one. For example <code>GhostActive</code> comes in <a href="phase-07.html#step-10">Phase 7, step 10</a>, <code>SpeedMultiplier</code> in <a href="phase-08.html#step-10">Phase 8, step 10</a> and <code>AddLantern</code> in <a href="phase-08.html#step-9">Phase 8, step 9</a>.</p>
-<h3>“'ExitGate' does not contain a definition for …”</h3>
-<p>An old placeholder of the script is still there. Replace the whole file (<a href="phase-06.html#step-3">Phase 6, step 3</a>).</p>
-<h3>I can't add a component (Monster Spawn, Enemy AI, …)</h3>
-<p>Unity can not add components while there are red errors in the Console. Fix them first.</p>
-<h3>Red errors after replacing all scripts in Phase 10</h3>
-<p>A file from the <code>Final</code> folder is missing. Copy all folders of <code>Resources/Scripts/Final/</code> again and click <b>Replace</b> for every file (<a href="phase-10.html">Phase 10</a>).</p>
+<p>A script exists twice, for example <code>Data.cs</code> and <code>Data 1.cs</code>. You imported into a project that already had the scripts. Delete the copy with the number, or start again in a new, empty project.</p>
+<h3>I can't add a component, or my change has no effect</h3>
+<p>Unity can not add components or run new code while there are red errors in the Console. Fix them first.</p>
 <h3>My Inspector changes disappeared when I stopped Play</h3>
-<p>Unity always undoes changes made in Play mode. Write the good value down, stop Play, and type it again. Or right-click the component → <b>Copy Component</b> in Play mode, then <b>Paste Component Values</b> after you stop.</p>
+<p>Unity always undoes changes made in Play mode. Write the good value down, stop Play, and type it again. Objects made by code (Player, camera, monsters) are gone after Play anyway: change the script value instead (<a href="phase-04.html#step-6">Phase 4, step 6</a>).</p>
 
 <h2 id="menu">Main menu and UI</h2>
 <h3>Console: “GoldRushAssets missing”</h3>
-<p>The asset must be called exactly <code>GoldRushAssets</code> and be inside <code>Assets/GoldRush/Resources</code> (<a href="phase-01.html#step-7">Phase 1, step 7</a>).</p>
-<h3>No music and no click sound</h3>
-<p>The Sounds list of GoldRushAssets is empty: it needs all 16 <code>.wav</code> files (<a href="phase-01.html#step-7">Phase 1, step 7</a>). Check that the Game view is not muted (<b>Mute Audio</b>).</p>
+<p>The asset must be called exactly <code>GoldRushAssets</code> and be inside <code>Assets/GoldRush/Resources</code>. Do not move or rename files in <code>Resources</code>. Import the package again (<a href="phase-01.html#step-1">Phase 1, step 1</a>).</p>
 <h3>Buttons do nothing when I click</h3>
-<p>The scene needs an <b>EventSystem</b> (<a href="phase-01.html#step-12">Phase 1, step 12</a>). <b>Raycast Target</b> must be on for <code>Face</code> (big buttons) or <code>Glass</code> (chips). A big decoration image on top (<code>BackdropTop</code>, <code>LogoGlow</code>, …) with Raycast Target on blocks the clicks: untick it.</p>
+<p>Are you in Play mode and clicking in the Game view? The scene needs its <code>EventSystem</code> (<a href="phase-01.html#check-1">Phase 1, check 1</a>).</p>
 <h3>Console: “Unknown menu action”</h3>
-<p>A typo in the <b>Action</b> field of <b>Menu Action</b>. Use exactly <code>play</code>, <code>levels</code>, <code>shop</code>, <code>settings</code>, <code>back</code> or <code>closeSettings</code> (capital S) (<a href="phase-01.html#step-5">Phase 1, step 5</a>, <a href="phase-02.html#step-2">Phase 2, step 2</a>).</p>
-<h3>The buttons do not grow or glow on hover</h3>
-<p><b>Button FX</b> is missing, <b>Flat</b> is not ticked, or a part has another name. It looks for <code>Halo</code>, <code>Face</code>, <code>Edge</code>, <code>EdgeGlow</code>, <code>Sweep</code>, <code>IconDisc</code>, <code>Content</code> and <code>Chevron</code> (<a href="phase-01.html#step-16">Phase 1, step 16</a>).</p>
-<h3>Round ends of a pill or button look huge or squashed</h3>
-<p>Image Type must be <b>Sliced</b>, and all layers of one piece need the same <b>Pixels Per Unit Multiplier</b> (for a pill: 128 ÷ height) (<a href="phase-01.html#step-14">Phase 1, step 14</a>). For the phase 2 pieces, use the PPU from the table (<a href="phase-02.html#step-7">Phase 2, step 7</a>).</p>
-<h3>The gradient or the light sweep sticks out of the button corners</h3>
-<p>Add a <b>Mask</b> to <code>Face</code> (<a href="phase-01.html#step-16">Phase 1, step 16</a>).</p>
+<p>A typo in the <b>Action</b> field of <b>Menu Action</b>. Use exactly <code>play</code>, <code>levels</code>, <code>shop</code>, <code>back</code>, <code>settings</code> or <code>closeSettings</code> (capital S) (<a href="phase-01.html#check-7">Phase 1, check 7</a>, <a href="phase-02.html#check-5">Phase 2, check 5</a>).</p>
 <h3>UI looks tiny or huge</h3>
-<p>Canvas Scaler: Scale With Screen Size, 1920 × 1080, Match 0.5. Game view: <b>Full HD (1920x1080)</b> (<a href="phase-01.html#step-12">Phase 1, step 12</a>).</p>
-<h3>Text is cut off, or shows in the default font</h3>
-<p>Font must be <b>Poppins</b> from <code>Resources/Fonts</code>. Horizontal and Vertical Overflow = <b>Overflow</b> (except Best Fit labels).</p>
-<h3>The logo is missing, or the glows do not pulse</h3>
-<p><code>Logo</code> needs the <b>Logo Title</b> component, and it only appears in Play mode (<a href="phase-01.html#step-15">Phase 1, step 15</a>). Glows: <b>Bob</b> Speed and Pulse must not be 0.</p>
-<h3>The menu hero stands in a T-pose, never waves, or waves once and freezes</h3>
-<p><code>Model</code> → Animator → Controller must be <code>Hero</code>, Player Anim on GoldRushMenu must be <code>MenuPlayer/Model</code>, and the parameter must be called exactly <code>Win</code>. The Wave clip needs <b>Loop Time</b>, and the arrow Win → Idle needs Has Exit Time on, Exit Time 3 (<a href="phase-01.html#step-8">Phase 1, step 8</a>).</p>
-<h3>The menu hero turns his back to the camera</h3>
-<p><code>MenuPlayer</code> Rotation Y must be 180 and <code>Model</code> Rotation 0, 0, 0 (<a href="phase-01.html#step-11">Phase 1, step 11</a>).</p>
-<h3>The menu scene is very dark or very bright in the editor</h3>
-<p>Normal: the script sets the night mood in Play mode.</p>
-<h3>NullReferenceException in GoldRushMenu.Start or RefreshTitle</h3>
-<p>A field on GoldRushMenu is empty, often Gold Text, Stars Text, Stars Bar or Settings Root. Fill every field (<a href="phase-01.html#step-18">Phase 1, step 18</a>, <a href="phase-02.html#step-12">Phase 2, step 12</a>).</p>
-<h3>The level cards, the tabs or the shop items do not appear</h3>
-<p>Level Cards, Shop Tabs or Shop Grid is empty, or points to the wrong object. Use <code>Levels/Cards</code> and <code>Shop/ShopPanel/Glass/Tabs</code> / <code>Grid</code> (<a href="phase-02.html#step-12">Phase 2, step 12</a>).</p>
-<h3>Two screens show at the same time</h3>
-<p>Each Screen field needs its own screen: Title Screen, Level Screen and Shop Screen (<a href="phase-02.html#step-12">Phase 2, step 12</a>).</p>
-<h3>The top-right bar shows on the Title screen, or never shows</h3>
-<p>Top Right must have the three objects under <code>MenuUI</code>, not the ones under <code>Title</code> (<a href="phase-02.html#step-6">Phase 2, step 6</a>).</p>
-<h3>Settings never opens, opens behind the other screens, or never closes</h3>
-<p>The gear needs Menu Action <code>settings</code>, CLOSE needs <code>closeSettings</code>. <code>Settings</code> must be the last child of <code>MenuUI</code> (<a href="phase-02.html#step-10">Phase 2, step 10</a>, <a href="phase-02.html#step-11">step 11</a>).</p>
-<h3>MUSIC / SOUND do nothing, or the label does not change</h3>
-<p>They need no Menu Action, but they must be in the <b>Music Toggle</b> / <b>Sound Toggle</b> fields. The label must be the first Text inside the button, and the icon disc must be at <code>Glass/IconDisc</code> (<a href="phase-02.html#step-11">Phase 2, step 11</a>).</p>
-<h3>I click a card behind the Settings dialog, or I can't click anything on the Levels screen</h3>
-<p><code>Settings/Dim</code> needs Raycast Target <b>on</b>. <code>Levels/Dim</code> needs Raycast Target <b>off</b>.</p>
-<h3>PLAY only writes a message in the Console</h3>
-<p>Normal in phases 1–2: there is no level yet. PLAY opens Level 1 after <a href="phase-03.html#step-17">Phase 3, step 17</a>.</p>
-<h3>Buying always fails, or the hero does not change colour</h3>
-<p>You have 0 gold: give yourself some for a test (<a href="phase-02.html#step-13">Phase 2, step 13</a>). The menu hero shows the shop colour and hat from phase 10.</p>
-<h3>Gold or stars are not saved</h3>
-<p>Win the level (losing gives only gold for coins). After you change <code>Save.Data</code> in your own code, call <code>Save.Persist()</code>. A “Save corrupted” message in the Console means the save was reset.</p>
+<p>Game view: <b>Full HD (1920x1080)</b>. Canvas Scaler: Scale With Screen Size, 1920 × 1080, Match 0.5 (<a href="phase-01.html#check-5">Phase 1, check 5</a>).</p>
+<h3>The menu scene is flat or too bright in the editor</h3>
+<p>Normal: the script sets the night mood, fog and glow in Play mode (<a href="phase-01.html#step-4">Phase 1, step 4</a>).</p>
+<h3>The level cards, the tabs or the shop items are empty in Edit mode</h3>
+<p>Normal. <code>Cards</code>, <code>Tabs</code> and <code>Grid</code> are empty boxes: the script fills them when a screen opens in Play mode (<a href="phase-02.html#check-1">Phase 2, check 1</a>).</p>
+<h3>I cannot see the Settings dialog in the Scene view</h3>
+<p>It is inactive until you click the gear. Tick it to look at it, and untick it again before Play (<a href="phase-02.html#check-4">Phase 2, check 4</a>).</p>
+<h3>PLAY or a level card: the screen goes black and the Console says the scene “couldn't be loaded”</h3>
+<p>Normal in phases 1–2: there is no level yet. Level1 comes in <a href="phase-03.html">Phase 3</a>, Levels 2–4 and the Daily Rush in <a href="phase-10.html">Phase 10</a>.</p>
+<h3>Buying always fails</h3>
+<p>You have 0 gold. You win gold in the levels. For a test, give yourself gold in <code>Data.cs</code> (<a href="phase-02.html#step-6">Phase 2, step 6</a>).</p>
+<h3>I changed <code>gold = 500</code> in Data.cs, but I still have 0</h3>
+<p>The old save is still there. Stop Play mode → <b>Edit → Clear All PlayerPrefs</b> (<a href="phase-02.html#step-7">Phase 2, step 7</a>).</p>
 <h3>I want to start over with no gold and only Level 1 unlocked</h3>
 <p>Stop Play mode, then <b>Edit → Clear All PlayerPrefs</b>.</p>
 
-<h2 id="level">Prefabs and the level</h2>
-<h3>I cannot leave Prefab Mode</h3>
-<p>Click the <b>&lt;</b> arrow at the top left of the Hierarchy, or double-click the scene file.</p>
-<h3>I changed a kit prefab by mistake (Apply All)</h3>
-<p>Try <b>Edit → Undo</b>, or import the starter package again and tick only <b>Prefabs</b> (or <b>Materials</b>). Never click <b>Overrides → Apply All</b> on a kit piece (<a href="phase-03.html#step-2">Phase 3, step 2</a>).</p>
+<h2 id="level">The level and the Scene List</h2>
+<h3>PLAY does nothing: “Scene 'Level1' couldn't be loaded because it has not been added to the build settings”</h3>
+<p>Add <code>Scenes/Level1</code> to <b>File → Build Profiles → Scene List</b>. The name must be exactly <code>Level1</code>, no space (<a href="phase-03.html#step-2">Phase 3, step 2</a>).</p>
+<h3>The build (or Play) starts in Level1, not in the menu</h3>
+<p>In the Scene List, <code>MainMenu</code> must be number 0. Drag it to the top (<a href="phase-03.html#check-8">Phase 3, check 8</a>).</p>
+<h3>The level is dark and grey, with no sunset sky</h3>
+<p><b>Window → Rendering → Lighting → Environment</b>: Skybox Material = <code>GR_SunsetSky</code>, Sun Source = <code>Sun</code> (<a href="phase-03.html#step-4">Phase 3, step 4</a>). From Phase 4 on, the game sets the sky, fog and sun itself at Play.</p>
 <h3>Glow materials do not glow</h3>
 <p>Normal in Edit mode. They shine in Play mode, when <code>EnvironmentSetup</code> adds bloom.</p>
-<h3>The name in the Hierarchy is not blue</h3>
-<p>It is not a prefab instance. Delete it and drag the prefab from the Project window again.</p>
-<h3>Blocks float or sink into the floor</h3>
-<p>Y must be 0 (only block #10 has Y 2). <code>Floor_40m</code> must be at 0, 0, 0 (<a href="phase-03.html#step-6">Phase 3, step 6</a>, <a href="phase-03.html#step-11">step 11</a>).</p>
-<h3>A wall piece is far away from where it should be</h3>
-<p>It is not a child of its wall group, so its position is in world space. Drag it onto the right group and type the local position again (<a href="phase-03.html#step-7">Phase 3, step 7</a>). East/west walls run the wrong way? Rotate the group (0, 90, 0), not the children (<a href="phase-03.html#step-9">Phase 3, step 9</a>).</p>
-<h3>The sky is grey, there is no fog, or everything is dark</h3>
-<p><b>Window → Rendering → Lighting → Environment</b>: Skybox Material = <code>GR_SunsetSky</code>, Fog ticked, Linear, Start 35, End 120. In the Scene view, turn on Fog in the effects menu. Sun Intensity 1.5 and the gradient ambient colours (<a href="phase-03.html#step-13">Phase 3, step 13</a> and <a href="phase-03.html#step-14">step 14</a>).</p>
+<h3>I changed a kit prefab by mistake (Apply All)</h3>
+<p>Try <b>Edit → Undo</b>, or import the package again. Never click <b>Overrides → Apply All</b> on a kit piece (<a href="phase-03.html#step-1">Phase 3, step 1</a>).</p>
+<h3>I cannot leave Prefab Mode</h3>
+<p>Click the <b>&lt;</b> arrow at the top left of the Hierarchy, or double-click the scene file.</p>
 <h3>I cannot see the markers</h3>
-<p>Give them an icon, and check that <b>Gizmos</b> is on in the Scene view toolbar (<a href="phase-03.html#step-12">Phase 3, step 12</a>).</p>
-<h3>Game view: “No cameras rendering”</h3>
-<p>You deleted the Main Camera. Add one with <b>GameObject → Camera</b>, tag it <code>MainCamera</code> (<a href="phase-03.html#step-16">Phase 3, step 16</a>).</p>
-<h3>PLAY does nothing: “Scene 'Level1' couldn't be loaded because it has not been added to the build settings”</h3>
-<p>Add the scene to <b>File → Build Profiles → Scene List</b>. The name must be exactly <code>Level1</code>, no space (<a href="phase-03.html#step-17">Phase 3, step 17</a>).</p>
-<h3>A level card for Level 2, 3 or 4 gives the same error</h3>
-<p>Normal: only Level 1 exists until phase 10 (<a href="phase-10.html">Phase 10</a>).</p>
-<h3>The build (or Play from the menu) starts in Level1, not in the menu</h3>
-<p>In the Scene List, <code>MainMenu</code> must be number 0. Drag it to the top (<a href="phase-03.html#step-17">Phase 3, step 17</a>).</p>
+<p>Turn on <b>Gizmos</b> in the Scene view toolbar. Then CoinSpots show a gold ball, PlayerSpawn a blue arrow, monsters a wire box and power-ups a wire ball (<a href="phase-05.html#check-3">Phase 5, check 3</a>).</p>
 
-<h2 id="player">Player and animation</h2>
-<h3>The hero model is grey, white or pink</h3>
-<p>Select <code>Hero.fbx</code> → <b>Materials</b> tab → Import via MaterialDescription, <b>Use Embedded Materials</b> → <b>Apply</b> (<a href="phase-04.html#step-2">Phase 4, step 2</a>).</p>
-<h3>The hero stands in a “T” pose</h3>
-<p>The Animator on <code>Model</code> has no Controller. Drag <code>Hero</code> into it (<a href="phase-04.html#step-12">Phase 4, step 12</a>). The Animator is on the child <code>Player/Model</code>, not on <code>Player</code>.</p>
-<h3>The hero slides, but always plays Idle</h3>
-<p>The parameter is not called exactly <code>Speed</code> (<a href="phase-04.html#step-3">Phase 4, step 3</a>), or the blend tree Parameter is not <code>Speed</code> (<a href="phase-04.html#step-4">step 4</a>).</p>
-<h3>Walk or run plays once and then freezes</h3>
-<p><b>Loop Time</b> is off for that clip. Tick it in the Animation tab of the FBX and click <b>Apply</b> (<a href="phase-04.html#step-2">Phase 4, step 2</a>). Same for the monsters (<a href="phase-07.html#step-4">Phase 7, step 4</a>).</p>
-<h3>The hero runs when he should walk</h3>
-<p>Untick <b>Automate Thresholds</b> and set 0 / 0.5 / 1 (<a href="phase-04.html#step-4">Phase 4, step 4</a>).</p>
-<h3>The hero moves away from his capsule, floats, sinks, or is tiny or giant</h3>
-<p>Untick <b>Apply Root Motion</b> on the Animator. <code>Model</code> Position = 0, 0, 0, Scale about 0.36: change the Scale of <code>Model</code>, not of <code>Player</code> (<a href="phase-04.html#step-12">Phase 4, step 12</a>). CharacterController Center = 0, 0.695, 0, Height = 1.35 (<a href="phase-04.html#step-11">step 11</a>).</p>
-<h3>The hero's feet slide, or he runs in slow motion</h3>
-<p>Check the Hero values in GoldRushAssets: Height 1.35, Walk Speed 0.59, Run Speed 0.84 (<a href="phase-05.html#step-9">Phase 5, step 9</a>).</p>
-<h3>The hero falls through the floor</h3>
-<p>The floor has no collider, or the Player starts below the floor.</p>
-<h3>Nothing happens when I press keys</h3>
-<p>Click inside the Game view first. Check that <code>PlayerMotor</code> is on <code>Player</code> and is ticked (<a href="phase-04.html#step-13">Phase 4, step 13</a>).</p>
-<h3>A trigger (Attack, Hit, Win, Die) does nothing, or the hero stays in that animation</h3>
-<p>The Any State arrow needs a condition with the right trigger. The arrow back to Locomotion must exist, with <b>Has Exit Time</b> on (<a href="phase-04.html#step-6">Phase 4, step 6</a>).</p>
-<h3>I can't find the Slime's Hit clip</h3>
-<p>The model spells it <code>HitRecieve</code> (with “ie”). Ghost and Mushroom King use <code>HitReact</code> (<a href="phase-07.html#step-5">Phase 7, step 5</a>).</p>
-
-<h2 id="camera">Camera and mouse</h2>
-<h3>The camera does not move</h3>
-<p>Target on ThirdPersonCamera is empty. Drag <code>Player</code> into it (<a href="phase-04.html#step-14">Phase 4, step 14</a>).</p>
-<h3>The camera is very close to the hero, or jumps in and out</h3>
-<p>The Player and its <code>Model</code> must be on the <b>Ignore Raycast</b> layer (<a href="phase-04.html#step-13">Phase 4, step 13</a>). An invisible object with a collider can also block the camera: remove that collider.</p>
-<h3>W always runs the same way, not where the camera looks</h3>
-<p>Cam on PlayerMotor is empty (<a href="phase-04.html#step-15">Phase 4, step 15</a>).</p>
-<h3>The mouse does not turn the camera, or the cursor never hides</h3>
-<p>Click inside the Game view so the cursor locks. On a touch-screen computer mouse look stays off: use right-drag or <kbd>Q</kbd>/<kbd>E</kbd> (<a href="phase-04.html#step-9">Phase 4, step 9</a>).</p>
+<h2 id="player">Player and camera</h2>
+<h3>I cannot find the Player or the Main Camera in the Hierarchy</h3>
+<p>Normal. The GameManager makes them when you press Play, at <code>PlayerSpawn</code> (<a href="phase-04.html#check-1">Phase 4, check 1</a>).</p>
+<h3>Keys do nothing</h3>
+<p>Wait for GO!, then click inside the Game view (<a href="phase-04.html#step-5">Phase 4, step 5</a>).</p>
+<h3>The hero is invisible, or stands in a T-pose</h3>
+<p>Open <code>Resources/GoldRushAssets</code> → <b>Hero</b>: Model and Controller must be filled (<a href="phase-04.html#check-6">Phase 4, check 6</a>). Import the package again if they are empty.</p>
+<h3>The hero's feet slide, or he is tiny or giant</h3>
+<p>Check the Hero values in GoldRushAssets: Height <code>1.35</code>, Walk Speed <code>0.587</code>, Run Speed <code>0.836</code> (<a href="phase-04.html#check-6">Phase 4, check 6</a>).</p>
 <h3>The mouse cursor disappeared</h3>
-<p>The game hides and locks it so the mouse can turn the camera. Press <kbd>Esc</kbd> to get it back. Click in the Game view to lock it again.</p>
+<p>The game locks it so the mouse can turn the camera. Press <kbd>Esc</kbd> to get it back. Click in the Game view to lock it again.</p>
+<h3>The mouse does not turn the camera</h3>
+<p>Click inside the Game view so the cursor locks. You can also turn with <kbd>Q</kbd> / <kbd>E</kbd> (<a href="phase-04.html#step-5">Phase 4, step 5</a>).</p>
 <h3>The camera looks through walls</h3>
-<p>The wall has no collider. Open the wall prefab in Prefab Mode and check that its solid parts still have a <b>Box Collider</b> (<a href="phase-03.html#step-2">Phase 3, step 2</a>).</p>
-<h3>The camera shakes when the hero runs</h3>
-<p>There must be only one ThirdPersonCamera, and the camera must not be a child of <code>Player</code> (<a href="phase-04.html#step-14">Phase 4, step 14</a>).</p>
+<p>The wall has no collider. Kit walls have one: do not remove it.</p>
 
 <h2 id="coins">Coins, gate, win and lose</h2>
-<h3>Console: “No LevelScene in this scene”</h3>
-<p>Add the <b>Level Scene</b> component to the level root <code>Level 1 - Training Yard</code> (<a href="phase-05.html#step-11">Phase 5, step 11</a>).</p>
-<h3>Console: “CoinSpot 3 has no Coin inside”</h3>
-<p>Drag the Coin prefab onto that marker and set its Position to 0, 1, 0 (<a href="phase-05.html#step-13">Phase 5, step 13</a>).</p>
-<h3>Console: “collect 0 coins”, or “This level has no coins”</h3>
-<p>The CoinSpots need the <b>Coin Spot</b> component, and they must be inside the level root (<a href="phase-05.html#step-12">Phase 5, step 12</a>).</p>
-<h3>Where is the coin counter?</h3>
-<p>There is no HUD until phase 9. Until then the Console counts for you: <code>Coin 1 / 6</code> (<a href="phase-05.html#step-16">Phase 5, step 16</a>).</p>
-<h3>I walk through a coin but nothing happens</h3>
-<p>Coins have no colliders: the GameManager checks the distance every frame (<a href="phase-05.html#step-2">Phase 5, step 2</a>). The child Coin must be at local position 0, 1, 0 and the marker on the floor (Y = 0). Check that the GameManager is in the scene (<a href="phase-05.html#step-15">step 15</a>).</p>
-<h3>The coins do not spin</h3>
-<p>The Coin prefab has no <b>Coin</b> component, or its Visual field is empty (<a href="phase-05.html#step-10">Phase 5, step 10</a>).</p>
-<h3>The hero does not move after GO</h3>
-<p>Replace <code>PlayerMotor.cs</code> with the phase 5 version (<a href="phase-05.html#step-6">Phase 5, step 6</a>). There must be exactly one GameManager.</p>
-<h3>NullReferenceException in GameManager.Build</h3>
-<p>The scene has no Player (with <code>PlayerMotor</code>) or no camera (with <code>ThirdPersonCamera</code>). The GameManager looks for both (<a href="phase-05.html#step-14">Phase 5, step 14</a>).</p>
+<h3>I do not see any Coin in the Hierarchy</h3>
+<p>Normal. The coins exist only in Play mode, under <code>Dynamic (runtime)</code> (<a href="phase-05.html#check-5">Phase 5, check 5</a>).</p>
+<h3>Warning: “This level has no CoinSpot objects”</h3>
+<p>Normal in Phase 4 (the coins come in Phase 5). Later: the CoinSpots need the <b>Coin Spot</b> component and must be inside the level root (<a href="phase-05.html#check-2">Phase 5, check 2</a>).</p>
 <h3>No coin sound. Console: “[AudioFX] Unknown sound id: coin”</h3>
-<p>The Sounds list in GoldRushAssets is empty, or the file is not called <code>coin.wav</code>. The file name is the sound id (<a href="phase-01.html#step-7">Phase 1, step 7</a>, <a href="phase-05.html#step-9">Phase 5, step 9</a>).</p>
-<h3>The level looks very different in Play mode</h3>
-<p>Normal: <code>EnvironmentSetup</code> sets the game's own sky, fog and glow. Too bright? Delete an extra Global Volume from your scene.</p>
+<p>The Sounds list in GoldRushAssets is empty, or <code>coin.wav</code> is missing. The file name is the sound id (<a href="phase-05.html#check-4">Phase 5, check 4</a>).</p>
 <h3>All coins collected, but the gate does not open</h3>
-<p>The gate needs the <b>Exit Gate</b> component and its Door field filled, and it must be inside the level root (<a href="phase-06.html#step-5">Phase 6, step 5</a>, <a href="phase-06.html#step-6">step 6</a>).</p>
+<p>The gate must be inside the level root and have the <b>Exit Gate</b> component with <b>Door</b> filled (<a href="phase-06.html#check-2">Phase 6, check 2</a>).</p>
 <h3>The gate opens, but the strips stay red</h3>
-<p>Fill the Strips list and the Green Strip material (<code>M_GlowGreen</code>) (<a href="phase-06.html#step-5">Phase 6, step 5</a>).</p>
-<h3>The green pad is visible before the gate opens</h3>
-<p>Untick the <code>Glow</code> object in the prefab (<a href="phase-06.html#step-5">Phase 6, step 5</a>).</p>
+<p><b>Strips</b> or <b>Green Strip</b> is empty on Exit Gate (<a href="phase-06.html#check-2">Phase 6, check 2</a>).</p>
 <h3>I stand at the gate and nothing happens</h3>
-<p>The gate opens only after all coins. The gate rotation must be 0, 0, 0: the win point is on its -Z side (<a href="phase-06.html#step-6">Phase 6, step 6</a>).</p>
-<h3>The gate door does not move, and the strips turn green at once</h3>
-<p>The gate is marked Static. Untick <b>Static</b> on <code>ExitGate</code> and its children. Only the <code>Static</code> group is static (<a href="phase-03.html#step-15">Phase 3, step 15</a>).</p>
+<p>Collect all coins first. The gate Rotation must be <code>0, 0, 0</code>: the win point is on its -Z side (<a href="phase-06.html#step-4">Phase 6, step 4</a>).</p>
 <h3>The hero walks out through the open gate</h3>
-<p>The invisible <code>GateBlocker</code> is missing (<a href="phase-03.html#step-8">Phase 3, step 8</a>, <a href="phase-06.html#step-7">Phase 6, step 7</a>).</p>
-<h3>The hero does not wave at the end</h3>
-<p>The Hero controller needs the <code>Win</code> trigger and the Win state (<a href="phase-04.html#step-3">Phase 4, step 3</a>, <a href="phase-04.html#step-5">step 5</a>).</p>
+<p><code>GateBlocker</code> is missing or has no Box Collider (<a href="phase-06.html#check-4">Phase 6, check 4</a>).</p>
 <h3>After the win: “Scene 'MainMenu' couldn't be loaded”</h3>
-<p>Add <code>MainMenu</code> to <b>File → Build Profiles → Scene List</b>, at number 0 (<a href="phase-03.html#step-17">Phase 3, step 17</a>).</p>
-<h3>Where is the win dialog? The game goes straight back to the menu</h3>
-<p>Normal until phase 9. In phase 6 the stars are written in the Console and the game goes back to the menu. After a loss the level loads again (<a href="phase-06.html#step-2">Phase 6, step 2</a>).</p>
-<h3>Pressing L does nothing</h3>
-<p>Press it after GO!, while you play. Check that you replaced the GameManager (<a href="phase-06.html#step-8">Phase 6, step 8</a>).</p>
+<p>Add <code>MainMenu</code> to the Scene List, at number 0 (<a href="phase-06.html#step-2">Phase 6, step 2</a>).</p>
 
 <h2 id="monsters">Monsters</h2>
-<h3>Error: “The type or namespace name 'EnemyAI' could not be found”, or 'Mats' / 'CharacterFactory' / 'WorldMarkers'</h3>
-<p>Import all helpers from <a href="phase-07.html#step-7">Phase 7, step 7</a>.</p>
-<h3>Monsters stand still. Console: “SetDestination” can only be called on an active agent…</h3>
-<p>Bake the NavMesh, and check that the monster stands on the blue area, not inside a block or outside the walls (<a href="phase-07.html#step-3">Phase 7, step 3</a>, <a href="phase-07.html#step-13">step 13</a>).</p>
-<h3>The monster is invisible in Play mode</h3>
-<p>Fill Model and Controller for that monster in GoldRushAssets (<a href="phase-07.html#step-6">Phase 7, step 6</a>).</p>
-<h3>The badge, the glow or the monster is pink</h3>
-<p>Fill Lit and Lit Emissive in GoldRushAssets (<a href="phase-07.html#step-6">Phase 7, step 6</a>). A pink monster model: click the FBX → <b>Materials</b> tab → <b>Apply</b>.</p>
+<h3>Error: “The type or namespace name 'Unity.AI.Navigation' could not be found”</h3>
+<p>Install <b>AI Navigation</b> in the Package Manager (<a href="phase-00.html#step-4">Phase 0, step 4</a>).</p>
+<h3>I cannot find the monsters in the Hierarchy</h3>
+<p>Normal. They exist only in Play mode, under <code>Dynamic (runtime)</code> (<a href="phase-07.html#check-6">Phase 7, check 6</a>).</p>
+<h3>Monsters stand still: “SetDestination” can only be called on an active agent…</h3>
+<p>The marker is on a block or outside the walls. Move it onto free floor. <code>Static</code> must keep its <b>NavMesh Surface</b> (<a href="phase-07.html#check-1">Phase 7, check 1</a>).</p>
 <h3>Monsters walk through walls</h3>
-<p>The wall has no collider, it is not inside <code>Static</code>, or you moved it after baking. Fix it and click <b>Bake</b> again (<a href="phase-07.html#step-3">Phase 7, step 3</a>).</p>
+<p>The wall has no collider, or it is not inside <code>Static</code>. The NavMesh is built again each time the level starts (<a href="phase-07.html#check-1">Phase 7, check 1</a>).</p>
+<h3>A monster is invisible</h3>
+<p>Fill <b>Model</b> and <b>Controller</b> for that monster in GoldRushAssets (<a href="phase-07.html#check-4">Phase 7, check 4</a>).</p>
 <h3>Monsters never see me</h3>
-<p>Something with a collider is in the way. The hero himself is fine: the GameManager puts him on the Ignore Raycast layer. In GHOST mode they can't see you on purpose.</p>
-<h3>A monster slides without moving its legs</h3>
-<p>Its controller has no clips, or the Walk clip has no Loop Time (<a href="phase-07.html#step-4">Phase 7, step 4</a>, <a href="phase-07.html#step-5">step 5</a>).</p>
-<h3>There are 2 monsters at one spot</h3>
-<p>You kept an old empty marker that also has a <b>Monster Spawn</b> component. Delete it (<a href="phase-07.html#step-13">Phase 7, step 13</a>).</p>
-<h3>Hearts don't go down</h3>
-<p>Replace GameManager with the phase 7 version (<a href="phase-07.html#step-10">Phase 7, step 10</a>). The hearts on the screen come with the HUD in phase 9 (<a href="phase-07.html#step-14">Phase 7, step 14</a>). With no hearts left, you lose the level.</p>
+<p>Something with a collider is in the way. In GHOST mode they can't see you on purpose.</p>
 <h3>Monsters got faster after I took the last coin</h3>
-<p>That is on purpose: <code>AllCollected()</code> makes every monster 10% faster for the race to the exit.</p>
+<p>That is on purpose: after the last coin every monster gets 10 % faster for the race to the exit (<a href="phase-07.html#step-4">Phase 7, step 4</a>).</p>
 
 <h2 id="powerups">Power-ups and effects</h2>
-<h3>Error: “The name 'FX' does not exist”</h3>
-<p>Import <code>FX.cs</code> (<a href="phase-08.html#step-3">Phase 8, step 3</a>).</p>
-<h3>Console: “PowerUp Magnet has no PowerUp inside”</h3>
-<p>Drag the PowerUp prefab onto the marker and set its Position to 0, 0, 0 (<a href="phase-08.html#step-7">Phase 8, step 7</a>).</p>
-<h3>No orb appears, or it does not float or spin</h3>
-<p>The marker must be inside the level root and have a <b>Power Up Spot</b> (<a href="phase-08.html#step-7">Phase 8, step 7</a>). The prefab needs the <b>Power Up</b> component with Visual and Ring filled (<a href="phase-08.html#step-6">Phase 8, step 6</a>).</p>
+<h3>There is no orb in Play mode</h3>
+<p>The marker must be inside the level root (in <code>Gameplay/PowerUps</code>) and have a <b>Power Up Spot</b> component (<a href="phase-08.html#check-2">Phase 8, check 2</a>).</p>
+<h3>An orb that I cannot pick up</h3>
+<p>You dragged a <code>Prefabs/Gameplay/PowerUp_*</code> orb into the level on its own. The game only finds power-ups inside a <b>Power Up Spot</b>. Use a marker from <code>Prefabs/Markers</code> instead (<a href="phase-08.html#check-4">Phase 8, check 4</a>).</p>
 <h3>I walk into the orb and nothing happens</h3>
-<p>The orb must be at local position 0, 0, 0 in a marker on the floor. Walk right through it. Check that the GameManager is the phase 8 version (<a href="phase-08.html#step-10">Phase 8, step 10</a>).</p>
-<h3>SPEED gives the wrong effect (for example MAGNET)</h3>
-<p>The Type on the PowerUp prefab is wrong (<a href="phase-08.html#step-6">Phase 8, step 6</a>). Use the same type on the marker.</p>
-<h3>SPEED does not make me faster</h3>
-<p>Replace PlayerMotor with the phase 8 version (<a href="phase-08.html#step-9">Phase 8, step 9</a>).</p>
-<h3>Monsters still see me in GHOST mode</h3>
-<p>Check that <code>EnemyAI.cs</code> is the helper from phase 7: <code>Vision()</code> starts with <code>if (gm.GhostActive) return false;</code> (<a href="phase-07.html#step-7">Phase 7, step 7</a>).</p>
+<p>Walk right through the middle (closer than 1.6 m). The marker must stand on the floor (Y about 0) (<a href="phase-08.html#step-3">Phase 8, step 3</a>).</p>
 <h3>Particles are pink squares</h3>
-<p>Open GoldRushAssets and set Particle = <code>GR_Particle</code> (<a href="phase-07.html#step-6">Phase 7, step 6</a>).</p>
-<h3>No dust behind the player</h3>
-<p>The player must move faster than 1 m/s. Check that you replaced the PlayerMotor (<a href="phase-08.html#step-9">Phase 8, step 9</a>).</p>
+<p>Open GoldRushAssets and set <b>Particle</b> = <code>GR_Particle</code> (<a href="phase-08.html#check-6">Phase 8, check 6</a>).</p>
+<h3>Monsters still see me in GHOST mode</h3>
+<p>GHOST lasts only 6 s. When the power-up bar in the HUD is empty, the power is off.</p>
 
 <h2 id="gameui">HUD and dialogs</h2>
-<p>The game UI is built by hand as GameObjects in the level scene, in the same glass style as the menu. <code>GameUI</code> connects the pieces, and each button has a <code>GameAction</code> (<a href="phase-09.html">Phase 9</a>).</p>
-<h3>Buttons in the HUD or the dialogs do nothing</h3>
-<p>The level scene needs an <b>EventSystem</b>. Each button needs <b>Game Action</b> (not Menu Action) with one of these words: <code>pause</code>, <code>resume</code>, <code>retry</code>, <code>menu</code>, <code>next</code>. “Unknown game action” in the Console means a spelling mistake. Check Raycast Target, like in the menu (<a href="#menu">Main menu and UI</a>).</p>
-<h3>NullReferenceException in GameUI</h3>
-<p>A field on GameUI is empty. Drag every HUD and dialog object into its field (<a href="phase-09.html">Phase 9</a>).</p>
-<h3>Errors about <code>Markers</code>, <code>Joystick</code> or <code>PowerUp</code> in GameUI</h3>
-<p>A script is missing or old: <code>WorldMarkers</code> (phase 7), <code>PowerUp</code> (phase 8), <code>VirtualJoystick</code> (phase 4). Import or replace the file the guide names (<a href="phase-09.html">Phase 9</a>).</p>
-<h3>Round ends look wrong, or the HUD looks tiny or huge</h3>
-<p>Same fixes as the menu: Image Type <b>Sliced</b> with the right PPU, and Canvas Scaler 1920 × 1080, Match 0.5 (<a href="phase-01.html#step-12">Phase 1, step 12</a>, <a href="phase-01.html#step-14">step 14</a>). Reuse your glass prefabs from <code>Prefabs/UI</code>.</p>
-<h3>A full-screen panel blocks the clicks or the joystick</h3>
-<p>Images catch clicks and touches when <b>Raycast Target</b> is on. Untick it on images that are only decoration.</p>
-<h3>My UI animation freezes in the pause menu</h3>
-<p>Pause sets <code>Time.timeScale = 0</code>. Use <code>Time.unscaledDeltaTime</code> or <code>WaitForSecondsRealtime</code>. <code>Tween</code> already uses unscaled time.</p>
-<h3>NEXT or MENU: “Scene … couldn't be loaded”</h3>
-<p>Every scene must be in the Scene List (<a href="phase-03.html#step-17">Phase 3, step 17</a>). NEXT needs Levels 2–4, which come in <a href="phase-10.html">Phase 10</a>.</p>
+<h3>A dialog button does nothing</h3>
+<p>It needs a <b>Game Action</b> (not Menu Action) with one of these words: <code>pause</code>, <code>resume</code>, <code>retry</code>, <code>menu</code>, <code>next</code>. “Unknown game action” in the Console means a spelling mistake. The scene also needs its <code>EventSystem</code> (<a href="phase-09.html#check-5">Phase 9, check 5</a>).</p>
+<h3>Everything appears twice in Play mode</h3>
+<p>The <b>Hud</b> field of Game UI is empty, so it builds a second UI in code. Import the package again (<a href="phase-09.html#check-2">Phase 9, check 2</a>).</p>
+<h3>NullReferenceException in ShowPause, ShowWin or ShowLose</h3>
+<p>You deleted or renamed a part that a Game UI field points to. Import the package again (<a href="phase-09.html#check-2">Phase 9, check 2</a>).</p>
+<h3>I click on the HUD, but the camera turns</h3>
+<p>While you play, the mouse is locked. Press <kbd>Esc</kbd> first to free it.</p>
+<h3>NEXT: “Scene 'Level2' couldn't be loaded”</h3>
+<p>Normal in phase 9. Levels 2–4 come in <a href="phase-10.html">Phase 10</a>. There, add all six scenes to the Scene List (<a href="phase-10.html#step-1">Phase 10, step 1</a>).</p>
 
 <h2 id="polish">Day/night, touch, sound and build</h2>
-<h3>Pressing N does nothing</h3>
-<p>The level has no DayNight yet, or <code>EnvironmentSetup.cs</code> is not the final version (<a href="phase-10.html">Phase 10</a>).</p>
-<h3>Floor and walls do not change colour at night</h3>
-<p>The palette must be at <code>Assets/GoldRush/Resources/DayNightPalette.asset</code> (exact name). The level root needs a <b>Day Night Tint</b> (<a href="phase-10.html">Phase 10</a>).</p>
-<h3>After Play, my material stays dark blue</h3>
-<p>Something changed the material asset itself. Use Day Night Tint, which works on copies, and set the colour back by hand.</p>
-<h3>Lamps shine during the day, or a new light is on by day</h3>
-<p>Add a <b>Night Light</b> component to the light (<a href="phase-10.html">Phase 10</a>).</p>
+<h3>The sky turns dark, but the floor and walls do not</h3>
+<p>The palette must be at <code>Assets/GoldRush/Resources/DayNightPalette.asset</code> (exact name). The level root needs a <b>Day Night Tint</b> (<a href="phase-10.html#check-2">Phase 10, check 2</a>).</p>
+<h3>After Play, a material stays dark blue</h3>
+<p>Something changed the material file itself. Set its colour back by hand in the <code>Materials</code> folder.</p>
+<h3>A lamp shines during the day</h3>
+<p>Its light needs a <b>Night Light</b> component (<a href="phase-10.html#check-3">Phase 10, check 3</a>).</p>
 <h3>Touch does nothing in the Simulator</h3>
-<p>Click on the Simulator screen, not outside it. You need an EventSystem, and Active Input Handling = Both (<a href="phase-00.html#step-6">Phase 0, step 6</a>, <a href="phase-10.html">Phase 10</a>).</p>
+<p>Click on the phone screen, not outside it. Check <b>Active Input Handling = Both</b> and the <b>Joystick</b> field of GameUI (<a href="phase-10.html#check-5">Phase 10, check 5</a>).</p>
 <h3>No sound or no music</h3>
 <ul>
-  <li>Check <b>Mute Audio</b> at the top of the Game view.</li>
-  <li>Check MUSIC and SOUND in the game's Settings. They are saved, so they stay off next time (<a href="phase-02.html#step-11">Phase 2, step 11</a>).</li>
-  <li><code>[AudioFX] Unknown sound id</code> in the Console: the Sounds list in GoldRushAssets is empty, or the file name is wrong. The file name is the sound id (<a href="phase-01.html#step-7">Phase 1, step 7</a>).</li>
+<li>Check <b>Mute Audio</b> at the top of the Game view.</li>
+<li>Check MUSIC and SOUND in the game's Settings or the PAUSE dialog. They are saved, so they stay off next time (<a href="phase-02.html#check-4">Phase 2, check 4</a>).</li>
+<li><code>[AudioFX] Unknown sound id</code> in the Console: the Sounds list in GoldRushAssets is empty, or a file name is wrong (<a href="phase-10.html#check-6">Phase 10, check 6</a>).</li>
 </ul>
 <h3>Build: “No scenes in build”, or the build starts in a level</h3>
-<p>Build Profiles → Scene List: <code>MainMenu</code> must be ticked and at index 0, then the levels (<a href="phase-03.html#step-17">Phase 3, step 17</a>, <a href="phase-10.html">Phase 10</a>).</p>
-<h3>Android: “Android SDK not found”, or Switch Platform is grey</h3>
-<p>Install <b>Android Build Support</b> with OpenJDK and SDK &amp; NDK in Unity Hub, then restart Unity (<a href="phase-10.html">Phase 10</a>).</p>
-<h3>The phone game is portrait</h3>
-<p>Player Settings → Resolution and Presentation: tick only <b>Landscape Left</b> and <b>Landscape Right</b>.</p>
+<p>Build Profiles → Scene List: <code>MainMenu</code> must be ticked and at index 0, then the levels (<a href="phase-10.html#check-8">Phase 10, check 8</a>).</p>
+<h3>Android: “Android SDK not found”, or the phone game is portrait</h3>
+<p>Install <b>Android Build Support</b> with OpenJDK and SDK &amp; NDK in Unity Hub, then restart Unity. In Player Settings, tick only <b>Landscape Left</b> and <b>Landscape Right</b> (<a href="phase-10.html#step-5">Phase 10, step 5</a>).</p>
+
+<h2 id="practicals">Your own levels</h2>
+<p>More problems and fixes are in <a href="practicals.html#step-15">Practicals, step 15</a>.</p>
+<h3>My card is not in Level Select</h3>
+<p>Check the new line in <code>Data.cs</code> (no red errors in the Console) (<a href="practicals.html#step-6">Practicals, step 6</a>).</p>
+<h3>Clicking my card: “Scene 'Level5' couldn't be loaded…”</h3>
+<p>Add the scene to <b>Build Profiles → Scene List</b> (<a href="practicals.html#step-7">Practicals, step 7</a>).</p>
+<h3>The intro says “Training Yard” in my level</h3>
+<p>The <code>scene</code> text in the LevelDef is not the scene file name. Check capital letters and spaces (<a href="practicals.html#step-6">Practicals, step 6</a>).</p>
+<h3>I changed Level1 by mistake</h3>
+<p>You forgot <b>File → Save As</b>. <b>Edit → Undo</b>, or close the scene without saving (<a href="practicals.html#step-3">Practicals, step 3</a>).</p>
+<h3>I fall through the floor near the new walls</h3>
+<p>The <code>GroundCollider</code> is too small for your arena. Set its Box Collider Size to <code>40, 1, 40</code> (<a href="practicals.html#step-11">Practicals, step 11</a>).</p>
 
 <nav class="pager" aria-label="Previous and next page">
 <a class="prev" href="practical-4.html"><small>← Previous</small>Practical 4</a>

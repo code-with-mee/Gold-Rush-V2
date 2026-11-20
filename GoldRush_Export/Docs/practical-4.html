@@ -75,7 +75,8 @@
 <!-- ======================================================= 1 -->
 <h2 id="step-1"><span class="step">1</span>Goal and values</h2>
 <div class="panel"><h3>Goal</h3><p>Build a <b>36 × 36 m</b> night level with <b>12 coins</b>, <b>all 3 monster types</b> (2 Slimes, 1 Ghost, 1 Mushroom King with Home), a <b>MAGNET</b> and <b>8 lamps</b>. Then change at least 3 things to make it your own design.</p><p>You learn: a bigger arena, an off-centre gate, lights at night, combining monsters, using a power-up as a tool, designing on your own.</p></div>
-<p><b>What you need:</b> <a href="practical-3.html">Practical 3</a> (Guard and Home) and Phase 10 (the lamps have a <code>NightLight</code>, the HUD has the moon button).</p>
+<p><b>What you need:</b> <a href="practical-3.html">Practical 3</a> (Guard and Home) and your project with the <a href="phase-10.html">Phase 10</a> package (the lamps have a <code>NightLight</code>, the HUD has the moon button). You start from its <code>Level1</code>.</p>
+<div class="tip"><b>A challenge.</b> This practical has no screenshots. You work the same way as in Practicals 1 and 2: copy Level1, clear it out, build the walls from kit pieces (like <a href="practical-1.html#step-5">Practical 1, step 5</a>), drag markers from <code>Prefabs/Markers</code>, then add the LevelDef.</div>
 <p><b>The LevelDef values</b> (you type them in step 12):</p>
 <div class="table-wrap"><table>
 <tr><th>Field</th><th>Value</th></tr>
@@ -287,18 +288,20 @@
 <!-- ======================================================= 4 -->
 <h2 id="step-4"><span class="step">4</span>Clear out</h2>
 <ol>
-<li>Delete all 17 children of <code>Static/Obstacles</code>.</li>
+<li>Delete all 12 children of <code>Static/Obstacles</code> and <code>Static/Structures/LCover</code>.</li>
+<li>Delete all children of <code>Decor</code> (the glowing pads and lines of Level1 do not fit the bigger arena).</li>
 <li>Keep <code>PowerUp Magnet</code>, both Slimes and the 6 CoinSpots: you move them and add more.</li>
 </ol>
 
 <!-- ======================================================= 5 -->
 <h2 id="step-5"><span class="step">5</span>Make the arena bigger</h2>
-<p>The arena grows from 32 to 36 m. 36 m is not "8 m pieces + an 8 m gap in the middle", so the gate moves <b>2 m west</b> (X <code>-2</code>). Change the wall groups from Level1 like this:</p>
+<p>The arena grows from 32 to 36 m. 36 m is not "8 m pieces + an 8 m gap in the middle", so the gate moves <b>2 m west</b> (X <code>-2</code>). Replace the Level1 wall with your own wall groups, the same way as in <a href="practical-1.html#step-5">Practical 1, step 5</a> (see also <a href="practicals.html#step-11">Practicals, step 11</a>):</p>
 <ol>
-<li><code>WallSouth</code>: Position <code>0, 0, -18.5</code>. Move its four <code>Wall_8m</code> to X <code>-14</code>, <code>-6</code>, <code>2</code>, <code>10</code>. Add one <code>Wall_4m</code> at X <code>16</code>.</li>
-<li><code>WallEast</code> (<code>18.5, 0, 0</code>) and <code>WallWest</code> (<code>-18.5, 0, 0</code>), Rotation <code>0, 90, 0</code>: the same children as WallSouth.</li>
-<li><code>WallNorth</code>: Position <code>0, 0, 18.5</code>. Children: <code>Wall_8m</code> at <code>-14</code>, <code>Wall_4m</code> at <code>-8</code>, then the gap, then <code>Wall_8m</code> at <code>6</code> and <code>14</code>. (Delete the Wall_4m at X 6 and add a Wall_8m.)</li>
-<li><code>Corners</code>: pillars at <code>±18.5, 0, ±18.5</code>.</li>
+<li>Drag <code>Static/Walls/PerimeterWall/GateBlocker</code> onto <code>Static/Walls</code>. Then delete <code>PerimeterWall</code>.</li>
+<li>Make the empty groups <code>WallSouth</code>, <code>WallNorth</code>, <code>WallEast</code>, <code>WallWest</code> and <code>Corners</code> in <code>Static/Walls</code>, and fill them with the pieces in the table.</li>
+<li><code>WallEast</code> and <code>WallWest</code> have Rotation <code>0, 90, 0</code> and the same children as <code>WallSouth</code>.</li>
+<li>In <code>WallNorth</code> the gap is between X <code>-6</code> and <code>2</code>: 8 m wide, with its middle at X <code>-2</code>.</li>
+<li>Select <code>Static/Floor/GroundCollider</code>. Set its <b>Box Collider → Size</b> to <code>40, 1, 40</code>. (It is <code>34, 1, 34</code>: too small for walls at ±18.5, so you would fall through the floor near the walls.)</li>
 </ol>
 <div class="table-wrap"><table>
 <tr><th>Group</th><th>Position</th><th>Rotation</th><th>Children (local X)</th></tr>
@@ -307,7 +310,7 @@
 <tr><td><code>WallEast</code></td><td><code>18.5, 0, 0</code></td><td><code>0, 90, 0</code></td><td>Wall_8m at X <code>-14</code> · Wall_8m at X <code>-6</code> · Wall_8m at X <code>2</code> · Wall_8m at X <code>10</code> · Wall_4m at X <code>16</code></td></tr>
 <tr><td><code>WallWest</code></td><td><code>-18.5, 0, 0</code></td><td><code>0, 90, 0</code></td><td>Wall_8m at X <code>-14</code> · Wall_8m at X <code>-6</code> · Wall_8m at X <code>2</code> · Wall_8m at X <code>10</code> · Wall_4m at X <code>16</code></td></tr>
 <tr><td><code>Corners</code></td><td>4 × <code>Pillar</code></td><td>–</td><td><code>-18.5, 0, -18.5</code> · <code>18.5, 0, -18.5</code> · <code>-18.5, 0, 18.5</code> · <code>18.5, 0, 18.5</code></td></tr>
-<tr><td><code>GateBlocker</code></td><td><code>-2, 2.5, 19.25</code></td><td>–</td><td>Box Collider, Size <code>8, 5, 1</code></td></tr>
+<tr><td><code>GateBlocker</code></td><td><code>-2, 2.5, 19.25</code></td><td>–</td><td>Box Collider, Size <code>7.5, 5, 1</code> (keep it)</td></tr>
 <tr><td><code>ExitGate</code></td><td><code>-2, 0, 18</code></td><td><code>0, 0, 0</code></td><td>In the middle of the gap. Not static.</td></tr>
 </table></div>
 <div class="note">The walls stand at ±18.5 and the floor ends at ±20. Do not make the arena bigger than this: the walls would stand off the floor.</div>
@@ -349,10 +352,10 @@
 
 <!-- ======================================================= 8 -->
 <h2 id="step-8"><span class="step">8</span>Coins</h2>
-<p>Twelve coins: four in the building pockets, two in the King's plaza, two trails in the side alleys and two easy ones at the start.</p><p>You need <b>12</b> CoinSpots, each with a <code>Coin</code> inside (local position <code>0, 1, 0</code>).</p>
+<p>Twelve coins: four in the building pockets, two in the King's plaza, two trails in the side alleys and two easy ones at the start.</p><p>You need <b>12</b> CoinSpots. A CoinSpot is an empty marker: the game makes the coin 1 m above it.</p>
 <ol>
 <li>Open <code>Gameplay/Coins</code>. Keep the CoinSpots you have and move them to the new positions.</li>
-<li>Need more? Select a CoinSpot (with its Coin) and press <b>Ctrl+D</b> / <b>Cmd+D</b>. Rename it with the next number.</li>
+<li>Need more? Select a CoinSpot and press <b>Ctrl+D</b> / <b>Cmd+D</b> (or drag <code>Prefabs/Markers/CoinSpot</code> onto <code>Gameplay/Coins</code>). Rename it with the next number.</li>
 <li>Delete CoinSpots you do not need.</li>
 </ol>
 <div class="table-wrap"><table>
@@ -373,13 +376,13 @@
 
 <!-- ======================================================= 9 -->
 <h2 id="step-9"><span class="step">9</span>Monsters</h2>
-<p>Monsters go into <code>Gameplay/Monsters</code>. Drag the prefab from <code>Prefabs/Gameplay</code> onto the group, type the position, and rename it. Delete the old Slimes you do not need.</p>
+<p>Monsters go into <code>Gameplay/Monsters</code>. Keep and move <code>Slime 1</code> and <code>Slime 2</code>. For the new ones, drag a marker from <code>Prefabs/Markers</code> onto the group, type the position, and rename it.</p>
 <div class="table-wrap"><table>
-<tr><th>Name</th><th>Prefab</th><th>Position</th><th>Note</th></tr>
+<tr><th>Name</th><th>Marker</th><th>Position</th><th>Note</th></tr>
 <tr><td><code>Slime 1</code></td><td><code>Monster_Slime</code></td><td><code>-13, 0, 0</code></td><td>West alley</td></tr>
 <tr><td><code>Slime 2</code></td><td><code>Monster_Slime</code></td><td><code>12, 0, 3</code></td><td>East alley, near the MAGNET</td></tr>
-<tr><td><code>Ghost 1</code></td><td><code>Monster_Ghost</code></td><td><code>0, 0, 14</code></td><td>North, between you and the gate</td></tr>
-<tr><td><code>Mushroom King 1</code></td><td><code>Monster_MushroomKing</code></td><td><code>0, 0, 3</code></td><td>Plaza. Home = <code>KingHome</code> at <code>0, 0, 2</code></td></tr>
+<tr><td><code>Ghost 1</code></td><td><code>Monster_Ghost</code> (new)</td><td><code>0, 0, 14</code></td><td>North, between you and the gate</td></tr>
+<tr><td><code>Mushroom King 1</code></td><td><code>Monster_MushroomKing</code> (new)</td><td><code>0, 0, 3</code></td><td>Plaza. Home = <code>KingHome</code> at <code>0, 0, 2</code></td></tr>
 </table></div>
 <ol>
 <li>Right-click <code>Gameplay/Monsters</code> → <b>Create Empty</b>. Name it <code>KingHome</code>. Position <code>0, 0, 2</code>.</li>
@@ -388,11 +391,10 @@
 
 <!-- ======================================================= 10 -->
 <h2 id="step-10"><span class="step">10</span>Power-up</h2>
-<p>A power-up is a <code>PowerUpSpot</code> marker with the matching prefab inside (like in <a href="phase-08.html">Phase 8</a>).</p>
+<p>You kept the marker <code>Gameplay/PowerUps/PowerUp Magnet</code> from Level1 in step 4 (<a href="phase-08.html">Phase 8</a>).</p>
 <ol>
-<li>Right-click <code>Gameplay/PowerUps</code> → <b>Create Empty</b>. Name it <code>PowerUp Magnet</code>. Position <code>15, 0, 1</code>.</li>
-<li><b>Add Component → Power Up Spot</b>. <b>Type</b> = <b>Magnet</b>.</li>
-<li>Drag <code>PowerUp_Magnet</code> onto the marker. Set the child's Position to <code>0, 0, 0</code>.</li>
+<li>Select <code>PowerUp Magnet</code>. Position <code>15, 0, 1</code>.</li>
+<li>Check its <b>Power Up Spot</b>: <b>Type</b> = <b>Magnet</b>.</li>
 </ol>
 <p>The MAGNET pulls coins from up to 11 m for 8 seconds. From the east alley you can pull the two plaza coins without going near the King, if you are fast.</p>
 
@@ -401,7 +403,7 @@
 <ol>
 <li>Select <code>Gameplay/PlayerSpawn</code>. Position <code>2, 0, -15</code>, Rotation <code>0, 0, 0</code> (looks north, to the gate).</li>
 <li>Select <code>Static/ExitGate</code>. Position <code>-2, 0, 18</code>, Rotation <code>0, 0, 0</code>.</li>
-<li>Select <code>Static/Walls/GateBlocker</code>. Position <code>-2, 2.5, 19.25</code>. Box Collider Size <code>8, 5, 1</code>.</li>
+<li>Select <code>Static/Walls/GateBlocker</code>. Position <code>-2, 2.5, 19.25</code>. Keep its Box Collider (Size <code>7.5, 5, 1</code>).</li>
 <li>Select <code>Static</code>. In <b>NavMesh Surface</b>, click <b>Bake</b>. Look at the blue area: it must reach every coin and the gate.</li>
 <li>Save.</li>
 </ol>
@@ -436,12 +438,12 @@
 <li>No red errors in the Console.</li>
 </ul>
 </div>
-<p><b>The card:</b> it shows <b>NIGHT RUN</b>, "Gold under the moon" and "12 GOLD TO FIND". It is locked until you win the level before it. With the updated menu the cards are in two rows; with the old menu it hides under DAILY RUSH (see <a href="practicals.html#step-8">Practicals, step 8</a>).</p>
+<p><b>The card:</b> it shows <b>NIGHT RUN</b>, "Gold under the moon" and "12 GOLD TO FIND". It is locked until you win the level before it. With 6 or more levels the cards are in two rows (see <a href="practicals.html#step-8">Practicals, step 8</a>).</p>
 <p><b>Tune the par time:</b> best time + 25 %, rounded to 5 s. Change <code>parTime</code> in <code>Data.cs</code>.</p>
 
 <!-- ======================================================= 14 -->
 <h2 id="step-14"><span class="step">14</span>Make it harder</h2>
-<div class="tip"><b>Make it harder</b> (pick one or two, test after each):<ul><li>A second Ghost at <code>-12, 0, 15</code>.</li><li>Set <code>enemySpeed = 1.12f</code> (like Gold Fever) and <code>parTime = 85</code>.</li><li>Move the MAGNET into the SE pocket (and that coin to the alley): you must risk the pocket first.</li><li>Put a second Mushroom King with its own Home in front of the gate, at <code>-2, 0, 13</code>.</li></ul></div>
+<div class="tip"><b>Make it harder</b> (pick one or two, test after each):<ul><li>A second Ghost at <code>-12, 0, 15</code>.</li><li>Set <code>enemySpeed = 1.12f</code> (like Gold Fever) and <code>parTime = 85</code>.</li><li>Move the MAGNET into the SE pocket (and that coin to the alley): you must risk the pocket first.</li><li>Put a second Mushroom King marker with its own Home in front of the gate, at <code>-2, 0, 13</code>.</li></ul></div>
 
 <!-- ======================================================= 15 -->
 <h2 id="step-15"><span class="step">15</span>Your own idea</h2>
