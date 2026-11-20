@@ -3,9 +3,12 @@
 A small third-person mobile game made in **Unity 6** (URP). You play a cute hero who has to grab
 every gold coin in the arena, avoid the monsters, and escape through the exit gate.
 
-Almost everything is built **from code**: the levels, the user interface, the sound effects and the
-music. Only the characters are imported 3D models. That makes this project a good one to read
-from top to bottom.
+The menu and the levels are **normal scenes**: open them and you see every wall, coin marker, button and
+light in the Hierarchy. The pieces come from a ready-made **prefab kit** (`Prefabs/Level`, `Prefabs/Gameplay`).
+The sounds are `.wav` files and the materials have clear names (`M_Floor`, `M_Gold`, …).
+
+> **Course:** `GoldRush_Export/` holds the step-by-step course that rebuilds this game from an empty
+> project: guides in `Docs/` (open `Docs/index.html`), packages in `Packages/`, scripts in `Resources/`.
 
 ---
 
@@ -48,9 +51,11 @@ Everything that belongs to the game lives in `Assets/GoldRush/`:
 Assets/GoldRush/
 ├── Art/Characters/      imported models (Quaternius, CC0) + generated animator controllers
 ├── Editor/              editor-only tools (project setup, model import rules, previews)
-├── Materials/           5 base materials that the code copies and tints at runtime
-├── Resources/           GoldRushAssets.asset — the references the code loads at runtime
-├── Scenes/              MainMenu.unity and Game.unity (each holds just ONE GameObject)
+├── Art/Audio/           the sounds and music (.wav)
+├── Materials/           M_* (the kit colours) and GR_* (base materials the code copies)
+├── Prefabs/             Level/ (building kit), Gameplay/ (coin, gate, power-up models), Markers/
+├── Resources/           GoldRushAssets.asset (models, controllers, sounds), icons, fonts, UI sprites
+├── Scenes/              MainMenu, Level1–4 (hand-editable), Game (daily challenge, generated)
 └── Scripts/
     ├── Core/            data, save system, tween helper, materials, scene fader
     ├── Audio/           synthesised sound effects + music (no audio files!)
@@ -80,8 +85,9 @@ MainMenu scene                         Game scene
                                       └──────────────────────────────────────────┘
 ```
 
-Each scene file contains only **one GameObject** with one script. That script builds everything
-else in `Start()`, so you can follow the code instead of hunting through the Inspector.
+The scenes hold real GameObjects you can move and edit. When the game starts, the scripts **use what is in
+the scene** (a Player, camera, coins or monsters you placed) and only build what is missing in code.
+The Daily challenge level is still generated from a seed.
 
 ### Read the code in this order
 
@@ -132,6 +138,8 @@ Start with the easy ones:
 | Menu | What it does |
 |------|--------------|
 | Setup Project | (Re)creates materials, controllers, scenes and build settings |
+| Level Design → Rebuild Menu Scene | Saves the menu (stage + all screens) as GameObjects in MainMenu.unity |
+| Course → Export Sounds / Build Prefab Kit / Export Starter Package | Tools that make the course files |
 | Play | Starts from the main menu, whatever scene is open |
 | Run Smoke Test | Plays through the game by itself and saves screenshots to `Temp/gr_smoke/` |
 | Render Character Preview | Saves pictures of the characters to `Temp/gr_preview/` |
